@@ -53,6 +53,8 @@ class pg_page {
 %s<link rel="stylesheet" href="skins/default/global.css" media="screen,projection" type="text/css" />
 <link rel="Shortcut Icon" type="image/png" href="skins/default/images/icon.png" />
 <script type="text/javascript" src="lib/form_hiding.js"></script>
+<script type="text/javascript" src="http://smartform.cz/api/v1/smartform.js"></script>
+<script type="text/javascript">smartform.beforeInit = function initialize() { smartform.setClientId(\'8ndPcVUJ5B\'); }</script>
 </head>
 
 <body>

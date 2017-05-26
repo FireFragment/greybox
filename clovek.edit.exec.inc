@@ -11,10 +11,22 @@ $klub_id = $_REQUEST["klub_id"];
 $jmeno = $_REQUEST["jmeno"];
 $nick = $_REQUEST["nick"];
 $prijmeni = $_REQUEST["prijmeni"];
+$email = $_REQUEST["email"];
 $komentar = filter_comment($_REQUEST["komentar"]);
 $narozen = $_REQUEST["narozen"];
+$ulice = $_REQUEST["ulice"];
+$mesto = $_REQUEST["mesto"];
+$psc = $_REQUEST["psc"];
+$prukaz = $_REQUEST["prukaz"];
+$cislo = $_REQUEST["cislo"];
 $debater = $_REQUEST["debater"];
 $clen = $_REQUEST["clen"];
+
+if ($GLOBALS["cps_lidi"] >= 3) {
+    $clendo = $_REQUEST["clen_do"];
+} else {
+    $clendo = "NULL";
+}
 
 cpdb_fetch_one_row("select klub_ID, clen from clovek where clovek_ID = :clovek_id", array(":clovek_id"=>$clovek_id), $cur);
 
@@ -40,18 +52,24 @@ if (isset($_REQUEST["add"])) {
 	
 	if (cpdb_exec(
 		"insert into
-			clovek (klub_ID, jmeno, prijmeni, nick, narozen, debater, komentar, clen)
+			clovek (klub_ID, jmeno, prijmeni, nick, email, narozen, ulice, mesto, psc, prukaz, cislo, debater, komentar, clen, clen_od, clen_do)
 		values
-			(:klub_id, :jmeno, :prijmeni, :nick, :narozen, :debater, :komentar, :clen)
+			(:klub_id, :prijmeni, :jmeno, :nick, :email, :narozen, :ulice, :mesto, :psc, :prukaz, :cislo, :debater, :komentar, :clen, NOW(), '".$clendo."')
 		",
 		array(
 			":klub_id"=>$GLOBALS["cps_lidi"] >= 2 ? $klub_id : $_SESSION["user_klub_ID"],
 			":jmeno"=>$jmeno,
 			":prijmeni"=>$prijmeni,
 			":nick"=>$nick,
+			":email"=>$email,
 			":narozen"=>deformat_date($narozen),
+			":ulice"=>$ulice,
+			":mesto"=>$mesto,
+			":psc"=>$psc,
+			":prukaz"=>$prukaz,
+			":cislo"=>$cislo,
 			":debater"=>$debater,
-			":clen"=> $GLOBALS["cps_lidi"] >= 3 ? $clen : 0,
+			":clen"=> $GLOBALS["cps_lidi"] >= 3 ? $clen : 0,      
 			":komentar"=>$komentar
 		)
 	)) {
@@ -73,9 +91,16 @@ if (isset($_REQUEST["add"])) {
 			jmeno = :jmeno,
 			prijmeni = :prijmeni,
 			nick = :nick,
+			email = :email,
 			narozen = :narozen,
+			ulice = :ulice,
+			mesto = :mesto,
+			psc = :psc,
+			prukaz = :prukaz,
+			cislo = :cislo,
 			debater = :debater,
 			clen = :clen,
+            clen_do = '".$clendo."',
 			komentar = :komentar
 		where
 			clovek_ID = :clovek_id
@@ -86,7 +111,13 @@ if (isset($_REQUEST["add"])) {
 			":jmeno"=>$jmeno,
 			":prijmeni"=>$prijmeni,
 			":nick"=>$nick,
+			":email"=>$email,
 			":narozen"=>deformat_date($narozen),
+			":ulice"=>$ulice,
+			":mesto"=>$mesto,
+			":psc"=>$psc,
+			":prukaz"=>$prukaz,
+			":cislo"=>$cislo,
 			":debater"=>$debater,
 			":clen"=>$GLOBALS["cps_lidi"] >= 3 ? $clen : $cur["clen"],
 			":komentar"=>$komentar,

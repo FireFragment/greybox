@@ -18,7 +18,7 @@ $GLOBALS["page"]->title = join_name($clovek["jmeno"], $clovek["nick"], $clovek["
 pg_head();
 if (isset($clovek["komentar"])) cph_p($clovek["komentar"], array("class"=>"komentar"));
 
-$can_edit =
+$can_edit = 
 	($GLOBALS["cps_lidi"] >= 2)
 	|| (
 		$GLOBALS["cps_lidi"] == 1
@@ -42,6 +42,9 @@ if ($can_edit) {
 	$clovek_f->form[] = new cpf_text($lang["nick"] . ": ");
 	$clovek_f->form[] = new cpf_db_textbox("nick","nick",array("maxlength"=>60));
 	$clovek_f->form[] = new cpf_nl;
+	$clovek_f->form[] = new cpf_text("email: ");
+	$clovek_f->form[] = new cpf_db_textbox("email","email",array());
+	$clovek_f->form[] = new cpf_nl;
 	$clovek_f->form[] = new cpf_text($lang["club"] . ": ");
 	$clovek_f->form[] = new cpf_db_listbox("klub_id",array(
 		"select klub_ID, nazev from klub union select 0, :no_club", array(":no_club"=>$lang["no club"])),"klub_ID");
@@ -50,6 +53,21 @@ if ($can_edit) {
 	$clovek_f->form[] = new cpf_text($lang["born"] . ": ");
 	$clovek_f->form[] = new cpf_db_textbox("narozen","narozen",array("maxlength"=>10));
 	$clovek_f->form[] = new cpf_text(" " . $lang["yyyy-mm-dd"],array("class"=>"desc"));
+	$clovek_f->form[] = new cpf_nl;
+	$clovek_f->form[] = new cpf_text("ulice a cislo: ");
+	$clovek_f->form[] = new cpf_db_textbox("ulice","ulice",array("class"=>'smartform-street-and-number'));
+	$clovek_f->form[] = new cpf_nl;
+	$clovek_f->form[] = new cpf_text("mesto: ");
+	$clovek_f->form[] = new cpf_db_textbox("mesto","mesto",array("class"=>'smartform-city'));
+	$clovek_f->form[] = new cpf_nl;
+	$clovek_f->form[] = new cpf_text("psc: ");
+	$clovek_f->form[] = new cpf_db_textbox("psc","psc",array("class"=>'smartform-zip'));
+	$clovek_f->form[] = new cpf_nl;
+	$clovek_f->form[] = new cpf_text("prukaz: ");
+	$clovek_f->form[] = new cpf_db_listbox_array("prukaz",array('op' => 'obcansky prukaz', 'pas' => 'cestovni pas', 'jiny' => 'jiny'));
+	$clovek_f->form[] = new cpf_nl;
+	$clovek_f->form[] = new cpf_text("cislo: ");
+	$clovek_f->form[] = new cpf_db_textbox("cislo","cislo",array());
 	$clovek_f->form[] = new cpf_nl;
 	$clovek_f->form[] = new cpf_text($lang["comment"] . ": ");
 	$clovek_f->form[] = new cpf_db_textarea("komentar","komentar",array("rows"=>4, "cols"=>60));
@@ -64,9 +82,15 @@ if ($can_edit) {
 	} else {
 		$clovek_f->form[] = new cpf_db_text("clen", array(), array(1 => $lang['yes'], 0 => $lang['no']));
 	}
+    if ($GLOBALS["cps_lidi"] >= 3) {
+    	// only admins can edit membership
+	    $clovek_f->form[] = new cpf_nl;
+        $clovek_f->form[] = new cpf_text($lang["member until"] . ": ");
+        $clovek_f->form[] = new cpf_db_textbox("clen_do","clen_do",array("maxlength"=>4));
+    }
 	$clovek_f->form[] = new cpf_nl;
 	$clovek_f->form[] = new cpf_button("save",$lang["save"]);
-	$clovek_f->form[] = new cpf_button("delete",$lang["delete"]);
+	//$clovek_f->form[] = new cpf_button("delete",$lang["delete"]);
 	$clovek_f->load_this($clovek_p);
 	$clovek_f->render();
 	
@@ -83,6 +107,24 @@ if ($can_edit) {
 	$clovek_f->form[] = new cpf_nl;
 	$clovek_f->form[] = new cpf_text($lang["nick"] . ": ");
 	$clovek_f->form[] = new cpf_db_textbox("nick","nick",array("maxlength"=>60));
+	$clovek_f->form[] = new cpf_nl;
+	$clovek_f->form[] = new cpf_text("email: ");
+	$clovek_f->form[] = new cpf_db_textbox("email","email",array());
+	$clovek_f->form[] = new cpf_nl;
+	$clovek_f->form[] = new cpf_text("ulice a cislo: ");
+	$clovek_f->form[] = new cpf_db_textbox("ulice","ulice",array("class"=>'smartform-street-and-number'));
+	$clovek_f->form[] = new cpf_nl;
+	$clovek_f->form[] = new cpf_text("mesto: ");
+	$clovek_f->form[] = new cpf_db_textbox("mesto","mesto",array("class"=>'smartform-city'));
+	$clovek_f->form[] = new cpf_nl;
+	$clovek_f->form[] = new cpf_text("psc: ");
+	$clovek_f->form[] = new cpf_db_textbox("psc","psc",array("class"=>'smartform-zip'));
+	$clovek_f->form[] = new cpf_nl;
+	$clovek_f->form[] = new cpf_text("prukaz: ");
+	$clovek_f->form[] = new cpf_db_listbox_array("prukaz",array('op' => 'obcansky prukaz', 'pas' => 'cestovni pas', 'jiny' => 'jiny'));
+	$clovek_f->form[] = new cpf_nl;
+	$clovek_f->form[] = new cpf_text("cislo: ");
+	$clovek_f->form[] = new cpf_db_textbox("cislo","cislo",array());
 	$clovek_f->form[] = new cpf_nl;
 	$clovek_f->form[] = new cpf_text($lang["comment"] . ": ");
 	$clovek_f->form[] = new cpf_db_textarea("komentar","komentar",array("rows"=>4, "cols"=>60));
@@ -171,7 +213,7 @@ if ($GLOBALS["cps_lidi"] >= 2) {
 	$accr->form[] = new cpf_text($lang["place"] . ": ");
 	$accr->form[] = new cpf_db_textbox("misto","misto",array("maxlength"=>255));
 	$accr->form["b1"] = new cpf_button("save",$lang["save"]);
-	$accr->form["b2"] = new cpf_button("delete",$lang["delete"]);
+	//$accr->form["b2"] = new cpf_button("delete",$lang["delete"]);
 	$accr->render_select();
 	
 	$accr->form["b1"] = new cpf_button("add",$lang["add"]);
@@ -213,7 +255,7 @@ if ($can_edit || $self_edit) {
 	$cont->form[] = new cpf_db_textbox("tx","tx",array("size"=>40,"maxlength"=>255));
 	$cont->form[] = new cpf_db_listbox_array("viditelnost", $domain_kontakt_viditelnost);
 	$cont->form["b1"] = new cpf_button("save",$lang["save"]);
-	$cont->form["b2"] = new cpf_button("delete",$lang["delete"]);
+	//$cont->form["b2"] = new cpf_button("delete",$lang["delete"]);
 	$cont->render_select();
 	
 	$cont->form["b1"] = new cpf_button("add",$lang["add"]);
@@ -312,7 +354,7 @@ if ($GLOBALS["cps_lidi"] >= 3) {
 	
 	if (cpdb_fetch_one_row("select username from login where clovek_ID = :clovek_id",array(":clovek_id"=>$clovek_id),$login)) {
 		$access->form[] = new cpf_button("save",$lang["save"]);
-		$access->form[] = new cpf_button("delete",$lang["delete"]);
+		//$access->form[] = new cpf_button("delete",$lang["delete"]);
 		$access->load_this($login);
 		$access->render();
 	} else {
@@ -523,7 +565,7 @@ if ($GLOBALS["cps_lidi"] >= 2) {
 	$bipts->form[] = new cpf_text($lang["comment"] . ": ");
 	$bipts->form[] = new cpf_db_textbox("tx","tx",array("maxlength"=>255));
 	$bipts->form["b1"] = new cpf_button("save",$lang["save"]);
-	$bipts->form["b2"] = new cpf_button("delete",$lang["delete"]);
+	//$bipts->form["b2"] = new cpf_button("delete",$lang["delete"]);
 	$bipts->render_select();
 	
 	$bipts->form["b1"] = new cpf_button("add",$lang["add"]);
