@@ -5,7 +5,7 @@
  */
 
 include_once("lib/de_magic_quotes.inc");
-include_once("lib/config.inc");
+include_once("lib/config.inc.php");
 include_once("lib/cpykhen.inc");
 include_once("lib/dblink.inc");
 include_once("lib/page.inc");
@@ -63,6 +63,7 @@ $GLOBALS["page"]->pages = array(
 	array("liga", $lang["league"], "soutez"),
 	array("liga.add", $lang["add league"], "soutez"),
 	array("liga.edit.exec", $lang["edit league"], "soutez"),
+    array("liga.kidy", $lang["league"]."/".$lang["kidy"], "soutez"),
 	array("turnaj", $lang["tournament"], "turnaj"),
 	array("turnaj.kidy", $lang["tournament"]."/".$lang["kidy"], "turnaj"),
 	array("turnaj.add", $lang["add tournament"], "turnaj"),

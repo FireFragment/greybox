@@ -23,7 +23,7 @@ if ($GLOBALS["cps_souteze"] >= 2) {
 	// edit/delete league
 	$liga_f = get_pykhen_liga();
 	$liga_f->form[] = new cpf_button("save",$lang["save"]);
-	$liga_f->form[] = new cpf_button("delete",$lang["delete"]);
+	//$liga_f->form[] = new cpf_button("delete",$lang["delete"]);
 	$liga_f->load_this($liga_p);
 	$liga_f->render();
 	
@@ -63,6 +63,8 @@ if (cpdb_fetch_all("
 	order by
 		liga_vytezek desc
 	", array(":liga_id"=>$liga_id), $ranks)) {
+	   
+    cph_p(cphs_link("./?page=liga.kidy&liga_id=" . $liga_id, $lang["kidy overview"]));
 	
 	cph_h2($lang["teams"]);
 	de_html($ranks);
