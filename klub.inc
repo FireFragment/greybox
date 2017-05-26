@@ -36,11 +36,16 @@ if ($can_edit) {
 	$klub_f->form[] = new cpf_text($lang["place"] . ": ");
 	$klub_f->form[] = new cpf_db_textbox("misto","misto",array("size"=>40,"maxlength"=>255));
 	$klub_f->form[] = new cpf_nl;
+	$klub_f->form[] = new cpf_text("vedouci: ");
+	$klub_f->form[] = new cpf_db_listbox("vedouci",
+		array("(select clovek.clovek_ID, concat_ws(' ', jmeno, nick, prijmeni), concat_ws(' ', prijmeni, jmeno, nick) as srt from clovek_klub left join clovek using (clovek_ID) where clovek_klub.klub_ID = :klub_id) union distinct (select clovek_ID, concat_ws(' ', jmeno, nick, prijmeni), concat_ws(' ', prijmeni, jmeno, nick) as srt from clovek where klub_ID = :klub_id) order by srt", array(":klub_id"=>$klub["klub_ID"])),
+		"vedouci");
+	$klub_f->form[] = new cpf_nl;
 	$klub_f->form[] = new cpf_text($lang["comment"] . ": ");
 	$klub_f->form[] = new cpf_db_textarea("komentar","komentar",array("rows"=>4, "cols"=>60));
 	$klub_f->form[] = new cpf_nl;
 	$klub_f->form[] = new cpf_button("save",$lang["save"]);
-	$klub_f->form[] = new cpf_button("delete",$lang["delete"]);
+	//$klub_f->form[] = new cpf_button("delete",$lang["delete"]);
 	$klub_f->load_this($klub_p);
 	$klub_f->render();
 	
@@ -58,7 +63,7 @@ if ($can_edit) {
 		"clovek_ID");
 	$klub_clovek->form["link"] = new cpf_db_link("clovek_ID","./?page=clovek&clovek_id=%s",$lang["link"]);
 	$klub_clovek->form["b1"] = new cpf_button("save",$lang["save"]);
-	$klub_clovek->form["b2"] = new cpf_button("delete",$lang["delete"]);
+	//$klub_clovek->form["b2"] = new cpf_button("delete",$lang["delete"]);
 	$klub_clovek->render_select();
 	
 	$klub_clovek->form["b1"] = new cpf_button("add",$lang["add"]);
@@ -69,6 +74,15 @@ if ($can_edit) {
 } else {
 	
 	if (isset($klub["misto"])) cph_p($lang["place"] . ": " . $klub["misto"]);
+	if (isset($klub["vedouci"]))
+	{
+		if (!cpdb_fetch_one_row("select jmeno, nick, prijmeni, clovek_ID from clovek where clovek_ID = :vedouci",array(":vedouci"=>$klub["vedouci"]), $vedouci))
+		{
+			pg_achtung($lang["no record"]);
+			return;
+		}
+		cph_p("Vedouci: " . cphs_link("./?page=clovek&clovek_id=" . $vedouci["clovek_ID"], join_name($vedouci["jmeno"], $vedouci["nick"], $vedouci["prijmeni"])),$vedouci);
+	}
 	
 	// coaches
 	if (cpdb_fetch_all("select clovek.jmeno, clovek.prijmeni, clovek.nick, clovek.clovek_ID, clovek_klub.rocnik, clovek_klub.role from clovek_klub left join clovek using (clovek_ID) where clovek_klub.klub_ID = :klub_id order by rocnik", array(":klub_id"=>$klub_id), $coaches) > 0) {
