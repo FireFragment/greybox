@@ -72,7 +72,7 @@ $select_debaters = "
 		(
 		select
 			clovek.clovek_ID,
-			concat_ws(' ', clovek.jmeno, clovek.nick, clovek.prijmeni) as clovek,
+			concat_ws(' ', clovek.prijmeni, clovek.nick, clovek.jmeno) as clovek,
 			concat_ws(' ', clovek.prijmeni,clovek.jmeno,clovek.nick) as s_clovek
 		from
 			clovek_tym
@@ -86,7 +86,7 @@ $select_debaters = "
 		(
 		select
 			clovek.clovek_ID,
-			concat_ws(' ', clovek.jmeno, clovek.nick, clovek.prijmeni) as clovek,
+			concat_ws(' ', clovek.prijmeni, clovek.nick, clovek.jmeno) as clovek,
 			concat_ws(' ', clovek.prijmeni,clovek.jmeno,clovek.nick) as s_clovek
 		from
 			clovek_debata
@@ -257,7 +257,7 @@ $dpyk->form[] = new cpf_db_textarea("komentar","komentar",array("rows"=>4, "cols
 $dpyk->form[] = new cpf_nl;
 
 $dpyk->form[] = new cpf_button("save",$lang["save"]);
-$dpyk->form[] = new cpf_button("delete",$lang["delete"]);
+//$dpyk->form[] = new cpf_button("delete",$lang["delete"]);
 $dpyk->load_this($debata);
 $dpyk->render();
 
@@ -286,7 +286,7 @@ $dbt_clovek->form[] = new cpf_db_hidden("clovek_old","clovek_ID");
 $dbt_clovek->form[] = new cpf_db_hidden("role_old","role");
 $dbt_clovek->form["role"] = new cpf_db_listbox_array("role", array("r"=>$lang["adjudicator"], "o"=>$lang["organizer"]));
 $dbt_clovek->form["select"] = new cpf_db_listbox("clovek_id",
-	array("select clovek.clovek_ID, concat_ws(' ', jmeno, nick, prijmeni) from clovek order by prijmeni, jmeno, nick", array()), "clovek_ID");
+	array("select clovek.clovek_ID, concat_ws(' ', prijmeni, nick, jmeno) from clovek order by prijmeni, jmeno, nick", array()), "clovek_ID");
 $dbt_clovek->form["link"] = new cpf_db_link("clovek_ID","./?page=clovek&clovek_id=%s",$lang["link"]);
 $dbt_clovek->form["roz_tx"] = new cpf_text(" " . $lang["decision"] . ": ");
 $dbt_clovek->form["rozhodnuti"] = new cpf_db_listbox_array("rozhodnuti", array(0=>$lang["N/A"], 2=>$lang["aff"], 1=>$lang["neg"]));
@@ -296,7 +296,7 @@ $dbt_clovek->form["b2"] = new cpf_button("delete",$lang["delete"]);
 $dbt_clovek->render_select();
 
 $dbt_clovek->form["select"] = new cpf_db_listbox("clovek_id",
-	array("select clovek.clovek_ID, concat_ws(' ', jmeno, nick, prijmeni) from rozhodci left join clovek using(clovek_ID) where rozhodci.rocnik = :rocnik and find_in_set(:jazyk, rozhodci.jazyk) order by prijmeni, jmeno, nick", array(":rocnik"=>$GLOBALS["current_season"], ":jazyk"=>$debata["jazyk"])), "clovek_ID");
+	array("select clovek.clovek_ID, concat_ws(' ', prijmeni, nick, jmeno) from rozhodci left join clovek using(clovek_ID) where rozhodci.rocnik = :rocnik and find_in_set(:jazyk, rozhodci.jazyk) order by prijmeni, jmeno, nick", array(":rocnik"=>$GLOBALS["current_season"], ":jazyk"=>$debata["jazyk"])), "clovek_ID");
 $dbt_clovek->form["role"] = new cpf_db_listbox_array("role", array("r"=>$lang["adjudicator"]));
 $dbt_clovek->form["b1"] = new cpf_button("add",$lang["add"]);
 unset($dbt_clovek->form["b2"], $dbt_clovek->form["link"]);
@@ -305,7 +305,7 @@ $dbt_clovek->load_new();
 $dbt_clovek->render_hidden($lang["new adjudicator"]);
 
 $dbt_clovek->form["select"] = new cpf_db_listbox("clovek_id",
-	array("select clovek.clovek_ID, concat_ws(' ', jmeno, nick, prijmeni) from clovek order by prijmeni, jmeno, nick", array()), "clovek_ID");
+	array("select clovek.clovek_ID, concat_ws(' ', prijmeni, nick, jmeno) from clovek order by prijmeni, jmeno, nick", array()), "clovek_ID");
 $dbt_clovek->form["role"] = new cpf_db_listbox_array("role", array("o"=>$lang["organizer"]));
 $dbt_clovek->form["rozhodnuti"] = new cpf_hidden("rozhodnuti", "");
 $dbt_clovek->form["presvedcive"] = new cpf_hidden("presvedcive", "");

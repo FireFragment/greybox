@@ -36,13 +36,13 @@ if ($GLOBALS["cps_kluby"] >= 2
 	$tym_f->form[] = new cpf_db_textarea("komentar","komentar",array("rows"=>4, "cols"=>60));
 	$tym_f->form[] = new cpf_nl;
 	$tym_f->form[] = new cpf_button("save",$lang["save"]);
-	$tym_f->form[] = new cpf_button("delete",$lang["delete"]);
+	//$tym_f->form[] = new cpf_button("delete",$lang["delete"]);
 	$tym_f->load_this($tym_p);
 	$tym_f->render();
 	
 	$members = new cpykhen;
 	$members->form_attr["action"] = "./?page=tym.clovek.edit.exec";
-	$members->select = "select clovek_tym.clovek_ID, clovek_tym.tym_ID, clovek_tym.aktivni, concat_ws(' ', clovek.jmeno, clovek.nick, clovek.prijmeni) as clovek from clovek_tym left join clovek using(clovek_ID) where tym_ID = :tym_id order by aktivni desc";
+	$members->select = "select clovek_tym.clovek_ID, clovek_tym.tym_ID, clovek_tym.aktivni, concat_ws(' ', clovek.prijmeni, clovek.nick, clovek.jmeno) as clovek from clovek_tym left join clovek using(clovek_ID) where tym_ID = :tym_id order by aktivni desc";
 	$members->select_args = array(":tym_id"=>$tym_id);
 	$members->form["tid"] = new cpf_db_hidden("tym_id","tym_ID");
 	$members->form["clovek"] = new cpf_db_text("clovek");
@@ -52,14 +52,14 @@ if ($GLOBALS["cps_kluby"] >= 2
 	$members->form[] = new cpf_text(" ");
 	$members->form[] = new cpf_db_listbox_array("aktivni",array(1=>$lang["active"], 0=>$lang["disabled"]));
 	$members->form["b1"] = new cpf_button("save",$lang["save"]);
-	$members->form["b2"] = new cpf_button("delete",$lang["delete"]);
+	//$members->form["b2"] = new cpf_button("delete",$lang["delete"]);
 	$members->render_select();
 	
 	
 	
 	$members->form["tid"] = new cpf_hidden("tym_id",$tym_id);
 	$members->form["clovek"] = new cpf_db_listbox("clovek_id",
-		array("select clovek_ID, concat_ws(' ', jmeno, nick, prijmeni), concat_ws(' ', prijmeni, jmeno, nick) as srt from clovek where clovek.debater = 1 and clovek.klub_ID = :klub_id order by srt", array(":klub_id"=>$tym["klub_ID"])),
+		array("select clovek_ID, concat_ws(' ', prijmeni, nick, jmeno), concat_ws(' ', prijmeni, jmeno, nick) as srt from clovek where clovek.debater = 1 and clovek.klub_ID = :klub_id order by srt", array(":klub_id"=>$tym["klub_ID"])),
 		"clovek_ID");
 	$members->form["b1"] = new cpf_button("add",$lang["add"]);
 	unset($members->form["b2"], $members->form["clovek2"], $members->form["clovek3"], $members->form["clovek4"]);

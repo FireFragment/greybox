@@ -1,7 +1,7 @@
 <?php
 /*
  * greybox
- * $Id: teze.detaily.inc,v 1.22 2007/03/05 15:38:24 che0 Exp $
+ * $Id: teze.detaily.inc,v 1.21 2007/03/05 15:31:59 che0 Exp $
  */
 
 $teze_id = $_REQUEST["teze_id"];
@@ -33,7 +33,7 @@ if ($GLOBALS['cps_teze'] >= 1) {
 	$teze_f->form[] = new cpf_db_textarea("komentar","komentar",array("rows"=>4, "cols"=>60));
 	$teze_f->form[] = new cpf_nl;
 	$teze_f->form[] = new cpf_button("save",$lang["save"]);
-	$teze_f->form[] = new cpf_button("delete",$lang["delete"]);
+	//$teze_f->form[] = new cpf_button("delete",$lang["delete"]);
 	$teze_f->load_this($teze_p);
 	$teze_f->render();
 } else {

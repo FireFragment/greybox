@@ -12,9 +12,9 @@ define("DRES_DRAW", 2);
 function join_name($first, $nick, $last)
 {
 	if ($nick != "") {
-		return $first . ' "' . $nick . '" ' . $last;
+		return $last . ' "' . $nick . '" ' . $first;
 	} else {
-		return $first . ' ' . $last;
+		return $last . ' ' . $first;
 	}
 }
 

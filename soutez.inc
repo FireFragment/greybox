@@ -39,7 +39,7 @@ if ($GLOBALS["cps_souteze"] >= 2) {
 	$soutez_f->form[] = new cpf_db_listbox_array("zamceno",array(0=>$lang["active"], 1=>$lang["locked"]));
 	$soutez_f->form[] = new cpf_nl;
 	$soutez_f->form[] = new cpf_button("save",$lang["save"]);
-	$soutez_f->form[] = new cpf_button("delete",$lang["delete"]);
+	//$soutez_f->form[] = new cpf_button("delete",$lang["delete"]);
 	$soutez_f->load_this($soutez_p);
 	$soutez_f->render();
 	
@@ -55,7 +55,7 @@ if ($GLOBALS["cps_souteze"] >= 2) {
 		"teze_ID");
 	$soutez_teze->form["link"] = new cpf_db_link("teze_ID","./?page=teze.detaily&teze_id=%s",$lang["link"]);
 	$soutez_teze->form["b1"] = new cpf_button("save",$lang["save"]);
-	$soutez_teze->form["b2"] = new cpf_button("delete",$lang["delete"]);
+	//$soutez_teze->form["b2"] = new cpf_button("delete",$lang["delete"]);
 	$soutez_teze->render_select();
 	
 	$soutez_teze->form["sid"] = new cpf_hidden("soutez_id",$soutez["soutez_ID"]);

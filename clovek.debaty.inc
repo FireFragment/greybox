@@ -51,7 +51,7 @@ $total_debaty = cpdb_fetch_all("
 	", array(":clovek_id"=>$clovek_id, ":rocnik"=>$GLOBALS["current_season"]),$r_debaty
 );
 
-cph_p(sprintf($lang["%s: %s total debates"], cphs_link("./?page=clovek&clovek_id=" . $clovek_id, join_name($clovek["jmeno"], $clovek["nick"], $clovek["prijmeni"])), $total_debaty));
+cph_p(sprintf($lang["%s: %s total debates"], cphs_link("./?page=clovek&clovek_id=" . $clovek_id, join_name($clovek["prijmeni"], $clovek["nick"], $clovek["jmeno"])), $total_debaty));
 
 if ($total_debaty) {
 	// if there are any debates at all...

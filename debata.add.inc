@@ -29,7 +29,7 @@ $select_debaters = "
 		(
 		select
 			clovek.clovek_ID,
-			concat_ws(' ', clovek.jmeno, clovek.nick, clovek.prijmeni) as clovek,
+			concat_ws(' ', clovek.prijmeni, clovek.nick, clovek.jmeno) as clovek,
 			concat_ws(' ', clovek.prijmeni,clovek.jmeno,clovek.nick) as s_clovek
 		from
 			clovek_tym

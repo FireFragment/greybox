@@ -24,7 +24,7 @@ if ($GLOBALS["cps_souteze"] >= 1) {
 	
 	$turnaj_f = get_pykhen_turnaj();
 	$turnaj_f->form[] = new cpf_button("save",$lang["save"]);
-	$turnaj_f->form[] = new cpf_button("delete",$lang["delete"]);
+	//$turnaj_f->form[] = new cpf_button("delete",$lang["delete"]);
 	$turnaj_f->load_this($turnaj_p);
 	$turnaj_f->render();
 	
@@ -36,13 +36,13 @@ if ($GLOBALS["cps_souteze"] >= 1) {
 	$turnaj_clovek->form["cid"] = new cpf_db_hidden("clovek_old","clovek_ID");
 	$turnaj_clovek->form[] = new cpf_db_listbox_array("role", array("o"=>$lang["organizer"]));
 	$turnaj_clovek->form[] = new cpf_db_listbox("clovek_id",
-		array("select clovek_ID, concat_ws(' ', jmeno, nick, prijmeni) from clovek", array()),
+		array("select clovek_ID, concat_ws(' ', jmeno, nick, prijmeni) from clovek where clen = 1 order by prijmeni, jmeno, nick", array()),
 		"clovek_ID");
 	$turnaj_clovek->form["link"] = new cpf_db_link("clovek_ID","./?page=clovek&clovek_id=%s",$lang["link"]);
 	$turnaj_clovek->form[] = new cpf_text(" " . $lang["factor"] . ": ");
 	$turnaj_clovek->form[] = new cpf_db_textbox("mocnost","mocnost",array("size"=>3,"maxlength"=>3));
 	$turnaj_clovek->form["b1"] = new cpf_button("save",$lang["save"]);
-	$turnaj_clovek->form["b2"] = new cpf_button("delete",$lang["delete"]);
+	//$turnaj_clovek->form["b2"] = new cpf_button("delete",$lang["delete"]);
 	$turnaj_clovek->render_select();
 	
 	$turnaj_clovek->form["tid"] = new cpf_hidden("turnaj_id",$turnaj["turnaj_ID"]);
