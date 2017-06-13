@@ -1,5 +1,5 @@
 {
-	"name": "nette/web-project",
+	"name": "greybox",
 	"description": "Nette: Standard Web Project",
 	"type": "project",
 	"license": ["MIT", "BSD-3-Clause", "GPL-2.0", "GPL-3.0"],
@@ -19,7 +19,8 @@
 		"nette/utils": "^2.4",
 		"latte/latte": "^2.4",
 		"tracy/tracy": "^2.4",
-		"drahak/restful": "@dev"
+		"drahak/restful": "@dev",
+		"kdyby/doctrine": "^3.2"
 	},
 	"require-dev": {
 		"nette/tester": "^1.6"
