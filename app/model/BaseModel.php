@@ -4,7 +4,7 @@ namespace App\Model;
 
 use Nette;
 
-abstract class BaseModel extends \Kdyby\Doctrine\Entities\BaseEntity
+abstract class BaseModel
 {
   use Nette\SmartObject;
   /**
