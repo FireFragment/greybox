@@ -89,6 +89,14 @@ if ($can_edit) {
         $clovek_f->form[] = new cpf_db_textbox("clen_do","clen_do",array("maxlength"=>4));
     }
 	$clovek_f->form[] = new cpf_nl;
+	$clovek_f->form[] = new cpf_text($lang["application"] . ": ");
+	if ($GLOBALS["cps_lidi"] >= 3) {
+		// only admins can confirm application submission
+		$clovek_f->form[] = new cpf_db_listbox_array("prihlaska", array(1 => $lang['yes'], 0 => $lang['no']));
+	} else {
+		$clovek_f->form[] = new cpf_db_text("prihlaska", array(), array(1 => $lang['yes'], 0 => $lang['no']));
+	}
+	$clovek_f->form[] = new cpf_nl;
 	$clovek_f->form[] = new cpf_button("save",$lang["save"]);
 	//$clovek_f->form[] = new cpf_button("delete",$lang["delete"]);
 	$clovek_f->load_this($clovek_p);
@@ -156,7 +164,8 @@ if ($can_edit) {
 	if (isset($clovek["klub_ID"])) cph_p($lang["club"] . ": " . cphs_link("./?page=klub&klub_id=" . $clovek["klub_ID"],cpdb_fetch_one_value("select nazev from klub where klub_ID = :klub_id",array(":klub_id"=>$clovek["klub_ID"]))));
 	
 	cph_p($lang["active debater"] . ": " . ($clovek["debater"] ? $lang["yes"] : $lang["no"]) . 
-		cphs_br() . $lang["full member"] . ": " . ($clovek["clen"] ? $lang["yes"] : $lang["no"]));
+		cphs_br() . $lang["full member"] . ": " . ($clovek["clen"] ? $lang["yes"] : $lang["no"]) . 
+		cphs_br() . $lang["application"] . ": " . ($clovek["prihlaska"] ? $lang["yes"] : $lang["no"]));
 }
 
 

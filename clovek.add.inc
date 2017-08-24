@@ -71,6 +71,12 @@ if ($GLOBALS["cps_lidi"] >= 3) {
     $clovek_f->form[] = new cpf_db_textbox("clen_do","clen_do",array("maxlength"=>4));
 }
 $clovek_f->form[] = new cpf_nl;
+$clovek_f->form[] = new cpf_text($lang["application"] . ": ");
+if ($GLOBALS["cps_lidi"] >= 3) {
+	// only admins can confirm application submission
+	$clovek_f->form[] = new cpf_db_listbox_array("prihlaska", array(1 => $lang['yes'], 0 => $lang['no']));
+}
+$clovek_f->form[] = new cpf_nl;
 
 $clovek_f->form[] = new cpf_button("add",$lang["add"]);
 $clovek_f->load_this(array("klub_ID"=>$klub_id, "debater"=>1, "clen"=>0, "clen_do"=>null));

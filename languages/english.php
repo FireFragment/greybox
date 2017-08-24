@@ -53,6 +53,7 @@ $lang['icq'] = 'icq';
 $lang['jabber'] = 'jabber';
 $lang['web'] = 'web';
 $lang['member'] = 'member';
+$lang['application'] = 'CDA application submitted';
 $lang['coach'] = 'coach';
 $lang['debates'] = 'debates';
 $lang['date'] = 'date';

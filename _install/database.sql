@@ -327,3 +327,6 @@ CREATE TABLE clovek_ibody (
   KEY clovek_ID (clovek_ID),
   constraint fk_ibody_clovek foreign key (clovek_ID) references clovek (clovek_ID) on delete cascade
 ) TYPE=InnoDB CHARSET=utf8 COLLATE=utf8_czech_ci;
+
+ALTER TABLE `clovek`
+ADD `prihlaska` tinyint(1) NOT NULL DEFAULT '0' AFTER `clen_do`;

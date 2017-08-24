@@ -52,6 +52,7 @@ $lang['icq'] = 'icq';
 $lang['jabber'] = 'jabber';
 $lang['web'] = 'web';
 $lang['member'] = 'člen';
+$lang['application'] = 'odevzdal(a) přihlášku do ADK';
 $lang['coach'] = 'trenér';
 $lang['debates'] = 'debaty';
 $lang['date'] = 'datum';
