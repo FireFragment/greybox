@@ -69,6 +69,48 @@ class BadgePresenter extends ResourcePresenter
     return $this->resource->badge = $badge;
   }
 
+  /*
+   * @PATCH badge/check
+   */
+  public function actionCheck()
+  {
+    $badges = $this->database->table('badge')->fetchAll();
+    usort($badges, function ($a, $b)
+    {
+      if ($a->requiredIB == $b->requiredIB) return 0;
+      if ($a->requiredIB < $b->requiredIB) return -1;
+      else return 1;
+    });
+
+    $people = $this->database->table('clovek')->where('received_badge', 1);
+    $updatedPeople = array();
+    foreach ($people as $person)
+    {
+      $debatePoints = $bonusPoints = 0;
+      $debatePoints = $this->database->table('clovek_debata_ibody')->where('clovek_ID', $person->clovek_ID)->sum('ibody');
+      $bonusPoints = $this->database->table('clovek_ibody')->where('clovek_ID', $person->clovek_ID)->sum('ibody');
+      $totalPoints = $debatePoints + $bonusPoints;
+
+      $newBadge = null;
+      foreach ($badges as $badge)
+      {
+        if ($totalPoints >= $badge->requiredIB) $newBadge = $badge;
+        else break;
+      }
+
+      if (!is_null($newBadge) AND $person->badge != $newBadge->id)
+      {
+        $person->update([
+          'badge' => $newBadge,
+          'received_badge' => 0
+        ]);
+        $updatedPeople[] = $person;
+      }
+    }
+
+    return $this->resource->updatedPeople = $updatedPeople;
+  }
+
   private function validate($input)
   {
     $input->field('name')

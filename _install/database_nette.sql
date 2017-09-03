@@ -6,3 +6,8 @@ CREATE TABLE `badge` (
 
 AlTER TABLE `badge`
 ADD UNIQUE `requiredIB` (`requiredIB`);
+
+ALTER TABLE `clovek`
+ADD `badge` int(11) NULL AFTER `dostal`,
+ADD `received_badge` bit NULL DEFAULT 1 AFTER `badge`,
+ADD FOREIGN KEY (`badge`) REFERENCES `badge` (`id`);

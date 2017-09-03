@@ -1,0 +1,2 @@
+INSERT INTO `badge` (`name`, `requiredIB`)
+VALUES ('Bronzový', '25'), ('Stříbrný', '50'), ('Zlatý', '100'), ('Zlatý s rubínem', '250'), ('Zlatý s dvěma rubíny', '500'), ('Zlatý s třema rubíny', '1000');
