@@ -24,8 +24,7 @@ class BadgePresenter extends ResourcePresenter
 
   public function validateCreate()
   {
-    $input = $this->getInput();
-    return $this->validate($input);
+    return $this->validate($this->getInput());
   }
 
   public function actionCreate()
@@ -40,8 +39,13 @@ class BadgePresenter extends ResourcePresenter
 
   public function actionRead($id)
   {
-    $badge = $this->database->table('badge')->get($id);
-    return $this->resource->badge = $badge;
+    if (isset($id))
+    {
+      $badge = $this->database->table('badge')->get($id);
+      return $this->resource->badge = $badge;
+    }
+    $badge = $this->database->table('badge');
+    return $this->resource->badges = $badge;
   }
 
   public function validateUpdate($id)
@@ -54,7 +58,7 @@ class BadgePresenter extends ResourcePresenter
   {
     $input = $this->getInput();
     $badge = $this->database->table('badge')->get($id);
-    $badge->update($input);
+    if ($badge) $badge->update($input);
     return $this->resource->badge = $badge;
   }
 
