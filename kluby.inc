@@ -11,7 +11,7 @@ if ($GLOBALS["cps_kluby"] >= 2) cph_p(cphs_link("./?page=klub.add",$lang['add cl
 
 if (! cpdb_fetch_all("
 	select
-		klub.klub_ID, nazev, misto, count(clovek_ID) as debateri
+		klub.klub_ID, nazev, misto, count(clovek_ID) as debateri, klub.prihlaska
 	from
 		klub
 		left join clovek
@@ -39,16 +39,21 @@ cpdb_fetch_all("
 	", array(), $klub_clenove, "klub_ID");
 
 
-cph_table_head(array($lang["place"], $lang["club"],$lang["debaters"],$lang["full members"]));
+$head = array($lang["place"], $lang["club"],$lang["debaters"],$lang["full members"]);
+if ($GLOBALS["cps_lidi"] >= 3) $head[] = $lang["application"];
+cph_table_head($head);
 
 de_html($kluby);
 foreach ($kluby as $klub) {
-	cph_table_row(array(
+	$detail = array
+	(
 		$klub["misto"],
 		cphs_link("./?page=klub&klub_id=" . $klub['klub_ID'],$klub['nazev']),
 		$klub["debateri"],
 		$klub_clenove[$klub["klub_ID"]]["clenove"]
-	));
+	);
+	if ($GLOBALS["cps_lidi"] >= 3) $detail[] = $klub["prihlaska"] ? $lang["yes"] : $lang["no"];
+	cph_table_row($detail);
 }
 cph_table_end();
 

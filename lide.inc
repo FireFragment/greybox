@@ -493,57 +493,61 @@ switch ($kdo) {
 	break;
 	case 'clenove':
 		// show list of members with details
-		if ($GLOBALS["cps_lidi"] >= 3) {
-			cpdb_fetch_all("
-				select
-					clovek_ID,
-					jmeno,
-					nick,
-					prijmeni,
-					klub_ID,
-					narozen,
-					prihlaska,
-					prohlaseni,
-					clen,
-					(select kratky_nazev from klub where klub_ID = clovek.klub_ID) as klub,
-					(
-						ifnull((select sum(ibody) from clovek_debata_ibody where clovek_ID = clovek.clovek_ID and rocnik = :rocnik),
-						0)
-						+ ifnull((select sum(ibody) from clovek_ibody where clovek_ID = clovek.clovek_ID and rocnik = :rocnik), 0)
-					) as ibody
-				from
-					clovek
-				where
-					clen = 1
-				order by
-					prijmeni, jmeno, nick
-			", array(":rocnik"=>$GLOBALS["current_season"]), $lide);
-			
-			de_html($lide);
-			cph_table_head(
-				array($lang["name"], $lang["club"], $lang["application"], $lang["guardian statement"])
-			);
-			
-			foreach ($lide as $clovek) {
-				$prohlaseni = $clovek["prohlaseni"] ? $lang["yes"] : $lang["no"];
-				if (!is_null($clovek["narozen"]) and $clovek["narozen"] != "0000-00-00")
-				{
-					if($clovek["narozen"] < date("Y-m-d", strtotime("- 18 years")))
-					{
-						$prohlaseni = $lang["unnecessary"];
-					}
-				}
-				cph_table_row(array(
-					cphs_link("./?page=clovek&clovek_id=" . $clovek["clovek_ID"],join_name($clovek["jmeno"],$clovek["nick"],$clovek["prijmeni"])),
-					cphs_link("./?page=klub&klub_id=" . $clovek["klub_ID"],$clovek["klub"]),
-					$clovek["prihlaska"] ? $lang["yes"] : $lang["no"],
-					$prohlaseni
-				)
-				);
-			}
-			
-			cph_table_end();
+		if ($GLOBALS["cps_lidi"] < 3)
+		{
+			pg_achtung($lang["access denied"]);
+			return;
 		}
+		cpdb_fetch_all("
+			select
+				clovek_ID,
+				jmeno,
+				nick,
+				prijmeni,
+				klub_ID,
+				narozen,
+				prihlaska,
+				prohlaseni,
+				clen,
+				(select kratky_nazev from klub where klub_ID = clovek.klub_ID) as klub,
+				(
+					ifnull((select sum(ibody) from clovek_debata_ibody where clovek_ID = clovek.clovek_ID and rocnik = :rocnik),
+					0)
+					+ ifnull((select sum(ibody) from clovek_ibody where clovek_ID = clovek.clovek_ID and rocnik = :rocnik), 0)
+				) as ibody
+			from
+				clovek
+			where
+				clen = 1
+			order by
+				prijmeni, jmeno, nick
+		", array(":rocnik"=>$GLOBALS["current_season"]), $lide);
+		
+		de_html($lide);
+		cph_table_head(
+			array($lang["name"], $lang["club"], $lang["application"], $lang["guardian statement"])
+		);
+		
+		$eighteen = date("Y-m-d", strtotime("- 18 years"));
+		foreach ($lide as $clovek) {
+			$prohlaseni = $clovek["prohlaseni"] ? $lang["yes"] : $lang["no"];
+			if (!is_null($clovek["narozen"]) and $clovek["narozen"] != "0000-00-00")
+			{
+				if($clovek["narozen"] < $eighteen)
+				{
+					$prohlaseni = $lang["unnecessary"];
+				}
+			}
+			cph_table_row(array(
+				cphs_link("./?page=clovek&clovek_id=" . $clovek["clovek_ID"],join_name($clovek["jmeno"],$clovek["nick"],$clovek["prijmeni"])),
+				cphs_link("./?page=klub&klub_id=" . $clovek["klub_ID"],$clovek["klub"]),
+				$clovek["prihlaska"] ? $lang["yes"] : $lang["no"],
+				$prohlaseni
+			)
+			);
+		}
+		
+		cph_table_end();
 	break;
 }
 

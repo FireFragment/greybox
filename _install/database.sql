@@ -330,4 +330,7 @@ CREATE TABLE clovek_ibody (
 
 ALTER TABLE `clovek`
 ADD `prihlaska` tinyint(1) NOT NULL DEFAULT '0' AFTER `clen_do`,
-ADD `prohlaseni` tinyint(1) NOT NULL DEFAULT '0' AFTER `prihlaska`; 
+ADD `prohlaseni` tinyint(1) NOT NULL DEFAULT '0' AFTER `prihlaska`;
+
+ALTER TABLE `klub`
+ADD `prihlaska` tinyint(1) NOT NULL DEFAULT '0' AFTER `vedouci`;

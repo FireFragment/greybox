@@ -44,6 +44,12 @@ if ($can_edit) {
 	$klub_f->form[] = new cpf_text($lang["comment"] . ": ");
 	$klub_f->form[] = new cpf_db_textarea("komentar","komentar",array("rows"=>4, "cols"=>60));
 	$klub_f->form[] = new cpf_nl;
+	if ($GLOBALS["cps_lidi"] >= 3) {
+		// only admins can confirm application submission
+		$klub_f->form[] = new cpf_text($lang["application"] . ": ");
+		$klub_f->form[] = new cpf_db_listbox_array("prihlaska", array(1 => $lang['yes'], 0 => $lang['no']));
+		$klub_f->form[] = new cpf_nl;
+    }
 	$klub_f->form[] = new cpf_button("save",$lang["save"]);
 	//$klub_f->form[] = new cpf_button("delete",$lang["delete"]);
 	$klub_f->load_this($klub_p);

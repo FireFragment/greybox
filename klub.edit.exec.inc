@@ -10,6 +10,7 @@ $nazev = $_REQUEST["nazev"];
 $kratky_nazev = $_REQUEST["kratky_nazev"];
 $vedouci = $_REQUEST["vedouci"];
 $komentar = filter_comment($_REQUEST["komentar"]);
+$prihlaska = $_REQUEST["prihlaska"];
 
 if (!(
 	$GLOBALS["cps_kluby"] >= 2
@@ -35,7 +36,7 @@ if (isset($_REQUEST["add"])) {
 } elseif (isset($_REQUEST["save"])) {
 	// update
 	
-	if (cpdb_exec("update klub set misto = :misto, nazev = :nazev, kratky_nazev = :kratky_nazev, vedouci = :vedouci, komentar = :komentar where klub_ID = :klub_id", array(":misto"=>$misto, ":kratky_nazev"=>$kratky_nazev, ":nazev"=>$nazev, ":komentar"=>$komentar, ":vedouci"=>$vedouci, ":klub_id"=>$klub_id))) {
+	if (cpdb_exec("update klub set misto = :misto, nazev = :nazev, kratky_nazev = :kratky_nazev, vedouci = :vedouci, prihlaska = :prihlaska, komentar = :komentar where klub_ID = :klub_id", array(":misto"=>$misto, ":kratky_nazev"=>$kratky_nazev, ":nazev"=>$nazev, ":komentar"=>$komentar, ":vedouci"=>$vedouci, ":prihlaska"=>$prihlaska, ":klub_id"=>$klub_id))) {
 		pg_achtung($lang["club update ok"]);
 		include("klub.inc");
 	}
