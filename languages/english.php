@@ -84,6 +84,7 @@ $lang['active debater'] = 'active debater';
 $lang['active debater_desc'] = 'is active debater, should be included in stats and team selections';
 $lang['yes'] = 'yes';
 $lang['no'] = 'no';
+$lang['unnecessary'] = 'does not have to';
 $lang['comment'] = 'comment';
 $lang['comment_desc'] = 'publicly visible comment, shown at info page';
 $lang['edit'] = 'edit';

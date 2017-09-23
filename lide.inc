@@ -501,6 +501,7 @@ switch ($kdo) {
 					nick,
 					prijmeni,
 					klub_ID,
+					narozen,
 					prihlaska,
 					prohlaseni,
 					clen,
@@ -524,11 +525,19 @@ switch ($kdo) {
 			);
 			
 			foreach ($lide as $clovek) {
+				$prohlaseni = $clovek["prohlaseni"] ? $lang["yes"] : $lang["no"];
+				if (!is_null($clovek["narozen"]) and $clovek["narozen"] != "0000-00-00")
+				{
+					if($clovek["narozen"] < date("Y-m-d", strtotime("- 18 years")))
+					{
+						$prohlaseni = $lang["unnecessary"];
+					}
+				}
 				cph_table_row(array(
 					cphs_link("./?page=clovek&clovek_id=" . $clovek["clovek_ID"],join_name($clovek["jmeno"],$clovek["nick"],$clovek["prijmeni"])),
 					cphs_link("./?page=klub&klub_id=" . $clovek["klub_ID"],$clovek["klub"]),
 					$clovek["prihlaska"] ? $lang["yes"] : $lang["no"],
-					$clovek["prohlaseni"] ? $lang["yes"] : $lang["no"]
+					$prohlaseni
 				)
 				);
 			}

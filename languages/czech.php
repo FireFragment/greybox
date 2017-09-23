@@ -83,6 +83,7 @@ $lang['active debater'] = 'aktivní debatér';
 $lang['active debater_desc'] = 'aktivní debatér, člen ADK';
 $lang['yes'] = 'ano';
 $lang['no'] = 'ne';
+$lang['unnecessary'] = 'nemusí';
 $lang['comment'] = 'komentář';
 $lang['comment_desc'] = 'veřejně přístupný komentář';
 $lang['edit'] = 'upravit';
