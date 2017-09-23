@@ -53,6 +53,7 @@ $lang['jabber'] = 'jabber';
 $lang['web'] = 'web';
 $lang['member'] = 'člen';
 $lang['application'] = 'odevzdal(a) přihlášku do ADK';
+$lang['guardian statement'] = 'odevzdal(a) prohlášení zákonného zástupce';
 $lang['coach'] = 'trenér';
 $lang['debates'] = 'debaty';
 $lang['date'] = 'datum';

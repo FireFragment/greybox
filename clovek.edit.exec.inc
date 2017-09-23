@@ -25,8 +25,9 @@ $clen = $_REQUEST["clen"];
 if ($GLOBALS["cps_lidi"] >= 3) {
     $clendo = $_REQUEST["clen_do"];
     $prihlaska = $_REQUEST["prihlaska"];
+    $prohlaseni = $_REQUEST["prohlaseni"];
 } else {
-    $clendo = $prihlaska = "NULL";
+    $clendo = $prihlaska = $prohlaseni = "NULL";
 }
 
 cpdb_fetch_one_row("select klub_ID, clen from clovek where clovek_ID = :clovek_id", array(":clovek_id"=>$clovek_id), $cur);
@@ -53,9 +54,9 @@ if (isset($_REQUEST["add"])) {
 	
 	if (cpdb_exec(
 		"insert into
-			clovek (klub_ID, jmeno, prijmeni, nick, email, narozen, ulice, mesto, psc, prukaz, cislo, debater, komentar, clen, clen_od, clen_do, prihlaska)
+			clovek (klub_ID, jmeno, prijmeni, nick, email, narozen, ulice, mesto, psc, prukaz, cislo, debater, komentar, clen, clen_od, clen_do, prihlaska, prohlaseni)
 		values
-			(:klub_id, :prijmeni, :jmeno, :nick, :email, :narozen, :ulice, :mesto, :psc, :prukaz, :cislo, :debater, :komentar, :clen, NOW(), '".$clendo."', :prihlaska)
+			(:klub_id, :prijmeni, :jmeno, :nick, :email, :narozen, :ulice, :mesto, :psc, :prukaz, :cislo, :debater, :komentar, :clen, NOW(), '".$clendo."', :prihlaska, :prohlaseni)
 		",
 		array(
 			":klub_id"=>$GLOBALS["cps_lidi"] >= 2 ? $klub_id : $_SESSION["user_klub_ID"],
@@ -73,6 +74,7 @@ if (isset($_REQUEST["add"])) {
 			":clen"=> $GLOBALS["cps_lidi"] >= 3 ? $clen : 0,  
 			":komentar"=>$komentar,
 			":prihlaska"=>$GLOBALS["cps_lidi"] >= 3 ? $prihlaska : 0,
+			":prohlaseni"=>$GLOBALS["cps_lidi"] >= 3 ? $prohlaseni : 0
 		)
 	)) {
 		pg_achtung($lang["person insert ok"]);
@@ -104,6 +106,7 @@ if (isset($_REQUEST["add"])) {
 			clen = :clen,
             clen_do = '".$clendo."',
             prihlaska = :prihlaska,
+            prohlaseni = :prohlaseni,
 			komentar = :komentar
 		where
 			clovek_ID = :clovek_id
@@ -124,6 +127,7 @@ if (isset($_REQUEST["add"])) {
 			":debater"=>$debater,
 			":clen"=>$GLOBALS["cps_lidi"] >= 3 ? $clen : $cur["clen"],
 			":prihlaska"=>$GLOBALS["cps_lidi"] >= 3 ? $prihlaska : $cur["prihlaska"],
+			":prohlaseni"=>$GLOBALS["cps_lidi"] >= 3 ? $prohlaseni : $cur["prohlaseni"],
 			":komentar"=>$komentar,
 			":user_klub_id"=>$_SESSION["user_klub_ID"]
 		)

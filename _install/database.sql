@@ -329,4 +329,5 @@ CREATE TABLE clovek_ibody (
 ) TYPE=InnoDB CHARSET=utf8 COLLATE=utf8_czech_ci;
 
 ALTER TABLE `clovek`
-ADD `prihlaska` tinyint(1) NOT NULL DEFAULT '0' AFTER `clen_do`;
+ADD `prihlaska` tinyint(1) NOT NULL DEFAULT '0' AFTER `clen_do`,
+ADD `prohlaseni` tinyint(1) DEFAULT '0' AFTER `prihlaska`; 

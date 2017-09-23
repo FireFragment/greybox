@@ -54,6 +54,7 @@ $lang['jabber'] = 'jabber';
 $lang['web'] = 'web';
 $lang['member'] = 'member';
 $lang['application'] = 'CDA application submitted';
+$lang['guardian statement'] = 'guardian statement submitted';
 $lang['coach'] = 'coach';
 $lang['debates'] = 'debates';
 $lang['date'] = 'date';
