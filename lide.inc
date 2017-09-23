@@ -9,6 +9,9 @@ $filtr_rozhodci = ($_REQUEST["filtr"] == "samosoudci") ? "samosoudci" : "s_panel
 $filtr_ipts = ($_REQUEST["rocnik"] == "letos") ? "letos" : "vsechno";
 
 $kdo_domain = array("vsichni"=>$lang["everyone"], "debateri"=>$lang["debaters"], "rozhodci"=>$lang["judges"], "spravci"=>$lang["administrators"], "ibody"=>$lang["points overview"], "kidy"=>$lang["kidy"], "kidy_rozhodci"=>$lang["kidy"]." - ".$lang["judges"], "stats"=>$lang["stats"]);
+if ($GLOBALS["cps_lidi"] >= 3) {
+	$kdo_domain["clenove"] =$lang["members"];
+}
 $filtr_domain = array("s_panely"=>$lang["include panels"], "samosoudci"=>$lang["single judges"]);
 $ipts_domain = array("letos"=>season_to_str($GLOBALS["current_season"]), "vsechno"=>$lang["total"]);
 
@@ -487,6 +490,51 @@ switch ($kdo) {
 			cpdb_fetch_one_value("select count(clovek_ID) from clovek where clen = 1 and narozen is null")
 		));
 		cph_table_end();
+	break;
+	case 'clenove':
+		// show list of members with details
+		if ($GLOBALS["cps_lidi"] >= 3) {
+			cpdb_fetch_all("
+				select
+					clovek_ID,
+					jmeno,
+					nick,
+					prijmeni,
+					klub_ID,
+					prihlaska,
+					prohlaseni,
+					clen,
+					(select kratky_nazev from klub where klub_ID = clovek.klub_ID) as klub,
+					(
+						ifnull((select sum(ibody) from clovek_debata_ibody where clovek_ID = clovek.clovek_ID and rocnik = :rocnik),
+						0)
+						+ ifnull((select sum(ibody) from clovek_ibody where clovek_ID = clovek.clovek_ID and rocnik = :rocnik), 0)
+					) as ibody
+				from
+					clovek
+				where
+					clen = 1
+				order by
+					prijmeni, jmeno, nick
+			", array(":rocnik"=>$GLOBALS["current_season"]), $lide);
+			
+			de_html($lide);
+			cph_table_head(
+				array($lang["name"], $lang["club"], $lang["application"], $lang["guardian statement"])
+			);
+			
+			foreach ($lide as $clovek) {
+				cph_table_row(array(
+					cphs_link("./?page=clovek&clovek_id=" . $clovek["clovek_ID"],join_name($clovek["jmeno"],$clovek["nick"],$clovek["prijmeni"])),
+					cphs_link("./?page=klub&klub_id=" . $clovek["klub_ID"],$clovek["klub"]),
+					$clovek["prihlaska"] ? $lang["yes"] : $lang["no"],
+					$clovek["prohlaseni"] ? $lang["yes"] : $lang["no"]
+				)
+				);
+			}
+			
+			cph_table_end();
+		}
 	break;
 }
 
