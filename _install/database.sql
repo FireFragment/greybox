@@ -340,3 +340,6 @@ CHANGE `role` `role` enum('o','r') COLLATE 'utf8_general_ci' NOT NULL DEFAULT 'o
 CHANGE `mocnost` `mocnost` tinyint(3) unsigned NULL DEFAULT '1' AFTER `role`,
 ADD `prihlasil` int(10) unsigned NULL,
 ADD FOREIGN KEY (`prihlasil`) REFERENCES `clovek` (`clovek_ID`) ON DELETE RESTRICT;
+
+ALTER TABLE `turnaj`
+ADD `prihlasky` tinyint(1) NOT NULL DEFAULT '0' AFTER `datum_do`;

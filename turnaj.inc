@@ -82,7 +82,7 @@ if ($GLOBALS["cps_souteze"] >= 1) {
 	
 }
 
-if ($GLOBALS["cps_lidi"] >= 0) cph_p(cphs_link("./?page=turnaj.apply&turnaj_id=".$turnaj_id,$lang["apply to tournament"]));
+if ($GLOBALS["cps_lidi"] >= 0 and $turnaj["prihlasky"]) cph_p(cphs_link("./?page=turnaj.apply&turnaj_id=".$turnaj_id,$lang["apply to tournament"]));
 
 // teams w/ points gained (+kidy)
 if (cpdb_fetch_all("
