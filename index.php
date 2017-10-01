@@ -81,6 +81,8 @@ $GLOBALS["page"]->pages = array(
 	array("debata.clovek.edit.exec", $lang["edit debate"], "debata"),
 	array("debata.edit.exec", $lang["edit debate"], "debata"),
 	array("debaty", $lang["debates"], "debata"),
+	array("turnaj.apply", $lang["apply to tournament"], "turnaj"),
+	array("turnaj.rozhodci.edit.exec", $lang["apply to tournament"], "turnaj")
 );
 
 $GLOBALS["page"]->render();

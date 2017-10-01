@@ -30,7 +30,7 @@ if ($GLOBALS["cps_souteze"] >= 1) {
 	
 	$turnaj_clovek = new cpykhen;
 	$turnaj_clovek->form_attr["action"] = "./?page=turnaj.clovek.edit.exec";
-	$turnaj_clovek->select = "select * from clovek_turnaj where turnaj_ID = :turnaj_id";
+	$turnaj_clovek->select = "select * from clovek_turnaj where turnaj_ID = :turnaj_id and clovek_turnaj.role = 'o'";
 	$turnaj_clovek->select_args = array(":turnaj_id"=>$turnaj_id);
 	$turnaj_clovek->form["tid"] = new cpf_db_hidden("turnaj_id","turnaj_ID");
 	$turnaj_clovek->form["cid"] = new cpf_db_hidden("clovek_old","clovek_ID");
@@ -67,7 +67,7 @@ if ($GLOBALS["cps_souteze"] >= 1) {
 	);
 	
 	$role_domain = array("o"=>$lang["organizer"]);
-	if (cpdb_fetch_all("select role, mocnost, clovek.clovek_ID, clovek.jmeno, clovek.nick, clovek.prijmeni from clovek_turnaj left join clovek using (clovek_ID) where turnaj_ID = :turnaj_id", array(":turnaj_id"=>$turnaj_id), $r_clovek) > 0) {
+	if (cpdb_fetch_all("select clovek_turnaj.role as role, mocnost, clovek.clovek_ID, clovek.jmeno, clovek.nick, clovek.prijmeni from clovek_turnaj left join clovek using (clovek_ID) where turnaj_ID = :turnaj_id and clovek_turnaj.role = 'o'", array(":turnaj_id"=>$turnaj_id), $r_clovek) > 0) {
 		de_html($r_clovek);
 		cph_table_head(array($lang["role"],$lang["person"],$lang["factor"]));
 		foreach ($r_clovek as $clovek) {
@@ -81,6 +81,8 @@ if ($GLOBALS["cps_souteze"] >= 1) {
 	}
 	
 }
+
+if ($GLOBALS["cps_lidi"] >= 0) cph_p(cphs_link("./?page=turnaj.apply&turnaj_id=".$turnaj_id,$lang["apply to tournament"]));
 
 // teams w/ points gained (+kidy)
 if (cpdb_fetch_all("

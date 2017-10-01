@@ -334,3 +334,9 @@ ADD `prohlaseni` tinyint(1) NOT NULL DEFAULT '0' AFTER `prihlaska`;
 
 ALTER TABLE `klub`
 ADD `prihlaska` tinyint(1) NOT NULL DEFAULT '0' AFTER `vedouci`;
+
+ALTER TABLE `clovek_turnaj`
+CHANGE `role` `role` enum('o','r') COLLATE 'utf8_general_ci' NOT NULL DEFAULT 'o' AFTER `turnaj_ID`,
+CHANGE `mocnost` `mocnost` tinyint(3) unsigned NULL DEFAULT '1' AFTER `role`,
+ADD `prihlasil` int(10) unsigned NULL,
+ADD FOREIGN KEY (`prihlasil`) REFERENCES `clovek` (`clovek_ID`) ON DELETE RESTRICT;
