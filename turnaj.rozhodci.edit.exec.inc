@@ -8,10 +8,11 @@ if ($GLOBALS["cps_lidi"] < 0) {
 $turnaj_id = $_REQUEST["turnaj_id"];
 $clovek_id = $_REQUEST["clovek_id"];
 $role = $_REQUEST["role"];
+$komentar = $_REQUEST["komentar"];
 
 if (isset($_REQUEST["add"])) {
 	// add new
-	if (cpdb_exec("insert into clovek_turnaj (clovek_ID, turnaj_ID, role, prihlasil) values (:clovek_id, :turnaj_id, :role, :prihlasil)", array(":clovek_id"=>$clovek_id, ":turnaj_id"=>$turnaj_id, ":role"=>$role, ":prihlasil" => intval($_SESSION["user_clovek_ID"])))) {
+	if (cpdb_exec("insert into clovek_turnaj (clovek_ID, turnaj_ID, role, prihlasil, komentar) values (:clovek_id, :turnaj_id, :role, :prihlasil, :komentar)", array(":clovek_id"=>$clovek_id, ":turnaj_id"=>$turnaj_id, ":role"=>$role, ":prihlasil" => intval($_SESSION["user_clovek_ID"]), ":komentar"=>$komentar))) {
 		pg_achtung($lang["adjudicator applied"]);
 		include("turnaj.apply.inc");
 	}

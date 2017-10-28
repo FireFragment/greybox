@@ -57,8 +57,9 @@ if ($GLOBALS["cps_souteze"] >= 1) {
 	// just view
 	
 	cph_p(
-		$lang["date_from"] . ": " . format_date($turnaj["datum_od"]) . cphs_br()
-		. $lang["date_to"] . ": " . format_date($turnaj["datum_do"]) . cphs_br()
+		$lang["date_from"] . ": " . format_date_new($turnaj["datum_od"]) . cphs_br()
+		. $lang["date_to"] . ": " . format_date_new($turnaj["datum_do"]) . cphs_br()
+		. $lang["deadline"] . ": " . format_full_date_new($turnaj["deadline"]) . cphs_br()
 		. $lang["competition"] . ": " . cphs_link("./?page=soutez&soutez_id=" . $turnaj["soutez_ID"], $turnaj["soutez"])
 		. ((isset($turnaj["liga_ID"])) 
 			? (cphs_br() . $lang["league"] . ": " . cphs_link("./?page=liga&liga_id=" . $turnaj["liga_ID"], $turnaj["liga"]))
@@ -82,7 +83,7 @@ if ($GLOBALS["cps_souteze"] >= 1) {
 	
 }
 
-if ($GLOBALS["cps_lidi"] >= 0 and $turnaj["prihlasky"]) cph_p(cphs_link("./?page=turnaj.apply&turnaj_id=".$turnaj_id,$lang["apply to tournament"]));
+if ($GLOBALS["cps_lidi"] >= 0 and strtotime($turnaj["deadline"]) >= time()) cph_p(cphs_link("./?page=turnaj.apply&turnaj_id=".$turnaj_id,$lang["apply to tournament"]));
 
 // teams w/ points gained (+kidy)
 if (cpdb_fetch_all("

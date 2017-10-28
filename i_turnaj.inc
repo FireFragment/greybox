@@ -29,6 +29,9 @@ function get_pykhen_turnaj() {
 	$turnaj_f->form[] = new cpf_text($lang["date_to"] . ": ");
 	$turnaj_f->form[] = new cpf_db_textbox("datum_do","datum_do",array("maxlength"=>10));
 	$turnaj_f->form[] = new cpf_nl;
+	$turnaj_f->form[] = new cpf_text($lang["deadline"] . ": ");
+	$turnaj_f->form[] = new cpf_db_textbox("deadline","deadline",array("maxlength"=>19));
+	$turnaj_f->form[] = new cpf_nl;
 	return $turnaj_f;
 }
 

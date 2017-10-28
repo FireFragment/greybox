@@ -28,9 +28,19 @@ function format_date($date)
 	return strftime('%Y-%m-%d',strtotime($date));
 }
 
+function format_date_new($date)
+{
+	return date('j. n. Y', strtotime($date));
+}
+
 function format_full_date($date)
 {
 	return $date;
+}
+
+function format_full_date_new($date)
+{
+	return date('j. n. Y H:i', strtotime($date));
 }
 
 
