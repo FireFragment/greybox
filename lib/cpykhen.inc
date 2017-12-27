@@ -1,8 +1,4 @@
 <?php
-/*
- * greybox
- * $Id: cpykhen.inc,v 1.22 2006/08/23 13:01:45 che0 Exp $
- */
 
 include_once("cpdb.inc");
 include_once("cphtml.inc");
