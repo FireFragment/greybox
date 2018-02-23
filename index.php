@@ -52,6 +52,7 @@ $GLOBALS["page"]->pages = array(
 	array("teze.detaily", $lang["resolution details"], "teze"),
 	array("teze.edit.exec", $lang["edit resolution"], "teze"),
 	array("teze.add.exec", $lang["add resolution"], "teze"),
+	array("teze.kategorie", $lang["choose category"], "teze"),
 	array("souteze", $lang["competitions"], "soutez"),
 	array("soutez", $lang["competition"], "soutez"),
 	array("soutez.kidy", $lang["competition"]."/".$lang["kidy"], "soutez"),

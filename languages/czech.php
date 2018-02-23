@@ -163,6 +163,8 @@ $lang['details'] = 'více';
 $lang['add resolution'] = 'přidej tezi';
 $lang['save'] = 'uložit';
 $lang['resolution details'] = 'detaily teze';
+$lang['category'] = 'kategorie';
+$lang['choose category'] = 'podle kategorie';
 
 $lang['access competitions_desc'] = '';
 $lang['official in'] = 'oficiální pro';
