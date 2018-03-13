@@ -42,6 +42,26 @@ if ($GLOBALS['cps_teze'] >= 1) {
 		. cphs_br() . $lang["short text"] . ": " . $teze["tx_short"]);
 }
 
+if (cpdb_fetch_all("
+	select
+		kategorie.kategorie_ID, nazev
+	from
+		kategorie_teze
+		left join kategorie on kategorie_teze.kategorie_ID = kategorie.kategorie_ID
+	where
+		teze_ID = :teze
+	",array(":teze" => $teze_id),$categories) > 0) {
+
+
+	de_html($categories);
+	cph_tag("h2",array(),$lang["category"]);
+	cph_table_head(array(""));
+	foreach ($categories as $category) {
+		cph_table_row(array(cphs_link("./?page=teze&jazyk=" . $teze["jazyk"] . "&kategorie_id=" .  $category["kategorie_ID"],$category["nazev"])));
+	}
+	cph_table_end();
+}
+
 if (cpdb_fetch_all("select soutez.soutez_ID as soutez, rocnik, nazev from soutez_teze left join soutez using (soutez_ID) where teze_ID = :teze_id", array(":teze_id" => $teze_id), $souteze) > 0) {
 	de_html($souteze);
 	cph_tag("h2",array(),$lang["official in"]);

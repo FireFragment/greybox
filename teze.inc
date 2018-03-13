@@ -13,15 +13,6 @@ if (isset($_REQUEST["teze_id"])) {
 $lang_choice = (isset ($_REQUEST["jazyk"])) ? $_REQUEST["jazyk"] : "cz";
 $category_choice = (isset ($_REQUEST["kategorie_id"])) ? $_REQUEST["kategorie_id"] : null;
 
-if (!is_null($category_choice)) {
-	if (!cpdb_fetch_one_row("select nazev from kategorie where kategorie_ID = :kategorie_id", array(":kategorie_id" => $category_choice), $kategorie_p)) {
-		pg_achtung($lang["no record"]);
-		return;
-	}
-	$kategorie = de_html_s($kategorie_p);
-	$GLOBALS["page"]->title = substr($kategorie["nazev"],0,56);
-}
-
 pg_head();
 if ($GLOBALS["cps_teze"] >= 1) cph_p(cphs_link("./?page=teze.add&jazyk=" . $lang_choice,$lang["add resolution"]));
 
@@ -52,6 +43,12 @@ if (is_null($category_choice)) {
 		",
 		array(":lang"=>$lang_choice),$result);
 } else {
+	if (!cpdb_fetch_one_row("select nazev from kategorie where kategorie_ID = :kategorie_id", array(":kategorie_id" => $category_choice), $kategorie_p)) {
+		pg_achtung($lang["no record"]);
+		return;
+	}
+	$kategorie = de_html_s($kategorie_p);
+	cph_h2($kategorie["nazev"]);
 	cpdb_fetch_all("
 		select
 			teze.teze_ID,
