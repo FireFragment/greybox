@@ -14,6 +14,8 @@ cpdb_fetch_all("
 		left join kategorie_teze on kategorie.kategorie_ID = kategorie_teze.kategorie_ID
 	group by
 		kategorie.kategorie_ID
+	order by
+		kategorie.nazev
 	",array(),$result);
 
 de_html($result);
