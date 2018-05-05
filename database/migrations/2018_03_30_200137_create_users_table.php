@@ -18,7 +18,7 @@ class CreateUsersTable extends Migration
             $table->unsignedInteger('person_id');
             $table->string('username', 63)->unique();
             $table->string('password');
-            $table->string('api_token');
+            $table->string('api_token')->nullable();
             $table->foreign('person_id')->references('clovek_ID')->on('clovek')->onDelete('restrict');
             $table->timestamps();
         });

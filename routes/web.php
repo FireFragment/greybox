@@ -23,4 +23,5 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 	$router->put('user/{id}', ['uses' => 'UserController@update']);
 
 	$router->post('login', ['uses' => 'UserController@login']);
+	$router->post('logout', ['uses' => 'UserController@logout']);
 });

@@ -8,6 +8,16 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    private $regex = '/^\S*(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])\S*$/';
+
+    public function __construct()
+    {
+        $this->middleware('auth', ['only' => [
+            'logout',
+            'update',
+            'delete'
+        ]]);
+    }
 
     public function login(Request $request)
     {
@@ -35,6 +45,23 @@ class UserController extends Controller
         }
     }
 
+    public function logout(Request $request)
+    {
+        try {
+            $user = User::where('api_token', $request->input('api_token'))->first();
+            try {
+                $user->update([
+                        'api_token' => null
+                ]);
+                return response()->json($user, 200);
+            } catch (\Illuminate\Database\QueryException $e) {
+                return response()->json(['message' => $e->getMessage()], 500);
+            }
+        } catch (\Illuminate\Database\QueryException $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+
     public function showAll()
     {
         return response()->json(User::all());
@@ -50,7 +77,7 @@ class UserController extends Controller
         $this->validate($request, [
             'person_id' => 'required',
             'username' => 'required',
-            'password' => 'required'
+            'password' => 'required|min:8|confirmed|regex:'.$this->regex
         ]);
 
         try {
@@ -73,7 +100,7 @@ class UserController extends Controller
         $this->validate($request, [
             'username' => 'required',
             'password_old' => 'required',
-            'password' => 'required'
+            'password' => 'required|min:8|confirmed|regex:'.$this->regex
         ]);
 
         try {
