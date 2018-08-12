@@ -255,6 +255,10 @@
                             <label for="zip">PSČ</label>
                             <input id="zip" type="text" class="smartform-zip" required>
                         </div>
+                        <div class="pure-control-group">
+                            <label for="comment">Poznámka</label>
+                            <textarea id="comment" type="text" placeholder="například čas příjezdu/odjezdu, stravovací omezení apod."></textarea>
+                        </div>
                         <input id="event" type="hidden" value="page">
 
                         <div class="pure-controls">
