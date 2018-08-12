@@ -23,6 +23,14 @@
         <!--[if gt IE 8]><!-->
             <link rel="stylesheet" href="css/style.css">
         <!--<![endif]-->
+
+    <script type="text/javascript" src="https://secure.smartform.cz/api/v1/smartform.js" async></script>
+    <script type="text/javascript">
+        var smartform = smartform || {};
+        smartform.beforeInit = function () {
+            smartform.setClientId('8ndPcVUJ5B');
+        }
+    </script>
 </head>
 <body>
 
@@ -54,11 +62,11 @@
     <div class="splash">
         <h1 class="splash-head">Registrace</h1>
         <p class="splash-subhead">
-            Zahájení XXIV. ročníku Debatní ligy
+            Pro pokračování se musíte přihlásit.
         </p>
         <p>
-            <a href="?p=registrace" class="pure-button pure-button-primary">Registrace</a>
-            <a href="?p=prihlaseni" class="pure-button pure-button-primary">Přihlášení</a>
+            <a href="?p=registrace" class="pure-button ">Registrace</a>
+            <a href="?p=prihlaseni" class="pure-button ">Přihlášení</a>
         </p>
     </div>
 </div>
@@ -102,6 +110,7 @@
         }
     ?>
 
+
     <?php
         if ($page == "registrace") {
     ?>
@@ -141,53 +150,125 @@
     ?>
 
 
-
-    <!--
+    <?php
+        if ($page == "prihlaska") {
+    ?>
     <div class="content">
-        <h2 class="content-head is-center">Excepteur sint occaecat cupidatat.</h2>
+        <h2 class="content-head is-center">Zahájení XXIV. ročníku Debatní ligy</h2>
+        <p>Babice, 21.-23. září 2018</p>
+
 
         <div class="pure-g">
-            <div class="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
-
-                <h3 class="content-subhead">
-                    <i class="fa fa-rocket"></i>
-                    Get Started Quickly
-                </h3>
-                <p>
-                    Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
-                </p>
+            <div class="l-box pure-u-1 pure-u-md-1-4">
+                <h3 class="content-subhead">Školení debatérů</h3>
+                <a href="?p=skoleni-debateru" class="pure-button">Přihlásit</a>
             </div>
-            <div class="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
-                <h3 class="content-subhead">
-                    <i class="fa fa-mobile"></i>
-                    Responsive Layouts
-                </h3>
-                <p>
-                    Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
-                </p>
+            <div class="l-box pure-u-1 pure-u-md-1-4">
+                <h3 class="content-subhead">Školení rozhodčích</h3>
+                <a href="?p=skoleni-rozhodcich" class="pure-button">Přihlásit</a>
             </div>
-            <div class="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
-                <h3 class="content-subhead">
-                    <i class="fa fa-th-large"></i>
-                    Modular
-                </h3>
-                <p>
-                    Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
-                </p>
+            <div class="l-box pure-u-1 pure-u-md-1-4">
+                <h3 class="content-subhead">Turnaj Open Gate Open - tým</h3>
+                <a href="?p=tym" class="pure-button">Přihlásit</a>
             </div>
-            <div class="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
-                <h3 class="content-subhead">
-                    <i class="fa fa-check-square-o"></i>
-                    Plays Nice
-                </h3>
-                <p>
-                    Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
-                </p>
+            <div class="l-box pure-u-1 pure-u-md-1-4">
+                <h3 class="content-subhead">Turnaj Open Gate Open - rozhodčí</h3>
+                <a href="?p=rozhodci" class="pure-button">Přihlásit</a>
             </div>
         </div>
     </div>
-    -->
+    <?php
+        }
+    ?>
 
+
+    <?php
+        if ($page == "skoleni-debateru" or $page == "skoleni-rozhodcich" or $page == "rozhodci") {
+            $head = "Přihláška ";
+            switch ($page) {
+                case "skoleni-debateru":
+                    $head .= "na školení debatérů";
+                    break;
+                case "skoleni-rozhodcich":
+                    $head .= "na školení rozhodčích";
+                    break;
+                case "rozhodci":
+                    $head .= "rozhodčích";
+                    break;
+            }
+    ?>
+    <div class="content">
+        <h2 class="content-head is-center"><?php echo $head; ?></h2>
+
+        <div class="pure-g">
+            <div class="pure-u-1 is-center">
+                <form class="pure-form pure-form-aligned">
+                    <fieldset>
+                        <div class="pure-control-group">
+                            <label for="name">Jméno</label>
+                            <input id="name" type="text" required>
+                        </div>
+                        <div class="pure-control-group">
+                            <label for="surname">Příjmení</label>
+                            <input id="surname" type="text" required>
+                        </div>
+                        <div class="pure-control-group">
+                            <label for="day">Datum narození</label>
+                            <select id="day">
+                                <?php
+                                    for ($i = 1; $i <= 31; $i++) {
+                                        echo "<option value=\"$i\">$i</option>";
+                                    }
+                                ?>
+                            </select>
+                            <select id="month">
+                                <?php
+                                    $months = ["leden", "únor", "březen", "duben", "květen", "červen", "červenec", "srpen", "září", "říjen", "listopad", "prosinec"];
+                                    for ($i = 1; $i <= 12; $i++) {
+                                        $j = $i-1;
+                                        echo "<option value=\"$i\">$months[$j]</option>";
+                                    }
+                                ?>
+                            </select>
+                            <select id="year">
+                                <?php
+                                    for ($i = 0; $i <= 99; $i++) {
+                                        $j = 2018-$i;
+                                        echo "<option value=\"$j\">$j</option>";
+                                    }
+                                ?>
+                            </select>
+                        </div>
+                        <div class="pure-control-group">
+                            <label for="op">Číslo občanského průkazu</label>
+                            <input id="op" type="text" required>
+                        </div>
+                        <div class="pure-control-group">
+                            <label for="street">Ulice a číslo</label>
+                            <input id="street" type="text" class="smartform-street-and-number" required>
+                        </div>
+                        <div class="pure-control-group">
+                            <label for="city">Město</label>
+                            <input id="city" type="text" class="smartform-city" required>
+                        </div>
+                        <div class="pure-control-group">
+                            <label for="zip">PSČ</label>
+                            <input id="zip" type="text" class="smartform-zip" required>
+                        </div>
+                        <input id="event" type="hidden" value="page">
+
+                        <div class="pure-controls">
+                            <button type="submit" class="pure-button">Přihlásit</button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+
+    </div>
+    <?php
+        }
+    ?>
 
     <footer class="footer l-box is-center">
         2018 Asociace debatních klubů, z.s.
