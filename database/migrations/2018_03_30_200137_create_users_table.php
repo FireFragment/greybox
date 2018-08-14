@@ -15,7 +15,10 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('person_id');
+            /*
+             * temporary workaround (nullable)
+             */
+            $table->unsignedInteger('person_id')->nullable();
             $table->string('username', 63)->unique();
             $table->string('password');
             $table->string('api_token')->nullable();

@@ -75,7 +75,10 @@ class UserController extends Controller
     public function create(Request $request)
     {
         $this->validate($request, [
-            'person_id' => 'required',
+            /*
+             * temporary workaround
+             */
+            //'person_id' => 'required',
             'username' => 'required',
             'password' => 'required|min:8|confirmed|regex:'.$this->regex
         ]);
