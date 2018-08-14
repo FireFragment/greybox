@@ -1,10 +1,13 @@
+<?php
+    session_start();
+?>
 <!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="A layout example that shows off a responsive product landing page.">
-    <title>Landing Page &ndash; Layout Examples &ndash; Pure</title>
+    <title>Přihlašování na turnaje Debatní ligy</title>
     
     <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-" crossorigin="anonymous">
     
@@ -37,8 +40,15 @@
 
 <?php
     $home = "/greybox/registrace/";
+    $url = "localhost:8000/api/";
 
     $page = $_REQUEST["p"];
+
+    if ($page == "odhlasit") {
+        session_unset();
+        session_destroy();
+        unset($page);
+    }
 ?>
 
 
@@ -49,8 +59,20 @@
         <a class="pure-menu-heading" href="<?php echo $home; ?>">greybox</a>
 
         <ul class="pure-menu-list">
-            <li class="pure-menu-item pure-menu-selected"><a href="<?php echo $home; ?>" class="pure-menu-link">Domů</a></li>
+            <?php
+                if (isset($_SESSION["token"])) {
+            ?>
+            <li class="pure-menu-item"><a href="?p=prihlaska" class="pure-menu-link">Domů</a></li>
+            <li class="pure-menu-item">přihlášen/a: <?php echo $_SESSION["email"]; ?></li>
+            <li class="pure-menu-item"><a href="?p=odhlasit" class="pure-menu-link">Odhlásit</a></li>
+            <?php
+                } else {
+            ?>
+            <li class="pure-menu-item"><a href="<?php echo $home; ?>" class="pure-menu-link">Domů</a></li>
             <li class="pure-menu-item"><a href="?p=prihlaseni" class="pure-menu-link">Přihlášení</a></li>
+            <?php   
+                }
+            ?>
         </ul>
     </div>
 </header>
@@ -65,8 +87,8 @@
             Pro pokračování se musíte přihlásit.
         </p>
         <p>
-            <a href="?p=registrace" class="pure-button ">Registrace</a>
-            <a href="?p=prihlaseni" class="pure-button ">Přihlášení</a>
+            <a href="?p=registrace" class="pure-button pure-button-primary">Registrace</a>
+            <a href="?p=prihlaseni" class="pure-button pure-button-primary">Přihlášení</a>
         </p>
     </div>
 </div>
@@ -85,17 +107,17 @@
         <div class="pure-g">
             <div class="pure-u-1 is-center">
                 <p>Pokud ještě nemáte účet, <a href="?p=registrace">zaregistrujte se</a>.</p>
-                <form class="pure-form pure-form-aligned">
+                <form class="pure-form pure-form-aligned" method="post">
                     <fieldset>
                         <div class="pure-control-group">
                             <label for="email">Email</label>
-                            <input id="email" type="email" placeholder="Email">
+                            <input id="email" type="email" name="email" required>
                         </div>
-
                         <div class="pure-control-group">
                             <label for="password">Heslo</label>
-                            <input id="password" type="password" placeholder="Heslo">
+                            <input id="password" type="password" name="password" required>
                         </div>
+                        <input type="hidden" name="action" value="login">
 
                         <div class="pure-controls">
                             <button type="submit" class="pure-button">Přihlásit</button>
@@ -119,22 +141,21 @@
 
         <div class="pure-g">
             <div class="pure-u-1 is-center">
-                <form class="pure-form pure-form-aligned">
+                <form class="pure-form pure-form-aligned" method="post">
                     <fieldset>
                         <div class="pure-control-group">
                             <label for="email">Email</label>
-                            <input id="email" type="email" placeholder="Email">
+                            <input id="email" type="email" name="email" required>
                         </div>
-
                         <div class="pure-control-group">
                             <label for="password">Heslo</label>
-                            <input id="password" type="password" placeholder="Heslo">
+                            <input id="password" type="password" name="password" required>
                         </div>
-
                         <div class="pure-control-group">
                             <label for="password_confirmation">Zopakujte heslo</label>
-                            <input id="password_confirmation" type="password" placeholder="Heslo">
+                            <input id="password_confirmation" type="password" name="password_confirmation" required>
                         </div>
+                        <input type="hidden" name="action" value="register">
 
                         <div class="pure-controls">
                             <button type="submit" class="pure-button">Registrovat</button>
@@ -280,7 +301,90 @@
 
 </div>
 
+<?php
+    if (isset($_POST["action"])) {
+        $ch = curl_init();
 
+        switch ($_POST["action"]) {
+            case 'register':
+                $urlFinal = $url."user";
+
+                $data = array(
+                    "username" => $_POST["email"],
+                    "password" => $_POST["password"],
+                    "password_confirmation" => $_POST["password_confirmation"],
+                    "person_id" => null
+                );
+
+                curl_setopt($ch, CURLOPT_POST, 1);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+                break;
+
+            case 'login':
+                $urlFinal = $url."login";
+
+                $data = array(
+                    "username" => $_POST["email"],
+                    "password" => $_POST["password"]
+                );
+
+                curl_setopt($ch, CURLOPT_POST, 1);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+                break;
+            
+            default:
+                # code...
+                break;
+        }
+
+        curl_setopt($ch, CURLOPT_URL, $urlFinal);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $response = json_decode(curl_exec($ch), true);
+        $code = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+
+        curl_close($ch);
+
+
+        switch ($_POST["action"]) {
+            case 'register':
+                if ($code == 201) {
+                    $ch = curl_init();
+
+                    $data = array(
+                        "username" => $_POST["email"],
+                        "password" => $_POST["password"]
+                    );
+
+                    curl_setopt($ch, CURLOPT_POST, 1);
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+                    curl_setopt($ch, CURLOPT_URL, $url."login");
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+                    $response = json_decode(curl_exec($ch), true);
+                    $code = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+
+                    curl_close($ch);
+                }
+
+            case 'login':
+                if ($code == 200) {
+                    $_SESSION["user_id"] = $response["id"];
+                    $_SESSION["email"] = $response["username"];
+                    $_SESSION["token"] = $response["api_token"];
+
+                    echo "<h1>200</h1><script> window.location.replace('?p=prihlaska'); </script>";
+                }
+                break;
+
+            default:
+                # code...
+                break;
+        }
+
+        var_dump($response);
+    }
+?>
 
 
 </body>
