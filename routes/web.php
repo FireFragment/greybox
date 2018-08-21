@@ -20,8 +20,16 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 	$router->get('user/{id}', ['uses' => 'UserController@showOne']);
 	$router->post('user', ['uses' => 'UserController@create']);
 	$router->delete('user/{id}', ['uses' => 'UserController@delete']);
-	$router->put('user/{id}', ['uses' => 'UserController@update']);
+	//$router->put('user/{id}', ['uses' => 'UserController@update']);
 
 	$router->post('login', ['uses' => 'UserController@login']);
 	$router->post('logout', ['uses' => 'UserController@logout']);
+
+	$router->get('registration',  ['uses' => 'RegistrationController@showAll']);
+	$router->get('registration/{id}', ['uses' => 'RegistrationController@showOne']);
+	$router->post('registration', ['uses' => 'RegistrationController@create']);
+	$router->delete('registration/{id}', ['uses' => 'RegistrationController@delete']);
+	//$router->put('user/{id}', ['uses' => 'UserController@update']);
+
+	$router->put('confirm/{id}', ['uses' => 'RegistrationController@confirm']);
 });
