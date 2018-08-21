@@ -29,7 +29,11 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 	$router->get('registration/{id}', ['uses' => 'RegistrationController@showOne']);
 	$router->post('registration', ['uses' => 'RegistrationController@create']);
 	$router->delete('registration/{id}', ['uses' => 'RegistrationController@delete']);
-	//$router->put('user/{id}', ['uses' => 'UserController@update']);
+	$router->put('registration/{id}/confirm', ['uses' => 'RegistrationController@confirm']);
 
-	$router->put('confirm/{id}', ['uses' => 'RegistrationController@confirm']);
+	$router->get('team',  ['uses' => 'TeamController@showAll']);
+	$router->get('team/{id}', ['uses' => 'TeamController@showOne']);
+	$router->post('team', ['uses' => 'TeamController@create']);
+	$router->delete('team/{id}', ['uses' => 'TeamController@delete']);
+	$router->put('team/{id}/confirm', ['uses' => 'TeamController@confirm']);
 });
