@@ -23,7 +23,7 @@ class CreateRegistrationsTable extends Migration
             $table->string('city', 127);
             $table->string('zip', 7);
             $table->text('note')->nullable();
-            $table->string('event', 15);
+            $table->string('event', 31);
             $table->boolean('confirmed')->default(0);
             $table->unsignedInteger('team')->nullable();
             $table->unsignedInteger('registered_by');
