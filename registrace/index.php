@@ -96,6 +96,25 @@
     }
 ?>
 
+<?php
+    if ($page == "prijata") {
+?>
+<div class="splash-container">
+    <div class="splash">
+        <h1 class="splash-head">Přihláška přijata</h1>
+        <p class="splash-subhead">
+            Nyní můžete přihlásit další osobu, nebo se odhlásit ze systému.
+        </p>
+        <p>
+            <a href="?p=prihlaska" class="pure-button pure-button-primary">Přihlásit další osobu</a>
+            <a href="?p=odhlasit" class="pure-button pure-button-primary">Odhlásit ze systému</a>
+        </p>
+    </div>
+</div>
+<?php
+    }
+?>
+
 <div class="content-wrapper">
 
     <?php
@@ -223,26 +242,26 @@
 
         <div class="pure-g">
             <div class="pure-u-1 is-center">
-                <form class="pure-form pure-form-aligned">
+                <form class="pure-form pure-form-aligned" method="post">
                     <fieldset>
                         <div class="pure-control-group">
                             <label for="name">Jméno</label>
-                            <input id="name" type="text" required>
+                            <input id="name" type="text" name="name" required>
                         </div>
                         <div class="pure-control-group">
                             <label for="surname">Příjmení</label>
-                            <input id="surname" type="text" required>
+                            <input id="surname" type="text" name="surname" required>
                         </div>
                         <div class="pure-control-group">
                             <label for="day">Datum narození</label>
-                            <select id="day">
+                            <select id="day" name="day">
                                 <?php
                                     for ($i = 1; $i <= 31; $i++) {
                                         echo "<option value=\"$i\">$i</option>";
                                     }
                                 ?>
                             </select>
-                            <select id="month">
+                            <select id="month" name="month">
                                 <?php
                                     $months = ["leden", "únor", "březen", "duben", "květen", "červen", "červenec", "srpen", "září", "říjen", "listopad", "prosinec"];
                                     for ($i = 1; $i <= 12; $i++) {
@@ -251,7 +270,7 @@
                                     }
                                 ?>
                             </select>
-                            <select id="year">
+                            <select id="year" name="year">
                                 <?php
                                     for ($i = 0; $i <= 99; $i++) {
                                         $j = 2018-$i;
@@ -262,25 +281,26 @@
                         </div>
                         <div class="pure-control-group">
                             <label for="op">Číslo občanského průkazu</label>
-                            <input id="op" type="text" required>
+                            <input id="op" type="text" name="op">
                         </div>
                         <div class="pure-control-group">
                             <label for="street">Ulice a číslo</label>
-                            <input id="street" type="text" class="smartform-street-and-number" required>
+                            <input id="street" type="text" class="smartform-street-and-number" name="street" required>
                         </div>
                         <div class="pure-control-group">
                             <label for="city">Město</label>
-                            <input id="city" type="text" class="smartform-city" required>
+                            <input id="city" type="text" class="smartform-city" name="city" required>
                         </div>
                         <div class="pure-control-group">
                             <label for="zip">PSČ</label>
-                            <input id="zip" type="text" class="smartform-zip" required>
+                            <input id="zip" type="text" class="smartform-zip" name="zip" required>
                         </div>
                         <div class="pure-control-group">
                             <label for="comment">Poznámka</label>
-                            <textarea id="comment" type="text" placeholder="například čas příjezdu/odjezdu, stravovací omezení apod."></textarea>
+                            <textarea id="comment" type="text" name="note" placeholder="například čas příjezdu/odjezdu, stravovací omezení apod."></textarea>
                         </div>
-                        <input id="event" type="hidden" value="page">
+                        <input type="hidden" name="event" value="<?php echo $page; ?>">
+                        <input type="hidden" name="action" value="application">
 
                         <div class="pure-controls">
                             <button type="submit" class="pure-button">Přihlásit</button>
@@ -331,9 +351,25 @@
                 curl_setopt($ch, CURLOPT_POST, 1);
                 curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
                 break;
-            
-            default:
-                # code...
+
+            case 'application':
+                $urlFinal = $url."registration";
+
+                $data = array(
+                    "api_token" => $_SESSION["token"],
+                    "name" => $_POST["name"],
+                    "surname" => $_POST["surname"],
+                    "birthdate" => $_POST["year"]."-".$_POST["month"]."-".$_POST["day"],
+                    "id_number" => $_POST["op"],
+                    "street" => $_POST["street"],
+                    "city" => $_POST["city"],
+                    "zip" => $_POST["zip"],
+                    "note" => $_POST["note"],
+                    "event" => $_POST["event"]
+                );
+
+                curl_setopt($ch, CURLOPT_POST, 1);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
                 break;
         }
 
@@ -373,9 +409,14 @@
                     $_SESSION["email"] = $response["username"];
                     $_SESSION["token"] = $response["api_token"];
 
-                    echo "<h1>200</h1><script> window.location.replace('?p=prihlaska'); </script>";
+                    echo "<script> window.location.replace('?p=prihlaska'); </script>";
                 }
                 break;
+
+            case 'application':
+                if ($code == 201) {
+                    echo "<script> window.location.replace('?p=prijata'); </script>";
+                }
 
             default:
                 # code...

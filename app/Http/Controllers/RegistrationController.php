@@ -37,8 +37,6 @@ class RegistrationController extends Controller
             'name' => 'required'
         ]);
 
-        echo "<h1>".\Auth::user()->id."</h1>";
-
         try {
             $registration = Registration::create([
                 'name' => $request->input('name'),
