@@ -22,7 +22,10 @@ class CreateUsersTable extends Migration
             $table->string('username', 63)->unique();
             $table->string('password');
             $table->string('api_token')->nullable();
-            $table->foreign('person_id')->references('clovek_ID')->on('clovek')->onDelete('restrict');
+            /*
+             * temporary workaround (no connection to clovek table)
+             */
+            //$table->foreign('person_id')->references('clovek_ID')->on('clovek')->onDelete('restrict');
             $table->timestamps();
         });
     }
