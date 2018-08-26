@@ -56,24 +56,28 @@
 
 <header>
     <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
-        <a class="pure-menu-heading" href="<?php echo $home; ?>">greybox</a>
+        <?php
+            if (isset($_SESSION["token"])) {
+        ?>
+        <a class="pure-menu-heading" href="?p=prihlaska">greybox</a>
 
         <ul class="pure-menu-list">
-            <?php
-                if (isset($_SESSION["token"])) {
-            ?>
             <li class="pure-menu-item"><a href="?p=prihlaska" class="pure-menu-link">Domů</a></li>
             <li class="pure-menu-item">přihlášen/a: <?php echo $_SESSION["email"]; ?></li>
             <li class="pure-menu-item"><a href="?p=odhlasit" class="pure-menu-link">Odhlásit</a></li>
-            <?php
-                } else {
-            ?>
+        </ul>
+        <?php
+            } else {
+        ?>
+        <a class="pure-menu-heading" href="<?php echo $home; ?>">greybox</a>
+
+        <ul class="pure-menu-list">
             <li class="pure-menu-item"><a href="<?php echo $home; ?>" class="pure-menu-link">Domů</a></li>
             <li class="pure-menu-item"><a href="?p=prihlaseni" class="pure-menu-link">Přihlášení</a></li>
-            <?php   
-                }
-            ?>
         </ul>
+        <?php   
+            }
+        ?>
     </div>
 </header>
 
@@ -98,6 +102,9 @@
 
 <?php
     if ($page == "prijata") {
+        if (!isset($_SESSION["token"])) {
+            echo "<script> window.location.replace('$home'); </script>";
+        }
 ?>
 <div class="splash-container">
     <div class="splash">
@@ -192,6 +199,9 @@
 
     <?php
         if ($page == "prihlaska") {
+            if (!isset($_SESSION["token"])) {
+                echo "<script> window.location.replace('$home'); </script>";
+            }
     ?>
     <div class="content">
         <h2 class="content-head is-center">Zahájení XXIV. ročníku Debatní ligy</h2>
@@ -228,6 +238,9 @@
 
     <?php
         if ($page == "skoleni-debateru" or $page == "skoleni-rozhodcich" or $page == "rozhodci") {
+            if (!isset($_SESSION["token"])) {
+                echo "<script> window.location.replace('$home'); </script>";
+            }
             $head = "Přihláška ";
             switch ($page) {
                 case "skoleni-debateru":
@@ -379,8 +392,6 @@
 
         curl_close($ch);
 
-        echo "<h1>$code</h1>";
-
 
         switch ($_POST["action"]) {
             case 'register':
@@ -420,7 +431,7 @@
                     $_SESSION["token"] = $response["api_token"];
 
                     echo "<script> window.location.replace('?p=prihlaska'); </script>";
-                } elseif ($code == 422) {
+                } elseif ($code == 401) {
                     echo '<p class="is-center">Nesprávný email nebo heslo.</p>';
                 }
                 break;
@@ -434,8 +445,6 @@
                 # code...
                 break;
         }
-
-        var_dump($response);
     }
 ?>
 

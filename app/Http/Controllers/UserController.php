@@ -26,8 +26,8 @@ class UserController extends Controller
             'password' => 'required'
         ]);
 
-        try {
-            $user = User::where('username', $request->input('username'))->first();
+        $user = User::where('username', $request->input('username'))->first();
+        if (!empty($user)) {
             if (Hash::check($request->input('password'), $user->password)) {
                 try {
                     $api_token = sha1($user->id.time());
@@ -38,10 +38,10 @@ class UserController extends Controller
                     return response()->json(['message' => $e->getMessage()], 500);
                 }
             } else {
-                return response()->json(['message' => 'Incorrect username or password.'], 422);
+                return response()->json(['message' => 'Incorrect username or password.'], 401);
             }
-        } catch (\Illuminate\Database\QueryException $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
+        } else {
+            return response()->json(['message' => 'Incorrect username or password.'], 401);
         }
     }
 
