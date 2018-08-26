@@ -125,7 +125,7 @@
 
         <div class="pure-g">
             <div class="pure-u-1 is-center">
-                <p>Pokud ještě nemáte účet, <a href="?p=registrace">zaregistrujte se</a>.</p>
+                <p>Pokud ještě nemáte účet, <a href="?p=registrace">zaregistrujte se</a>. Přihlašovací údaje k původní aplikaci greybox zde nefungují a je třeba se znovu zaregistrovat.</p>
                 <form class="pure-form pure-form-aligned" method="post">
                     <fieldset>
                         <div class="pure-control-group">
@@ -201,18 +201,22 @@
         <div class="pure-g">
             <div class="l-box pure-u-1 pure-u-md-1-4">
                 <h3 class="content-subhead">Školení debatérů</h3>
+                <p>Je jedinečnou příležitostí si pod vedením metodiků Ředitelství soutěží osvojit nové debatní schopnosti a dovednosti. Začínající debatéry čekají celkem čtyři školící bloky a dvě debaty, v nichž budou moci otestovat své nově nabyté zkušenosti.</p>
                 <a href="?p=skoleni-debateru" class="pure-button">Přihlásit</a>
             </div>
             <div class="l-box pure-u-1 pure-u-md-1-4">
                 <h3 class="content-subhead">Školení rozhodčích</h3>
+                <p>Je otevřeno všem zájemcům, kteří by chtěli rozšířit řady akreditovaných rozhodčích, jedinou podmínkou je dosažení 18. roku věku v této debatní sezóně, tj. do 28. dubna 2019. Předchozí zkušenosti s formou KPDP ani akademickým debatováním nejsou nutné, v pátek proběhne jednotící seminář s úvodem do formy KPDP a ukázkovou debatou.</p>
                 <a href="?p=skoleni-rozhodcich" class="pure-button">Přihlásit</a>
             </div>
             <div class="l-box pure-u-1 pure-u-md-1-4">
                 <h3 class="content-subhead">Turnaj Open Gate Open - tým</h3>
+                <p>Proběhnou čtyři kola turnaje a dva bloky školení, které se budou věnovat nejen debatní teorii ale i přípravě na teze a okruhy XXIV. ročníku Debatní ligy.</p>
                 <a href="?p=tym" class="pure-button">Přihlásit</a>
             </div>
             <div class="l-box pure-u-1 pure-u-md-1-4">
                 <h3 class="content-subhead">Turnaj Open Gate Open - rozhodčí</h3>
+                <p>Proběhnou čtyři kola turnaje a dva bloky školení, které se budou věnovat nejen debatní teorii ale i přípravě na teze a okruhy XXIV. ročníku Debatní ligy.</p>
                 <a href="?p=rozhodci" class="pure-button">Přihlásit</a>
             </div>
         </div>
@@ -315,12 +319,6 @@
         }
     ?>
 
-    <footer class="footer l-box is-center">
-        2018 Asociace debatních klubů, z.s.
-    </footer>
-
-</div>
-
 <?php
     if (isset($_POST["action"])) {
         $ch = curl_init();
@@ -381,6 +379,8 @@
 
         curl_close($ch);
 
+        echo "<h1>$code</h1>";
+
 
         switch ($_POST["action"]) {
             case 'register':
@@ -401,6 +401,16 @@
                     $code = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
 
                     curl_close($ch);
+                } elseif ($code == 409) {
+                    echo '<p class="is-center">Uživatel s tímto emailem již existuje. <a href="?p=prihlaseni">Přihlaste se</a>, nebo použijte jiný.</p>';
+                } elseif ($code == 422) {
+                    if ($response["password"][0] == "The password confirmation does not match.") {
+                        echo '<p class="is-center">Zadaná hesla se neshodují.</p>';
+                    } elseif ($response["password"][0] == "The password format is invalid.") {
+                        echo '<p class="is-center">Heslo musí obsahovat alespoň tři z následujících kategorií malá písmena, velká písmena, čísla a znaky.</p>';
+                    } elseif ($response["password"][0] == "The password must be at least 8 characters.") {
+                        echo '<p class="is-center">Heslo musí obsahovat alespoň 8 znaků.</p>';
+                    }
                 }
 
             case 'login':
@@ -410,6 +420,8 @@
                     $_SESSION["token"] = $response["api_token"];
 
                     echo "<script> window.location.replace('?p=prihlaska'); </script>";
+                } elseif ($code == 422) {
+                    echo '<p class="is-center">Nesprávný email nebo heslo.</p>';
                 }
                 break;
 
@@ -417,7 +429,7 @@
                 if ($code == 201) {
                     echo "<script> window.location.replace('?p=prijata'); </script>";
                 }
-
+                break;
             default:
                 # code...
                 break;
@@ -426,6 +438,12 @@
         var_dump($response);
     }
 ?>
+
+    <footer class="footer l-box is-center">
+        2018 Asociace debatních klubů, z.s.
+    </footer>
+
+</div>
 
 
 </body>

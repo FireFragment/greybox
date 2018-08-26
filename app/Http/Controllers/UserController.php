@@ -93,8 +93,15 @@ class UserController extends Controller
                 'password' => $password
             ]);
             return response()->json($user, 201);
-        } catch (\Illuminate\Database\QueryException $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
+        } catch (\Illuminate\Database\QueryException $e) { 
+            if ($e->getCode() == 23000) {
+                $code = 409;
+                $message = "Duplicate entry";
+            } else {
+                $code = 500;
+                $message = $e->getMessage();
+            }
+            return response()->json(['message' => $message], $code);
         }        
     }
 
