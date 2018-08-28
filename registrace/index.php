@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="A layout example that shows off a responsive product landing page.">
+    <meta name="description" content="Přihlašování na akce pořádané Asociací debatních klubů, z.s.">
     <title>Přihlašování na turnaje Debatní ligy</title>
     
     <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-" crossorigin="anonymous">
@@ -40,6 +40,7 @@
 
 <?php
     $home = "/greybox/registrace/";
+    //$url = "debate-greybox.herokuapp.com/api/";
     $url = "localhost:8000/api/";
 
     $page = $_REQUEST["p"];
@@ -326,7 +327,78 @@
                 </form>
             </div>
         </div>
+    </div>
+    <?php
+        }
+    ?>
 
+    <?php
+        if ($page == "tym") {
+            if (!isset($_SESSION["token"])) {
+                echo "<script> window.location.replace('$home'); </script>";
+            }
+    ?>
+    <div class="content">
+        <h2 class="content-head is-center">Přihláška týmů</h2>
+
+        <div class="pure-g">
+            <form class="pure-form pure-form-stacked" method="post">
+                <fieldset>
+                    <div class="pure-u-1">
+                        <label for="team-name">Název týmu</label>
+                        <input id="team-name" type="text" name="team-name" required>
+                    </div>
+                </fieldset>
+                <div id="debater-line-1"></div>
+                <div id="debater-line-2"></div>
+                <div id="debater-line-3"></div>
+                <div id="debater-line-4"></div>
+                <div id="debater-line-5"></div>
+
+                <script type="text/javascript">
+                function loadDebaterLine(number) {
+                    var xmlhttp = new XMLHttpRequest();
+
+                    xmlhttp.onreadystatechange = function() {
+                        if (xmlhttp.readyState == XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4
+                            if (xmlhttp.status == 200) {
+                                document.getElementById("debater-line-"+number).innerHTML = xmlhttp.responseText;
+                                if (number < 5) {
+                                    if (number == 1) {
+                                        document.getElementById("remove-debater").removeAttribute("style");
+                                    }
+                                    inc = number + 1;
+                                    document.getElementById("next-debater").setAttribute("onclick", "loadDebaterLine("+inc+")");
+                                } else {
+                                    document.getElementById("next-debater").remove();
+                                }
+                                document.getElementById("remove-debater").setAttribute("onclick", "deleteDebaterLine("+number+")");
+                            }
+                        }
+                    };
+
+                    xmlhttp.open("GET", "team-form.php?number="+number, true);
+                    xmlhttp.send();
+                }
+
+                function deleteDebaterLine(number) {
+                    document.getElementById("debater-line-"+number).innerHTML = '';
+                    dec = number - 1;
+                    document.getElementById("remove-debater").setAttribute("onclick", "deleteDebaterLine("+dec+")");
+                    document.getElementById("next-debater").setAttribute("onclick", "loadDebaterLine("+number+")");
+                }
+                </script>
+
+                <input type="hidden" name="event" value="<?php echo $page; ?>">
+                <input type="hidden" name="action" value="team-application">
+
+                <div class="pure-controls">
+                    <button type="button" id="next-debater" class="pure-button pure-button-primary" onclick="loadDebaterLine(1);">Přidat debatéra</button>
+                    <button type="button" id="remove-debater" class="button-red pure-button" onclick="deleteDebaterLine(1);" style="visibility: hidden;">Odebrat posledního debatéra</button>
+                    <button type="submit" class="pure-button">Přihlásit</button>
+                </div>
+            </form>
+        </div>
     </div>
     <?php
         }
@@ -339,33 +411,24 @@
         switch ($_POST["action"]) {
             case 'register':
                 $urlFinal = $url."user";
-
                 $data = array(
                     "username" => $_POST["email"],
                     "password" => $_POST["password"],
                     "password_confirmation" => $_POST["password_confirmation"],
                     "person_id" => null
                 );
-
-                curl_setopt($ch, CURLOPT_POST, 1);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
                 break;
 
             case 'login':
                 $urlFinal = $url."login";
-
                 $data = array(
                     "username" => $_POST["email"],
                     "password" => $_POST["password"]
                 );
-
-                curl_setopt($ch, CURLOPT_POST, 1);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
                 break;
 
             case 'application':
                 $urlFinal = $url."registration";
-
                 $data = array(
                     "api_token" => $_SESSION["token"],
                     "name" => $_POST["name"],
@@ -377,20 +440,30 @@
                     "zip" => $_POST["zip"],
                     "note" => $_POST["note"],
                     "event" => $_POST["event"]
-                );
+                );               
+                break;
 
-                curl_setopt($ch, CURLOPT_POST, 1);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+            case 'team-application':
+                $urlFinal = $url."team";
+                $data = array (
+                    "api_token" => $_SESSION["token"],
+                    "name" => $_POST["team-name"],
+                    "event" => $_POST["event"]
+                );
                 break;
         }
 
         curl_setopt($ch, CURLOPT_URL, $urlFinal);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
 
         $response = json_decode(curl_exec($ch), true);
         $code = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
 
         curl_close($ch);
+
+        echo "<h1>$code</h1>";
 
 
         switch ($_POST["action"]) {
@@ -441,10 +514,54 @@
                     echo "<script> window.location.replace('?p=prijata'); </script>";
                 }
                 break;
+
+            case 'team-application':
+                if ($code == 201) {
+                    $i = 1;
+                    $team = $response["id"];
+
+                    while (isset($_POST["name-$i"])) {
+                        $ch = curl_init();
+
+                        $data = array(
+                            "api_token" => $_SESSION["token"],
+                            "name" => $_POST["name-$i"],
+                            "surname" => $_POST["surname-$i"],
+                            "birthdate" => $_POST["year-$i"]."-".$_POST["month-$i"]."-".$_POST["day-$i"],
+                            "id_number" => $_POST["op-$i"],
+                            "street" => $_POST["street-$i"],
+                            "city" => $_POST["city-$i"],
+                            "zip" => $_POST["zip-$i"],
+                            "note" => $_POST["note-$i"],
+                            "event" => $_POST["event"],
+                            "team" => $team
+                        );
+
+                        curl_setopt($ch, CURLOPT_POST, 1);
+                        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+                        curl_setopt($ch, CURLOPT_URL, $url."registration");
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+                        $debater = json_decode(curl_exec($ch), true);
+                        $code = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+
+                        curl_close($ch);
+
+                        $i++;
+                    }
+
+                    if ($code == 201) {
+                        echo "<script> window.location.replace('?p=prijata'); </script>";
+                    }
+                }
+
+                break;
             default:
                 # code...
                 break;
         }
+
+        var_dump($response);
     }
 ?>
 
