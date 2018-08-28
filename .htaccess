@@ -16,6 +16,6 @@ RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301,QSA]
 # php_flag magic_quotes_gpc Off
 
 # secure .inc files
-# <Files "*.inc">
-# deny from all
-# </Files>
+<Files "*.inc">
+deny from all
+</Files>
