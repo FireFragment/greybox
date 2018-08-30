@@ -30,7 +30,7 @@
     <script type="text/javascript" src="https://secure.smartform.cz/api/v1/smartform.js" async></script>
     <script type="text/javascript">
         var smartform = smartform || {};
-        smartform.beforeInit = function () {
+        smartform.beforeInit = function initialize() {
             smartform.setClientId('8ndPcVUJ5B');
         }
     </script>
@@ -373,6 +373,8 @@
                                     document.getElementById("next-debater").remove();
                                 }
                                 document.getElementById("remove-debater").setAttribute("onclick", "deleteDebaterLine("+number+")");
+
+                                smartform.rebindAllForms(true, null);
                             }
                         }
                     };
@@ -502,7 +504,7 @@
                     $_SESSION["token"] = $response["api_token"];
 
                     echo "<script> window.location.replace('?p=prihlaska'); </script>";
-                } elseif ($code == 401) {
+                } elseif ($code == 401 or $code == 500) {
                     echo '<p class="is-center">Nesprávný email nebo heslo.</p>';
                 }
                 break;

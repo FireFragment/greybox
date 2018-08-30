@@ -41,15 +41,15 @@
     </div>
     <div class="pure-u-1 pure-u-md-1-4">
         <label for="street">Ulice a číslo</label>
-        <input id="street" type="text" class="smartform-street-and-number" name="street-<?php echo $_REQUEST["number"]; ?>" required>
+        <input id="street" type="text" class="smartform-instance-<?php echo $_REQUEST["number"]; ?> smartform-street-and-number" name="street-<?php echo $_REQUEST["number"]; ?>" required>
     </div>
     <div class="pure-u-1 pure-u-md-1-4">
         <label for="city">Město</label>
-        <input id="city" type="text" class="smartform-city" name="city-<?php echo $_REQUEST["number"]; ?>" required>
+        <input id="city" type="text" class="smartform-instance-<?php echo $_REQUEST["number"]; ?> smartform-city" name="city-<?php echo $_REQUEST["number"]; ?>" required>
     </div>
     <div class="pure-u-1 pure-u-md-1-4">
         <label for="zip">PSČ</label>
-        <input id="zip" type="text" class="smartform-zip" name="zip-<?php echo $_REQUEST["number"]; ?>" required>
+        <input id="zip" type="text" class="smartform-instance-<?php echo $_REQUEST["number"]; ?> smartform-zip" name="zip-<?php echo $_REQUEST["number"]; ?>" required>
     </div>
     <div class="pure-u-1 pure-u-md-1-4">
         <label for="comment">Poznámka</label>
