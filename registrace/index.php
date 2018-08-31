@@ -242,7 +242,7 @@
 
 
     <?php
-        if ($page == "skoleni-debateru" or $page == "skoleni-rozhodcich" or $page="skoleni-koucu" or $page == "rozhodci") {
+        if ($page == "skoleni-debateru" or $page == "skoleni-rozhodcich" or $page == "skoleni-koucu" or $page == "rozhodci") {
             if (!isset($_SESSION["token"])) {
                 echo "<script> window.location.replace('$home'); </script>";
             }
