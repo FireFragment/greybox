@@ -209,27 +209,22 @@
 
 
         <div class="pure-g">
-            <div class="l-box pure-u-1 pure-u-md-1-5">
+            <div class="l-box pure-u-1 pure-u-md-1-4">
                 <h3 class="content-subhead">Školení debatérů</h3>
                 <p>Je jedinečnou příležitostí si pod vedením metodiků Ředitelství soutěží osvojit nové debatní schopnosti a dovednosti. Začínající debatéry čekají celkem čtyři školící bloky a dvě debaty, v nichž budou moci otestovat své nově nabyté zkušenosti.</p>
                 <a href="?p=skoleni-debateru" class="pure-button">Přihlásit</a>
             </div>
-            <div class="l-box pure-u-1 pure-u-md-1-5">
+            <div class="l-box pure-u-1 pure-u-md-1-4">
                 <h3 class="content-subhead">Školení rozhodčích</h3>
                 <p>Je otevřeno všem zájemcům, kteří by chtěli rozšířit řady akreditovaných rozhodčích, jedinou podmínkou je dosažení 18. roku věku v této debatní sezóně, tj. do 28. dubna 2019. Předchozí zkušenosti s formou KPDP ani akademickým debatováním nejsou nutné, v pátek proběhne jednotící seminář s úvodem do formy KPDP a ukázkovou debatou.</p>
                 <a href="?p=skoleni-rozhodcich" class="pure-button">Přihlásit</a>
             </div>
-            <div class="l-box pure-u-1 pure-u-md-1-5">
-                <h3 class="content-subhead">Školení koučů</h3>
-                <p>Letošní novinkou je školení koučů zaměřené především na učitele a všechny ostatní, kteří by se rádi dozvěděli, jak vypadá debatování, jak vést debatní klub nebo k čemu může debatování pomoct ve výuce. Budete moct shlédnout reálnou debatu a také Vás seznámíme s fungováním ADK i možnostmi, které nabízíme.</p>
-                <a href="?p=skoleni-koucu" class="pure-button">Přihlásit</a>
-            </div>
-            <div class="l-box pure-u-1 pure-u-md-1-5">
+            <div class="l-box pure-u-1 pure-u-md-1-4">
                 <h3 class="content-subhead">Turnaj Open Gate Open - tým</h3>
                 <p>Proběhnou čtyři kola turnaje a dva bloky školení, které se budou věnovat nejen debatní teorii ale i přípravě na teze a okruhy XXIV. ročníku Debatní ligy.</p>
                 <a href="?p=tym" class="pure-button">Přihlásit</a>
             </div>
-            <div class="l-box pure-u-1 pure-u-md-1-5">
+            <div class="l-box pure-u-1 pure-u-md-1-4">
                 <h3 class="content-subhead">Turnaj Open Gate Open - rozhodčí</h3>
                 <p>Proběhnou čtyři kola turnaje a dva bloky školení, které se budou věnovat nejen debatní teorii ale i přípravě na teze a okruhy XXIV. ročníku Debatní ligy.</p>
                 <a href="?p=rozhodci" class="pure-button">Přihlásit</a>
@@ -242,7 +237,7 @@
 
 
     <?php
-        if ($page == "skoleni-debateru" or $page == "skoleni-rozhodcich" or $page="skoleni-koucu" or $page == "rozhodci") {
+        if ($page == "skoleni-debateru" or $page == "skoleni-rozhodcich" or $page == "rozhodci") {
             if (!isset($_SESSION["token"])) {
                 echo "<script> window.location.replace('$home'); </script>";
             }
@@ -253,9 +248,6 @@
                     break;
                 case "skoleni-rozhodcich":
                     $head .= "na školení rozhodčích";
-                    break;
-                case "skoleni-koucu":
-                    $head .= "na školení koučů";
                     break;
                 case "rozhodci":
                     $head .= "rozhodčích";
@@ -448,7 +440,7 @@
                     "street" => $_POST["street"],
                     "city" => $_POST["city"],
                     "zip" => $_POST["zip"],
-                    "note" => !empty($_POST["note"]) ? $_POST["note"] : null,
+                    "note" => $_POST["note"],
                     "event" => $_POST["event"]
                 );               
                 break;
@@ -540,7 +532,7 @@
                             "street" => $_POST["street-$i"],
                             "city" => $_POST["city-$i"],
                             "zip" => $_POST["zip-$i"],
-                            "note" => !empty($_POST["note-$i"]) ? $_POST["note-$i"] : null,
+                            "note" => $_POST["note-$i"],
                             "event" => $_POST["event"],
                             "team" => $team
                         );

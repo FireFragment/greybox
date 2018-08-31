@@ -49,7 +49,7 @@ if (isset($_SESSION["current_season"])) {
 $GLOBALS["page"]->season_block = cphs_link("./?page=season",season_to_str($GLOBALS["current_season"]));
 
 $GLOBALS["season_domain"] = array();
-for ($i=3; $i<=18; $i++) {
+for ($i=3; $i<=7; $i++) {
 	$GLOBALS["season_domain"][$i] = season_to_str($i);
 }
 
