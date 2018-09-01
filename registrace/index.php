@@ -45,9 +45,26 @@
     $page = $_REQUEST["p"];
 
     if ($page == "odhlasit") {
-        session_unset();
-        session_destroy();
-        unset($page);
+        $ch = curl_init();
+
+        $urlFinal = $url."logout";
+        $data = array("api_token" => $_SESSION["token"]);
+
+        curl_setopt($ch, CURLOPT_URL, $urlFinal);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+
+        $response = json_decode(curl_exec($ch), true);
+        $code = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+
+        curl_close($ch);
+
+        if ($code == 200) {
+            session_unset();
+            session_destroy();
+            unset($page);
+        }
     }
 ?>
 
