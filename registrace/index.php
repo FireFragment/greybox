@@ -1,13 +1,20 @@
 <?php
     session_start();
+
+    if (isset($_GET["lang"])) {
+        $language = $_GET["lang"];
+    } else {
+        $language = "cz";
+    }
+    include("languages/$language.php");
 ?>
 <!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Přihlašování na akce pořádané Asociací debatních klubů, z.s.">
-    <title>Přihlašování na turnaje Debatní ligy</title>
+    <meta name="description" content="<?php echo $lang['description']; ?>">
+    <title><?php echo $lang['title']; ?></title>
     
     <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-" crossorigin="anonymous">
     
@@ -79,9 +86,9 @@
         <a class="pure-menu-heading" href="?p=prihlaska">greybox</a>
 
         <ul class="pure-menu-list">
-            <li class="pure-menu-item"><a href="?p=prihlaska" class="pure-menu-link">Domů</a></li>
-            <li class="pure-menu-item">přihlášen/a: <?php echo $_SESSION["email"]; ?></li>
-            <li class="pure-menu-item"><a href="?p=odhlasit" class="pure-menu-link">Odhlásit</a></li>
+            <li class="pure-menu-item"><a href="?p=prihlaska" class="pure-menu-link"><?php echo $lang['home']; ?></a></li>
+            <li class="pure-menu-item"><?php echo $lang['logged_in'] . ': ' . $_SESSION["email"]; ?></li>
+            <li class="pure-menu-item"><a href="?p=odhlasit" class="pure-menu-link"><?php echo $lang['logout']; ?></a></li>
         </ul>
         <?php
             } else {
@@ -89,8 +96,8 @@
         <a class="pure-menu-heading" href="<?php echo $home; ?>">greybox</a>
 
         <ul class="pure-menu-list">
-            <li class="pure-menu-item"><a href="<?php echo $home; ?>" class="pure-menu-link">Domů</a></li>
-            <li class="pure-menu-item"><a href="?p=prihlaseni" class="pure-menu-link">Přihlášení</a></li>
+            <li class="pure-menu-item"><a href="<?php echo $home; ?>" class="pure-menu-link"><?php echo $lang['home']; ?></a></li>
+            <li class="pure-menu-item"><a href="?p=prihlaseni" class="pure-menu-link"><?php echo $lang['login']; ?></a></li>
         </ul>
         <?php   
             }
@@ -103,13 +110,13 @@
 ?>
 <div class="splash-container">
     <div class="splash">
-        <h1 class="splash-head">Registrace</h1>
+        <h1 class="splash-head"><?php echo $lang['title']; ?></h1>
         <p class="splash-subhead">
-            Pro pokračování se musíte přihlásit.
+            <?php echo $lang['login_to_continue']; ?>
         </p>
         <p>
-            <a href="?p=registrace" class="pure-button pure-button-primary">Registrace</a>
-            <a href="?p=prihlaseni" class="pure-button pure-button-primary">Přihlášení</a>
+            <a href="?p=registrace" class="pure-button pure-button-primary"><?php echo $lang['sign_up']; ?></a>
+            <a href="?p=prihlaseni" class="pure-button pure-button-primary"><?php echo $lang['login']; ?></a>
         </p>
     </div>
 </div>
@@ -125,13 +132,13 @@
 ?>
 <div class="splash-container">
     <div class="splash">
-        <h1 class="splash-head">Přihláška přijata</h1>
+        <h1 class="splash-head"><?php echo $lang['application_accepted']; ?></h1>
         <p class="splash-subhead">
-            Nyní můžete přihlásit další osobu, nebo se odhlásit ze systému.
+            <?php echo $lang['apply_or_logout']; ?>
         </p>
         <p>
-            <a href="?p=prihlaska" class="pure-button pure-button-primary">Přihlásit další osobu</a>
-            <a href="?p=odhlasit" class="pure-button pure-button-primary">Odhlásit ze systému</a>
+            <a href="?p=prihlaska" class="pure-button pure-button-primary"><?php echo $lang['apply_another']; ?></a>
+            <a href="?p=odhlasit" class="pure-button pure-button-primary"><?php echo $lang['system_logout']; ?></a>
         </p>
     </div>
 </div>
@@ -145,25 +152,25 @@
         if ($page == "prihlaseni") {
     ?>
     <div class="content">
-        <h2 class="content-head is-center">Přihlášení</h2>
+        <h2 class="content-head is-center"><?php echo $lang['login']; ?></h2>
 
         <div class="pure-g">
             <div class="pure-u-1 is-center">
-                <p>Pokud ještě nemáte účet, <a href="?p=registrace">zaregistrujte se</a>. Přihlašovací údaje k původní aplikaci greybox zde nefungují a je třeba se znovu zaregistrovat.</p>
+                <p><?php echo $lang['missing_account']; ?> <a href="?p=registrace"><?php echo $lang['please_sign_up']; ?></a>. <?php echo $lang['original_credentials']; ?></p>
                 <form class="pure-form pure-form-aligned" method="post">
                     <fieldset>
                         <div class="pure-control-group">
-                            <label for="email">Email</label>
+                            <label for="email"><?php echo $lang['email']; ?></label>
                             <input id="email" type="email" name="email" required>
                         </div>
                         <div class="pure-control-group">
-                            <label for="password">Heslo</label>
+                            <label for="password"><?php echo $lang['password']; ?></label>
                             <input id="password" type="password" name="password" required>
                         </div>
                         <input type="hidden" name="action" value="login">
 
                         <div class="pure-controls">
-                            <button type="submit" class="pure-button">Přihlásit</button>
+                            <button type="submit" class="pure-button"><?php echo $lang['login!']; ?></button>
                         </div>
                     </fieldset>
                 </form>
@@ -180,28 +187,28 @@
         if ($page == "registrace") {
     ?>
     <div class="content">
-        <h2 class="content-head is-center">Registrace</h2>
+        <h2 class="content-head is-center"><?php echo $lang['sign_up']; ?></h2>
 
         <div class="pure-g">
             <div class="pure-u-1 is-center">
                 <form class="pure-form pure-form-aligned" method="post">
                     <fieldset>
                         <div class="pure-control-group">
-                            <label for="email">Email</label>
+                            <label for="email"><?php echo $lang['email']; ?></label>
                             <input id="email" type="email" name="email" required>
                         </div>
                         <div class="pure-control-group">
-                            <label for="password">Heslo</label>
+                            <label for="password"><?php echo $lang['password']; ?></label>
                             <input id="password" type="password" name="password" required>
                         </div>
                         <div class="pure-control-group">
-                            <label for="password_confirmation">Zopakujte heslo</label>
+                            <label for="password_confirmation"><?php echo $lang['password_repeat']; ?></label>
                             <input id="password_confirmation" type="password" name="password_confirmation" required>
                         </div>
                         <input type="hidden" name="action" value="register">
 
                         <div class="pure-controls">
-                            <button type="submit" class="pure-button">Registrovat</button>
+                            <button type="submit" class="pure-button"><?php echo $lang['sign_up!']; ?></button>
                         </div>
                     </fieldset>
                 </form>
@@ -221,35 +228,25 @@
             }
     ?>
     <div class="content">
-        <h2 class="content-head is-center">Zahájení XXIV. ročníku Debatní ligy</h2>
-        <p>Babice, 21.-23. září 2018</p>
+        <h2 class="content-head is-center"><?php echo $lang['event']; ?></h2>
+        <p><?php echo $lang['location']; ?>, <?php echo $lang['date']; ?></p>
 
 
         <div class="pure-g">
-            <div class="l-box pure-u-1 pure-u-md-1-5">
-                <h3 class="content-subhead">Školení debatérů</h3>
-                <p>Je jedinečnou příležitostí si pod vedením metodiků Ředitelství soutěží osvojit nové debatní schopnosti a dovednosti. Začínající debatéry čekají celkem čtyři školící bloky a dvě debaty, v nichž budou moci otestovat své nově nabyté zkušenosti.</p>
-                <a href="?p=skoleni-debateru" class="pure-button">Přihlásit</a>
+            <div class="l-box pure-u-1 pure-u-md-1-3">
+                <h3 class="content-subhead"><?php echo $lang['team_application']; ?></h3>
+                <p><?php echo $lang['team_application_details']; ?></p>
+                <a href="?p=24-1-tym" class="pure-button"><?php echo $lang['apply']; ?></a>
             </div>
-            <div class="l-box pure-u-1 pure-u-md-1-5">
-                <h3 class="content-subhead">Školení rozhodčích</h3>
-                <p>Je otevřeno všem zájemcům, kteří by chtěli rozšířit řady akreditovaných rozhodčích, jedinou podmínkou je dosažení 18. roku věku v této debatní sezóně, tj. do 28. dubna 2019. Předchozí zkušenosti s formou KPDP ani akademickým debatováním nejsou nutné, v pátek proběhne jednotící seminář s úvodem do formy KPDP a ukázkovou debatou.</p>
-                <a href="?p=skoleni-rozhodcich" class="pure-button">Přihlásit</a>
+            <div class="l-box pure-u-1 pure-u-md-1-3">
+                <h3 class="content-subhead"><?php echo $lang['adjudicator_application']; ?></h3>
+                <p><?php echo $lang['adjudicator_application_details']; ?></p>
+                <a href="?p=24-1-rozhodci" class="pure-button"><?php echo $lang['apply']; ?></a>
             </div>
-            <div class="l-box pure-u-1 pure-u-md-1-5">
-                <h3 class="content-subhead">Školení koučů</h3>
-                <p>Letošní novinkou je školení koučů zaměřené především na učitele a všechny ostatní, kteří by se rádi dozvěděli, jak vypadá debatování, jak vést debatní klub nebo k čemu může debatování pomoct ve výuce. Budete moct shlédnout reálnou debatu a také Vás seznámíme s fungováním ADK i možnostmi, které nabízíme.</p>
-                <a href="?p=skoleni-koucu" class="pure-button">Přihlásit</a>
-            </div>
-            <div class="l-box pure-u-1 pure-u-md-1-5">
-                <h3 class="content-subhead">Turnaj Open Gate Open - tým</h3>
-                <p>Proběhnou čtyři kola turnaje a dva bloky školení, které se budou věnovat nejen debatní teorii ale i přípravě na teze a okruhy XXIV. ročníku Debatní ligy.</p>
-                <a href="?p=tym" class="pure-button">Přihlásit</a>
-            </div>
-            <div class="l-box pure-u-1 pure-u-md-1-5">
-                <h3 class="content-subhead">Turnaj Open Gate Open - rozhodčí</h3>
-                <p>Proběhnou čtyři kola turnaje a dva bloky školení, které se budou věnovat nejen debatní teorii ale i přípravě na teze a okruhy XXIV. ročníku Debatní ligy.</p>
-                <a href="?p=rozhodci" class="pure-button">Přihlásit</a>
+            <div class="l-box pure-u-1 pure-u-md-1-3">
+                <h3 class="content-subhead"><?php echo $lang['single_application']; ?></h3>
+                <p><?php echo $lang['single_application_details']; ?></p>
+                <a href="?p=24-1-jednotlivec" class="pure-button"><?php echo $lang['apply']; ?></a>
             </div>
         </div>
     </div>
@@ -259,23 +256,16 @@
 
 
     <?php
-        if ($page == "skoleni-debateru" or $page == "skoleni-rozhodcich" or $page == "skoleni-koucu" or $page == "rozhodci") {
+        if ($page == "24-1-rozhodci" or $page == "24-1-jednotlivec") {
             if (!isset($_SESSION["token"])) {
                 echo "<script> window.location.replace('$home'); </script>";
             }
-            $head = "Přihláška ";
             switch ($page) {
-                case "skoleni-debateru":
-                    $head .= "na školení debatérů";
+                case "24-1-rozhodci":
+                    $head = $lang['adjudicator_application'];
                     break;
-                case "skoleni-rozhodcich":
-                    $head .= "na školení rozhodčích";
-                    break;
-                case "skoleni-koucu":
-                    $head .= "na školení koučů";
-                    break;
-                case "rozhodci":
-                    $head .= "rozhodčích";
+                case "24-1-jednotlivec":
+                    $head = $lang['single_application'];
                     break;
             }
     ?>
@@ -287,15 +277,15 @@
                 <form class="pure-form pure-form-aligned" method="post">
                     <fieldset>
                         <div class="pure-control-group">
-                            <label for="name">Jméno</label>
+                            <label for="name"><?php echo $lang['name']; ?></label>
                             <input id="name" type="text" name="name" required>
                         </div>
                         <div class="pure-control-group">
-                            <label for="surname">Příjmení</label>
+                            <label for="surname"><?php echo $lang['surname']; ?></label>
                             <input id="surname" type="text" name="surname" required>
                         </div>
                         <div class="pure-control-group">
-                            <label for="day">Datum narození</label>
+                            <label for="day"><?php echo $lang['birthdate']; ?></label>
                             <select id="day" name="day">
                                 <?php
                                     for ($i = 1; $i <= 31; $i++) {
@@ -305,10 +295,9 @@
                             </select>
                             <select id="month" name="month">
                                 <?php
-                                    $months = ["leden", "únor", "březen", "duben", "květen", "červen", "červenec", "srpen", "září", "říjen", "listopad", "prosinec"];
                                     for ($i = 1; $i <= 12; $i++) {
                                         $j = $i-1;
-                                        echo "<option value=\"$i\">$months[$j]</option>";
+                                        echo "<option value=\"$i\">" . $lang['months'][$j] . "</option>";
                                     }
                                 ?>
                             </select>
@@ -322,30 +311,30 @@
                             </select>
                         </div>
                         <div class="pure-control-group">
-                            <label for="op">Číslo občanského průkazu</label>
+                            <label for="op"><?php echo $lang['id_number']; ?></label>
                             <input id="op" type="text" name="op">
                         </div>
                         <div class="pure-control-group">
-                            <label for="street">Ulice a číslo</label>
+                            <label for="street"><?php echo $lang['street_number']; ?></label>
                             <input id="street" type="text" class="smartform-street-and-number" name="street" required>
                         </div>
                         <div class="pure-control-group">
-                            <label for="city">Město</label>
+                            <label for="city"><?php echo $lang['city']; ?></label>
                             <input id="city" type="text" class="smartform-city" name="city" required>
                         </div>
                         <div class="pure-control-group">
-                            <label for="zip">PSČ</label>
+                            <label for="zip"><?php echo $lang['zip']; ?></label>
                             <input id="zip" type="text" class="smartform-zip" name="zip" required>
                         </div>
                         <div class="pure-control-group">
-                            <label for="comment">Poznámka</label>
-                            <textarea id="comment" type="text" name="note" placeholder="například čas příjezdu/odjezdu, stravovací omezení apod."></textarea>
+                            <label for="comment"><?php echo $lang['note']; ?></label>
+                            <textarea id="comment" type="text" name="note" placeholder="<?php echo $lang['note_example']; ?>"></textarea>
                         </div>
                         <input type="hidden" name="event" value="<?php echo $page; ?>">
                         <input type="hidden" name="action" value="application">
 
                         <div class="pure-controls">
-                            <button type="submit" class="pure-button">Přihlásit</button>
+                            <button type="submit" class="pure-button"><?php echo $lang['apply']; ?></button>
                         </div>
                     </fieldset>
                 </form>
@@ -357,19 +346,19 @@
     ?>
 
     <?php
-        if ($page == "tym") {
+        if ($page == "24-1-tym") {
             if (!isset($_SESSION["token"])) {
                 echo "<script> window.location.replace('$home'); </script>";
             }
     ?>
     <div class="content">
-        <h2 class="content-head is-center">Přihláška týmů</h2>
+        <h2 class="content-head is-center"><?php echo $lang['apply']; ?></h2>
 
         <div class="pure-g">
             <form class="pure-form pure-form-stacked" method="post">
                 <fieldset>
                     <div class="pure-u-1">
-                        <label for="team-name">Název týmu</label>
+                        <label for="team-name"><?php echo $lang['team_name']; ?></label>
                         <input id="team-name" type="text" name="team-name" required>
                     </div>
                 </fieldset>
@@ -380,7 +369,7 @@
                 <div id="debater-line-5"></div>
 
                 <script type="text/javascript">
-                function loadDebaterLine(number) {
+                function loadDebaterLine(number, language) {
                     var xmlhttp = new XMLHttpRequest();
 
                     xmlhttp.onreadystatechange = function() {
@@ -393,26 +382,26 @@
                                         document.getElementById("apply").removeAttribute("style");
                                     }
                                     inc = number + 1;
-                                    document.getElementById("next-debater").setAttribute("onclick", "loadDebaterLine("+inc+")");
+                                    document.getElementById("next-debater").setAttribute("onclick", "loadDebaterLine("+inc+",'"+language+"')");
                                 } else {
                                     document.getElementById("next-debater").remove();
                                 }
-                                document.getElementById("remove-debater").setAttribute("onclick", "deleteDebaterLine("+number+")");
+                                document.getElementById("remove-debater").setAttribute("onclick", "deleteDebaterLine("+number+",'"+language+"')");
 
                                 smartform.rebindAllForms(true, null);
                             }
                         }
                     };
 
-                    xmlhttp.open("GET", "team-form.php?number="+number, true);
+                    xmlhttp.open("GET", "team-form.php?number="+number+"&lang="+language, true);
                     xmlhttp.send();
                 }
 
-                function deleteDebaterLine(number) {
+                function deleteDebaterLine(number, language) {
                     document.getElementById("debater-line-"+number).innerHTML = '';
                     dec = number - 1;
-                    document.getElementById("remove-debater").setAttribute("onclick", "deleteDebaterLine("+dec+")");
-                    document.getElementById("next-debater").setAttribute("onclick", "loadDebaterLine("+number+")");
+                    document.getElementById("remove-debater").setAttribute("onclick", "deleteDebaterLine("+dec+",'"+language+"')");
+                    document.getElementById("next-debater").setAttribute("onclick", "loadDebaterLine("+number+",'"+language+"')");
                 }
                 </script>
 
@@ -420,9 +409,9 @@
                 <input type="hidden" name="action" value="team-application">
 
                 <div class="pure-controls">
-                    <button type="button" id="next-debater" class="pure-button pure-button-primary" onclick="loadDebaterLine(1);">Přidat debatéra</button>
-                    <button type="button" id="remove-debater" class="button-red pure-button" onclick="deleteDebaterLine(1);" style="visibility: hidden;">Odebrat posledního debatéra</button>
-                    <button type="submit" id="apply" class="pure-button" style="visibility: hidden;">Přihlásit</button>
+                    <button type="button" id="next-debater" class="pure-button pure-button-primary" onclick="loadDebaterLine(1,'<?php echo $language; ?>');"><?php echo $lang['add_debater']; ?></button>
+                    <button type="button" id="remove-debater" class="button-red pure-button" onclick="deleteDebaterLine(1,'<?php echo $language; ?>');" style="visibility: hidden;"><?php echo $lang['remove_debater']; ?></button>
+                    <button type="submit" id="apply" class="pure-button" style="visibility: hidden;"><?php echo $lang['apply']; ?></button>
                 </div>
             </form>
         </div>
@@ -511,14 +500,14 @@
 
                     curl_close($ch);
                 } elseif ($code == 409) {
-                    echo '<p class="is-center">Uživatel s tímto emailem již existuje. <a href="?p=prihlaseni">Přihlaste se</a>, nebo použijte jiný.</p>';
+                    echo '<p class="is-center">' . $lang['user_exists'] . ' <a href="?p=prihlaseni">' . $lang['please_login'] . '</a>, ' . $lang['use_another'] . '.</p>';
                 } elseif ($code == 422) {
                     if ($response["password"][0] == "The password confirmation does not match.") {
-                        echo '<p class="is-center">Zadaná hesla se neshodují.</p>';
+                        echo '<p class="is-center">' . $lang['password_mismatch'] . '</p>';
                     } elseif ($response["password"][0] == "The password format is invalid.") {
-                        echo '<p class="is-center">Heslo musí obsahovat alespoň tři z následujících kategorií malá písmena, velká písmena, čísla a znaky.</p>';
+                        echo '<p class="is-center">' . $lang['wrong_format'] . '</p>';
                     } elseif ($response["password"][0] == "The password must be at least 8 characters.") {
-                        echo '<p class="is-center">Heslo musí obsahovat alespoň 8 znaků.</p>';
+                        echo '<p class="is-center">' . $lang['eight_characters'] . '</p>';
                     }
                 }
 
@@ -530,7 +519,7 @@
 
                     echo "<script> window.location.replace('?p=prihlaska'); </script>";
                 } elseif ($code == 401 or $code == 500) {
-                    echo '<p class="is-center">Nesprávný email nebo heslo.</p>';
+                    echo '<p class="is-center">' . $lang['wrong_credentials'] . '</p>';
                 }
                 break;
 
