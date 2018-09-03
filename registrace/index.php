@@ -1,10 +1,17 @@
 <?php
     session_start();
 
-    if (isset($_GET["lang"])) {
-        $language = $_GET["lang"];
+    $home = "/greybox/registrace/";
+    $url = "localhost:8000/api/";
+
+    if (isset($_COOKIE["greybox-language"])) {
+        $language = $_COOKIE["greybox-language"];
     } else {
         $language = "cz";
+    }
+    if (isset($_GET["lang"])) {
+        setcookie("greybox-language", $_GET["lang"], time()+2629743, $home);
+        $language = $_GET["lang"];
     }
     include("languages/$language.php");
 ?>
@@ -46,9 +53,6 @@
 
 
 <?php
-    $home = "/greybox/registrace/";
-    $url = "localhost:8000/api/";
-
     $page = $_REQUEST["p"];
 
     if ($page == "odhlasit") {
@@ -70,7 +74,7 @@
         if ($code == 200) {
             session_unset();
             session_destroy();
-            unset($page);
+            $page = null;
         }
     }
 ?>
@@ -89,6 +93,24 @@
             <li class="pure-menu-item"><a href="?p=prihlaska" class="pure-menu-link"><?php echo $lang['home']; ?></a></li>
             <li class="pure-menu-item"><?php echo $lang['logged_in'] . ': ' . $_SESSION["email"]; ?></li>
             <li class="pure-menu-item"><a href="?p=odhlasit" class="pure-menu-link"><?php echo $lang['logout']; ?></a></li>
+            <li class="pure-menu-item">
+                <?php
+                if ($language != "cz") {
+                    echo "<a href=\"$home?p=$page&lang=cz\" class=\"pure-menu-link\">cz</a>";
+                } else {
+                    echo "cz";
+                }
+                ?>
+            </li>
+            <li class="pure-menu-item">
+                <?php
+                if ($language != "en") {
+                    echo "<a href=\"$home?p=$page&lang=en\" class=\"pure-menu-link\">en</a>";
+                } else {
+                    echo "en";
+                }
+                ?>
+            </li>
         </ul>
         <?php
             } else {
@@ -98,6 +120,24 @@
         <ul class="pure-menu-list">
             <li class="pure-menu-item"><a href="<?php echo $home; ?>" class="pure-menu-link"><?php echo $lang['home']; ?></a></li>
             <li class="pure-menu-item"><a href="?p=prihlaseni" class="pure-menu-link"><?php echo $lang['login']; ?></a></li>
+            <li class="pure-menu-item">
+                <?php
+                if ($language != "cz") {
+                    echo "<a href=\"$home?p=$page&lang=cz\" class=\"pure-menu-link\">cz</a>";
+                } else {
+                    echo "cz";
+                }
+                ?>
+            </li>
+            <li class="pure-menu-item">
+                <?php
+                if ($language != "en") {
+                    echo "<a href=\"$home?p=$page&lang=en\" class=\"pure-menu-link\">en</a>";
+                } else {
+                    echo "en";
+                }
+                ?>
+            </li>
         </ul>
         <?php   
             }

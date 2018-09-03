@@ -24,7 +24,7 @@ $lang['password_repeat'] = 'Zopakujte heslo';
 
 // event details
 $lang['event'] = 'První turnaj XXIV. ročníku Debatní ligy';
-$lang['location'] = 'Brno';
+$lang['location'] = 'Hradec Králové';
 $lang['date'] = '19.-21. října 2018';
 $lang['team_application'] = 'Přihláška týmů';
 $lang['team_application_details'] = 'Tým musí obsahovat 3-5 debatérů.';
