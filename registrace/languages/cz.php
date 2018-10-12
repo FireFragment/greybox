@@ -21,6 +21,9 @@ $lang['original_credentials'] = 'Přihlašovací údaje k původní aplikaci gre
 $lang['email'] = 'Email';
 $lang['password'] = 'Heslo';
 $lang['password_repeat'] = 'Zopakujte heslo';
+$lang['forgotten_password'] = 'Zapomenuté heslo?';
+$lang['password_recovery'] = 'Obnova hesla';
+$lang['send'] = 'Odeslat';
 
 // event details
 $lang['event'] = 'První turnaj XXIV. ročníku Debatní ligy';
@@ -44,6 +47,7 @@ $lang['city'] = 'Město';
 $lang['zip'] = 'PSČ';
 $lang['note'] = 'Poznámka';
 $lang['note_example'] = 'například čas příjezdu/odjezdu, stravovací omezení apod.';
+$lang['agreement'] = 'Souhlas s podmínkami přihlášení';
 $lang['team_name'] = 'Název týmu';
 $lang['debater'] = 'Debatér';
 $lang['add_debater'] = 'Přidat debatéra';
@@ -51,6 +55,7 @@ $lang['remove_debater'] = 'Odebrat posledního debatéra';
 $lang['application_accepted'] = 'Přihláška přijata';
 $lang['apply_or_logout'] = 'Nyní můžete přihlásit další osobu, nebo se odhlásit ze systému.';
 $lang['apply_another'] = 'Přihlásit další osobu';
+$lang['conditions'] = '<p>Přihlášením na turnaj Debatní ligy pořádaní Asociací debatních klubů, z.s., IČ 69058041, se sídlem U Vinohradské nemocnice 2255/6, 130 00 Praha 3 (dále jen „spolek“) souhlasím:</p><ul><li>se zpracováním níže uvedených osobních údajů pro účely evidence evidence členů spolku a zpracování výsledků debatních soutěží;</li><li>se zveřejněním svého jména a příjmení a svých výsledků v soutěžích pořádaných spolkem na webových stránkách spolku;</li><li>s předáváním svého jména, příjmení, data narození, adresy trvalého pobytu a čísla občanského průkazu (cestovního pasu) ubytovatelům na akcích, které spolek pořádá, a partnerským organizacím spolku v případě, že pořádají akci, na niž se přihlásím prostřednictvím spolku;</li><li>s pořizováním obrazových a zvukových záznamů svých projevů na akcích pořádaných spolkem a s jejich použitím pro vzdělávací účely a propagaci spolku.</li></ul><p>Beru na vědomí, že souhlas se zpracováním osobních údajů mohu kdykoli odvolat, a to písemně nebo elektronickou poštou k rukám prezidenta spolku. Odvolání souhlasu může mít za následek, že se nebudu moci účastnit některých akcí pořádaných spolkem a nebudou moci být vypočítány mé výsledky v soutěžích pořádaných spolkem.</p>';
 
 // error messages
 $lang['user_exists'] = 'Uživatel s tímto emailem již existuje.';

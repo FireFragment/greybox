@@ -147,6 +147,9 @@
 
 <?php
     if (empty($page)) {
+        if (isset($_SESSION["token"])) {
+            echo "<script> window.location.replace('$home.?p=prihlaska'); </script>";
+        }
 ?>
 <div class="splash-container">
     <div class="splash">
@@ -214,6 +217,7 @@
                         </div>
                     </fieldset>
                 </form>
+                <!--<p><a href="?p=zapomenute"><?php echo $lang['forgotten_password']; ?></a></p>-->
             </div>
         </div>
 
@@ -260,6 +264,34 @@
         }
     ?>
 
+    <?php
+        if ($page == "zapomenute") {
+    ?>
+    <!--<div class="content">
+        <h2 class="content-head is-center"><?php echo $lang['password_recovery']; ?></h2>
+
+        <div class="pure-g">
+            <div class="pure-u-1 is-center">
+                <form class="pure-form pure-form-aligned" method="post">
+                    <fieldset>
+                        <div class="pure-control-group">
+                            <label for="email"><?php echo $lang['email']; ?></label>
+                            <input id="email" type="email" name="email" required>
+                        </div>
+                        <input type="hidden" name="action" value="recover">
+
+                        <div class="pure-controls">
+                            <button type="submit" class="pure-button"><?php echo $lang['send']; ?></button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+
+    </div>-->
+    <?php
+        }
+    ?>
 
     <?php
         if ($page == "prihlaska") {
@@ -313,7 +345,10 @@
         <h2 class="content-head is-center"><?php echo $head; ?></h2>
 
         <div class="pure-g">
-            <div class="pure-u-1 is-center">
+            <div class="pure-u-1 pure-u-md-1-2">
+                <?php echo $lang['conditions']; ?>
+            </div>
+            <div class="pure-u-1 pure-u-md-1-2 is-center">
                 <form class="pure-form pure-form-aligned" method="post">
                     <fieldset>
                         <div class="pure-control-group">
@@ -370,6 +405,10 @@
                             <label for="comment"><?php echo $lang['note']; ?></label>
                             <textarea id="comment" type="text" name="note" placeholder="<?php echo $lang['note_example']; ?>"></textarea>
                         </div>
+                        <div class="pure-control-group">
+                            <label for="agreement"><?php echo $lang['agreement']; ?></label>
+                            <input id="agreement" type="checkbox" name="agreement" required>
+                        </div>
                         <input type="hidden" name="event" value="<?php echo $page; ?>">
                         <input type="hidden" name="action" value="application">
 
@@ -395,6 +434,9 @@
         <h2 class="content-head is-center"><?php echo $lang['apply']; ?></h2>
 
         <div class="pure-g">
+            <div class="pure-u-1">
+                <?php echo $lang['conditions']; ?>
+            </div>
             <form class="pure-form pure-form-stacked" method="post">
                 <fieldset>
                     <div class="pure-u-1">
@@ -445,6 +487,10 @@
                 }
                 </script>
 
+                <div class="pure-u-1">
+                    <label for="agreement"><?php echo $lang['agreement']; ?></label>
+                    <input id="agreement" type="checkbox" name="agreement" required>
+                </div>
                 <input type="hidden" name="event" value="<?php echo $page; ?>">
                 <input type="hidden" name="action" value="team-application">
 
@@ -480,6 +526,13 @@
                 $data = array(
                     "username" => $_POST["email"],
                     "password" => $_POST["password"]
+                );
+                break;
+
+            case 'recover':
+                $urlFinal = $url."recover";
+                $data = array (
+                    "username" => $_POST["email"]
                 );
                 break;
 
@@ -541,6 +594,7 @@
                     curl_close($ch);
                 } elseif ($code == 409) {
                     echo '<p class="is-center">' . $lang['user_exists'] . ' <a href="?p=prihlaseni">' . $lang['please_login'] . '</a>, ' . $lang['use_another'] . '.</p>';
+                    break;
                 } elseif ($code == 422) {
                     if ($response["password"][0] == "The password confirmation does not match.") {
                         echo '<p class="is-center">' . $lang['password_mismatch'] . '</p>';
@@ -549,6 +603,7 @@
                     } elseif ($response["password"][0] == "The password must be at least 8 characters.") {
                         echo '<p class="is-center">' . $lang['eight_characters'] . '</p>';
                     }
+                    break;
                 }
 
             case 'login':
@@ -558,7 +613,7 @@
                     $_SESSION["token"] = $response["api_token"];
 
                     echo "<script> window.location.replace('?p=prihlaska'); </script>";
-                } elseif ($code == 401 or $code == 500) {
+                } elseif ($code == 401 or $code == 422 or $code == 500) {
                     echo '<p class="is-center">' . $lang['wrong_credentials'] . '</p>';
                 }
                 break;
