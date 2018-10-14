@@ -2,9 +2,12 @@
     session_start();
 
     $home = "/greybox/registrace/";
-    //$home = "/greybox/registrace/test/";
-    //$url = "debate-greybox.herokuapp.com/api/";
     $url = "localhost:8000/api/";
+
+    if (isset($_SESSION['last_login']) && (time() - $_SESSION['last_login'] > 86400)) {
+        session_unset();
+        session_destroy();
+    }
 
     if (isset($_COOKIE["greybox-language"])) {
         $language = $_COOKIE["greybox-language"];
@@ -625,6 +628,7 @@
                     $_SESSION["user_id"] = $response["id"];
                     $_SESSION["email"] = $response["username"];
                     $_SESSION["token"] = $response["api_token"];
+                    $_SESSION["last_login"] = time();
 
                     echo "<script> window.location.replace('?p=prihlaska'); </script>";
                 } elseif ($code == 401 or $code == 422 or $code == 500) {
