@@ -30,6 +30,11 @@ class RegistrationController extends Controller
         return response()->json(Registration::find($id));
     }
 
+    public function showByUser($id)
+    {
+        return response()->json(Registration::where('registered_by', $id)->where('event', 'like', '2%')->get());
+    }
+
     public function create(Request $request)
     {
         // TBD

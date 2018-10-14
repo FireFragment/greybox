@@ -2,6 +2,8 @@
     session_start();
 
     $home = "/greybox/registrace/";
+    //$home = "/greybox/registrace/test/";
+    //$url = "debate-greybox.herokuapp.com/api/";
     $url = "localhost:8000/api/";
 
     if (isset($_COOKIE["greybox-language"])) {
@@ -14,6 +16,23 @@
         $language = $_GET["lang"];
     }
     include("languages/$language.php");
+
+    function getAppliedBefore() {
+        $ch = curl_init();
+
+        $urlFinal = $GLOBALS["url"]."user/".$_SESSION["user_id"]."/registration";
+        $data = array("api_token" => $_SESSION["token"]);
+
+        curl_setopt($ch, CURLOPT_URL, $urlFinal);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $response = json_decode(curl_exec($ch), true);
+        $code = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+
+        curl_close($ch);
+
+        return array("response" => $response, "code" => $code);
+    }
 ?>
 <!doctype html>
 <html lang="en">
@@ -41,6 +60,7 @@
             <link rel="stylesheet" href="css/style.css">
         <!--<![endif]-->
 
+    <script type="text/javascript" src="js/functions.js" async></script>
     <script type="text/javascript" src="https://secure.smartform.cz/api/v1/smartform.js" async></script>
     <script type="text/javascript">
         var smartform = smartform || {};
@@ -308,17 +328,17 @@
             <div class="l-box pure-u-1 pure-u-md-1-3">
                 <h3 class="content-subhead"><?php echo $lang['team_application']; ?></h3>
                 <p><?php echo $lang['team_application_details']; ?></p>
-                <a href="?p=24-1-tym" class="pure-button"><?php echo $lang['apply']; ?></a>
+                <a href="?p=24-2-tym" class="pure-button"><?php echo $lang['apply']; ?></a>
             </div>
             <div class="l-box pure-u-1 pure-u-md-1-3">
                 <h3 class="content-subhead"><?php echo $lang['adjudicator_application']; ?></h3>
                 <p><?php echo $lang['adjudicator_application_details']; ?></p>
-                <a href="?p=24-1-rozhodci" class="pure-button"><?php echo $lang['apply']; ?></a>
+                <a href="?p=24-2-rozhodci" class="pure-button"><?php echo $lang['apply']; ?></a>
             </div>
             <div class="l-box pure-u-1 pure-u-md-1-3">
                 <h3 class="content-subhead"><?php echo $lang['single_application']; ?></h3>
                 <p><?php echo $lang['single_application_details']; ?></p>
-                <a href="?p=24-1-jednotlivec" class="pure-button"><?php echo $lang['apply']; ?></a>
+                <a href="?p=24-2-jednotlivec" class="pure-button"><?php echo $lang['apply']; ?></a>
             </div>
         </div>
     </div>
@@ -328,15 +348,15 @@
 
 
     <?php
-        if ($page == "24-1-rozhodci" or $page == "24-1-jednotlivec") {
+        if ($page == "24-2-rozhodci" or $page == "24-2-jednotlivec") {
             if (!isset($_SESSION["token"])) {
                 echo "<script> window.location.replace('$home'); </script>";
             }
             switch ($page) {
-                case "24-1-rozhodci":
+                case "24-2-rozhodci":
                     $head = $lang['adjudicator_application'];
                     break;
-                case "24-1-jednotlivec":
+                case "24-2-jednotlivec":
                     $head = $lang['single_application'];
                     break;
             }
@@ -348,7 +368,7 @@
             <div class="pure-u-1 pure-u-md-1-2">
                 <?php echo $lang['conditions']; ?>
             </div>
-            <div class="pure-u-1 pure-u-md-1-2 is-center">
+            <div class="pure-u-1 pure-u-md-1-3 is-center">
                 <form class="pure-form pure-form-aligned" method="post">
                     <fieldset>
                         <div class="pure-control-group">
@@ -418,6 +438,20 @@
                     </fieldset>
                 </form>
             </div>
+            <div class="pure-u-1 pure-u-md-1-6">
+                <?php
+                    $appliedBefore = getAppliedBefore();
+                    if (!empty($appliedBefore["response"])) {
+                        echo "<h3>".$lang['applied_before']."</h3>";
+                        echo "<ul>";
+                        foreach ($appliedBefore["response"] as $person) {
+                            $birthDate = explode('-', $person['birthdate']);
+                            echo "<li><a href=\"#\" onclick=\"fillAppliedBefore('$person[name]', '$person[surname]', $birthDate[2], $birthDate[1], $birthDate[0], '$person[id_number]', '$person[street]', '$person[city]', '$person[zip]', '$person[note]')\">".$person['name']." ".$person['surname']."</a></li>";
+                        }
+                        echo "</ul>";
+                    }
+                ?>
+            </div>
         </div>
     </div>
     <?php
@@ -425,7 +459,7 @@
     ?>
 
     <?php
-        if ($page == "24-1-tym") {
+        if ($page == "24-2-tym") {
             if (!isset($_SESSION["token"])) {
                 echo "<script> window.location.replace('$home'); </script>";
             }
@@ -444,48 +478,28 @@
                         <input id="team-name" type="text" name="team-name" required>
                     </div>
                 </fieldset>
-                <div id="debater-line-1"></div>
-                <div id="debater-line-2"></div>
-                <div id="debater-line-3"></div>
-                <div id="debater-line-4"></div>
-                <div id="debater-line-5"></div>
 
-                <script type="text/javascript">
-                function loadDebaterLine(number, language) {
-                    var xmlhttp = new XMLHttpRequest();
-
-                    xmlhttp.onreadystatechange = function() {
-                        if (xmlhttp.readyState == XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4
-                            if (xmlhttp.status == 200) {
-                                document.getElementById("debater-line-"+number).innerHTML = xmlhttp.responseText;
-                                if (number < 5) {
-                                    if (number == 1) {
-                                        document.getElementById("remove-debater").removeAttribute("style");
-                                        document.getElementById("apply").removeAttribute("style");
-                                    }
-                                    inc = number + 1;
-                                    document.getElementById("next-debater").setAttribute("onclick", "loadDebaterLine("+inc+",'"+language+"')");
-                                } else {
-                                    document.getElementById("next-debater").remove();
-                                }
-                                document.getElementById("remove-debater").setAttribute("onclick", "deleteDebaterLine("+number+",'"+language+"')");
-
-                                smartform.rebindAllForms(true, null);
+                <div class="pure-u-1 pure-u-md-5-6">
+                    <div id="debater-line-1"></div>
+                    <div id="debater-line-2"></div>
+                    <div id="debater-line-3"></div>
+                    <div id="debater-line-4"></div>
+                    <div id="debater-line-5"></div>
+                </div>
+                <div id="applied-before" class="pure-u-1 pure-u-md-1-6" style="visibility: hidden">
+                    <?php
+                        $appliedBefore = getAppliedBefore();
+                        if (!empty($appliedBefore["response"])) {
+                            echo "<h3>".$lang['applied_before']."</h3>";
+                            echo "<ul>";
+                            foreach ($appliedBefore["response"] as $person) {
+                                $birthDate = explode('-', $person['birthdate']);
+                                echo "<li><a href=\"#\" onclick=\"fillAppliedBefore('$person[name]', '$person[surname]', $birthDate[2], $birthDate[1], $birthDate[0], '$person[id_number]', '$person[street]', '$person[city]', '$person[zip]', '$person[note]')\">".$person['name']." ".$person['surname']."</a></li>";
                             }
+                            echo "</ul>";
                         }
-                    };
-
-                    xmlhttp.open("GET", "team-form.php?number="+number+"&lang="+language, true);
-                    xmlhttp.send();
-                }
-
-                function deleteDebaterLine(number, language) {
-                    document.getElementById("debater-line-"+number).innerHTML = '';
-                    dec = number - 1;
-                    document.getElementById("remove-debater").setAttribute("onclick", "deleteDebaterLine("+dec+",'"+language+"')");
-                    document.getElementById("next-debater").setAttribute("onclick", "loadDebaterLine("+number+",'"+language+"')");
-                }
-                </script>
+                    ?>
+                </div>
 
                 <div class="pure-u-1">
                     <label for="agreement"><?php echo $lang['agreement']; ?></label>
