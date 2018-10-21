@@ -27,13 +27,15 @@ $lang['password_recovery'] = 'Obnova hesla';
 $lang['send'] = 'Odeslat';
 
 // event details
-$lang['event'] = 'První turnaj XXIV. ročníku Debatní ligy';
-$lang['location'] = 'Hradec Králové';
-$lang['date'] = '19.-21. října 2018';
+$lang['event'] = 'První turnaj XXIV. ročníku Debate League';
+$lang['location'] = 'Přerov';
+$lang['date'] = '23.-25. listopadu 2018';
 $lang['team_application'] = 'Přihláška týmů';
 $lang['team_application_details'] = 'Tým musí obsahovat 3-5 debatérů.';
 $lang['adjudicator_application'] = 'Přihláška rozhodčích';
-$lang['adjudicator_application_details'] = 'Slouží pro přihlášení rozhodčích i osob v pozici pedagogického dozoru.';
+$lang['adjudicator_application_details'] = 'Slouží pro přihlášení rozhodčích.';
+$lang['teacher_application'] = 'Přihláška pedagogického dozoru';
+$lang['teacher_application_details'] = 'Slouží pro přihlášení osob v pozici pedagogického dozoru.';
 $lang['single_application'] = 'Přihláška jednotlivců';
 $lang['single_application_details'] = 'Pokud nemáte tým, přihlaste se samostatně a my vám pomůžeme najít spoludebatéry.';
 

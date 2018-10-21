@@ -344,17 +344,22 @@
 
 
         <div class="pure-g">
-            <div class="l-box pure-u-1 pure-u-md-1-3">
+            <div class="l-box pure-u-1 pure-u-md-1-4">
                 <h3 class="content-subhead"><?php echo $lang['team_application']; ?></h3>
                 <p><?php echo $lang['team_application_details']; ?></p>
                 <a href="?p=24-2-tym" class="pure-button"><?php echo $lang['apply']; ?></a>
             </div>
-            <div class="l-box pure-u-1 pure-u-md-1-3">
+            <div class="l-box pure-u-1 pure-u-md-1-4">
                 <h3 class="content-subhead"><?php echo $lang['adjudicator_application']; ?></h3>
                 <p><?php echo $lang['adjudicator_application_details']; ?></p>
                 <a href="?p=24-2-rozhodci" class="pure-button"><?php echo $lang['apply']; ?></a>
             </div>
-            <div class="l-box pure-u-1 pure-u-md-1-3">
+            <div class="l-box pure-u-1 pure-u-md-1-4">
+                <h3 class="content-subhead"><?php echo $lang['teacher_application']; ?></h3>
+                <p><?php echo $lang['teacher_application_details']; ?></p>
+                <a href="?p=24-2-dozor" class="pure-button"><?php echo $lang['apply']; ?></a>
+            </div>
+            <div class="l-box pure-u-1 pure-u-md-1-4">
                 <h3 class="content-subhead"><?php echo $lang['single_application']; ?></h3>
                 <p><?php echo $lang['single_application_details']; ?></p>
                 <a href="?p=24-2-jednotlivec" class="pure-button"><?php echo $lang['apply']; ?></a>
@@ -382,19 +387,19 @@
                 } else {
                     foreach ($applied["response"] as $person) {
                         switch ($person["event"]) {
-                            case '24-1-rozhodci':
+                            case '24-2-rozhodci':
                                 $persons['adjudicators']['persons'][] = $person;
                                 $persons['adjudicators']['name'] = $lang['adjudicators'];
                                 break;
-                            case '24-1-dozor':
+                            case '24-2-dozor':
                                 $persons['teachers']['persons'][] = $person;
                                 $persons['teachers']['name'] = $lang['teachers'];
                                 break;
-                            case '24-1-tym':
+                            case '24-2-tym':
                                 (string) $teamname = $person['teamname'];
                                 $teams[$teamname][] = $person;
                                 break;
-                            case '24-1-jednotlivec':
+                            case '24-2-jednotlivec':
                                 $persons['singles']['persons'][] = $person;
                                 $persons['singles']['name'] = $lang['singles'];
                                 break;
@@ -436,7 +441,7 @@
 
 
     <?php
-        if ($page == "24-2-rozhodci" or $page == "24-2-jednotlivec") {
+        if ($page == "24-2-rozhodci" or $page == "24-2-jednotlivec" or $page == "24-2-dozor") {
             if (!isset($_SESSION["token"])) {
                 echo "<script> window.location.replace('$home'); </script>";
             }
@@ -446,6 +451,9 @@
                     break;
                 case "24-2-jednotlivec":
                     $head = $lang['single_application'];
+                    break;
+                case "24-2-dozor":
+                    $head = $lang['teacher_application'];
                     break;
             }
     ?>
