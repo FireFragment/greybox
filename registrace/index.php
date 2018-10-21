@@ -380,7 +380,7 @@
         <h2 class="content-head is-center"><?php echo $lang['list_of_applied']; ?></h2>
         <div class="pure-u-1">
             <?php
-                $applied = getApplied("24-1");
+                $applied = getApplied("24-2");
 
                 if (empty($applied['response'])) {
                     echo "<p>$lang[no_applied]</p>";
@@ -488,7 +488,7 @@
                                 <?php
                                     for ($i = 1; $i <= 12; $i++) {
                                         $j = $i-1;
-                                        echo "<option value=\"$i\">" . $lang['months']['persons'][$j] . "</option>";
+                                        echo "<option value=\"$i\">" . $lang['months'][$j] . "</option>";
                                     }
                                 ?>
                             </select>
@@ -706,11 +706,11 @@
                     echo '<p class="is-center">' . $lang['user_exists'] . ' <a href="?p=prihlaseni">' . $lang['please_login'] . '</a>, ' . $lang['use_another'] . '.</p>';
                     break;
                 } elseif ($code == 422) {
-                    if ($response["password"]['persons'][0] == "The password confirmation does not match.") {
+                    if ($response["password"][0] == "The password confirmation does not match.") {
                         echo '<p class="is-center">' . $lang['password_mismatch'] . '</p>';
-                    } elseif ($response["password"]['persons'][0] == "The password format is invalid.") {
+                    } elseif ($response["password"][0] == "The password format is invalid.") {
                         echo '<p class="is-center">' . $lang['wrong_format'] . '</p>';
-                    } elseif ($response["password"]['persons'][0] == "The password must be at least 8 characters.") {
+                    } elseif ($response["password"][0] == "The password must be at least 8 characters.") {
                         echo '<p class="is-center">' . $lang['eight_characters'] . '</p>';
                     }
                     break;
