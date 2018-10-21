@@ -6,6 +6,7 @@ $lang['description'] = 'Přihlašování na akce pořádané Asociací debatníc
 
 // menu + login
 $lang['home'] = 'Domů';
+$lang['list'] = 'Seznam';
 $lang['login'] = 'Přihlášení';
 $lang['login!'] = $lang['apply'] = 'Přihlásit';
 $lang['please_login'] = 'Přihlaste se';
@@ -57,6 +58,14 @@ $lang['apply_or_logout'] = 'Nyní můžete přihlásit další osobu, nebo se od
 $lang['apply_another'] = 'Přihlásit další osobu';
 $lang['conditions'] = '<p>Přihlášením na turnaj Debatní ligy pořádaní Asociací debatních klubů, z.s., IČ 69058041, se sídlem U Vinohradské nemocnice 2255/6, 130 00 Praha 3 (dále jen „spolek“) souhlasím:</p><ul><li>se zpracováním níže uvedených osobních údajů pro účely evidence evidence členů spolku a zpracování výsledků debatních soutěží;</li><li>se zveřejněním svého jména a příjmení a svých výsledků v soutěžích pořádaných spolkem na webových stránkách spolku;</li><li>s předáváním svého jména, příjmení, data narození, adresy trvalého pobytu a čísla občanského průkazu (cestovního pasu) ubytovatelům na akcích, které spolek pořádá, a partnerským organizacím spolku v případě, že pořádají akci, na niž se přihlásím prostřednictvím spolku;</li><li>s pořizováním obrazových a zvukových záznamů svých projevů na akcích pořádaných spolkem a s jejich použitím pro vzdělávací účely a propagaci spolku.</li></ul><p>Beru na vědomí, že souhlas se zpracováním osobních údajů mohu kdykoli odvolat, a to písemně nebo elektronickou poštou k rukám prezidenta spolku. Odvolání souhlasu může mít za následek, že se nebudu moci účastnit některých akcí pořádaných spolkem a nebudou moci být vypočítány mé výsledky v soutěžích pořádaných spolkem.</p>';
 $lang['applied_before'] = 'Vybrat z dříve přihlášených:';
+
+// list
+$lang['no_applied'] = 'Na tento turnaj zatím nebyl nikdo přihlášen.';
+$lang['list_of_applied'] = 'Seznam přihlášených';
+$lang['adjudicators'] = 'Rozhodčí';
+$lang['teachers'] = 'Pedagogický dozor';
+$lang['singles'] = 'Jednotliví debatéři';
+$lang['teams'] = 'Týmy';
 
 // error messages
 $lang['user_exists'] = 'Uživatel s tímto emailem již existuje.';

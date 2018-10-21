@@ -6,6 +6,7 @@ $lang['description'] = 'Application for events organized by the Czech Debate Ass
 
 // menu + login
 $lang['home'] = 'Home';
+$lang['list'] = 'List';
 $lang['login'] = $lang['login!'] = 'Log in';
 $lang['please_login'] = 'Please log in';
 $lang['logged_in'] = 'logged in';
@@ -55,6 +56,14 @@ $lang['apply_or_logout'] = 'Now, you can apply another person or log out.';
 $lang['apply_another'] = 'Apply another';
 $lang['conditions'] = ' <p>By signing up to a Debate League tournament organized by Asociace debatních klubů, z.s. (Czech Debate Association), IN 69058041, based at U Vinohradské nemocnice 2255/6, 130 00 Prague 3 (hereinafter referred to as “the Association”), I give my consent to the:</p><ul><li>processing of the following personal data for the purpose of member evidence of the Association and evidence of debate competitions results;</li><li>display of my name, surname, and my results in the Association’s competitions on the Association’s webpage;</li><li>transfer of my name, surname, date of birth, permanent residence address, and ID card (passport) number to the accommodation provider at events that the Association holds and to the Association’s partner organizations in case they hold an event that I sign up to through the Association;</li><li>taking pictures or audio-video recordings of my speeches made at the Association’s events and to the use of such recordings for educational purposes or Association’s promotion.</li></ul><p>I take into consideration the fact that I can withdraw this personal data processing consent via a letter or email addressed to the Association’s president whenever I would deem it necessary. The withdrawal of the consent can mean that I shall not be allowed to participate in certain Association’s events and my results in the Association’s competitions shall not be calculated.</p>';
 $lang['applied_before'] = 'Pick from previously applied:';
+
+// list
+$lang['no_applied'] = 'Na tento turnaj zatím nebyl nikdo přihlášen.';
+$lang['list_of_applied'] = 'List of applied people';
+$lang['adjudicators'] = 'Adjudicators';
+$lang['teachers'] = 'Teachers';
+$lang['singles'] = 'Single debaters';
+$lang['teams'] = 'Teams';
 
 // error messages
 $lang['user_exists'] = 'This user already exist.';

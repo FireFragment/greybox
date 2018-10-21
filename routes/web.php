@@ -26,6 +26,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 	$router->post('logout', ['uses' => 'UserController@logout']);
 
 	$router->get('user/{id}/registration', ['uses' => 'RegistrationController@showByUser']);
+	$router->get('event/{id}/registration', ['uses' => 'RegistrationController@showByEvent']);
 
 	$router->get('registration',  ['uses' => 'RegistrationController@showAll']);
 	$router->get('registration/{id}', ['uses' => 'RegistrationController@showOne']);

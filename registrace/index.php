@@ -20,11 +20,26 @@
     }
     include("languages/$language.php");
 
+    function getApplied($event) {
+        $ch = curl_init();
+
+        $urlFinal = $GLOBALS["url"]."event/".$event."/registration?api_token=".$_SESSION['token'];
+
+        curl_setopt($ch, CURLOPT_URL, $urlFinal);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $response = json_decode(curl_exec($ch), true);
+        $code = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+
+        curl_close($ch);
+
+        return array("response" => $response, "code" => $code);
+    }
+
     function getAppliedBefore() {
         $ch = curl_init();
 
         $urlFinal = $GLOBALS["url"]."user/".$_SESSION["user_id"]."/registration";
-        $data = array("api_token" => $_SESSION["token"]);
 
         curl_setopt($ch, CURLOPT_URL, $urlFinal);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -114,6 +129,7 @@
 
         <ul class="pure-menu-list">
             <li class="pure-menu-item"><a href="?p=prihlaska" class="pure-menu-link"><?php echo $lang['home']; ?></a></li>
+            <li class="pure-menu-item"><a href="?p=seznam" class="pure-menu-link"><?php echo $lang['list']; ?></a></li>
             <li class="pure-menu-item"><?php echo $lang['logged_in'] . ': ' . $_SESSION["email"]; ?></li>
             <li class="pure-menu-item"><a href="?p=odhlasit" class="pure-menu-link"><?php echo $lang['logout']; ?></a></li>
             <li class="pure-menu-item">
@@ -349,6 +365,75 @@
         }
     ?>
 
+    <?php
+        if ($page == "seznam") {
+            if (!isset($_SESSION["token"])) {
+                echo "<script> window.location.replace('$home'); </script>";
+            }
+    ?>
+    <div class="content">
+        <h2 class="content-head is-center"><?php echo $lang['list_of_applied']; ?></h2>
+        <div class="pure-u-1">
+            <?php
+                $applied = getApplied("24-1");
+
+                if (empty($applied['response'])) {
+                    echo "<p>$lang[no_applied]</p>";
+                } else {
+                    foreach ($applied["response"] as $person) {
+                        switch ($person["event"]) {
+                            case '24-1-rozhodci':
+                                $persons['adjudicators']['persons'][] = $person;
+                                $persons['adjudicators']['name'] = $lang['adjudicators'];
+                                break;
+                            case '24-1-dozor':
+                                $persons['teachers']['persons'][] = $person;
+                                $persons['teachers']['name'] = $lang['teachers'];
+                                break;
+                            case '24-1-tym':
+                                (string) $teamname = $person['teamname'];
+                                $teams[$teamname][] = $person;
+                                break;
+                            case '24-1-jednotlivec':
+                                $persons['singles']['persons'][] = $person;
+                                $persons['singles']['name'] = $lang['singles'];
+                                break;
+                        }
+                    }
+
+                    echo "<ul>";
+                    foreach ($persons as $category) {
+                        if (!empty($category['persons'])) {
+                            echo "<li>$category[name]</li>";
+                            echo "<ul>";
+                            foreach ($category['persons'] as $person) {
+                                echo "<li>$person[name] $person[surname]</li>";
+                            }
+                            echo "</ul>";
+                        } 
+                    }
+                    if (!empty($teams)) {
+                        echo "<li>$lang[teams]</li>";
+                        echo "<ul>";
+                        foreach ($teams as $teamname => $debaters) {
+                            echo "<li>$teamname</li>";
+                            echo "<ul>";
+                            foreach ($debaters as $debater) {
+                                echo "<li>$debater[name] $debater[surname]</li>";
+                            }
+                            echo "</ul>";
+                        }
+                        echo "</ul>";       
+                    }
+                    echo "</ul>";
+                }
+            ?>
+        </div>
+    </div>
+    <?php
+        }
+    ?>
+
 
     <?php
         if ($page == "24-2-rozhodci" or $page == "24-2-jednotlivec") {
@@ -395,7 +480,7 @@
                                 <?php
                                     for ($i = 1; $i <= 12; $i++) {
                                         $j = $i-1;
-                                        echo "<option value=\"$i\">" . $lang['months'][$j] . "</option>";
+                                        echo "<option value=\"$i\">" . $lang['months']['persons'][$j] . "</option>";
                                     }
                                 ?>
                             </select>
@@ -613,11 +698,11 @@
                     echo '<p class="is-center">' . $lang['user_exists'] . ' <a href="?p=prihlaseni">' . $lang['please_login'] . '</a>, ' . $lang['use_another'] . '.</p>';
                     break;
                 } elseif ($code == 422) {
-                    if ($response["password"][0] == "The password confirmation does not match.") {
+                    if ($response["password"]['persons'][0] == "The password confirmation does not match.") {
                         echo '<p class="is-center">' . $lang['password_mismatch'] . '</p>';
-                    } elseif ($response["password"][0] == "The password format is invalid.") {
+                    } elseif ($response["password"]['persons'][0] == "The password format is invalid.") {
                         echo '<p class="is-center">' . $lang['wrong_format'] . '</p>';
-                    } elseif ($response["password"][0] == "The password must be at least 8 characters.") {
+                    } elseif ($response["password"]['persons'][0] == "The password must be at least 8 characters.") {
                         echo '<p class="is-center">' . $lang['eight_characters'] . '</p>';
                     }
                     break;

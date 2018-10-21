@@ -16,7 +16,8 @@ class RegistrationController extends Controller
             'showOne',
             'create',
             'delete',
-            'confirm'
+            'confirm',
+            'showByEvent'
         ]]);
     }
 
@@ -33,6 +34,11 @@ class RegistrationController extends Controller
     public function showByUser($id)
     {
         return response()->json(Registration::where('registered_by', $id)->where('event', 'like', '2%')->get());
+    }
+
+    public function showByEvent($id)
+    {
+        return response()->json(Registration::select('registrations.name', 'registrations.surname', 'registrations.event', 'teams.name as teamname')->where('registrations.registered_by', \Auth::user()->id)->where('registrations.event', 'like', $id.'%')->leftJoin('teams', 'registrations.team', '=', 'teams.id')->get());
     }
 
     public function create(Request $request)
