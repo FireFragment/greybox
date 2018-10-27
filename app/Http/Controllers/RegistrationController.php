@@ -33,7 +33,7 @@ class RegistrationController extends Controller
 
     public function showByUser($id)
     {
-        return response()->json(Registration::select('name', 'surname', 'birthdate', 'id_number', 'street', 'city', 'zip', 'note')->where('registered_by', $id)->where('event', 'like', '2%')->groupBy('name', 'surname', 'birthdate')->orderBy('surname', 'asc')->get());
+        return response()->json(Registration::select('name', 'surname', 'birthdate', 'id_number', 'street', 'city', 'zip')->where('registered_by', $id)->where('event', 'like', '2%')->groupBy('name', 'surname', 'birthdate', 'id_number', 'street', 'city', 'zip')->orderBy('surname', 'asc')->get());
     }
 
     public function showByEvent($id)

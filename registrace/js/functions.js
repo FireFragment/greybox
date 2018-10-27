@@ -1,4 +1,4 @@
-function fillAppliedBefore(name, surname, day, month, year, id_number, street_number, city, zip, comment) {
+function fillAppliedBefore(name, surname, day, month, year, id_number, street_number, city, zip) {
     var number = "";
     var removeDebaterButton = document.getElementById("remove-debater");
     if (removeDebaterButton != null) {
@@ -16,7 +16,6 @@ function fillAppliedBefore(name, surname, day, month, year, id_number, street_nu
     document.getElementById("street"+number).value = street_number;
     document.getElementById("city"+number).value = city;
     document.getElementById("zip"+number).value = zip;
-    document.getElementById("comment"+number).value = comment;
 }
 
 function loadDebaterLine(number, language) {

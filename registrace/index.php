@@ -542,7 +542,7 @@
                         echo "<ul>";
                         foreach ($appliedBefore["response"] as $person) {
                             $birthDate = explode('-', $person['birthdate']);
-                            echo "<li><a href=\"#\" onclick=\"fillAppliedBefore('$person[name]', '$person[surname]', $birthDate[2], $birthDate[1], $birthDate[0], '$person[id_number]', '$person[street]', '$person[city]', '$person[zip]', '$person[note]')\">".$person['name']." ".$person['surname']."</a></li>";
+                            echo "<li><a href=\"#\" onclick=\"fillAppliedBefore('$person[name]', '$person[surname]', $birthDate[2], $birthDate[1], $birthDate[0], '$person[id_number]', '$person[street]', '$person[city]', '$person[zip]')\">".$person['name']." ".$person['surname']."</a></li>";
                         }
                         echo "</ul>";
                     }
@@ -590,7 +590,7 @@
                             echo "<ul>";
                             foreach ($appliedBefore["response"] as $person) {
                                 $birthDate = explode('-', $person['birthdate']);
-                                echo "<li><a href=\"#\" onclick=\"fillAppliedBefore('$person[name]', '$person[surname]', $birthDate[2], $birthDate[1], $birthDate[0], '$person[id_number]', '$person[street]', '$person[city]', '$person[zip]', '$person[note]')\">".$person['name']." ".$person['surname']."</a></li>";
+                                echo "<li><a href=\"#\" onclick=\"fillAppliedBefore('$person[name]', '$person[surname]', $birthDate[2], $birthDate[1], $birthDate[0], '$person[id_number]', '$person[street]', '$person[city]', '$person[zip]')\">".$person['name']." ".$person['surname']."</a></li>";
                             }
                             echo "</ul>";
                         }
