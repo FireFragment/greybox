@@ -24,17 +24,19 @@ $lang['password_recovery'] = 'Password recovery';
 $lang['send'] = 'Send';
 
 // event details
-$lang['event'] = 'Debate League - Year 24, first tournament (English)';
-$lang['location'] = 'Přerov';
-$lang['date'] = 'November 23-25, 2018';
+$lang['event'] = 'Debate League - Year 24, finals (Czech & English) and Open Debate Cup tournament (Czech & English)';
+$lang['location'] = 'Prague';
+$lang['date'] = 'April 20-22, 2019';
 $lang['team_application'] = 'Register a team';
-$lang['team_application_details'] = 'Your team needs to have 3-5 debaters.';
+$lang['team_application_details'] = '<strong>Please let us know in the note about your arrival and depature dates whether you need accommodation in Prague, and if the team is going to participate in Czech or English competition.</strong> Your team needs to have 3-5 debaters.';
 $lang['adjudicator_application'] = 'Register as an adjudicator';
-$lang['adjudicator_application_details'] = 'To be used for application of adjudicators.';
+$lang['adjudicator_application_details'] = '<strong>Please let us know in the note whether you need accommodation in Prague and in what language you can judge.</strong>';
 $lang['teacher_application'] = 'Register as a teacher';
 $lang['teacher_application_details'] = 'To be used for application of teachers.';
 $lang['single_application'] = 'Register as a single debater';
 $lang['single_application_details'] = 'If you don\'t have a team, apply on your own, and we will help you find one.';
+$lang['coach_application'] = 'Register for a coaches training';
+$lang['coach_application_details'] = 'The training will take place on Saturday February 9, 2019 between 9 AM and 6 PM. If you want to discuss any themes during the training, please mention them in the note field.';
 $lang['apply'] = 'Apply';
 
 // application
@@ -66,6 +68,7 @@ $lang['adjudicators'] = 'Adjudicators';
 $lang['teachers'] = 'Teachers';
 $lang['singles'] = 'Single debaters';
 $lang['teams'] = 'Teams';
+$lang['coaches_training'] = 'Coaches training';
 
 // error messages
 $lang['user_exists'] = 'This user already exists.';

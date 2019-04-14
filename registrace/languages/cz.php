@@ -27,17 +27,19 @@ $lang['password_recovery'] = 'Obnova hesla';
 $lang['send'] = 'Odeslat';
 
 // event details
-$lang['event'] = 'První turnaj XXIV. ročníku Debate League';
-$lang['location'] = 'Přerov';
-$lang['date'] = '23.-25. listopadu 2018';
+$lang['event'] = 'Finálový turnaj XXIV. ročníku Debatní ligy a Debate League a otevřený turnaj Debatního poháru a Debate Cup';
+$lang['location'] = 'Praha';
+$lang['date'] = '20.-22. dubna 2019';
 $lang['team_application'] = 'Přihláška týmů';
-$lang['team_application_details'] = 'Tým musí obsahovat 3-5 debatérů.';
+$lang['team_application_details'] = '<strong>Do poznámky prosím uveďte, zda potřebujete ubytování, data příjezdu a odjezdu a v jakém jazyce bude tým debatovat.</strong> Tým musí obsahovat 3-5 debatérů.';
 $lang['adjudicator_application'] = 'Přihláška rozhodčích';
-$lang['adjudicator_application_details'] = 'Slouží pro přihlášení rozhodčích.';
+$lang['adjudicator_application_details'] = '<strong>Do poznámky prosím uveďte, zda potřebujete ubytování, dny, kdy můžete přijít, a v jakých jazycích můžete rozhodovat.</strong>';
 $lang['teacher_application'] = 'Přihláška pedagogického dozoru';
 $lang['teacher_application_details'] = 'Slouží pro přihlášení osob v pozici pedagogického dozoru.';
 $lang['single_application'] = 'Přihláška jednotlivců';
 $lang['single_application_details'] = 'Pokud nemáte tým, přihlaste se samostatně a my vám pomůžeme najít spoludebatéry.';
+$lang['coach_application'] = 'Přihláška na školení koučů';
+$lang['coach_application_details'] = 'Školení proběhne v sobotu 9. února 2019 od 9 do 18 hodin. Do poznámky k přihlášce můžete navrhnout témata, která byste chtěli do školení zahrnout.';
 
 // application
 $lang['name'] = 'Jméno';
@@ -68,6 +70,7 @@ $lang['adjudicators'] = 'Rozhodčí';
 $lang['teachers'] = 'Pedagogický dozor';
 $lang['singles'] = 'Jednotliví debatéři';
 $lang['teams'] = 'Týmy';
+$lang['coaches_training'] = 'Školení koučů';
 
 // error messages
 $lang['user_exists'] = 'Uživatel s tímto emailem již existuje.';
