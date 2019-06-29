@@ -1,9 +1,9 @@
 import Vue from "vue";
 import Router from "vue-router";
 import DefaultLayout from "./layouts/Default.vue";
-import Home from "./views/Home.vue";
-import About from "./views/About.vue";
-import Tournament from "./views/Tournament.vue";
+import Home from "./pages/Home.vue";
+import About from "./pages/About.vue";
+import Tournament from "./pages/Tournament.vue";
 
 Vue.use(Router);
 
@@ -24,7 +24,7 @@ export default new Router({
           component: About
         },
         {
-          path: "/turnaj",
+          path: "/turnaj/:id-:slug",
           name: "tournament",
           component: Tournament
         }

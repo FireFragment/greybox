@@ -1,0 +1,17 @@
+{
+  "default": "cs",
+  "fallback": "en",
+  "languages": {
+    "cs": {
+      "en": "Czech",
+      "native": "Čeština"
+    },
+    "en": {
+      "en": "English",
+      "native": "English"
+    }
+  },
+  "files": [
+    "general"
+  ]
+}
