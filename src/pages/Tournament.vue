@@ -1,5 +1,6 @@
 <template>
   <q-page padding>
+    <h1 class="text-center text-h4">Registrace na turnaj</h1>
     <p class="text-center">
       This is a tournament page with ID <i>{{ $route.params.id }}</i> and slug
       <i>{{ $route.params.slug }}</i>
