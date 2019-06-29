@@ -7,6 +7,7 @@ import Tournament from "./pages/Tournament.vue";
 import SignIn from "./pages/Auth/SignIn.vue";
 import SignUp from "./pages/Auth/SignUp.vue";
 import SignOut from "./pages/Auth/SignOut.vue";
+import PasswordReset from "./pages/Auth/PasswordReset.vue";
 
 Vue.use(Router);
 
@@ -45,6 +46,11 @@ export default new Router({
           path: "/sign-out",
           name: "sign-out",
           component: SignOut
+        },
+        {
+          path: "/password-reset",
+          name: "password-reset",
+          component: PasswordReset
         }
       ]
     }

@@ -179,6 +179,14 @@
 
             <q-item-section>Registrace</q-item-section>
           </q-item>
+
+          <q-item clickable :to="{ name: 'password-reset' }">
+            <q-item-section avatar>
+              <q-icon name="fas fa-undo" />
+            </q-item-section>
+
+            <q-item-section>Obnovit heslo</q-item-section>
+          </q-item>
         </template>
       </q-list>
     </q-drawer>

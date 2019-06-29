@@ -1,5 +1,6 @@
 <template>
   <q-page padding>
+    <h1 class="text-center text-h4">Přihlášení</h1>
     <div class="row q-col-gutter-md">
       <q-form @submit="login" class="col-12 col-sm-6 q-mt-lg offset-sm-3">
         <q-input
@@ -39,7 +40,7 @@
             />
           </template>
         </q-input>
-        <div class="q-mt-lg q-mb-lg text-center">
+        <div class="q-mt-sm q-mb-lg text-center">
           Zapomněli jste heslo? <a href="#">Obnovte si jej.</a>
         </div>
 

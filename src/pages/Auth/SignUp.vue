@@ -1,5 +1,6 @@
 <template>
   <q-page padding>
+    <h1 class="text-center text-h4">Registrace uživatele</h1>
     <div class="row q-col-gutter-md">
       <q-form
         @submit="onSubmit"
@@ -48,7 +49,7 @@
           v-model="passwordConfirm"
           outlined
           :type="isPwd2 ? 'password' : 'text'"
-          label="ZopakujtehHeslo"
+          label="Zopakujte heslo"
           class="q-mt-sm"
           lazy-rules
           :rules="[
