@@ -43,7 +43,7 @@
             />
           </template>
         </q-input>
-        <div class="q-mt-lg q-mb-lg text-center">
+        <div class="q-mt-sm q-mb-lg text-center">
           Zapomněli jste heslo? <a href="#">Obnovte si jej.</a>
         </div>
 

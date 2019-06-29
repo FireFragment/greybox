@@ -48,7 +48,7 @@
           v-model="passwordConfirm"
           outlined
           :type="isPwd2 ? 'password' : 'text'"
-          label="ZopakujtehHeslo"
+          label="Zopakujte heslo"
           class="q-mt-sm"
           lazy-rules
           :rules="[
