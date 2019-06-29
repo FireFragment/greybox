@@ -5,7 +5,7 @@
       <i>{{ $route.params.slug }}</i>
     </p>
     <div class="row q-col-gutter-md reverse">
-      <div class="col-12 col-sm-4 col-md-3">
+      <div class="col-12 col-sm-4 col-md-6">
         <p>Převyplnit údaje dle dříve zadaných osob:</p>
         <ul>
           <li><a href="#">Adam Karásek</a></li>
