@@ -16,14 +16,14 @@ export default {
         data: {
           username: "testo@va.ci",
           password: "Testovaci69"
+        },
+        alerts: {
+          error: true
         }
-      })
-        .then(data => {
-          console.log(data);
-        })
-        .catch(data => {
-          console.error(data);
-        });
+      }).then(data => {
+        // TODO - login with data variable
+        console.log(data);
+      });
     }
   }
 };
