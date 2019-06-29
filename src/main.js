@@ -95,7 +95,35 @@ Vue.mixin({
     },
 
     // API
-    api: apiCall
+    api: apiCall,
+
+    // Get logged user's data
+    $user: function() {
+      let data = localStorage.getItem("loggedUserData");
+      if (!data) return null;
+
+      return JSON.parse(data);
+    },
+
+    // Flash
+    $flash: function(message, type = "info", icon = false) {
+      let color = null;
+      if (type === "success" || type === "done") {
+        color = "green";
+        if (!icon) icon = "check";
+      } else if (type === "error" || type === "fail") {
+        color = "red";
+        if (!icon) icon = "times";
+      }
+
+      return this.$q.notify({
+        color,
+        icon: icon ? "fas fa-" + icon : null,
+        message: message,
+        position: "top-right",
+        timeout: 3500
+      });
+    }
   }
 });
 

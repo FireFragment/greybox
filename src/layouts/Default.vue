@@ -31,12 +31,15 @@
         >
           <template v-slot:label>
             <q-avatar
-              :style="'background-color: ' + stringToHslColor(user, 50, 60)"
+              :style="
+                'background-color: ' +
+                  stringToHslColor($user().username, 50, 60)
+              "
             >
               <img src="https://cdn.quasar.dev/img/avatar.png" v-if="!true" />
-              <template v-else>{{ user.substr(0, 1) }}</template>
+              <template v-else>{{ $user().username.substr(0, 1) }}</template>
             </q-avatar>
-            {{ user }}
+            {{ $user().username }}
           </template>
           <q-list>
             <q-item clickable>
@@ -201,13 +204,13 @@ export default {
   data() {
     return {
       leftDrawerOpen: this.$q.platform.is.desktop,
-      user: "Vašek"
+      user: null
     };
   },
   mounted() {
-    /*setInterval(() => {
+    setInterval(() => {
       this.$i18n.locale = this.$i18n.locale === "en" ? "cs" : "en";
-    }, 1000);*/
+    }, 1000);
   }
 };
 </script>

@@ -38,14 +38,7 @@ function apiCall(options) {
           else if (data.message) message = data.message;
         }
 
-        if (message)
-          this.$q.notify({
-            color: "green",
-            icon: "fas fa-check",
-            message,
-            position: "top-right",
-            timeout: Math.random() * 5000 + 3000
-          });
+        if (message) this.$flash(message, "done");
       });
 
     if (requestOptions.alerts.error)
@@ -59,16 +52,14 @@ function apiCall(options) {
           else if (data.message) message = data.message;
         }
 
-        if (message)
-          this.$q.notify({
-            color: "red",
-            icon: "fas fa-times",
-            message,
-            position: "top-right",
-            timeout: Math.random() * 5000 + 3000
-          });
+        if (message) this.$flash(message, "error");
       });
   }
+
+  if (config.debug)
+    request.catch(data => {
+      console.error(data);
+    });
 
   return request;
 }
