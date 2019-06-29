@@ -30,7 +30,7 @@
           </q-item-section>
         </q-item>
         <q-item-label header>Turnaje</q-item-label>
-        <q-item to="/cup1" exact>
+        <q-item to="/turnaj" exact>
           <q-item-section avatar>
             <q-icon name="flag" />
           </q-item-section>
@@ -38,7 +38,7 @@
             <q-item-label>1. český turnaj</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item to="/cup2" exact>
+        <q-item to="/turnaj" exact>
           <q-item-section avatar>
             <q-icon name="flag" />
           </q-item-section>
@@ -62,7 +62,7 @@
             <q-item-label caption>greybox 1.0</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item to="/about" exact>
+        <q-item to="/o-webu" exact>
           <q-item-section avatar>
             <q-icon name="info" />
           </q-item-section>
