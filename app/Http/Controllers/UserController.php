@@ -39,7 +39,14 @@ class UserController extends Controller
                     $api_token = sha1($user->id.time());
 
                     $user->update(['api_token' => $api_token]);
-                    return response()->json($user, 200);
+
+                    $return_value = array(
+                        'id_token' => $api_token,
+                        'user' => $user
+                    );
+
+                    return response()->json($return_value, 200)
+                        ->header('Authorization', 'Bearer: '.$api_token);
                 } catch (\Illuminate\Database\QueryException $e) {
                     return response()->json(['message' => $e->getMessage()], 500);
                 }
