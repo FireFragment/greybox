@@ -1,108 +1,136 @@
 <template>
   <q-page padding>
-    <p>
+    <p class="text-center">
       This is a tournament page with ID <i>{{ $route.params.id }}</i> and slug
       <i>{{ $route.params.slug }}</i>
     </p>
-    <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
-      <q-input
-        outlined
-        v-model="firstname"
-        label="Jméno *"
-        lazy-rules
-        :rules="[val => (val && val.length > 0) || 'Vyplňte prosím toto pole']"
-      />
-
-      <q-input
-        outlined
-        v-model="lastname"
-        label="Příjmení *"
-        lazy-rules
-        :rules="[val => (val && val.length > 0) || 'Vyplňte prosím toto pole']"
-      />
-
-      <q-input
-        outlined
-        type="text"
-        v-model="birthdate"
-        label="Vaše datum narození *"
-        lazy-rules
-        :rules="[val => (val !== null && val !== '') || 'Vyplňte prosím číslo']"
-      >
-        <template v-slot:prepend>
-          <q-icon name="event" />
-        </template>
-      </q-input>
-
-      <q-input
-        outlined
-        v-model="idnumber"
-        label="Číslo občanského průkazu *"
-        mask="#########"
-        fill-mask="#"
-        hint="Vzor: 123456789"
-        lazy-rules
-        :rules="[val => (val !== null && val !== '') || 'Vyplňte prosím číslo']"
-      >
-        <template v-slot:prepend>
-          <q-icon name="fas fa-id-card" />
-        </template>
-      </q-input>
-
-      <q-input
-        outlined
-        v-model="street"
-        label="Ulice a číslo *"
-        lazy-rules
-        :rules="[val => (val && val.length > 0) || 'Vyplňte prosím toto pole']"
-      >
-        <template v-slot:prepend>
-          <q-icon name="fas fa-home" />
-        </template>
-      </q-input>
-
-      <q-input
-        outlined
-        v-model="city"
-        label="Město *"
-        lazy-rules
-        :rules="[val => (val && val.length > 0) || 'Vyplňte prosím toto pole']"
-      >
-        <template v-slot:prepend>
-          <q-icon name="fas fa-city" />
-        </template>
-      </q-input>
-
-      <q-input
-        outlined
-        v-model="zipcode"
-        label="Číslo PSČ *"
-        mask="### ##"
-        fill-mask="#"
-        hint="Vzor: 796 01"
-        lazy-rules
-        :rules="[val => (val && val.length > 0) || 'Vyplňte prosím toto pole']"
-      >
-        <template v-slot:prepend>
-          <q-icon name="fas fa-file-archive" />
-        </template>
-      </q-input>
-
-      <q-input v-model="note" outlined autogrow label="Poznámka" />
-
-      <q-toggle v-model="accept" label="Souhlasím s podmínkami přihlášení" />
-
-      <div>
-        <q-btn label="Odeslat" type="submit" color="primary" />
-        <q-btn
-          label="Vymazat"
-          type="reset"
-          color="primary"
-          flat
-          class="q-ml-sm"
-        />
+    <div class="row q-col-gutter-md reverse">
+      <div class="col-12 col-sm-4 col-md-3">
+        <p>Převyplnit údaje dle dříve zadaných osob:</p>
+        <ul>
+          <li><a href="#">Adam Karásek</a></li>
+          <li><a href="#">Jakub Szymsza</a></li>
+          <li><a href="#">Ladislav Burgr</a></li>
+        </ul>
       </div>
-    </q-form>
+      <q-form
+        @submit="onSubmit"
+        @reset="onReset"
+        class="col-12 col-sm-8 col-md-6"
+      >
+        <q-input
+          outlined
+          v-model="firstname"
+          label="Jméno *"
+          lazy-rules
+          :rules="[
+            val => (val && val.length > 0) || 'Vyplňte prosím toto pole'
+          ]"
+        />
+
+        <q-input
+          outlined
+          v-model="lastname"
+          label="Příjmení *"
+          lazy-rules
+          :rules="[
+            val => (val && val.length > 0) || 'Vyplňte prosím toto pole'
+          ]"
+        />
+
+        <q-input
+          outlined
+          type="text"
+          v-model="birthdate"
+          label="Vaše datum narození *"
+          lazy-rules
+          :rules="[
+            val => (val !== null && val !== '') || 'Vyplňte prosím číslo'
+          ]"
+        >
+          <template v-slot:prepend>
+            <q-icon name="event" />
+          </template>
+        </q-input>
+
+        <q-input
+          outlined
+          v-model="idnumber"
+          label="Číslo občanského průkazu *"
+          mask="#########"
+          fill-mask="#"
+          hint="Vzor: 123456789"
+          lazy-rules
+          :rules="[
+            val => (val !== null && val !== '') || 'Vyplňte prosím číslo'
+          ]"
+        >
+          <template v-slot:prepend>
+            <q-icon name="fas fa-id-card" />
+          </template>
+        </q-input>
+
+        <q-input
+          outlined
+          v-model="street"
+          label="Ulice a číslo *"
+          lazy-rules
+          :rules="[
+            val => (val && val.length > 0) || 'Vyplňte prosím toto pole'
+          ]"
+        >
+          <template v-slot:prepend>
+            <q-icon name="fas fa-home" />
+          </template>
+        </q-input>
+
+        <q-input
+          outlined
+          v-model="city"
+          label="Město *"
+          lazy-rules
+          :rules="[
+            val => (val && val.length > 0) || 'Vyplňte prosím toto pole'
+          ]"
+        >
+          <template v-slot:prepend>
+            <q-icon name="fas fa-city" />
+          </template>
+        </q-input>
+
+        <q-input
+          outlined
+          v-model="zipcode"
+          label="Číslo PSČ *"
+          mask="### ##"
+          fill-mask="#"
+          hint="Vzor: 796 01"
+          lazy-rules
+          :rules="[
+            val => (val && val.length > 0) || 'Vyplňte prosím toto pole'
+          ]"
+        >
+          <template v-slot:prepend>
+            <q-icon name="fas fa-file-archive" />
+          </template>
+        </q-input>
+
+        <q-input v-model="note" outlined autogrow label="Poznámka" />
+
+        <q-toggle v-model="accept" label="Souhlasím s podmínkami přihlášení" />
+
+        <div class="text-center">
+          <q-btn label="Odeslat" type="submit" color="primary" />
+          <q-btn
+            label="Vymazat"
+            type="reset"
+            color="primary"
+            flat
+            class="q-ml-sm"
+          />
+        </div>
+      </q-form>
+    </div>
   </q-page>
 </template>
 
