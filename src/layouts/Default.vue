@@ -26,7 +26,7 @@
         <q-btn-dropdown stretch flat content-class="no-maxwidth-menu">
           <template v-slot:label>
             <q-avatar
-              :style="'background-color: ' + stringToHslColor(user, 30, 80)"
+              :style="'background-color: ' + stringToHslColor(user, 50, 60)"
             >
               <img src="https://cdn.quasar.dev/img/avatar.png" v-if="!true" />
               <template v-else>{{ user.substr(0, 1) }}</template>
@@ -168,19 +168,6 @@ export default {
 
       return "hsl(" + h + ", " + s + "%, " + l + "%)";
     }
-  },
-  mounted() {
-    setInterval(() => {
-      let length = 7;
-      let result = "";
-      let characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-      let charactersLength = characters.length;
-      for (let i = 0; i < length; i++)
-        result += characters.charAt(
-          Math.floor(Math.random() * charactersLength)
-        );
-      this.user = result;
-    }, 1000);
   }
 };
 </script>
