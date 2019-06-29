@@ -1,5 +1,9 @@
 <template>
   <q-page padding>
+    <p>
+      This is a tournament page with ID <i>{{ $route.params.id }}</i> and slug
+      <i>{{ $route.params.slug }}</i>
+    </p>
     <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
       <q-input
         outlined
