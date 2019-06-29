@@ -154,7 +154,7 @@ export default {
   data() {
     return {
       leftDrawerOpen: this.$q.platform.is.desktop,
-      user: "Kuxa"
+      user: "Vašek"
     };
   },
   methods: {
