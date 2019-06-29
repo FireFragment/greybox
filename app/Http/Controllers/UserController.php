@@ -156,8 +156,12 @@ class UserController extends Controller
 
     public function delete($id)
     {
-        User::findOrFail($id)->delete();
-        return response('Deleted successfully', 200);
+        try {
+            User::findOrFail($id)->delete();
+            return response()->json(['message' => 'Deleted successfully.'], 204);
+        } catch (\Illuminate\Database\QueryException $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 
     public function sendResetPasswordEmail(Request $request)
@@ -177,7 +181,7 @@ class UserController extends Controller
                 try {
                     $mail_data = array('token' => $recovery_token);
                     Mail::to($username)->send(new ResetPassword($mail_data));
-                    return response()->json(['message' => "E-mail sent. Token: $recovery_token"], 200);
+                    return response()->json(['message' => 'E-mail sent.'], 200);
                 } catch (\Exception $e) {
                     return response()->json(['message' => $e->getMessage()], 500);
                 }
