@@ -69,7 +69,7 @@
             <q-icon name="home" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Hlavní stránka</q-item-label>
+            <q-item-label>{{ tr("general.homepage") }}</q-item-label>
           </q-item-section>
         </q-item>
         <q-item-label header>Turnaje</q-item-label>
@@ -180,6 +180,11 @@ export default {
 
       return "hsl(" + h + ", " + s + "%, " + l + "%)";
     }
+  },
+  mounted() {
+    /*setInterval(() => {
+      this.$i18n.locale = this.$i18n.locale === "en" ? "cs" : "en";
+    }, 1000);*/
   }
 };
 </script>
