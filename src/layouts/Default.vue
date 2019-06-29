@@ -21,21 +21,29 @@
 
     <q-drawer v-model="leftDrawerOpen" bordered content-class="bg-grey-2">
       <q-list>
-        <q-item-label header>Důležité</q-item-label>
         <q-item to="/" exact>
           <q-item-section avatar>
             <q-icon name="home" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Turnaje</q-item-label>
+            <q-item-label>Hlavní stránka</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item to="/about" exact>
+        <q-item-label header>Turnaje</q-item-label>
+        <q-item to="/cup1" exact>
           <q-item-section avatar>
-            <q-icon name="info" />
+            <q-icon name="flag" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Info</q-item-label>
+            <q-item-label>1. český turnaj</q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item to="/cup2" exact>
+          <q-item-section avatar>
+            <q-icon name="flag" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>2. anglický turnaj</q-item-label>
           </q-item-section>
         </q-item>
 
@@ -52,6 +60,14 @@
           <q-item-section>
             <q-item-label>Statistiky</q-item-label>
             <q-item-label caption>greybox 1.0</q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item to="/about" exact>
+          <q-item-section avatar>
+            <q-icon name="info" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>O webu</q-item-label>
           </q-item-section>
         </q-item>
       </q-list>
