@@ -42,11 +42,16 @@ class UserController extends Controller
 
                     $return_value = array(
                         'id_token' => $api_token,
-                        'user' => $user
+                        'id' => $user->id,
+                        'username' => $user->username,
+                        'api_token' => $user->api_token,
+                        'created_at' => $user->created_at,
+                        'updated_at' => $user->updated_at
                     );
 
                     return response()->json($return_value, 200)
-                        ->header('Authorization', 'Bearer: '.$api_token);
+                        ->header('Authorization', 'Bearer '.$api_token)
+                        ->header('Access-Control-Expose-Headers', 'Authorization');
                 } catch (\Illuminate\Database\QueryException $e) {
                     return response()->json(['message' => $e->getMessage()], 500);
                 }
