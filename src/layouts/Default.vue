@@ -74,88 +74,53 @@
 
     <q-drawer v-model="leftDrawerOpen" bordered content-class="bg-grey-2">
       <q-list>
-        <q-item-label header>Navigation</q-item-label>
         <q-item to="/" exact>
           <q-item-section avatar>
             <q-icon name="home" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Home</q-item-label>
+            <q-item-label>Hlavní stránka</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item to="/about" exact>
+        <q-item-label header>Turnaje</q-item-label>
+        <q-item to="/turnaj" exact>
           <q-item-section avatar>
-            <q-icon name="info" />
+            <q-icon name="flag" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>About</q-item-label>
+            <q-item-label>1. český turnaj</q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item to="/turnaj" exact>
+          <q-item-section avatar>
+            <q-icon name="flag" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>2. anglický turnaj</q-item-label>
           </q-item-section>
         </q-item>
 
-        <q-item-label header>Essential Links</q-item-label>
-        <q-item clickable tag="a" target="_blank" href="https://quasar.dev">
+        <q-item-label header>Důležité odkazy</q-item-label>
+        <q-item
+          clickable
+          tag="a"
+          target="_blank"
+          href="https://debatovani.cz/greybox/"
+        >
           <q-item-section avatar>
             <q-icon name="school" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Docs</q-item-label>
-            <q-item-label caption>quasar.dev</q-item-label>
+            <q-item-label>Statistiky</q-item-label>
+            <q-item-label caption>greybox 1.0</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item
-          clickable
-          tag="a"
-          target="_blank"
-          href="https://github.com/quasarframework/"
-        >
+        <q-item to="/o-webu" exact>
           <q-item-section avatar>
-            <q-icon name="code" />
+            <q-icon name="info" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Github</q-item-label>
-            <q-item-label caption>github.com/quasarframework</q-item-label>
-          </q-item-section>
-        </q-item>
-        <q-item
-          clickable
-          tag="a"
-          target="_blank"
-          href="https://chat.quasar.dev"
-        >
-          <q-item-section avatar>
-            <q-icon name="chat" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>Discord Chat Channel</q-item-label>
-            <q-item-label caption>chat.quasar.dev</q-item-label>
-          </q-item-section>
-        </q-item>
-        <q-item
-          clickable
-          tag="a"
-          target="_blank"
-          href="https://forum.quasar.dev"
-        >
-          <q-item-section avatar>
-            <q-icon name="forum" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>Forum</q-item-label>
-            <q-item-label caption>forum.quasar.dev</q-item-label>
-          </q-item-section>
-        </q-item>
-        <q-item
-          clickable
-          tag="a"
-          target="_blank"
-          href="https://twitter.com/quasarframework"
-        >
-          <q-item-section avatar>
-            <q-icon name="rss_feed" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>Twitter</q-item-label>
-            <q-item-label caption>@quasarframework</q-item-label>
+            <q-item-label>O webu</q-item-label>
           </q-item-section>
         </q-item>
       </q-list>
