@@ -12,10 +12,10 @@
         />
 
         <q-toolbar-title>
-          Quasar App
+          Greybox 2.0
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <div>uživatel Grepl</div>
       </q-toolbar>
     </q-header>
 
