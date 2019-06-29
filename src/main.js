@@ -7,12 +7,12 @@ import config from "./config";
 
 Vue.config.productionTip = false;
 
-// localization
+// Localization
 import VueI18n from "vue-i18n";
 
 Vue.use(VueI18n);
 
-// import localization data from JSONs
+// Import localization data from JSONs
 import i18nConfig from "./translation/config.json";
 let translationFiles = i18nConfig.files;
 let languageData = i18nConfig.languages;
@@ -55,9 +55,9 @@ for (let locale in languageData) {
 const i18n = new VueI18n({
   locale: i18nConfig.default,
   fallbackLocale: i18nConfig.fallback,
-  messages: translations
-  // silentFallbackWarn: true,
-  // silentTranslationWarn: true
+  messages: translations,
+  silentFallbackWarn: !config.debug,
+  silentTranslationWarn: !config.debug
 });
 
 Vue.mixin({
