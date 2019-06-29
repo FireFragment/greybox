@@ -1,6 +1,6 @@
 <template>
   <q-page class="flex flex-center">
-    <img alt="Quasar logo" src="../assets/logo_napis.png" />
+    <img alt="Logo ADK" src="../assets/logo_napis.png" />
   </q-page>
 </template>
 
@@ -8,6 +8,6 @@
 
 <script>
 export default {
-  name: "PageHome"
+  name: "Homepage"
 };
 </script>
