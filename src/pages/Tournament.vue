@@ -40,11 +40,7 @@
           </q-scroll-area>
         </q-list>
       </div>
-      <q-form
-        @submit="onSubmit"
-        @reset="onReset"
-        class="col-12 col-sm-8 col-md-6"
-      >
+      <q-form class="col-12 col-sm-8 col-md-6">
         <div class="row q-col-gutter-md q-pb-sm">
           <q-input
             outlined

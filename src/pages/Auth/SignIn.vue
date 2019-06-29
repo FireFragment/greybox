@@ -1,11 +1,7 @@
 <template>
   <q-page padding>
     <div class="row q-col-gutter-md">
-      <q-form
-        @submit="onSubmit"
-        @reset="onReset"
-        class="col-12 col-sm-6 q-mt-lg offset-sm-3"
-      >
+      <q-form @submit="login" class="col-12 col-sm-6 q-mt-lg offset-sm-3">
         <q-input
           outlined
           type="email"
@@ -64,6 +60,23 @@ export default {
       password: null,
       isPwd: true
     };
+  },
+  methods: {
+    login() {
+      this.$auth
+        .login({
+          username: this.email,
+          password: this.password
+        })
+        .then(data => {
+          localStorage.setItem("loggedUserData", JSON.stringify(data.data));
+          this.$flash("Přihlášení úspěšné", "done");
+        })
+        .catch(data => {
+          this.$router.replace({ name: "sign-in" });
+          this.$flash(data.response.data.message, "error");
+        });
+    }
   }
 };
 </script>
