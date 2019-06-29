@@ -23,7 +23,12 @@
           </span>
         </q-toolbar-title>
 
-        <q-btn-dropdown stretch flat content-class="no-maxwidth-menu">
+        <q-btn-dropdown
+          stretch
+          flat
+          content-class="no-maxwidth-menu"
+          v-if="false"
+        >
           <template v-slot:label>
             <q-avatar
               :style="'background-color: ' + stringToHslColor(user, 50, 60)"
@@ -59,6 +64,9 @@
             </q-item>
           </q-list>
         </q-btn-dropdown>
+        <q-btn stretch flat v-else :to="{ name: 'sign-in' }">
+          <q-icon name="fas fa-sign-in-alt" />
+        </q-btn>
       </q-toolbar>
     </q-header>
 
@@ -127,29 +135,48 @@
         </q-item>
 
         <q-item-label header>Uživatel</q-item-label>
-        <q-item clickable>
-          <q-item-section avatar>
-            <q-icon name="fas fa-cog" />
-          </q-item-section>
+        <template v-if="false">
+          <q-item clickable>
+            <q-item-section avatar>
+              <q-icon name="fas fa-cog" />
+            </q-item-section>
 
-          <q-item-section>Nastavení účtu</q-item-section>
-        </q-item>
+            <q-item-section>Nastavení účtu</q-item-section>
+          </q-item>
 
-        <q-item clickable>
-          <q-item-section avatar>
-            <q-icon name="fas fa-download" />
-          </q-item-section>
+          <q-item clickable>
+            <q-item-section avatar>
+              <q-icon name="fas fa-download" />
+            </q-item-section>
 
-          <q-item-section>Stáhnout osobní údaje</q-item-section>
-        </q-item>
+            <q-item-section>Stáhnout osobní údaje</q-item-section>
+          </q-item>
 
-        <q-item clickable>
-          <q-item-section avatar>
-            <q-icon name="fas fa-sign-out-alt" />
-          </q-item-section>
+          <q-item clickable>
+            <q-item-section avatar>
+              <q-icon name="fas fa-sign-out-alt" />
+            </q-item-section>
 
-          <q-item-section>Odhlásit se</q-item-section>
-        </q-item>
+            <q-item-section>Odhlásit se</q-item-section>
+          </q-item>
+        </template>
+        <template v-else>
+          <q-item clickable :to="{ name: 'sign-in' }">
+            <q-item-section avatar>
+              <q-icon name="fas fa-sign-in-alt" />
+            </q-item-section>
+
+            <q-item-section>Přihlášení</q-item-section>
+          </q-item>
+
+          <q-item clickable :to="{ name: 'sign-up' }">
+            <q-item-section avatar>
+              <q-icon name="fas fa-user-plus" />
+            </q-item-section>
+
+            <q-item-section>Registrace</q-item-section>
+          </q-item>
+        </template>
       </q-list>
     </q-drawer>
 
