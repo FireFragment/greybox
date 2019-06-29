@@ -1,3 +1,9 @@
+Vašek TODO:
+Opravit routy podle https://stackoverflow.com/questions/34182806/multiple-route-file-instead-of-one-main-route-file-in-laravel-5
+Udělat heslo nullovatelné a vynullovat po resetu.
+Zhezčit mail a dořešit adresu odkazu
+Vyřešit hustotu posílání reset password mailů a jejich hromadění v DB
+
 individual points: http://www.debating.net/ADK/Vysledky/JP04.htm + mails
 
 TODO:

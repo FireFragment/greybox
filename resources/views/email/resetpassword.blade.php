@@ -1,0 +1,1 @@
+Pro obnovu hesla přejděte na adresu <a href="https://debatovani.cz/greybox/registrace/{{ $data['token'] }}">https://debatovani.cz/greybox/registrace/{{ $data['token'] }}</a>. Nebo použijte token <strong>{{ $data['token'] }}</strong>

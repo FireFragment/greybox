@@ -24,6 +24,8 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
 	$router->post('login', ['uses' => 'UserController@login']);
 	$router->post('logout', ['uses' => 'UserController@logout']);
+	$router->post('reset', ['uses' => 'UserController@sendResetPasswordEmail']);
+	$router->put('reset', ['uses' => 'UserController@resetPassword']);
 
 	$router->get('user/{id}/registration', ['uses' => 'RegistrationController@showByUser']);
 	$router->get('event/{id}/registration', ['uses' => 'RegistrationController@showByEvent']);

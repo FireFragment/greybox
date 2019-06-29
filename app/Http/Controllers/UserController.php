@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ResetPassword;
 use App\User;
+use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -14,6 +18,8 @@ class UserController extends Controller
     {
         $this->middleware('auth', ['only' => [
             'logout',
+            'showAll',
+            'showOne',
             'update',
             'delete'
         ]]);
@@ -79,7 +85,7 @@ class UserController extends Controller
              * temporary workaround
              */
             //'person_id' => 'required',
-            'username' => 'required',
+            'username' => 'required|email',
             'password' => 'required|min:8|confirmed|regex:'.$this->regex
         ]);
 
@@ -140,5 +146,64 @@ class UserController extends Controller
     {
         User::findOrFail($id)->delete();
         return response('Deleted successfully', 200);
+    }
+
+    public function sendResetPasswordEmail(Request $request)
+    {
+        $this->validate($request, [
+            'username' => 'required|email'
+        ]);
+
+        $username = $request->input('username');
+
+        $user = User::where('username', $username)->first();
+        if (!empty($user)) {
+            try {
+                $recovery_token = sha1($user->id.time());
+                DB::insert('insert into password_resets (email, token, created_at) values (?, ?, now())', array($username, $recovery_token));
+
+                try {
+                    $mail_data = array('token' => $recovery_token);
+                    Mail::to($username)->send(new ResetPassword($mail_data));
+                    return response()->json(['message' => "E-mail sent. Token: $recovery_token"], 200);
+                } catch (\Exception $e) {
+                    return response()->json(['message' => $e->getMessage()], 500);
+                }
+            } catch (\Illuminate\Database\QueryException $e) {
+                return response()->json(['message' => $e->getMessage()], 500);
+            }
+        } else {
+            return response()->json(['message' => 'User not found.'], 404);
+        }
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $this->validate($request, [
+            'token' => 'required',
+            'password' => 'required|min:8|confirmed|regex:'.$this->regex
+        ]);
+
+        $username = DB::select('select email from password_resets where token = ?', array($request->input('token')));
+        if (!empty($username)) {
+            $user = User::where('username', $username[0]->email)->first();
+            if (!empty($user)) {
+                try {
+                    $hasher = app()->make('hash');
+                    $password = $hasher->make($request->input('password'));
+
+                    $user->update([
+                        'password' => $password
+                    ]);
+                    return response()->json($user, 200);
+                } catch (\Illuminate\Database\QueryException $e) {
+                    return response()->json(['message' => $e->getMessage()], 500);
+                }
+            } else {
+                return response()->json(['message' => 'User not found.'], 404);
+            }
+        } else {
+            return response()->json(['message' => 'Recovery token not found.'], 404);
+        }
     }
 }
