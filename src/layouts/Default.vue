@@ -17,11 +17,13 @@
 
         <q-btn-dropdown stretch flat>
           <template v-slot:label>
-            <q-avatar color="orange">
-              <img src="https://cdn.quasar.dev/img/avatar.png" v-if="true">
-              <template v-else>V</template>
+            <q-avatar
+              :style="'background-color: ' + stringToHslColor(user, 30, 80)"
+            >
+              <img src="https://cdn.quasar.dev/img/avatar.png" v-if="true" />
+              <template v-else>{{ user.substr(0, 1) }}</template>
             </q-avatar>
-            Vašek
+            {{ user }}
           </template>
           <q-list>
             <q-item-label header>Folders</q-item-label>
@@ -138,8 +140,21 @@ export default {
 
   data() {
     return {
-      leftDrawerOpen: this.$q.platform.is.desktop
+      leftDrawerOpen: this.$q.platform.is.desktop,
+      user: "Kuxa"
     };
+  },
+  methods: {
+    stringToHslColor(str, s, l) {
+      var hash = 0;
+      for (let i = 0; i < str.length; i++) {
+        hash = str.charCodeAt(i) + ((hash << 5) - hash);
+      }
+
+      var h = hash % 360;
+
+      return "hsl(" + h + ", " + s + "%, " + l + "%)";
+    }
   }
 };
 </script>
