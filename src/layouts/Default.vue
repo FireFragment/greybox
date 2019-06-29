@@ -25,13 +25,13 @@
 
         <q-btn-dropdown stretch flat content-class="no-maxwidth-menu">
           <template v-slot:label>
-            <q-avatar color="orange" size="30px">
-              <img src="https://cdn.quasar.dev/img/avatar.png" v-if="true" />
-              <template v-else
-                >V</template
-              >
+            <q-avatar
+              :style="'background-color: ' + stringToHslColor(user, 30, 80)"
+            >
+              <img src="https://cdn.quasar.dev/img/avatar.png" v-if="!true" />
+              <template v-else>{{ user.substr(0, 1) }}</template>
             </q-avatar>
-            Vašek
+            {{ user }}
           </template>
           <q-list>
             <q-item clickable>
@@ -153,8 +153,34 @@ export default {
 
   data() {
     return {
-      leftDrawerOpen: this.$q.platform.is.desktop
+      leftDrawerOpen: this.$q.platform.is.desktop,
+      user: "Kuxa"
     };
+  },
+  methods: {
+    stringToHslColor(str, s, l) {
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) {
+        hash = str.charCodeAt(i) + ((hash << 5) - hash);
+      }
+
+      let h = hash % 360;
+
+      return "hsl(" + h + ", " + s + "%, " + l + "%)";
+    }
+  },
+  mounted() {
+    setInterval(() => {
+      let length = 7;
+      let result = "";
+      let characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+      let charactersLength = characters.length;
+      for (let i = 0; i < length; i++)
+        result += characters.charAt(
+          Math.floor(Math.random() * charactersLength)
+        );
+      this.user = result;
+    }, 1000);
   }
 };
 </script>
