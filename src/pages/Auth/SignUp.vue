@@ -26,6 +26,7 @@
           outlined
           :type="isPwd ? 'password' : 'text'"
           label="Heslo"
+          class="q-mt-sm"
           lazy-rules
           :rules="[
             val => (val !== null && val !== '') || 'Vyplňte prosím heslo'
@@ -48,6 +49,7 @@
           outlined
           :type="isPwd2 ? 'password' : 'text'"
           label="ZopakujtehHeslo"
+          class="q-mt-sm"
           lazy-rules
           :rules="[
             val => (val !== null && val !== '') || 'Vyplňte prosím heslo'

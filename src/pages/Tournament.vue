@@ -45,7 +45,7 @@
         @reset="onReset"
         class="col-12 col-sm-8 col-md-6"
       >
-        <div class="row q-col-gutter-md q-pb-md">
+        <div class="row q-col-gutter-md q-pb-sm">
           <q-input
             outlined
             v-model="firstname"
@@ -87,15 +87,11 @@
         <q-input
           outlined
           v-model="idnumber"
-          label="Číslo občanského průkazu *"
-          class="q-pt-md"
+          label="Číslo občanského průkazu"
+          class="q-pt-sm"
           mask="#########"
           fill-mask="#"
           hint="Vzor: 123456789"
-          lazy-rules
-          :rules="[
-            val => (val !== null && val !== '') || 'Vyplňte prosím číslo'
-          ]"
         >
           <template v-slot:prepend>
             <q-icon name="fas fa-id-card" />
@@ -106,6 +102,7 @@
           outlined
           v-model="street"
           label="Ulice a číslo *"
+          class="q-pt-sm"
           lazy-rules
           :rules="[
             val => (val && val.length > 0) || 'Vyplňte prosím toto pole'
@@ -120,6 +117,7 @@
           outlined
           v-model="city"
           label="Město *"
+          class="q-pt-sm"
           lazy-rules
           :rules="[
             val => (val && val.length > 0) || 'Vyplňte prosím toto pole'
@@ -134,6 +132,7 @@
           outlined
           v-model="zipcode"
           label="Číslo PSČ *"
+          class="q-pt-sm"
           mask="### ##"
           fill-mask="#"
           hint="Vzor: 796 01"
@@ -147,7 +146,13 @@
           </template>
         </q-input>
 
-        <q-input v-model="note" outlined autogrow label="Poznámka" />
+        <q-input
+          v-model="note"
+          class="q-mt-sm"
+          outlined
+          autogrow
+          label="Poznámka"
+        />
 
         <q-toggle v-model="accept" label="Souhlasím s podmínkami přihlášení" />
 
@@ -158,7 +163,7 @@
             type="reset"
             color="primary"
             flat
-            class="q-ml-sm"
+            class="q-pt-sm q-ml-sm"
           />
         </div>
       </q-form>
