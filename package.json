@@ -11,11 +11,13 @@
     "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm run dev"
   },
   "dependencies": {
+    "@d0whc3r/vue-auth-plugin": "^1.2.0",
     "@quasar/extras": "^1.0.0",
     "axios": "^0.19.0",
     "core-js": "^2.6.5",
     "quasar": "^1.0.0-beta.1",
     "vue": "^2.6.10",
+    "vue-axios": "^2.1.4",
     "vue-i18n": "^8.11.2",
     "vue-router": "^3.0.3"
   },

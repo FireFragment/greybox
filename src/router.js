@@ -6,6 +6,7 @@ import About from "./pages/About.vue";
 import Tournament from "./pages/Tournament.vue";
 import SignIn from "./pages/Auth/SignIn.vue";
 import SignUp from "./pages/Auth/SignUp.vue";
+import SignOut from "./pages/Auth/SignOut.vue";
 
 Vue.use(Router);
 
@@ -39,6 +40,11 @@ export default new Router({
           path: "/sign-up",
           name: "sign-up",
           component: SignUp
+        },
+        {
+          path: "/sign-out",
+          name: "sign-out",
+          component: SignOut
         }
       ]
     }

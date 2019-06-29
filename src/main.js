@@ -1,9 +1,12 @@
 import Vue from "vue";
+import axios from "axios";
+import VueAxios from "vue-axios";
 import App from "./App.vue";
 import router from "./router";
 import "./quasar";
 import apiCall from "./api";
 import config from "./config";
+import VueAuth from "@d0whc3r/vue-auth-plugin";
 
 Vue.config.productionTip = false;
 
@@ -11,6 +14,7 @@ Vue.config.productionTip = false;
 import VueI18n from "vue-i18n";
 
 Vue.use(VueI18n);
+Vue.use(VueAxios, axios);
 
 // Import localization data from JSONs
 import i18nConfig from "./translation/config.json";
@@ -60,6 +64,7 @@ const i18n = new VueI18n({
   silentTranslationWarn: !config.debug
 });
 
+// Mixins
 Vue.mixin({
   data() {
     return {
@@ -80,6 +85,30 @@ Vue.mixin({
 
     // API
     api: apiCall
+  }
+});
+
+// Auth
+Vue.router = router;
+Vue.use(VueAuth, {
+  tokenStore: "localStorage",
+  loginData: {
+    url: config.api.baseURL + "login",
+    method: "POST",
+    redirect: "/",
+    headerToken: "Authorization",
+    fetchUser: false
+  },
+  authRedirect: "/login",
+  authMeta: "auth",
+  rolesVar: "roles",
+  tokenDefaultName: "vue_auth_token",
+  userDefaultName: "vue_auth_user",
+  headerTokenReplace: "{auth_token}",
+  tokenType: "",
+
+  logoutData: {
+    redirect: "/"
   }
 });
 

@@ -27,7 +27,7 @@
           stretch
           flat
           content-class="no-maxwidth-menu"
-          v-if="false"
+          v-if="$auth.check()"
         >
           <template v-slot:label>
             <q-avatar
@@ -55,7 +55,7 @@
               <q-item-section>Stáhnout osobní údaje</q-item-section>
             </q-item>
 
-            <q-item clickable>
+            <q-item :to="{ name: 'sign-out' }" clickable>
               <q-item-section avatar>
                 <q-icon name="fas fa-sign-out-alt" />
               </q-item-section>
@@ -135,7 +135,7 @@
         </q-item>
 
         <q-item-label header>Uživatel</q-item-label>
-        <template v-if="false">
+        <template v-if="$auth.check()">
           <q-item clickable>
             <q-item-section avatar>
               <q-icon name="fas fa-cog" />
@@ -152,7 +152,7 @@
             <q-item-section>Stáhnout osobní údaje</q-item-section>
           </q-item>
 
-          <q-item clickable>
+          <q-item :to="{ name: 'sign-out' }" clickable>
             <q-item-section avatar>
               <q-icon name="fas fa-sign-out-alt" />
             </q-item-section>

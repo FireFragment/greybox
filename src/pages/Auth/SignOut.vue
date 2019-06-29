@@ -8,6 +8,9 @@
 
 <script>
 export default {
-  name: "PageSignIn"
+  name: "PageSignOut",
+  mounted() {
+    this.$auth.logout();
+  }
 };
 </script>

@@ -11,19 +11,18 @@ export default {
   name: "Homepage",
   methods: {
     apiTest() {
-      this.api({
-        url: "login",
-        data: {
+      this.$auth
+        .login({
           username: "testo@va.ci",
           password: "Testovaci69"
-        },
-        alerts: {
-          error: true
-        }
-      }).then(data => {
-        // TODO - login with data variable
-        console.log(data);
-      });
+        })
+        .then(data => {
+          console.log(data);
+          console.log(this.$auth.token());
+        })
+        .catch(data => {
+          console.log(data);
+        });
     }
   }
 };
