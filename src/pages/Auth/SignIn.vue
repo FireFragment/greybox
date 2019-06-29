@@ -8,16 +8,16 @@
       >
         <q-input
           outlined
-          type="text"
-          v-model="login"
-          label="Přihlašovací jméno"
+          type="email"
+          v-model="email"
+          label="Přihlašovací e-mail"
           lazy-rules
           :rules="[
-            val => (val !== null && val !== '') || 'Vyplňte prosím jméno'
+            val => (val !== null && val !== '') || 'Vyplňte prosím e-mail'
           ]"
         >
           <template v-slot:prepend>
-            <q-icon name="fas fa-user" />
+            <q-icon name="fas fa-at" />
           </template>
         </q-input>
 
@@ -28,7 +28,7 @@
           label="Heslo"
           lazy-rules
           :rules="[
-            val => (val !== null && val !== '') || 'Vyplňte prosím jméno'
+            val => (val !== null && val !== '') || 'Vyplňte prosím heslo'
           ]"
         >
           <template v-slot:prepend>
@@ -47,7 +47,7 @@
         </div>
 
         <div class="text-center">
-          <q-btn label="Odeslat" type="submit" color="primary" />
+          <q-btn label="Přihlásit" type="submit" color="primary" />
         </div>
       </q-form>
     </div>
@@ -59,7 +59,7 @@ export default {
   name: "PageSignIn",
   data() {
     return {
-      login: null,
+      email: null,
       password: null,
       isPwd: true
     };
