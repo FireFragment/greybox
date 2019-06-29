@@ -1,4 +1,18 @@
-.q-toolbar
-  .q-btn-dropdown
-    .q-avatar
-      margin-right: 5px
+.q-header
+  background-color: black
+  .q-toolbar
+    .q-btn-dropdown
+      .q-avatar
+        margin-right: .5rem
+
+    .q-toolbar__title span
+      .q-avatar
+        margin-right: .5rem
+      img
+        transition: transform .8s ease-in-out
+
+      &:hover img
+        transform: rotate(720deg)
+
+.q-menu.no-maxwidth-menu
+  max-width: 95vw !important

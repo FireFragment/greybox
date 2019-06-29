@@ -1,5 +1,8 @@
 <template>
-  <q-layout view="lHh Lpr lFf" :class="'page-' + $router.currentRoute.name">
+  <q-layout
+    view="lHh Lpr lFf"
+    :class="'bg-grey-2 page-' + $router.currentRoute.name"
+  >
     <q-header elevated>
       <q-toolbar>
         <q-btn
@@ -12,67 +15,54 @@
         />
 
         <q-toolbar-title>
-          Greybox 2.0
+          <span>
+            <q-avatar size="35px">
+              <img src="../assets/logo.png" />
+            </q-avatar>
+            greybox 2.0
+          </span>
         </q-toolbar-title>
 
-        <q-btn-dropdown stretch flat>
+        <q-btn-dropdown stretch flat content-class="no-maxwidth-menu">
           <template v-slot:label>
-            <q-avatar color="orange">
-              <img src="https://cdn.quasar.dev/img/avatar.png" v-if="true">
-              <template v-else>V</template>
+            <q-avatar color="orange" size="30px">
+              <img src="https://cdn.quasar.dev/img/avatar.png" v-if="true" />
+              <template v-else
+                >V</template
+              >
             </q-avatar>
             Vašek
           </template>
           <q-list>
-            <q-item-label header>Folders</q-item-label>
-            <q-item
-              v-for="n in 3"
-              :key="`x.${n}`"
-              clickable
-              v-close-popup
-              tabindex="0"
-            >
+            <q-item clickable>
               <q-item-section avatar>
-                <q-avatar icon="folder" color="secondary" text-color="white" />
+                <q-icon name="fas fa-cog" />
               </q-item-section>
-              <q-item-section>
-                <q-item-label>Photos</q-item-label>
-                <q-item-label caption>February 22, 2016</q-item-label>
-              </q-item-section>
-              <q-item-section side>
-                <q-icon name="info" />
-              </q-item-section>
+
+              <q-item-section>Nastavení účtu</q-item-section>
             </q-item>
-            <q-separator inset spaced />
-            <q-item-label header>Files</q-item-label>
-            <q-item
-              v-for="n in 3"
-              :key="`y.${n}`"
-              clickable
-              v-close-popup
-              tabindex="0"
-            >
+
+            <q-item clickable>
               <q-item-section avatar>
-                <q-avatar
-                  icon="assignment"
-                  color="primary"
-                  text-color="white"
-                />
+                <q-icon name="fas fa-download" />
               </q-item-section>
-              <q-item-section>
-                <q-item-label>Vacation</q-item-label>
-                <q-item-label caption>February 22, 2016</q-item-label>
+
+              <q-item-section>Stáhnout osobní údaje</q-item-section>
+            </q-item>
+
+            <q-item clickable>
+              <q-item-section avatar>
+                <q-icon name="fas fa-sign-out-alt" />
               </q-item-section>
-              <q-item-section side>
-                <q-icon name="info" />
-              </q-item-section>
+
+              <q-item-section>Odhlásit se</q-item-section>
             </q-item>
           </q-list>
         </q-btn-dropdown>
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" bordered content-class="bg-grey-2">
+    <q-drawer v-model="leftDrawerOpen" bordered>
       <q-list>
         <q-item to="/" exact>
           <q-item-section avatar>
@@ -122,6 +112,31 @@
           <q-item-section>
             <q-item-label>O webu</q-item-label>
           </q-item-section>
+        </q-item>
+
+        <q-item-label header>Uživatel</q-item-label>
+        <q-item clickable>
+          <q-item-section avatar>
+            <q-icon name="fas fa-cog" />
+          </q-item-section>
+
+          <q-item-section>Nastavení účtu</q-item-section>
+        </q-item>
+
+        <q-item clickable>
+          <q-item-section avatar>
+            <q-icon name="fas fa-download" />
+          </q-item-section>
+
+          <q-item-section>Stáhnout osobní údaje</q-item-section>
+        </q-item>
+
+        <q-item clickable>
+          <q-item-section avatar>
+            <q-icon name="fas fa-sign-out-alt" />
+          </q-item-section>
+
+          <q-item-section>Odhlásit se</q-item-section>
         </q-item>
       </q-list>
     </q-drawer>
