@@ -110,11 +110,11 @@
           href="https://debatovani.cz/greybox/"
         >
           <q-item-section avatar>
-            <q-icon name="school" />
+            <q-icon name="fas fa-chart-bar" />
           </q-item-section>
           <q-item-section>
             <q-item-label>Statistiky</q-item-label>
-            <q-item-label caption>greybox 1.0</q-item-label>
+            <q-item-label caption>greybox v1.0</q-item-label>
           </q-item-section>
         </q-item>
         <q-item to="/o-webu" exact>
