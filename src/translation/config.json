@@ -12,6 +12,6 @@
     }
   },
   "files": [
-    "general"
+    "general", "auth"
   ]
 }

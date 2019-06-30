@@ -74,7 +74,7 @@ Vue.mixin({
   methods: {
     // Translation simplification
     // If translationPrefix data is set in component, it will be automcatically placed in front of translation keys
-    tr: function(key, options = null, usePrefix = true) {
+    $tr: function(key, options = null, usePrefix = true) {
       let prefix = this.translationPrefix;
 
       // Use prefix
@@ -111,9 +111,11 @@ Vue.mixin({
       return this.$q.notify({
         color,
         icon: icon ? "fas fa-" + icon : null,
-        message: message,
+        message: "<span>" + message + "</span>",
+        html: true,
         position: "top-right",
-        timeout: 3500
+        timeout: 3500,
+        closeBtn: "-"
       });
     }
   }
@@ -126,16 +128,13 @@ Vue.use(VueAuth, {
   loginData: {
     url: config.api.baseURL + "login",
     method: "POST",
-    redirect: "/",
-    headerToken: "Authorization",
-    fetchUser: true
+    headerToken: "Authorization"
   },
   fetchData: {
-    url:
-      config.api.baseURL + "user/" + JSON.parse(localStorage.loggedUserData).id,
+    url: config.api.baseURL + "user",
     method: "GET"
   },
-  authRedirect: "/login",
+  authRedirect: "/prihlaseni",
   authMeta: "auth",
   rolesVar: "roles",
   tokenDefaultName: "vue_auth_token",
