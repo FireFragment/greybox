@@ -82,6 +82,15 @@ Vue.mixin({
       return this.$t(key, options);
     },
 
+    // Get path to route
+    $path: function(route, language = null) {
+      if (!language)
+        language = this.$i18n.locale;
+
+      let routes = require("./translation/" + language + "/paths.json");
+      return "/" + routes[route];
+    },
+
     $stringToHslColor: function(str, s, l) {
       let hash = 0;
       for (let i = 0; i < str.length; i++) {

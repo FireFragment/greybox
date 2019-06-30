@@ -11,10 +11,7 @@
       </q-item>
       <q-item-label header>{{ $tr("general.tournaments") }}</q-item-label>
       <q-item
-        :to="{
-          name: 'tournament',
-          params: { id: 952, slug: 'prvni-cesky-turnaj' }
-        }"
+        :to="$path('tournament') + '/' + 952 + '-' + 'prvni-cesky-turnaj'"
         exact
       >
         <q-item-section avatar>
@@ -25,10 +22,7 @@
         </q-item-section>
       </q-item>
       <q-item
-        :to="{
-          name: 'tournament',
-          params: { id: 156, slug: 'druhy-anglicky-turnaj' }
-        }"
+        :to="$path('tournament') + '/' + 156 + '-' + 'druhy-anglicky-turnaj'"
         exact
       >
         <q-item-section avatar>
@@ -54,7 +48,7 @@
           <q-item-label caption>greybox v1.0</q-item-label>
         </q-item-section>
       </q-item>
-      <q-item to="/o-webu" exact>
+      <q-item :to="$path('about')" exact>
         <q-item-section avatar>
           <q-icon name="info" />
         </q-item-section>
@@ -83,7 +77,7 @@
           }}</q-item-section>
         </q-item>
 
-        <q-item :to="{ name: 'sign-out' }" clickable>
+        <q-item :to="$path('logout')" clickable>
           <q-item-section avatar>
             <q-icon name="fas fa-sign-out-alt" />
           </q-item-section>
@@ -92,7 +86,7 @@
         </q-item>
       </template>
       <template v-else>
-        <q-item clickable :to="{ name: 'sign-in' }">
+        <q-item clickable :to="$path('login')">
           <q-item-section avatar>
             <q-icon name="fas fa-sign-in-alt" />
           </q-item-section>
@@ -100,7 +94,7 @@
           <q-item-section>{{ $tr("auth.login") }}</q-item-section>
         </q-item>
 
-        <q-item clickable :to="{ name: 'sign-up' }">
+        <q-item clickable :to="$path('signUp')">
           <q-item-section avatar>
             <q-icon name="fas fa-user-plus" />
           </q-item-section>
@@ -108,7 +102,7 @@
           <q-item-section>{{ $tr("auth.signUp") }}</q-item-section>
         </q-item>
 
-        <q-item clickable :to="{ name: 'password-reset' }">
+        <q-item clickable :to="$path('passwordReset')">
           <q-item-section avatar>
             <q-icon name="fas fa-undo" />
           </q-item-section>
