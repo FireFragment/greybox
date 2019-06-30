@@ -68,7 +68,7 @@ const i18n = new VueI18n({
 Vue.mixin({
   data() {
     return {
-      $apiSettings: config.api
+      apiSettings: config.api
     };
   },
   methods: {
