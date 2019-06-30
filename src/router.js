@@ -8,7 +8,7 @@ import SignIn from "./pages/Auth/SignIn.vue";
 import SignUp from "./pages/Auth/SignUp.vue";
 import SignOut from "./pages/Auth/SignOut.vue";
 import PasswordReset from "./pages/Auth/PasswordReset.vue";
-console.log(Vue.prototype);
+
 Vue.use(Router);
 
 export default new Router({
@@ -23,33 +23,33 @@ export default new Router({
           component: Home
         },
         {
-          path: Vue.prototype.$tr("paths.about"),
+          path: "aboutYou.cz ;)",
           name: "about",
           component: About
         },
         {
-          path: "/" + this.$tr("paths.tournament") + "/:id-:slug",
+          path: "/turnaje/:id-:slug",
           name: "tournament",
           component: Tournament
         },
         {
-          path: "/" + this.$tr("paths.login"),
+          path: "/signin",
           name: "sign-in",
           component: SignIn,
           props: true
         },
         {
-          path: "/" + this.$tr("paths.signup"),
+          path: "/signup",
           name: "sign-up",
           component: SignUp
         },
         {
-          path: "/" + this.$tr("paths.signout"),
+          path: "/signout",
           name: "sign-out",
           component: SignOut
         },
         {
-          path: "/" + this.$tr("paths.passwordReset"),
+          path: "/passwordreset",
           name: "password-reset",
           component: PasswordReset
         }
