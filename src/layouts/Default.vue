@@ -92,7 +92,12 @@
       </q-toolbar>
     </q-header>
 
-    <sidenav v-model="leftDrawerOpen"></sidenav>
+    <sidenav
+      v-model="leftDrawerOpen"
+      :key="
+        $auth.check() && $auth.user() ? $auth.user().id + '-sidenav' : 'sidenav'
+      "
+    ></sidenav>
 
     <q-page-container>
       <router-view />

@@ -72,7 +72,7 @@ export default {
         })
         .then(data => {
           this.$auth.options.fetchData.url =
-            this.$apiSettings.baseURL + "user/" + data.data.id;
+            this.apiSettings.baseURL + "user/" + data.data.id;
 
           this.$auth
             .fetchUser()
@@ -89,6 +89,9 @@ export default {
           this.$flash(data.response.data.message, "error");
         });
     }
+  },
+  created() {
+    if (this.$auth.check()) this.$router.replace({ name: "home" });
   }
 };
 </script>

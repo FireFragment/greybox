@@ -22,7 +22,7 @@ function apiCall(options) {
   requestOptions.url = apiSettings.baseURL + requestOptions.url;
 
   if (requestOptions.sendToken && this.$auth.check())
-    requestOptions.data["api_token"] = this.$auth.token();
+    requestOptions.headers["Authorization"] = this.$auth.token();
 
   let request = axios(requestOptions);
 
