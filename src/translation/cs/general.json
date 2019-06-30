@@ -1,3 +1,15 @@
 {
-  "homepage": "Domovská stránka"
+  "homepage": "Domovská stránka",
+  "tournaments": "Turnaje",
+  "essentialLinks": "Důležité odkazy",
+  "statistics": "Statistiky",
+  "aboutUs": "O webu",
+  "user": "Uživatel",
+  "login": "Přihlášení",
+  "registration": "Registrace",
+  "passwordReset": "Obnovit heslo",
+  "logout": "Odhlásit se",
+  "accountSettings": "Nastavení účtu",
+  "downloadPersonalData": "Stáhnout osobní údaje"
+
 }

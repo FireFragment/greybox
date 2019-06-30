@@ -96,7 +96,7 @@
             <q-item-label>{{ tr("general.homepage") }}</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item-label header>Turnaje</q-item-label>
+        <q-item-label header>{{ tr("general.tournaments") }}</q-item-label>
         <q-item
           :to="{
             name: 'tournament',
@@ -126,7 +126,7 @@
           </q-item-section>
         </q-item>
 
-        <q-item-label header>Důležité odkazy</q-item-label>
+        <q-item-label header>{{ tr("general.essentialLinks") }}</q-item-label>
         <q-item
           clickable
           tag="a"
@@ -137,7 +137,7 @@
             <q-icon name="fas fa-chart-bar" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Statistiky</q-item-label>
+            <q-item-label>{{ tr("general.statistics") }}</q-item-label>
             <q-item-label caption>greybox v1.0</q-item-label>
           </q-item-section>
         </q-item>
@@ -146,18 +146,18 @@
             <q-icon name="info" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>O webu</q-item-label>
+            <q-item-label>{{ tr("general.aboutUs") }}</q-item-label>
           </q-item-section>
         </q-item>
 
-        <q-item-label header>Uživatel</q-item-label>
+        <q-item-label header>{{ tr("general.user") }}</q-item-label>
         <template v-if="$auth.check()">
           <q-item clickable>
             <q-item-section avatar>
               <q-icon name="fas fa-cog" />
             </q-item-section>
 
-            <q-item-section>Nastavení účtu</q-item-section>
+            <q-item-section>{{ tr("general.accountSettings") }}</q-item-section>
           </q-item>
 
           <q-item clickable>
@@ -165,7 +165,9 @@
               <q-icon name="fas fa-download" />
             </q-item-section>
 
-            <q-item-section>Stáhnout osobní údaje</q-item-section>
+            <q-item-section>{{
+              tr("general.downloadPersonalData")
+            }}</q-item-section>
           </q-item>
 
           <q-item :to="{ name: 'sign-out' }" clickable>
@@ -173,7 +175,7 @@
               <q-icon name="fas fa-sign-out-alt" />
             </q-item-section>
 
-            <q-item-section>Odhlásit se</q-item-section>
+            <q-item-section>{{ tr("general.logout") }}</q-item-section>
           </q-item>
         </template>
         <template v-else>
@@ -182,7 +184,7 @@
               <q-icon name="fas fa-sign-in-alt" />
             </q-item-section>
 
-            <q-item-section>Přihlášení</q-item-section>
+            <q-item-section>{{ tr("general.login") }}</q-item-section>
           </q-item>
 
           <q-item clickable :to="{ name: 'sign-up' }">
