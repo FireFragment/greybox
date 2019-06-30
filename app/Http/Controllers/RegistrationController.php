@@ -28,7 +28,9 @@ class RegistrationController extends Controller
 
     public function showOne($id)
     {
-        return response()->json(Registration::find($id));
+        $registration = Registration::find($id);
+        $this->authorize('showOne', $registration);
+        return response()->json($registration);
     }
 
     public function showByUser($id)
