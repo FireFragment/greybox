@@ -97,14 +97,6 @@ Vue.mixin({
     // API
     api: apiCall,
 
-    // Get logged user's data
-    $user: function() {
-      let data = localStorage.getItem("loggedUserData");
-      if (!data) return null;
-
-      return JSON.parse(data);
-    },
-
     // Flash
     $flash: function(message, type = "info", icon = false) {
       let color = null;
@@ -136,7 +128,12 @@ Vue.use(VueAuth, {
     method: "POST",
     redirect: "/",
     headerToken: "Authorization",
-    fetchUser: false
+    fetchUser: true
+  },
+  fetchData: {
+    url:
+      config.api.baseURL + "user/" + JSON.parse(localStorage.loggedUserData).id,
+    method: "GET"
   },
   authRedirect: "/login",
   authMeta: "auth",

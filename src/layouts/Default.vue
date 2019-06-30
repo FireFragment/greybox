@@ -40,19 +40,21 @@
           stretch
           flat
           content-class="no-maxwidth-menu"
-          v-if="$auth.check()"
+          v-if="$auth.check() && $auth.user()"
         >
           <template v-slot:label>
             <q-avatar
               :style="
                 'background-color: ' +
-                  stringToHslColor($user().username, 50, 60)
+                  stringToHslColor($auth.user().username, 50, 60)
               "
             >
               <img src="https://cdn.quasar.dev/img/avatar.png" v-if="!true" />
-              <template v-else>{{ $user().username.substr(0, 1) }}</template>
+              <template v-else>{{
+                $auth.user().username.substr(0, 1)
+              }}</template>
             </q-avatar>
-            {{ $user().username }}
+            {{ $auth.user().username }}
           </template>
           <q-list>
             <q-item clickable>
