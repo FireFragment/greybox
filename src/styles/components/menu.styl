@@ -1,18 +1,22 @@
 .q-header
-  background-color: black
-  .q-toolbar
-    .q-btn-dropdown
-      .q-avatar
-        margin-right: .5rem
+	background-color: black
+	.q-toolbar
+		.lang-switch
+			margin: 0 5px
+			cursor: pointer
 
-    .q-toolbar__title span
-      .q-avatar
-        margin-right: .5rem
-      img
-        transition: transform .8s ease-in-out
+		.q-btn-dropdown
+			.q-avatar
+				margin-right: .5rem
 
-      &:hover img
-        transform: rotate(720deg)
+		.q-toolbar__title span
+			.q-avatar
+				margin-right: .5rem
+			img
+				transition: transform .8s ease-in-out
+
+			&:hover img
+				transform: rotate(720deg)
 
 .q-menu.no-maxwidth-menu
-  max-width: 95vw !important
+	max-width: 95vw !important

@@ -10,7 +10,6 @@
 export default {
   name: "PageSignOut",
   mounted() {
-    localStorage.removeItem("loggedUserData");
     this.$auth.logout();
     this.$flash("Odhlášení úspěšné");
   }
