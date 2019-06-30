@@ -5,6 +5,7 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Lang;
 
 class ResetPassword extends Mailable
 {
@@ -29,7 +30,9 @@ class ResetPassword extends Mailable
      */
     public function build()
     {
-        return $this->view('email.resetpassword')
+        return $this
+            ->subject(Lang::get('messages.password.reset.subject'))
+            ->view('email.resetpassword')
             ->with([
                 'data' => $this->data
             ]);

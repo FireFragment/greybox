@@ -109,4 +109,9 @@ $app->router->group([
     require __DIR__.'/../routes/web.php';
 });
 
+/*
+ * Set default locale
+ */
+app('translator')->setLocale('cz');
+
 return $app;
