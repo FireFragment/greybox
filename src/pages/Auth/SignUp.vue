@@ -98,7 +98,7 @@ export default {
       })
         .then(data => {
           this.$router.push({
-            name: "sign-in",
+            name: this.$path("login"),
             params: {
               loginData: {
                 username: this.email,

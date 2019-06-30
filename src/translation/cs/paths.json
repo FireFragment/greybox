@@ -2,7 +2,7 @@
   "about": "o-webu",
   "tournament": "turnaje",
   "login": "prihlaseni",
-  "signup": "registrace",
-  "signout": "odhlaseni",
+  "signUp": "registrace",
+  "logout": "odhlaseni",
   "passwordReset": "obnovit-heslo"
 }

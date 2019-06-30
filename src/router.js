@@ -4,10 +4,15 @@ import DefaultLayout from "./layouts/Default.vue";
 import Home from "./pages/Home.vue";
 import About from "./pages/About.vue";
 import Tournament from "./pages/Tournament.vue";
-import SignIn from "./pages/Auth/SignIn.vue";
+import Login from "./pages/Auth/Login.vue";
 import SignUp from "./pages/Auth/SignUp.vue";
-import SignOut from "./pages/Auth/SignOut.vue";
+import Logout from "./pages/Auth/Logout.vue";
 import PasswordReset from "./pages/Auth/PasswordReset.vue";
+
+import CZroutes from "./translation/cs/paths";
+import ENroutes from "./translation/en/paths";
+
+console.log(CZroutes, ENroutes);
 
 Vue.use(Router);
 
@@ -23,33 +28,39 @@ export default new Router({
           component: Home
         },
         {
-          path: "aboutYou.cz ;)",
+          path: CZroutes.about,
+          alias: ENroutes.about,
           name: "about",
           component: About
         },
         {
-          path: "/turnaje/:id-:slug",
+          path: CZroutes.tournament+"/:id-:slug",
+          alias: ENroutes.tournament+"/:id-:slug",
           name: "tournament",
           component: Tournament
         },
         {
-          path: "/signin",
-          name: "sign-in",
-          component: SignIn,
+          path: CZroutes.login,
+          alias: ENroutes.login,
+          name: "login",
+          component: Login,
           props: true
         },
         {
-          path: "/signup",
+          path: CZroutes.signUp,
+          alias: ENroutes.signUp,
           name: "sign-up",
           component: SignUp
         },
         {
-          path: "/signout",
-          name: "sign-out",
-          component: SignOut
+          path: CZroutes.logout,
+          alias: ENroutes.logout,
+          name: "logout",
+          component: Logout
         },
         {
-          path: "/passwordreset",
+          path: CZroutes.passwordReset,
+          alias: ENroutes.passwordReset,
           name: "password-reset",
           component: PasswordReset
         }

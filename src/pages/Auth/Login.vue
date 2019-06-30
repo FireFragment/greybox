@@ -97,7 +97,7 @@ export default {
             });
         })
         .catch(data => {
-          this.$router.replace({ name: "sign-in" });
+          this.$router.replace(this.$path("login"));
           this.$flash(data.response.data.message, "error");
         });
     }
