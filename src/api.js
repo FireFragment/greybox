@@ -21,7 +21,8 @@ function apiCall(options) {
 
   requestOptions.url = apiSettings.baseURL + requestOptions.url;
 
-  if (requestOptions.sendToken) void 0; // TODO - add user's saved token to request
+  if (requestOptions.sendToken && this.$auth.check())
+    requestOptions.data["api_token"] = this.$auth.token();
 
   let request = axios(requestOptions);
 
