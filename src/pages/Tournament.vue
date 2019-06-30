@@ -280,8 +280,15 @@
 </template>
 
 <script>
+import debatersCard from "../components/DebatersCard";
+
 export default {
   name: "PageTournament",
+
+  components: {
+    debatersCard
+  },
+
   data() {
     return {
       firstname: null,
