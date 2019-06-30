@@ -385,6 +385,9 @@ export default {
     for (let i = 2019; i >= 1900; i--) {
       this.years.push(i);
     }
+    this.$el.querySelectorAll("input[type=checkbox]").forEach(el => {
+      el.click();
+    });
   }
 };
 </script>
