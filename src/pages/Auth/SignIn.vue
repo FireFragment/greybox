@@ -10,7 +10,7 @@
           :label="$tr('auth.loginEmail')"
           lazy-rules
           :rules="[
-            val => (val !== null && val !== '') || 'Vyplňte prosím e-mail'
+            val => (val !== null && val !== '') || $tr(`auth.emailError`)
           ]"
         >
           <template v-slot:prepend>
@@ -22,11 +22,11 @@
           v-model="password"
           outlined
           :type="isPwd ? 'password' : 'text'"
-          label="Heslo"
+          :label="$tr('auth.password')"
           class="q-mt-sm"
           lazy-rules
           :rules="[
-            val => (val !== null && val !== '') || 'Vyplňte prosím heslo'
+            val => (val !== null && val !== '') || $tr('auth.passwordError')
           ]"
         >
           <template v-slot:prepend>
@@ -41,11 +41,12 @@
           </template>
         </q-input>
         <div class="q-mt-sm q-mb-lg text-center">
-          Zapomněli jste heslo? <a href="#">Obnovte si jej.</a>
+          {{ $tr("auth.recoverPasswordQuestion") }}
+          <a href="#">{{ $tr("auth.recoverPasswordLink") }}</a>
         </div>
 
         <div class="text-center">
-          <q-btn label="Přihlásit" type="submit" color="primary" />
+          <q-btn :label="$tr('auth.toLogin')" type="submit" color="primary" />
         </div>
       </q-form>
     </div>
@@ -77,7 +78,7 @@ export default {
             .fetchUser()
             .then(() => {
               this.$router.push({ name: "home" });
-              this.$flash("Přihlášení úspěšné", "done");
+              this.$flash(this.$tr("auth.loginSuccess"), "done");
             })
             .catch(data => {
               this.$flash(data.response.statusText, "error");
