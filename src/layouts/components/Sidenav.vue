@@ -64,7 +64,7 @@
       </q-item>
 
       <q-item-label header>{{ $tr("general.user") }}</q-item-label>
-      <template v-if="$auth.check()">
+      <template v-if="$auth.check() && $auth.user()">
         <q-item clickable>
           <q-item-section avatar>
             <q-icon name="fas fa-cog" />
