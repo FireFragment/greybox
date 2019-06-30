@@ -56,10 +56,10 @@ class UserController extends Controller
                     return response()->json(['message' => $e->getMessage()], 500);
                 }
             } else {
-                return response()->json(['message' => 'Incorrect username or password.'], 401);
+                return response()->json(['message' => 'invalidCredentials'], 401);
             }
         } else {
-            return response()->json(['message' => 'Incorrect username or password.'], 401);
+            return response()->json(['message' => 'invalidCredentials'], 401);
         }
     }
 
@@ -116,7 +116,7 @@ class UserController extends Controller
         } catch (\Illuminate\Database\QueryException $e) { 
             if ($e->getCode() == 23000) {
                 $code = 409;
-                $message = "Duplicate entry";
+                $message = "duplicateEntry";
             } else {
                 $code = 500;
                 $message = $e->getMessage();
@@ -191,7 +191,7 @@ class UserController extends Controller
                 return response()->json(['message' => $e->getMessage()], 500);
             }
         } else {
-            return response()->json(['message' => 'User not found.'], 404);
+            return response()->json(['message' => 'userNotFound'], 404);
         }
     }
 
@@ -218,10 +218,10 @@ class UserController extends Controller
                     return response()->json(['message' => $e->getMessage()], 500);
                 }
             } else {
-                return response()->json(['message' => 'User not found.'], 404);
+                return response()->json(['message' => 'userNotFound'], 404);
             }
         } else {
-            return response()->json(['message' => 'Recovery token not found.'], 404);
+            return response()->json(['message' => 'tokenNotFound'], 404);
         }
     }
 }
