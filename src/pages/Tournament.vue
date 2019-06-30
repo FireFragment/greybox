@@ -66,20 +66,46 @@
           />
         </div>
 
-        <q-input
-          outlined
-          type="text"
-          v-model="birthdate"
-          label="Vaše datum narození *"
-          lazy-rules
-          :rules="[
-            val => (val !== null && val !== '') || 'Vyplňte prosím číslo'
-          ]"
-        >
-          <template v-slot:prepend>
-            <q-icon name="event" />
-          </template>
-        </q-input>
+        <div class="row q-col-gutter-sm">
+          <div class="col-12 q-field" style="color: rgba(0,0,0,0.54);">
+            Zadejte datum narození *:
+          </div>
+          <q-select
+            outlined
+            v-model="birthDay"
+            :options="days"
+            label="Den"
+            class="q-pt-sm q-mb-sm col-4"
+          >
+            <template v-slot:prepend>
+              <q-icon name="event" />
+            </template>
+          </q-select>
+
+          <q-select
+            outlined
+            v-model="birthMonth"
+            :options="months"
+            label="Měsíc"
+            class="q-pt-sm q-mb-sm col-4"
+          >
+            <template v-slot:prepend>
+              <q-icon name="event" />
+            </template>
+          </q-select>
+
+          <q-select
+            outlined
+            v-model="birthYear"
+            :options="years"
+            label="Rok"
+            class="q-pt-sm q-mb-sm col-4"
+          >
+            <template v-slot:prepend>
+              <q-icon name="event" />
+            </template>
+          </q-select>
+        </div>
 
         <q-input
           outlined
@@ -92,6 +118,16 @@
         >
           <template v-slot:prepend>
             <q-icon name="fas fa-id-card" />
+          </template>
+          <template v-slot:append>
+            <q-icon name="fas fa-info-circle" />
+            <q-tooltip
+              anchor="top middle"
+              self="bottom middle"
+              :offset="[0, -10]"
+            >
+              Vyplňte prosím, pokud již občanský průkaz máte.
+            </q-tooltip>
           </template>
         </q-input>
 
@@ -182,6 +218,25 @@ export default {
       zipcode: null,
       note: null,
       accept: null,
+      birthDay: null,
+      birthMonth: null,
+      birthYear: null,
+      days: [],
+      months: [
+        "leden",
+        "únor",
+        "březen",
+        "duben",
+        "květen",
+        "červen",
+        "červenec",
+        "srpen",
+        "září",
+        "říjen",
+        "listopad",
+        "prosinec"
+      ],
+      years: [],
       pastLogins: [
         "Adam Karásek",
         "Jakub Szymsze",
@@ -210,6 +265,14 @@ export default {
         "Zbyněk"
       ]
     };
+  },
+  mounted: function() {
+    for (let i = 1; i <= 31; i++) {
+      this.days.push(i + ".");
+    }
+    for (let i = 2019; i >= 1900; i--) {
+      this.years.push(i);
+    }
   }
 };
 </script>

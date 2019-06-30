@@ -23,6 +23,19 @@
           </span>
         </q-toolbar-title>
 
+        <q-avatar size="25px" class="cursor-pointer">
+          <img
+            src="../assets/en_flag.png"
+            v-if="$i18n.locale === 'cs'"
+            @click="$i18n.locale = 'en'"
+          />
+          <img
+            src="../assets/cs_flag.png"
+            v-else
+            @click="$i18n.locale = 'cs'"
+          />
+        </q-avatar>
+
         <q-btn-dropdown
           stretch
           flat
@@ -208,11 +221,6 @@ export default {
       leftDrawerOpen: this.$q.platform.is.desktop,
       user: null
     };
-  },
-  mounted() {
-    setInterval(() => {
-      this.$i18n.locale = this.$i18n.locale === "en" ? "cs" : "en";
-    }, 1000);
   }
 };
 </script>
