@@ -1,6 +1,6 @@
 <template>
   <q-page padding>
-    <h1 class="text-center text-h4">Obnovení hesla</h1>
+    <h1 class="text-center text-h4">{{ $tr("auth.passwordReset") }}</h1>
     <div class="row q-col-gutter-md">
       <q-form
         @submit="onSubmit"
@@ -11,10 +11,10 @@
           outlined
           type="email"
           v-model="email"
-          label="Váš e-mail"
+          :label="$tr('auth.yourEmail')"
           lazy-rules
           :rules="[
-            val => (val !== null && val !== '') || 'Vyplňte prosím e-mail'
+            val => (val !== null && val !== '') || $tr('auth.emailError')
           ]"
         >
           <template v-slot:prepend>
@@ -23,7 +23,7 @@
         </q-input>
 
         <div class="text-center q-mt-sm">
-          <q-btn label="Poslat odkaz" type="submit" color="primary" />
+          <q-btn :label="$tr('auth.sendLink')" type="submit" color="primary" />
         </div>
       </q-form>
     </div>
@@ -32,7 +32,12 @@
 
 <script>
 export default {
-  name: "PasswordReset"
+  name: "PasswordReset",
+  data() {
+    return {
+      email: null
+    };
+  }
 };
 </script>
 

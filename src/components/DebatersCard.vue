@@ -17,7 +17,7 @@
         <q-item-section>{{ pastLogin }}</q-item-section>
         <q-item-section avatar>
           <q-avatar
-            :style="'background-color: ' + stringToHslColor(pastLogin, 50, 60)"
+            :style="'background-color: ' + $stringToHslColor(pastLogin, 50, 60)"
             size="30px"
           >
             <img src="https://cdn.quasar.dev/img/avatar.png" v-if="!true" />

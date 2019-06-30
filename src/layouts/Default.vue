@@ -62,7 +62,9 @@
                 <q-icon name="fas fa-cog" />
               </q-item-section>
 
-              <q-item-section>Nastavení účtu</q-item-section>
+              <q-item-section>{{
+                $tr("general.accountSettings")
+              }}</q-item-section>
             </q-item>
 
             <q-item clickable>
@@ -70,7 +72,9 @@
                 <q-icon name="fas fa-download" />
               </q-item-section>
 
-              <q-item-section>Stáhnout osobní údaje</q-item-section>
+              <q-item-section>{{
+                $tr("general.downloadPersonalData")
+              }}</q-item-section>
             </q-item>
 
             <q-item :to="{ name: 'sign-out' }" clickable>
@@ -78,7 +82,7 @@
                 <q-icon name="fas fa-sign-out-alt" />
               </q-item-section>
 
-              <q-item-section>Odhlásit se</q-item-section>
+              <q-item-section>{{ $tr("general.logout") }}</q-item-section>
             </q-item>
           </q-list>
         </q-btn-dropdown>

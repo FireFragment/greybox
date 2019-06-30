@@ -113,7 +113,7 @@
             <q-icon name="fas fa-undo" />
           </q-item-section>
 
-          <q-item-section>Obnovit heslo</q-item-section>
+          <q-item-section>{{ $tr("auth.passwordReset") }}</q-item-section>
         </q-item>
       </template>
     </q-list>
