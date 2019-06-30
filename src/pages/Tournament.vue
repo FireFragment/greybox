@@ -180,14 +180,121 @@
         </q-input>
 
         <q-input
+          outlined
+          v-model="phone"
+          label="Telefonní číslo"
+          mask="+### #########"
+          fill-mask="#"
+          class="q-pt-sm"
+          hint="Např.: +420 123456789"
+        >
+          <template v-slot:prepend>
+            <q-icon name="fas fa-phone-alt" />
+          </template>
+        </q-input>
+
+        <div class="block">
+          <q-checkbox
+            v-model="vegetarian"
+            label="Vegetariánská strana"
+            true-value="yes"
+            false-value="no"
+          />
+        </div>
+
+        <div class="block">
+          <q-checkbox
+            v-model="noAccomodation"
+            label="Nechci zařídit ubytování"
+            true-value="yes"
+            false-value="no"
+          />
+          <q-icon name="fas fa-info-circle" class="q-pl-sm">
+            <q-tooltip
+              anchor="top middle"
+              self="bottom middle"
+              :offset="[0, 0]"
+            >
+              Pro individuální požadavky k ubytování vyplňte prosím poznámku.
+            </q-tooltip>
+          </q-icon>
+        </div>
+
+        <template>
+          <div class="q-mr-lg">
+            <q-separator class="q-pl-md q-mt-sm q-pb-none" />
+          </div>
+          <h2 class="text-h6 q-pa-xs q-mt-sm">Zákonný zástupce</h2>
+          <q-input
+            outlined
+            v-model="parentName"
+            label="Celé jméno *"
+            class="col-12 col-sm-6"
+            lazy-rules
+            :rules="[
+              val => (val && val.length > 0) || 'Vyplňte prosím toto pole'
+            ]"
+          >
+            <template v-slot:prepend>
+              <q-icon name="fas fa-signature" />
+            </template>
+          </q-input>
+
+          <q-input
+            outlined
+            v-model="parentPhone"
+            label="Telefonní číslo *"
+            mask="+### #########"
+            fill-mask="#"
+            class="q-pt-sm"
+            hint="Např.: +420 123456789"
+            lazy-rules
+            :rules="[
+              val => (val && val.length > 0) || 'Vyplňte prosím toto pole'
+            ]"
+          >
+            <template v-slot:prepend>
+              <q-icon name="fas fa-phone-alt" />
+            </template>
+          </q-input>
+          <q-input
+            outlined
+            type="email"
+            v-model="parentEmail"
+            label="E-mailová adresa *"
+            class="q-pt-sm"
+            lazy-rules
+            :rules="[
+              val => (val !== null && val !== '') || 'Vyplňte prosím e-mail'
+            ]"
+          >
+            <template v-slot:prepend>
+              <q-icon name="fas fa-at" />
+            </template>
+          </q-input>
+          <div class="q-mr-lg">
+            <q-separator class="q-pl-md q-mt-none q-mb-md q-pb-none" />
+          </div>
+        </template>
+
+        <q-input
           v-model="note"
           class="q-mt-sm"
           outlined
           autogrow
           label="Poznámka"
-        />
+        >
+          <template v-slot:prepend>
+            <q-icon name="fas fa-sticky-note" />
+          </template>
+        </q-input>
 
-        <q-toggle v-model="accept" label="Souhlasím s podmínkami přihlášení" />
+        <q-checkbox
+          v-model="accept"
+          label="Souhlasím s podmínkami přihlášení"
+          true-value="yes"
+          false-value="no"
+        />
 
         <div class="text-center">
           <q-btn label="Odeslat" type="submit" color="primary" />
@@ -211,13 +318,18 @@ export default {
     return {
       firstname: null,
       lastname: null,
-      birthdate: null,
       idnumber: null,
       street: null,
       city: null,
       zipcode: null,
+      phone: "+420",
+      vegetarian: false,
+      noAccomodation: false,
+      parentName: null,
+      parentPhone: "+420",
+      parentEmail: null,
       note: null,
-      accept: null,
+      accept: false,
       birthDay: null,
       birthMonth: null,
       birthYear: null,
