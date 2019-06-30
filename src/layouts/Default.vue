@@ -100,6 +100,9 @@
     ></sidenav>
 
     <q-page-container>
+      <div class="">
+        <img class="bg-loading-logo" alt="Logo ADK" src="../assets/logo.gif" />
+      </div>
       <router-view />
     </q-page-container>
   </q-layout>
