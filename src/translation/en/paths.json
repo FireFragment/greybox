@@ -1,0 +1,9 @@
+{
+  "about": "about",
+  "tournament": "tournaments",
+  "login": "login",
+  "signup": "sign-up",
+  "signout": "sign-out",
+  "passwordReset": "password-reset"
+}
+}

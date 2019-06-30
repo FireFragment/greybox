@@ -2,7 +2,6 @@ import Vue from "vue";
 import axios from "axios";
 import VueAxios from "vue-axios";
 import App from "./App.vue";
-import router from "./router";
 import "./quasar";
 import apiCall from "./api";
 import config from "./config";
@@ -122,6 +121,7 @@ Vue.mixin({
 });
 
 // Auth
+import router from "./router";
 Vue.router = router;
 Vue.use(VueAuth, {
   tokenStore: "localStorage",
