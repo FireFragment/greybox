@@ -6,8 +6,9 @@ use App\User;
 
 class UserPolicy
 {
-    public function showOne(User $user, User $logged_in)
+    public function showOne(User $logged_in, User $user)
     {
+        if ($logged_in->isAdmin()) return $logged_in->isAdmin();
         return $user->id === $logged_in->id;
     }
 }
