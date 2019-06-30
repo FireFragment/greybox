@@ -73,6 +73,8 @@
 </template>
 
 <script>
+import { EventBus } from "../../event-bus";
+
 export default {
   name: "PageSignUp",
   data() {
@@ -96,9 +98,10 @@ export default {
         },
         alerts: false
       })
-        .then(data => {
+        .then(() => {
+          EventBus.$emit("fullLoader", true);
           this.$router.push({
-            name: this.$path("login"),
+            name: "login",
             params: {
               loginData: {
                 username: this.email,
@@ -106,7 +109,6 @@ export default {
               }
             }
           });
-          console.log(data);
         })
         .catch(data => {
           if (data.response.data)

@@ -100,9 +100,11 @@
     ></sidenav>
 
     <q-page-container>
-      <div class="">
-        <img class="bg-loading-logo" alt="Logo ADK" src="../assets/logo.gif" />
-      </div>
+      <transition name="fade">
+        <div class="full-page-loader" v-if="fullLoader">
+          <img alt="Logo ADK" src="../assets/logo.gif" />
+        </div>
+      </transition>
       <router-view />
     </q-page-container>
   </q-layout>
@@ -110,6 +112,7 @@
 
 <script>
 import Sidenav from "./components/Sidenav";
+import { EventBus } from "../event-bus";
 
 export default {
   name: "LayoutDefault",
@@ -121,8 +124,15 @@ export default {
   data() {
     return {
       leftDrawerOpen: this.$q.platform.is.desktop,
-      user: null
+      user: null,
+      fullLoader: false
     };
+  },
+
+  created() {
+    EventBus.$on("fullLoader", value => {
+      this.fullLoader = value;
+    });
   }
 };
 </script>

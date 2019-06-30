@@ -12,8 +12,6 @@ import PasswordReset from "./pages/Auth/PasswordReset.vue";
 import CZroutes from "./translation/cs/paths";
 import ENroutes from "./translation/en/paths";
 
-console.log(CZroutes, ENroutes);
-
 Vue.use(Router);
 
 export default new Router({
@@ -34,8 +32,8 @@ export default new Router({
           component: About
         },
         {
-          path: CZroutes.tournament+"/:id-:slug",
-          alias: ENroutes.tournament+"/:id-:slug",
+          path: CZroutes.tournament + "/:id-:slug",
+          alias: ENroutes.tournament + "/:id-:slug",
           name: "tournament",
           component: Tournament
         },

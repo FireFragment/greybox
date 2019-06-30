@@ -54,6 +54,8 @@
 </template>
 
 <script>
+import { EventBus } from "../../event-bus";
+
 export default {
   name: "PageSignIn",
   props: {
@@ -68,6 +70,7 @@ export default {
   },
   methods: {
     login(userData = null) {
+      EventBus.$emit("fullLoader", true);
       let requestData = userData;
       if (!requestData)
         requestData = {
@@ -84,6 +87,7 @@ export default {
           this.$auth
             .fetchUser()
             .then(() => {
+              EventBus.$emit("fullLoader", false);
               if (userData) {
                 this.$router.replace({ name: "home" });
                 this.$flash("Registrace úspěšná", "done");
