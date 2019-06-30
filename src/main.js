@@ -97,7 +97,7 @@ Vue.mixin({
     $api: apiCall,
 
     // Flash
-    $flash: function(message, type = "info", icon = false) {
+    $flash: function(message, type = "info", icon = false, timeout = 3500) {
       let color = null;
       if (type === "success" || type === "done") {
         color = "green";
@@ -113,7 +113,7 @@ Vue.mixin({
         message: message,
         html: true,
         position: "top-right",
-        timeout: 3500,
+        timeout,
         closeBtn: "-"
       });
     }

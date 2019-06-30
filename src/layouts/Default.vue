@@ -63,7 +63,7 @@
               </q-item-section>
 
               <q-item-section>{{
-                tr("general.accountSettings")
+                $tr("general.accountSettings")
               }}</q-item-section>
             </q-item>
 
@@ -73,7 +73,7 @@
               </q-item-section>
 
               <q-item-section>{{
-                tr("general.downloadPersonalData")
+                $tr("general.downloadPersonalData")
               }}</q-item-section>
             </q-item>
 
@@ -82,7 +82,7 @@
                 <q-icon name="fas fa-sign-out-alt" />
               </q-item-section>
 
-              <q-item-section>{{ tr("general.logout") }}</q-item-section>
+              <q-item-section>{{ $tr("general.logout") }}</q-item-section>
             </q-item>
           </q-list>
         </q-btn-dropdown>

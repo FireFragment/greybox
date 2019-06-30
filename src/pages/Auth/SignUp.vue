@@ -42,7 +42,7 @@
         </q-input>
 
         <q-input
-          v-model="passwordConfirm"
+          v-model="passwordConfirmation"
           outlined
           :type="isPwd2 ? 'password' : 'text'"
           label="Zopakujte heslo"
@@ -86,7 +86,36 @@ export default {
   },
   methods: {
     signUp() {
-      console.log(this.email, this.password, this.passwordConfirmation);
+      this.$api({
+        url: "user",
+        sendToken: false,
+        data: {
+          username: this.email,
+          password: this.password,
+          password_confirmation: this.passwordConfirmation
+        },
+        alerts: false
+      })
+        .then(data => {
+          this.$router.push({
+            name: "sign-in",
+            params: {
+              loginData: {
+                username: this.email,
+                password: this.password
+              }
+            }
+          });
+          console.log(data);
+        })
+        .catch(data => {
+          if (data.response.data)
+            for (let index in data.response.data)
+              data.response.data[index].forEach(message => {
+                this.$flash(message, "error", false, 5000);
+              });
+          else this.$flash("An error had occured, please try again.", "error");
+        });
     }
   }
 };

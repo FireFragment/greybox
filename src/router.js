@@ -35,7 +35,8 @@ export default new Router({
         {
           path: "/" + this.$tr("paths.login"),
           name: "sign-in",
-          component: SignIn
+          component: SignIn,
+          props: true
         },
         {
           path: "/" + this.$tr("paths.signup"),

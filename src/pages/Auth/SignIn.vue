@@ -56,6 +56,9 @@
 <script>
 export default {
   name: "PageSignIn",
+  props: {
+    loginData: Object
+  },
   data() {
     return {
       email: null,
@@ -64,12 +67,16 @@ export default {
     };
   },
   methods: {
-    login() {
-      this.$auth
-        .login({
+    login(userData = null) {
+      let requestData = userData;
+      if (!requestData)
+        requestData = {
           username: this.email,
           password: this.password
-        })
+        };
+
+      this.$auth
+        .login(requestData)
         .then(data => {
           this.$auth.options.fetchData.url =
             this.apiSettings.baseURL + "user/" + data.data.id;
@@ -77,8 +84,13 @@ export default {
           this.$auth
             .fetchUser()
             .then(() => {
-              this.$router.push({ name: "home" });
-              this.$flash(this.$tr("auth.loginSuccess"), "done");
+              if (userData) {
+                this.$router.replace({ name: "home" });
+                this.$flash("Registrace úspěšná", "done");
+              } else {
+                this.$router.push({ name: "home" });
+                this.$flash(this.$tr("auth.loginSuccess"), "done");
+              }
             })
             .catch(data => {
               this.$flash(data.response.statusText, "error");
@@ -92,6 +104,9 @@ export default {
   },
   created() {
     if (this.$auth.check()) this.$router.replace({ name: "home" });
+
+    // Auto login user with passed data
+    if (this.loginData) this.login(this.loginData);
   }
 };
 </script>
