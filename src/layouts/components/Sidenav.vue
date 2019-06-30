@@ -18,7 +18,7 @@
         exact
       >
         <q-item-section avatar>
-          <q-icon name="flag" />
+          <q-icon name="fas fa-trophy" />
         </q-item-section>
         <q-item-section>
           <q-item-label>1. český turnaj</q-item-label>
@@ -32,7 +32,7 @@
         exact
       >
         <q-item-section avatar>
-          <q-icon name="flag" />
+          <q-icon name="fas fa-trophy" />
         </q-item-section>
         <q-item-section>
           <q-item-label>2. anglický turnaj</q-item-label>
