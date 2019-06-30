@@ -82,7 +82,8 @@ class UserController extends Controller
 
     public function showAll()
     {
-        return response()->json(User::all());
+        if (\Auth::user()->isAdmin()) return response()->json(User::all());
+        return response()->json(array(\Auth::user()));
     }
 
     public function showOne($id)
@@ -128,13 +129,14 @@ class UserController extends Controller
     public function update($id, Request $request)
     {
         $this->validate($request, [
-            'username' => 'required',
+            'username' => 'required|email',
             'password_old' => 'required',
             'password' => 'required|min:8|confirmed|regex:'.$this->regex
         ]);
 
         try {
             $user = User::findOrFail($id);
+            $this->authorize('update', $user, \Auth::user());
             if (Hash::check($request->input('password_old'), $user->password)) {
                 try {
                     $hasher = app()->make('hash');
@@ -149,7 +151,7 @@ class UserController extends Controller
                     return response()->json(['message' => $e->getMessage()], 500);
                 }
             } else {
-                return response()->json(['message' => 'Incorrect username or password.'], 422);
+                return response()->json(['message' => 'invalidCredentials'], 401);
             }
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
