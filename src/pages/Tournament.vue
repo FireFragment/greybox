@@ -26,7 +26,7 @@
               <q-item-section avatar>
                 <q-avatar
                   :style="
-                    'background-color: ' + stringToHslColor(pastLogin, 50, 60)
+                    'background-color: ' + $stringToHslColor(pastLogin, 50, 60)
                   "
                   size="30px"
                 >

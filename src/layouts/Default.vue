@@ -46,7 +46,7 @@
             <q-avatar
               :style="
                 'background-color: ' +
-                  stringToHslColor($auth.user().username, 50, 60)
+                  $stringToHslColor($auth.user().username, 50, 60)
               "
             >
               <img src="https://cdn.quasar.dev/img/avatar.png" v-if="!true" />

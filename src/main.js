@@ -68,7 +68,7 @@ const i18n = new VueI18n({
 Vue.mixin({
   data() {
     return {
-      apiSettings: config.api
+      $apiSettings: config.api
     };
   },
   methods: {
@@ -83,7 +83,7 @@ Vue.mixin({
       return this.$t(key, options);
     },
 
-    stringToHslColor: function(str, s, l) {
+    $stringToHslColor: function(str, s, l) {
       let hash = 0;
       for (let i = 0; i < str.length; i++) {
         hash = str.charCodeAt(i) + ((hash << 5) - hash);
@@ -95,7 +95,7 @@ Vue.mixin({
     },
 
     // API
-    api: apiCall,
+    $api: apiCall,
 
     // Flash
     $flash: function(message, type = "info", icon = false) {
@@ -111,7 +111,7 @@ Vue.mixin({
       return this.$q.notify({
         color,
         icon: icon ? "fas fa-" + icon : null,
-        message: "<span>" + message + "</span>",
+        message: message,
         html: true,
         position: "top-right",
         timeout: 3500,
