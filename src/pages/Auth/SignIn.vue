@@ -71,7 +71,7 @@ export default {
         })
         .then(data => {
           this.$auth.options.fetchData.url =
-            this.apiSettings.baseURL + "user/" + data.data.id;
+            this.$apiSettings.baseURL + "user/" + data.data.id;
 
           this.$auth
             .fetchUser()

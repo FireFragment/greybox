@@ -280,13 +280,8 @@
 </template>
 
 <script>
-import debatersCard from "../layouts/components/DebatersCard";
-
 export default {
   name: "PageTournament",
-  components: {
-    debatersCard
-  },
   data() {
     return {
       firstname: null,
