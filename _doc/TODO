@@ -1,4 +1,5 @@
 Vašek TODO:
+Vyřešit posílání api_token u update user
 Opravit routy podle https://stackoverflow.com/questions/34182806/multiple-route-file-instead-of-one-main-route-file-in-laravel-5
 Udělat heslo nullovatelné a vynullovat po resetu.
 Zhezčit mail a dořešit adresu odkazu

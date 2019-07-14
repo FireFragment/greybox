@@ -21,6 +21,7 @@ class UserController extends Controller
             'showAll',
             'showOne',
             'update',
+            'updatePassword',
             'delete'
         ]]);
     }
@@ -107,14 +108,20 @@ class UserController extends Controller
         try {
             $hasher = app()->make('hash');
             $password = $hasher->make($request->input('password'));
+            $preferredLocale = $request->input('preferred_locale');
 
             $user = User::create([
                 'person_id' => $request->input('person_id'),
                 'username' => $request->input('username'),
                 'password' => $password
             ]);
+            if (!empty($preferredLocale)) {
+                $user->update([
+                    'preferred_locale' => $preferredLocale
+                ]);
+            }
             return response()->json($user, 201);
-        } catch (\Illuminate\Database\QueryException $e) { 
+        } catch (\Illuminate\Database\QueryException $e) {
             if ($e->getCode() == 23000) {
                 $code = 409;
                 $message = "duplicateEntry";
@@ -123,10 +130,29 @@ class UserController extends Controller
                 $message = $e->getMessage();
             }
             return response()->json(['message' => $message], $code);
-        }        
+        }
     }
 
     public function update($id, Request $request)
+    {
+        try {
+            $user = User::findOrFail($id);
+            $this->authorize('update', $user, \Auth::user());
+
+            $preferredLocale = $request->input('preferred_locale');
+
+            if (!empty($preferredLocale)) {
+                $user->update([
+                    'preferred_locale' => $preferredLocale
+                ]);
+            }
+            return response()->json($user, 200);
+        } catch (\Illuminate\Database\QueryException $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function updatePassword($id, Request $request)
     {
         $this->validate($request, [
             'username' => 'required|email',
@@ -141,11 +167,17 @@ class UserController extends Controller
                 try {
                     $hasher = app()->make('hash');
                     $password = $hasher->make($request->input('password'));
+                    $preferredLocale = $request->input('preferred_locale');
 
                     $user->update([
                         'username' => $request->input('username'),
                         'password' => $password
                     ]);
+                    if (!empty($preferredLocale)) {
+                        $user->update([
+                            'preferred_locale' => $preferredLocale
+                        ]);
+                    }
                     return response()->json($user, 200);
                 } catch (\Illuminate\Database\QueryException $e) {
                     return response()->json(['message' => $e->getMessage()], 500);
@@ -184,6 +216,10 @@ class UserController extends Controller
 
                 try {
                     $mail_data = array('token' => $recovery_token);
+
+                    // TODO: vyřešit jak nastavit locale pouze pro email / případně jak používat locale vůbec
+                    app('translator')->setLocale($user->preferredLocale());
+
                     Mail::to($username)->send(new ResetPassword($mail_data));
                     return response()->json(['message' => 'E-mail sent.'], 200);
                 } catch (\Exception $e) {
