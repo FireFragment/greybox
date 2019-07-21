@@ -50,12 +50,12 @@ class CreateEventsTable extends Migration
     public function down()
     {
         Schema::table('registrations', function($table) {
-            // TODO: drop the foreign key first
+            $table->dropForeign(['event_id']);
             $table->dropColumn('event_id');
         });
 
         Schema::table('teams', function($table) {
-            // TODO: drop the foreign key first
+            $table->dropForeign(['event_id']);
             $table->dropColumn('event_id');
         });
 

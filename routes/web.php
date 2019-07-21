@@ -48,4 +48,10 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->post('event', ['uses' => 'EventController@create']);
     $router->delete('event/{id}', ['uses' => 'EventController@delete']);
     $router->put('event/{id}', ['uses' => 'EventController@update']);
+
+    $router->get('person',  ['uses' => 'PersonController@showAll']);
+    $router->get('person/{id}', ['uses' => 'PersonController@showOne']);
+    $router->post('person', ['uses' => 'PersonController@create']);
+    $router->delete('person/{id}', ['uses' => 'PersonController@delete']);
+    $router->put('person/{id}', ['uses' => 'PersonController@update']);
 });

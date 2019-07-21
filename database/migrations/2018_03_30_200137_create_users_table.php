@@ -15,17 +15,9 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
-            /*
-             * temporary workaround (nullable)
-             */
-            $table->unsignedInteger('person_id')->nullable();
             $table->string('username', 63)->unique();
             $table->string('password');
             $table->string('api_token')->nullable();
-            /*
-             * temporary workaround (no connection to clovek table)
-             */
-            //$table->foreign('person_id')->references('clovek_ID')->on('clovek')->onDelete('restrict');
             $table->timestamps();
         });
     }
