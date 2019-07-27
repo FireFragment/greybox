@@ -47,7 +47,7 @@ class RegistrationController extends Controller
     {
         // TODO: add person
         $this->validate($request, [
-            'event'
+            'event' => 'required'
         ]);
 
         try {
@@ -63,6 +63,7 @@ class RegistrationController extends Controller
                 'note' => $request->input('note'),
                 'event' => $request->input('event'),
                 'event_id' => $request->input('event'),
+                'role' => $request->input('role'),
                 'team' => $request->input('team'),
                 'registered_by' => \Auth::user()->id // to be checked
             ]);
@@ -80,6 +81,7 @@ class RegistrationController extends Controller
             if ($request->has('person')) $this->updateColumn($registration, 'person', $request->input('person'));
             if ($request->has('note')) $this->updateColumn($registration, 'note', $request->input('note'));
             if ($request->has('event')) $this->updateColumn($registration, 'event_id', $request->input('event'));
+            if ($request->has('role')) $this->updateColumn($registration, 'role', $request->input('role'));
             if ($request->has('team')) $this->updateColumn($registration, 'team', $request->input('team'));
 
             return response()->json($registration, 200);

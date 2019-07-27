@@ -32,6 +32,8 @@ class UpdateRegistrationsAndTeamsTable extends Migration
             $table->string('event',31)->nullable()->change();
             $table->unsignedInteger('person')->after('id')->nullable();
             $table->foreign('person')->references('id')->on('people');
+
+            $table->unique(['person', 'event_id']);
         });
     }
 
