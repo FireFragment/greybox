@@ -13,7 +13,7 @@ class PersonController extends Controller
         $this->middleware('auth', ['only' => [
             'showAll',
             'showOne',
-            'create',
+            /*'create',*/
             'update',
             'delete'
         ]]);
