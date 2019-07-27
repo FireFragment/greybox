@@ -59,7 +59,7 @@ class PersonController extends Controller
 
             return response()->json($person, 201);
         } catch (\Illuminate\Database\QueryException $e) {
-            return response()->json(['message' => $e->getMessage()], $e->getCode());
+            return response()->json(['message' => $e->getMessage()], 500);
         }
     }
 
