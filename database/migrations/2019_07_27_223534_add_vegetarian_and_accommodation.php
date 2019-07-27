@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddVegetarianToPerson extends Migration
+class AddVegetarianAndAccommodation extends Migration
 {
     /**
      * Run the migrations.
@@ -15,6 +15,9 @@ class AddVegetarianToPerson extends Migration
     {
         Schema::table('people', function($table) {
             $table->boolean('vegetarian')->after('zip')->default(0);
+        });
+        Schema::table('registrations', function($table) {
+            $table->boolean('accommodation')->after('role')->default(1);
         });
     }
 
@@ -27,6 +30,9 @@ class AddVegetarianToPerson extends Migration
     {
         Schema::table('people', function($table) {
             $table->dropColumn('vegetarian');
+        });
+        Schema::table('registrations', function($table) {
+            $table->dropColumn('accommodation');
         });
     }
 }

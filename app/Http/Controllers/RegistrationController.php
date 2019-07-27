@@ -64,12 +64,13 @@ class RegistrationController extends Controller
                 'event' => $request->input('event'),
                 'event_id' => $request->input('event'),
                 'role' => $request->input('role'),
+                'accommodation' => $request->input('accommodation'),
                 'team' => $request->input('team'),
                 'registered_by' => \Auth::user()->id // to be checked
             ]);
             return response()->json($registration, 201);
         } catch (\Illuminate\Database\QueryException $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
+            return response()->json(['message' => $e->getMessage(), 'code' => $e->getCode()], 500);
         }        
     }
     
@@ -82,6 +83,7 @@ class RegistrationController extends Controller
             if ($request->has('note')) $this->updateColumn($registration, 'note', $request->input('note'));
             if ($request->has('event')) $this->updateColumn($registration, 'event_id', $request->input('event'));
             if ($request->has('role')) $this->updateColumn($registration, 'role', $request->input('role'));
+            if ($request->has('accommodation')) $this->updateColumn($registration, 'accommodation', $request->input('accommodation'));
             if ($request->has('team')) $this->updateColumn($registration, 'team', $request->input('team'));
 
             return response()->json($registration, 200);
