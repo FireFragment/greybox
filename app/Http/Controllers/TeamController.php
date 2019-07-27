@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Team;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
 class TeamController extends Controller
 {
@@ -16,7 +15,7 @@ class TeamController extends Controller
             'showOne',
             'create',
             'delete',
-            'confirm'
+            'update'
         ]]);
     }
 
@@ -32,7 +31,6 @@ class TeamController extends Controller
 
     public function create(Request $request)
     {
-        // TBD
         $this->validate($request, [
             'name' => 'required'
         ]);
@@ -40,6 +38,7 @@ class TeamController extends Controller
         try {
             $team = Team::create([
                 'name' => $request->input('name'),
+                // TODO: to be deleted
                 'event' => $request->input('event'),
                 'registered_by' => \Auth::user()->id // to be checked
             ]);
@@ -49,10 +48,27 @@ class TeamController extends Controller
         }        
     }
 
+    public function update($id, Request $request)
+    {
+        try {
+            $team = Team::findOrFail($id);
+
+            if ($request->has('name')) $team->update(['name' => $request->input('name')]);
+
+            return response()->json($team, 200);
+        } catch (\Illuminate\Database\QueryException $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+
     public function delete($id)
     {
-        Team::findOrFail($id)->delete();
-        return response('Deleted successfully', 200);
+        try {
+            Team::findOrFail($id)->delete();
+            return response()->json(['message' => 'Deleted successfully.'], 204);
+        } catch (\Illuminate\Database\QueryException $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 
     // TBD check API token

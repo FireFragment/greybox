@@ -17,7 +17,7 @@ class CreateRegistrationsTable extends Migration
             $table->increments('id');
             $table->string('name', 31);
             $table->string('surname', 31);
-            $table->date('birthdate', 31);
+            $table->date('birthdate');
             $table->string('id_number', 31)->nullable();
             $table->string('street', 255);
             $table->string('city', 127);

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Registration;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
 class RegistrationController extends Controller
 {
@@ -15,6 +14,7 @@ class RegistrationController extends Controller
             'showAll',
             'showOne',
             'create',
+            'update',
             'delete',
             'confirm',
             'showByEvent'
@@ -45,13 +45,14 @@ class RegistrationController extends Controller
 
     public function create(Request $request)
     {
-        // TBD
+        // TODO: add person
         $this->validate($request, [
-            'name' => 'required'
+            'event'
         ]);
 
         try {
             $registration = Registration::create([
+                'person' => $request->input('person'),
                 'name' => $request->input('name'),
                 'surname' => $request->input('surname'),
                 'birthdate' => $request->input('birthdate'),
@@ -61,6 +62,7 @@ class RegistrationController extends Controller
                 'zip' => $request->input('zip'),
                 'note' => $request->input('note'),
                 'event' => $request->input('event'),
+                'event_id' => $request->input('event'),
                 'team' => $request->input('team'),
                 'registered_by' => \Auth::user()->id // to be checked
             ]);
@@ -69,11 +71,31 @@ class RegistrationController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }        
     }
+    
+    public function update($id, Request $request)
+    {
+        try {
+            $registration = Registration::findOrFail($id);
+
+            if ($request->has('person')) $this->updateColumn($registration, 'person', $request->input('person'));
+            if ($request->has('note')) $this->updateColumn($registration, 'note', $request->input('note'));
+            if ($request->has('event')) $this->updateColumn($registration, 'event_id', $request->input('event'));
+            if ($request->has('team')) $this->updateColumn($registration, 'team', $request->input('team'));
+
+            return response()->json($registration, 200);
+        } catch (\Illuminate\Database\QueryException $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
 
     public function delete($id)
     {
-        Registration::findOrFail($id)->delete();
-        return response('Deleted successfully', 200);
+        try {
+            Registration::findOrFail($id)->delete();
+            return response()->json(['message' => 'Deleted successfully.'], 204);
+        } catch (\Illuminate\Database\QueryException $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 
     // TBD check API token

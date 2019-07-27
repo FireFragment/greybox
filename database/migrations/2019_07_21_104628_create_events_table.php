@@ -36,7 +36,6 @@ class CreateEventsTable extends Migration
         });
 
         Schema::table('teams', function($table) {
-            // TODO: rename to just event
             $table->unsignedInteger('event_id')->after('event')->nullable();
             $table->foreign('event_id')->references('id')->on('events');
         });
