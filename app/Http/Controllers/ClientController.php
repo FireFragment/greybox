@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Client;
-use Illuminate\Http\Request;
-
-use Fakturoid\Client as FakturoidClient;
 use Fakturoid\Exception as FakturoidException;
+use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
@@ -35,17 +33,18 @@ class ClientController extends Controller
     public function create(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required',
-            'user' => 'required'
+            'name' => 'required'
         ]);
 
         $data = $request->all();
 
         try {
-            $fakturoidClient = new FakturoidClient(getenv('FAKTUROID_SLUG'), getenv('FAKTUROID_EMAIL'), getenv('FAKTUROID_API_KEY'), getenv('FAKTUROID_USER_AGENT'));
+            $fc = $this->getFakturoidClient();
 
-            $response = $fakturoidClient->createSubject($data);
-            $data['fakturoid_id'] = $response->getBody()->id;
+            $subject = $fc->createSubject($data);
+            $data['fakturoid_id'] = $subject->getBody()->id;
+            $data['country'] = $subject->getBody()->country;
+            $data['user'] = \Auth::user()->id;
 
             try {
                 $client = Client::create($data);
@@ -60,24 +59,49 @@ class ClientController extends Controller
     
     public function update($id, Request $request)
     {
+        $data = $request->all();
+
         try {
             $client = Client::findOrFail($id);
 
-            if ($request->has('name')) $this->updateColumn($client, 'name', $request->input('name'));
+            try {
+                $fc = $this->getFakturoidClient();
+                $subject = $fc->updateSubject($client->fakturoid_id, $data);
 
-            return response()->json($client, 200);
-        } catch (\Illuminate\Database\QueryException $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
+                try {
+                    $client->update($data);
+                    return response()->json($client, 200);
+                } catch (\Illuminate\Database\QueryException $e) {
+                    return response()->json(['message' => $e->getMessage(), 'code' => $e->getCode()], 500);
+                }
+            } catch (FakturoidException $e) {
+                return response()->json(['message' => $e->getMessage(), 'code' => $e->getCode()], 500);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage(), 'code' => $e->getCode()], 404);
         }
     }
 
     public function delete($id)
     {
         try {
-            Client::findOrFail($id)->delete();
-            return response()->json(['message' => 'Deleted successfully.'], 204);
-        } catch (\Illuminate\Database\QueryException $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
+            $client = Client::findOrFail($id);
+
+            try {
+                $fc = $this->getFakturoidClient();
+                $fc->deleteSubject($client->fakturoid_id);
+
+                try {
+                    $client->delete();
+                    return response()->json(['message' => 'Deleted successfully.'], 204);
+                } catch (\Illuminate\Database\QueryException $e) {
+                    return response()->json(['message' => $e->getMessage(), 'code' => $e->getCode()], 500);
+                }
+            } catch (FakturoidException $e) {
+                return response()->json(['message' => $e->getMessage(), 'code' => $e->getCode()], 500);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage(), 'code' => $e->getCode()], 404);
         }
     }
 }
