@@ -407,35 +407,39 @@ export default {
           console.log(data);
         });
     },
+
+    // Key pressed inside select
+    // -> Search for corresponding value
     selectKeyPress(a) {
       let selectOptions = a.target.getAttribute("data-select-options");
       let selectValue = a.target.getAttribute("data-select-value");
       let pressedKey = a.key;
+
+      // String to search for
       this.selectSearch = this.selectSearch
         ? this.selectSearch + pressedKey.toString()
         : pressedKey;
 
+      // Search label/whole value
       let match = false;
       this[selectOptions].forEach(option => {
         if (match) return;
         let value =
           typeof option === "object" ? option.label : option.toString();
-        if (value.startsWith(this.selectSearch)) {
-          this[selectValue] = option;
-          match = true;
-        }
+        if (value.startsWith(this.selectSearch))
+          match = option;
       });
 
+      // Search value
       if (!match && typeof this[selectOptions][0] == "object")
         this[selectOptions].forEach(option => {
           if (match) return;
           let value = option.value.toString();
-          if (value.startsWith(this.selectSearch)) {
-            this[selectValue] = option;
-            match = true;
-          }
+          if (value.startsWith(this.selectSearch))
+            match = option;
         });
 
+      // Search searchable option
       if (
         !match &&
         typeof this[selectOptions][0] == "object" &&
@@ -444,13 +448,14 @@ export default {
         this[selectOptions].forEach(option => {
           if (match) return;
           let value = option.searchable.toString();
-          if (value.startsWith(this.selectSearch)) {
-            this[selectValue] = option;
-            match = true;
-          }
+          if (value.startsWith(this.selectSearch))
+            match = option;
         });
 
-      if (!match) this.selectResetSearch();
+      if (match)
+        this[selectValue] = match;
+      else
+        this.selectResetSearch();
     },
     selectResetSearch() {
       this.selectSearch = null;
