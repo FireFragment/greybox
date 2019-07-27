@@ -9,7 +9,7 @@
           flat
           dense
           round
-          @click="leftDrawerOpen = !leftDrawerOpen"
+          @click="toggleDrawerMenu"
           aria-label="Menu"
           icon="menu"
         />
@@ -123,7 +123,9 @@ export default {
 
   data() {
     return {
-      leftDrawerOpen: this.$q.platform.is.desktop,
+      leftDrawerOpen:
+        this.$q.platform.is.desktop &&
+        localStorage.getItem("leftDrawerOpen") !== "false",
       user: null,
       fullLoader: false
     };
@@ -133,6 +135,13 @@ export default {
     EventBus.$on("fullLoader", value => {
       this.fullLoader = value;
     });
+  },
+
+  methods: {
+    toggleDrawerMenu() {
+      this.leftDrawerOpen = !this.leftDrawerOpen;
+      localStorage.setItem("leftDrawerOpen", this.leftDrawerOpen);
+    }
   }
 };
 </script>

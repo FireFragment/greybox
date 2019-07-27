@@ -366,8 +366,7 @@ export default {
 
   methods: {
     sendForm() {
-      if (!this.accept)
-        return this.acceptError = true;
+      if (!this.accept) return (this.acceptError = true);
 
       this.$api({
         url: "person",
