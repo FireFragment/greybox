@@ -27,5 +27,6 @@ class Client extends Model implements AuthenticatableContract, AuthorizableContr
      * @var array
      */
     protected $hidden = [
+        'fakturoid_id'
     ];
 }
