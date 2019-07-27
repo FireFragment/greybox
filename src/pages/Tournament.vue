@@ -189,10 +189,10 @@
         <!--
         <div class="block">
           <q-checkbox
-            v-model="noAccomodation"
+            v-model="accomodation"
             label="Nechci zařídit ubytování"
-            true-value="yes"
-            false-value="no"
+            :true-value="0"
+            :false-value="1"
           />
           <q-icon name="fas fa-info-circle" class="q-pl-sm">
             <q-tooltip
@@ -277,10 +277,7 @@
         <q-checkbox
           v-model="accept"
           label="Souhlasím s podmínkami přihlášení"
-          true-value="1"
-          false-value="0"
-          lazy-rules
-          :rules="[val => val == '352' || 'Vyplňte prosím toto pole']"
+          :class="{ 'q-field--error': acceptError && !accept }"
         />
 
         <div class="text-center">
@@ -317,13 +314,14 @@ export default {
       city: null,
       zip: null,
       phone: "+420",
-      vegetarian: false,
-      noAccomodation: false,
+      vegetarian: "0",
+      accomodation: 1,
       parentName: null,
       parentPhone: "+420",
       parentEmail: null,
       note: null,
       accept: false,
+      acceptError: false,
       birthDay: null,
       birthMonth: null,
       birthYear: null,
@@ -365,14 +363,12 @@ export default {
       };
     }
   },
-  mounted() {
-    this.$el.querySelectorAll("input[type=checkbox]").forEach(el => {
-      el.click();
-    });
-  },
 
   methods: {
     sendForm() {
+      if (!this.accept)
+        return this.acceptError = true;
+
       this.$api({
         url: "person",
         sendToken: false,
@@ -426,8 +422,7 @@ export default {
         if (match) return;
         let value =
           typeof option === "object" ? option.label : option.toString();
-        if (value.startsWith(this.selectSearch))
-          match = option;
+        if (value.startsWith(this.selectSearch)) match = option;
       });
 
       // Search value
@@ -435,8 +430,7 @@ export default {
         this[selectOptions].forEach(option => {
           if (match) return;
           let value = option.value.toString();
-          if (value.startsWith(this.selectSearch))
-            match = option;
+          if (value.startsWith(this.selectSearch)) match = option;
         });
 
       // Search searchable option
@@ -448,14 +442,11 @@ export default {
         this[selectOptions].forEach(option => {
           if (match) return;
           let value = option.searchable.toString();
-          if (value.startsWith(this.selectSearch))
-            match = option;
+          if (value.startsWith(this.selectSearch)) match = option;
         });
 
-      if (match)
-        this[selectValue] = match;
-      else
-        this.selectResetSearch();
+      if (match) this[selectValue] = match;
+      else this.selectResetSearch();
     },
     selectResetSearch() {
       this.selectSearch = null;
