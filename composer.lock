@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "01ed5a391c5ab1879c272c85f6d2f593",
+    "content-hash": "b44efa770cb431ec4327d8c13e32bddf",
     "packages": [
         {
             "name": "doctrine/cache",
@@ -520,6 +520,56 @@
                 "parser"
             ],
             "time": "2019-03-17T18:48:37+00:00"
+        },
+        {
+            "name": "fakturoid/fakturoid-php",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fakturoid/fakturoid-php.git",
+                "reference": "db428ae70e5c519e63ca677c75ce7d76a78cf9fb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fakturoid/fakturoid-php/zipball/db428ae70e5c519e63ca677c75ce7d76a78cf9fb",
+                "reference": "db428ae70e5c519e63ca677c75ce7d76a78cf9fb",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "ext-dom": "*",
+                "ext-mbstring": "*",
+                "phpunit/phpunit": "^6.5",
+                "squizlabs/php_codesniffer": "^3.2"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "lib/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fakturoid and contributors",
+                    "homepage": "https://www.fakturoid.cz"
+                }
+            ],
+            "description": "Fakturoid PHP library",
+            "homepage": "https://www.fakturoid.cz/api",
+            "keywords": [
+                "api",
+                "fakturoid",
+                "invoice"
+            ],
+            "time": "2019-03-27T13:42:01+00:00"
         },
         {
             "name": "illuminate/auth",

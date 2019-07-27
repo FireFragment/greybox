@@ -60,4 +60,10 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->post('role', ['uses' => 'RoleController@create']);
     $router->delete('role/{id}', ['uses' => 'RoleController@delete']);
     $router->put('role/{id}', ['uses' => 'RoleController@update']);
+
+    $router->get('client',  ['uses' => 'ClientController@showAll']);
+    $router->get('client/{id}', ['uses' => 'ClientController@showOne']);
+    $router->post('client', ['uses' => 'ClientController@create']);
+    $router->delete('client/{id}', ['uses' => 'ClientController@delete']);
+    $router->put('client/{id}', ['uses' => 'ClientController@update']);
 });
