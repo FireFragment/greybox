@@ -53,6 +53,7 @@ class PersonController extends Controller
                 'street' => $request->input('street'),
                 'city' => $request->input('city'),
                 'zip' => $request->input('zip'),
+                'vegetarian' => $request->input('vegetarian'),
                 'note' => $request->input('note')
             ]);
 
@@ -74,6 +75,7 @@ class PersonController extends Controller
             if ($request->has('street')) $person->update(['street' => $request->input('street')]);
             if ($request->has('city')) $person->update(['city' => $request->input('city')]);
             if ($request->has('zip')) $person->update(['zip' => $request->input('zip')]);
+            if ($request->has('vegetarian')) $person->update(['vegetarian' => $request->input('vegetarian')]);
             if ($request->has('note')) $person->update(['note' => $request->input('note')]);
 
             return response()->json($person, 200);
