@@ -22,6 +22,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 	$router->delete('user/{id}', ['uses' => 'UserController@delete']);
 	$router->put('user/{id}', ['uses' => 'UserController@update']);
 	$router->put('user/{id}/password', ['uses' => 'UserController@updatePassword']);
+	$router->get('user/{id}/people', ['uses' => 'UserController@showPeople']);
 
 	$router->post('login', ['uses' => 'UserController@login']);
 	$router->post('logout', ['uses' => 'UserController@logout']);

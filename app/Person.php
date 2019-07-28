@@ -28,4 +28,9 @@ class Person extends Model implements AuthenticatableContract, AuthorizableContr
      */
     protected $hidden = [
     ];
+
+    public function user()
+    {
+        return $this->hasOne('App\User');
+    }
 }

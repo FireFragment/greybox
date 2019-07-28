@@ -18,7 +18,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $fillable = [
-        'person_id', 'username', 'password', 'api_token', 'preferred_locale'
+        'username', 'password', 'person', 'preferred_locale', 'admin', 'api_token'
     ];
 
     /**
@@ -44,5 +44,15 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function preferredLocale()
     {
         return $this->preferred_locale;
+    }
+
+    public function person()
+    {
+        return $this->belongsTo(Person::class, 'person', 'id');
+    }
+
+    public function registrations()
+    {
+        return $this->hasMany(Registration::class, 'registered_by', 'id');
     }
 }

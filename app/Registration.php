@@ -28,4 +28,17 @@ class Registration extends Model implements AuthenticatableContract, Authorizabl
      */
     protected $hidden = [
     ];
+
+    /*
+     * @return App\User
+     */
+    public function registeredBy()
+    {
+        return $this->belongsTo(User::class, 'registered_by', 'id');
+    }
+
+    public function person()
+    {
+        return $this->belongsTo(Person::class, 'person', 'id');
+    }
 }

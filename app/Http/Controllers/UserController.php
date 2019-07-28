@@ -90,6 +90,7 @@ class UserController extends Controller
     public function showOne($id)
     {
         $user = User::find($id);
+        $user->person = $user->person()->get();
         $this->authorize('showOne', $user, \Auth::user());
         return response()->json($user);
     }
@@ -108,6 +109,7 @@ class UserController extends Controller
         try {
             $hasher = app()->make('hash');
             $password = $hasher->make($request->input('password'));
+            // TODO: refactor You may pass a default value as the second argument to the input method. This value will be returned if the requested input value is not present on the request: $name = $request->input('name', 'Sally');
             $preferredLocale = $request->input('preferred_locale');
 
             $user = User::create([
@@ -261,5 +263,18 @@ class UserController extends Controller
         } else {
             return response()->json(['message' => 'tokenNotFound'], 404);
         }
+    }
+
+    public function showPeople($id) {
+        $user = User::find($id);
+        $registrations = $user->registrations()->get();
+        foreach ($registrations as $registration)
+        {
+            $person = $registration->person()->get();
+            if (!empty($person[0])) {
+                $people[] = $person[0];
+            }
+        }
+        return response()->json($people, 200);
     }
 }
