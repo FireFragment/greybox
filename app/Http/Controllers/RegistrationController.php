@@ -30,17 +30,13 @@ class RegistrationController extends Controller
     {
         $registration = Registration::find($id);
         $this->authorize('showOne', $registration);
+
+        $registration->person = $registration->person()->get();
+        $registration->event = $registration->event()->get();
+        $registration->role = $registration->role()->get();
+        $registration->registered_by = $registration->registeredBy()->get();
+
         return response()->json($registration);
-    }
-
-    public function showByUser($id)
-    {
-        return response()->json(Registration::select('name', 'surname', 'birthdate', 'id_number', 'street', 'city', 'zip')->where('registered_by', $id)->where('event', 'like', '2%')->groupBy('name', 'surname', 'birthdate', 'id_number', 'street', 'city', 'zip')->orderBy('surname', 'asc')->get());
-    }
-
-    public function showByEvent($id)
-    {
-        return response()->json(Registration::select('registrations.name', 'registrations.surname', 'registrations.event', 'teams.name as teamname')->where('registrations.registered_by', \Auth::user()->id)->where('registrations.event', 'like', $id.'%')->leftJoin('teams', 'registrations.team', '=', 'teams.id')->get());
     }
 
     public function create(Request $request)

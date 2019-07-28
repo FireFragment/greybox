@@ -41,4 +41,19 @@ class Registration extends Model implements AuthenticatableContract, Authorizabl
     {
         return $this->belongsTo(Person::class, 'person', 'id');
     }
+
+    public function event()
+    {
+        return $this->belongsTo(Event::class, 'event_id', 'id');
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'role', 'id');
+    }
+
+    public function team()
+    {
+        return $this->belongsTo(Team::class, 'team', 'id');
+    }
 }
