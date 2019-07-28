@@ -6,8 +6,15 @@ import "./quasar";
 import apiCall from "./api";
 import config from "./config";
 import VueAuth from "@d0whc3r/vue-auth-plugin";
+import smartformModule from "@smartform.cz/smartform";
 
 Vue.config.productionTip = false;
+
+// Initialize SmartForms
+smartformModule.load();
+window.smartform.beforeInit = () => {
+  window.smartform.setClientId("8ndPcVUJ5B");
+};
 
 // Localization
 import VueI18n from "vue-i18n";

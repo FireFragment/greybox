@@ -121,6 +121,7 @@
           v-model="street"
           label="Ulice a číslo *"
           class="q-pt-sm"
+          input-class="smartform-street-and-number"
           lazy-rules
           :rules="[
             val => (val && val.length > 0) || 'Vyplňte prosím toto pole'
@@ -136,6 +137,7 @@
           v-model="city"
           label="Město *"
           class="q-pt-sm"
+          input-class="smartform-city"
           lazy-rules
           :rules="[
             val => (val && val.length > 0) || 'Vyplňte prosím toto pole'
@@ -151,6 +153,7 @@
           v-model="zip"
           label="Číslo PSČ *"
           class="q-pt-sm"
+          input-class="smartform-zip"
           mask="### ##"
           fill-mask="#"
           hint="Vzor: 796 01"
