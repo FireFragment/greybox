@@ -276,9 +276,35 @@
 
         <q-checkbox
           v-model="accept"
-          label="Souhlasím s podmínkami přihlášení"
           :class="{ 'q-field--error': acceptError && !accept }"
-        />
+        >
+          {{ $tr("tournament.gdpr.label") }}
+          <a @click="showGDPRModal = true">{{ $tr("tournament.gdpr.link") }}</a>
+        </q-checkbox>
+        <q-dialog v-model="showGDPRModal">
+          <q-card class="dialog-medium">
+            <q-card-section class="row items-center">
+              <div class="text-h6">
+                {{ $tr("tournament.gdpr.modal.title") }}
+              </div>
+              <q-space />
+              <q-btn icon="close" flat round dense v-close-popup />
+            </q-card-section>
+
+            <q-card-section>
+              {{ $tr("tournament.gdpr.modal.opening") }}
+              <ul>
+                <li
+                  v-for="item in $tr('tournament.gdpr.modal.list')"
+                  v-bind:key="item"
+                >
+                  {{ item }}
+                </li>
+              </ul>
+              {{ $tr("tournament.gdpr.modal.closing") }}
+            </q-card-section>
+          </q-card>
+        </q-dialog>
 
         <div class="text-center">
           <q-btn label="Odeslat" type="submit" color="primary" />
@@ -322,6 +348,7 @@ export default {
       note: null,
       accept: false,
       acceptError: false,
+      showGDPRModal: false,
       birthDay: null,
       birthMonth: null,
       birthYear: null,
@@ -344,6 +371,7 @@ export default {
       years: []
     };
   },
+
   created() {
     for (let i = 1; i <= 31; i++) {
       this.days.push({
@@ -362,6 +390,25 @@ export default {
         searchable: i + 1
       };
     }
+  },
+
+  mounted() {
+    // Remove label toggling on inner link click
+    document.querySelectorAll(".q-checkbox__label a").forEach(link => {
+      link.addEventListener("click", e => {
+        e.stopPropagation();
+        e.preventDefault();
+      });
+    });
+  },
+
+  beforeDestroy() {
+    document.querySelectorAll(".q-checkbox__label a").forEach(link => {
+      link.removeEventListener("click", e => {
+        e.stopPropagation();
+        e.preventDefault();
+      });
+    });
   },
 
   methods: {
