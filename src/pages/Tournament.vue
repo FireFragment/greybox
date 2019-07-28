@@ -7,7 +7,7 @@
     </p>
     <div class="row q-col-gutter-md reverse">
       <div class="col-12 col-sm-4 col-md-6">
-        <debatersCard />
+        <debatersCard @debaterSelected="debaterSelected" />
       </div>
       <q-form class="col-12 col-sm-8 col-md-6" @submit="sendForm">
         <div class="row q-col-gutter-md q-pb-sm">
@@ -185,8 +185,8 @@
           <q-checkbox
             v-model="vegetarian"
             label="Vegetariánská strana"
-            true-value="1"
-            false-value="0"
+            :true-value="1"
+            :false-value="0"
           />
         </div>
         <!--
@@ -343,7 +343,7 @@ export default {
       city: null,
       zip: null,
       phone: "+420",
-      vegetarian: "0",
+      vegetarian: 0,
       accomodation: 1,
       parentName: null,
       parentPhone: "+420",
@@ -499,6 +499,10 @@ export default {
     },
     selectResetSearch() {
       this.selectSearch = null;
+    },
+
+    debaterSelected(data) {
+      for (let key in data) this[key] = data[key];
     }
   }
 };
