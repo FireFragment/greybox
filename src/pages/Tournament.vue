@@ -98,8 +98,16 @@
           label="Číslo občanského průkazu"
           class="q-pt-sm"
           mask="#########"
-          fill-mask="#"
+          fill-mask="_"
           hint="Vzor: 123456789"
+          lazy-rules
+          :rules="[
+            val =>
+              !val ||
+              val === '#########' ||
+              val.toString().match(/\d{9}/) ||
+              'Vyplňte prosím toto pole'
+          ]"
         >
           <template v-slot:prepend>
             <q-icon name="fas fa-id-card" />
@@ -155,11 +163,13 @@
           class="q-pt-sm"
           input-class="smartform-zip"
           mask="### ##"
-          fill-mask="#"
+          fill-mask="_"
           hint="Vzor: 796 01"
           lazy-rules
           :rules="[
-            val => (val && val.length > 0) || 'Vyplňte prosím toto pole'
+            val =>
+              (val && val.toString().match(/\d{3} ?\d{2}/)) ||
+              'Vyplňte prosím toto pole'
           ]"
         >
           <template v-slot:prepend>
@@ -319,6 +329,7 @@
 
 <script>
 import debatersCard from "../components/DebatersCard";
+import { EventBus } from "../event-bus";
 
 export default {
   name: "PageTournament",
@@ -387,6 +398,12 @@ export default {
         searchable: i + 1
       };
     }
+
+    // Listen to SmartForm address autocomplete
+    EventBus.$on("smartFormAutocomplete", data => {
+      let varName = data.field !== "street-and-number" ? data.field : "street";
+      this[varName] = data.value;
+    });
   },
 
   mounted() {
@@ -424,7 +441,7 @@ export default {
             this.birthMonth.value +
             "-" +
             this.birthDay.value,
-          id_number: this.id_number,
+          id_number: this.id_number === "_________" ? null : this.id_number,
           street: this.street,
           vegetarian: this.vegetarian,
           city: this.city,

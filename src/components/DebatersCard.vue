@@ -52,11 +52,14 @@ export default {
   },
 
   created() {
+    // TODO - pokud není uživatel přihlášení, hodit hlášku, že se předvyplnění funguje až po přihlášení
+    if (!this.$auth.check()) return (this.showLoading = false);
     this.$api({
       url: "user/" + this.$auth.user().id + "/person",
       method: "get"
     })
       .then(d => {
+        // TODO - pokud je pole prázdné, hodit nějakou hustou hlášku
         this.pastLogins = d.data;
       })
       .finally(() => {
