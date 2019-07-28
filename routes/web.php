@@ -22,15 +22,12 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 	$router->delete('user/{id}', ['uses' => 'UserController@delete']);
 	$router->put('user/{id}', ['uses' => 'UserController@update']);
 	$router->put('user/{id}/password', ['uses' => 'UserController@updatePassword']);
-	$router->get('user/{id}/people', ['uses' => 'UserController@showPeople']);
+	$router->get('user/{id}/person', ['uses' => 'UserController@showPeople']);
 
 	$router->post('login', ['uses' => 'UserController@login']);
 	$router->post('logout', ['uses' => 'UserController@logout']);
 	$router->post('reset', ['uses' => 'UserController@sendResetPasswordEmail']);
 	$router->put('reset', ['uses' => 'UserController@resetPassword']);
-
-	$router->get('user/{id}/registration', ['uses' => 'RegistrationController@showByUser']);
-	$router->get('event/{id}/registration', ['uses' => 'RegistrationController@showByEvent']);
 
 	$router->get('registration',  ['uses' => 'RegistrationController@showAll']);
 	$router->get('registration/{id}', ['uses' => 'RegistrationController@showOne']);
