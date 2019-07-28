@@ -97,7 +97,7 @@ Vue.mixin({
       return "/" + routes[route];
     },
 
-    $stringToHslColor: function(str, s, l) {
+    $stringToHslColor: function(str, s = 50, l = 60) {
       let hash = 0;
       for (let i = 0; i < str.length; i++) {
         hash = str.charCodeAt(i) + ((hash << 5) - hash);

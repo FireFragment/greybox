@@ -182,20 +182,13 @@
         </q-input>
         -->
         <div class="block">
-          <q-checkbox
-            v-model="vegetarian"
-            label="Vegetariánská strana"
-            :true-value="1"
-            :false-value="0"
-          />
+          <q-checkbox v-model="vegetarian" label="Vegetariánská strana" />
         </div>
         <!--
         <div class="block">
           <q-checkbox
             v-model="accomodation"
             label="Nechci zařídit ubytování"
-            :true-value="0"
-            :false-value="1"
           />
           <q-icon name="fas fa-info-circle" class="q-pl-sm">
             <q-tooltip
@@ -343,8 +336,8 @@ export default {
       city: null,
       zip: null,
       phone: "+420",
-      vegetarian: 0,
-      accomodation: 1,
+      vegetarian: false,
+      accomodation: true,
       parentName: null,
       parentPhone: "+420",
       parentEmail: null,
@@ -376,6 +369,7 @@ export default {
   },
 
   created() {
+    // Load date select options
     for (let i = 1; i <= 31; i++) {
       this.days.push({
         label: i + ".",
@@ -438,19 +432,9 @@ export default {
           note: this.note
         },
         alerts: false
-      })
-        .then(data => {
-          console.log(data);
-        })
-        .catch(data => {
-          /*if (data.response.data)
-              for (let index in data.response.data)
-                data.response.data[index].forEach(message => {
-                  this.$flash(message, "error", false, 5000);
-                });
-            else this.$flash("An error had occured, please try again.", "error");*/
-          console.log(data);
-        });
+      }).then(data => {
+        console.log(data);
+      });
     },
 
     // Key pressed inside select
@@ -502,7 +486,14 @@ export default {
     },
 
     debaterSelected(data) {
-      for (let key in data) this[key] = data[key];
+      for (let key in data) {
+        if (key === "birthdate") {
+          let value = data[key].split("-");
+          this.birthYear = parseInt(value[0]);
+          this.birthMonth = this.months[parseInt(value[1]) - 1];
+          this.birthDay = this.days[parseInt(value[2]) - 1];
+        } else this[key] = data[key];
+      }
     }
   }
 };

@@ -45,13 +45,15 @@
           <template v-slot:label>
             <q-avatar
               :style="
-                'background-color: ' +
-                  $stringToHslColor($auth.user().username, 50, 60)
+                'background-color: ' + $stringToHslColor($auth.user().username)
               "
             >
               <img src="https://cdn.quasar.dev/img/avatar.png" v-if="!true" />
               <template v-else>{{
-                $auth.user().username.substr(0, 1)
+                $auth
+                  .user()
+                  .username.substr(0, 1)
+                  .toUpperCase()
               }}</template>
             </q-avatar>
             {{ $auth.user().username }}
