@@ -64,4 +64,17 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->post('client', ['uses' => 'ClientController@create']);
     $router->delete('client/{id}', ['uses' => 'ClientController@delete']);
     $router->put('client/{id}', ['uses' => 'ClientController@update']);
+
+    $router->get('invoice',  ['uses' => 'InvoiceController@showAll']);
+    $router->get('invoice/{id}', ['uses' => 'InvoiceController@showOne']);
+    $router->post('invoice', ['uses' => 'InvoiceController@create']);
+    $router->delete('invoice/{id}', ['uses' => 'InvoiceController@delete']);
+    $router->put('invoice/{id}', ['uses' => 'InvoiceController@update']);
+    //$router->get('invoice/{id}/pdf', ['uses' => 'InvoiceController@showOnePdf']);
+
+    $router->get('price',  ['uses' => 'PriceController@showAll']);
+    $router->get('price/{id}', ['uses' => 'PriceController@showOne']);
+    $router->post('price', ['uses' => 'PriceController@create']);
+    $router->delete('price/{id}', ['uses' => 'PriceController@delete']);
+    $router->put('price/{id}', ['uses' => 'PriceController@update']);
 });
