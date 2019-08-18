@@ -28,6 +28,9 @@ class Price extends Model implements AuthenticatableContract, AuthorizableContra
      */
     protected $hidden = [
     ];
-}
 
-// TODO: Delete timestamps
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'role', 'id');
+    }
+}

@@ -25,6 +25,12 @@ class EventController extends Controller
     public function showOne($id)
     {
         $event = Event::find($id);
+
+        $event->prices = $event->prices()->get();
+        for ($i=0; $i<count($event->prices); $i++) {
+            $event->prices[$i]->role = $event->prices[$i]->role()->get();
+        }
+
         return response()->json($event);
     }
 

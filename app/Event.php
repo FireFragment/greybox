@@ -28,4 +28,9 @@ class Event extends Model implements AuthenticatableContract, AuthorizableContra
      */
     protected $hidden = [
     ];
+
+    public function prices()
+    {
+        return $this->hasMany(Price::class, 'event', 'id');
+    }
 }
