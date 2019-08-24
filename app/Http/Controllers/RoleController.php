@@ -36,9 +36,7 @@ class RoleController extends Controller
         ]);
 
         try {
-            $role = Role::create([
-                'name' => $request->input('name')
-            ]);
+            $role = Role::create($request->all());
             return response()->json($role, 201);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
@@ -51,6 +49,7 @@ class RoleController extends Controller
             $role = Role::findOrFail($id);
 
             if ($request->has('name')) $this->updateColumn($role, 'name', $request->input('name'));
+            if ($request->has('icon')) $this->updateColumn($role, 'icon', $request->input('icon'));
 
             return response()->json($role, 200);
         } catch (\Illuminate\Database\QueryException $e) {
