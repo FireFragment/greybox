@@ -129,7 +129,7 @@ export default {
         this.$q.platform.is.desktop &&
         localStorage.getItem("leftDrawerOpen") !== "false",
       user: null,
-      fullLoader: false
+      fullLoader: true
     };
   },
 

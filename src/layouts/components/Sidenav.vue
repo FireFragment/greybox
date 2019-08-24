@@ -9,29 +9,30 @@
           <q-item-label>{{ $tr("general.homepage") }}</q-item-label>
         </q-item-section>
       </q-item>
+
       <q-item-label header>{{ $tr("general.tournaments") }}</q-item-label>
       <q-item
-        :to="$path('tournament') + '/' + 952 + '-' + 'prvni-cesky-turnaj'"
+        v-for="event in events"
+        v-bind:key="event.id"
+        :to="
+          $path('tournament') +
+            '/' +
+            event.id +
+            '-' +
+            $slug(event.name + ' ' + event.place)
+        "
         exact
       >
         <q-item-section avatar>
           <q-icon name="fas fa-trophy" />
         </q-item-section>
         <q-item-section>
-          <q-item-label>1. český turnaj</q-item-label>
+          <q-item-label>{{ event.name }}</q-item-label>
         </q-item-section>
       </q-item>
-      <q-item
-        :to="$path('tournament') + '/' + 156 + '-' + 'druhy-anglicky-turnaj'"
-        exact
-      >
-        <q-item-section avatar>
-          <q-icon name="fas fa-trophy" />
-        </q-item-section>
-        <q-item-section>
-          <q-item-label>2. anglický turnaj</q-item-label>
-        </q-item-section>
-      </q-item>
+      <div v-if="!events.length" class="empty-info">
+        {{ $tr("general.noEvents") }}
+      </div>
 
       <q-item-label header>{{ $tr("general.essentialLinks") }}</q-item-label>
       <q-item
@@ -72,9 +73,9 @@
             <q-icon name="fas fa-download" />
           </q-item-section>
 
-          <q-item-section>{{
-            $tr("general.downloadPersonalData")
-          }}</q-item-section>
+          <q-item-section
+            >{{ $tr("general.downloadPersonalData") }}
+          </q-item-section>
         </q-item>
 
         <q-item :to="$path('logout')" clickable>
@@ -115,10 +116,30 @@
 </template>
 
 <script>
+import { EventBus } from "../../event-bus";
+
 export default {
   name: "Sidenav",
+  data() {
+    return {
+      events: []
+    };
+  },
   props: {
     value: Boolean
+  },
+  created() {
+    this.$api({
+      url: "event",
+      sendToken: false,
+      method: "get"
+    })
+      .then(d => {
+        this.events = d.data;
+      })
+      .finally(() => {
+        EventBus.$emit("fullLoader", false);
+      });
   }
 };
 </script>
