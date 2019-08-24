@@ -1,4 +1,5 @@
 {
+  "empty": "No events are available at the moment",
   "gdpr": {
     "label": "I agree with",
     "link": "sign up conditions",
@@ -12,6 +13,17 @@
         "taking pictures or audio-video recordings of my speeches made at the Association’s events and to the use of such recordings for educational purposes or Association’s promotion."
       ],
       "closing": "I take into consideration the fact that I can withdraw this personal data processing consent via a letter or email addressed to the Association’s president whenever I would deem it necessary. The withdrawal of the consent can mean that I shall not be allowed to participate in certain Association’s events and my results in the Association’s competitions shall not be calculated.\n"
+    }
+  },
+  "debatersCard": {
+    "title": "Autofill data of previously registered people",
+    "empty": "You have no people to autofill.",
+    "notLoggedIn": {
+      "pre": "You need to",
+      "signUp": "sign up",
+      "or": "or",
+      "login": "login",
+      "post": " before being able to autofill data."
     }
   }
 }

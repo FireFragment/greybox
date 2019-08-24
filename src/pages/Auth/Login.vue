@@ -102,6 +102,7 @@ export default {
         })
         .catch(data => {
           this.$router.replace(this.$path("login"));
+          EventBus.$emit("fullLoader", false);
           this.$flash(data.response.data.message, "error");
         });
     }

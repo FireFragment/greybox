@@ -31,7 +31,7 @@
         </q-item-section>
       </q-item>
       <div v-if="!events.length" class="empty-info">
-        {{ $tr("general.noEvents") }}
+        {{ $tr("tournament.empty") }}
       </div>
 
       <q-item-label header>{{ $tr("general.essentialLinks") }}</q-item-label>

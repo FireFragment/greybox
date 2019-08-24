@@ -116,7 +116,9 @@ Vue.mixin({
 
     // Get path to route
     $path: function(route, language = null) {
-      if (!language) language = this.$i18n.locale;
+      console.log(this, this.$i18n);
+      if (!language)
+        language = this.$i18n ? this.$i18n.locale : i18nConfig.default;
 
       let routes = require("./translation/" + language + "/paths.json");
       return "/" + routes[route];

@@ -10,6 +10,5 @@
   "passwordReset": "Reset password",
   "logout": "Logout",
   "accountSettings": "Account Settings",
-  "downloadPersonalData": "Download personal data",
-  "noEvents": "No events are available at the moment"
+  "downloadPersonalData": "Download personal data"
 }
