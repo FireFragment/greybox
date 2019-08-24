@@ -6,7 +6,7 @@ use App\Client;
 use Fakturoid\Exception as FakturoidException;
 use Illuminate\Http\Request;
 
-class ClientController extends Controller
+class ClientController extends FakturoidController
 {
     public function __construct()
     {

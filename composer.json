@@ -10,7 +10,9 @@
         "vlucas/phpdotenv": "~2.2",
         "illuminate/mail": "5.6",
         "doctrine/dbal": "^2.9",
-        "fakturoid/fakturoid-php": "^1.0"
+        "fakturoid/fakturoid-php": "^1.0",
+        "rikudou/czqrpayment": "^4.0",
+        "endroid/qr-code": "^3.6"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

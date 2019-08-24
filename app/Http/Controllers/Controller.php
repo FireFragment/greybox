@@ -13,12 +13,4 @@ class Controller extends BaseController
         }
         return $table->update([$column => $value]);
     }
-
-    /*
-     * @return Fakturoid\Client
-     */
-    public function getFakturoidClient()
-    {
-        return new \Fakturoid\Client(getenv('FAKTUROID_SLUG'), getenv('FAKTUROID_EMAIL'), getenv('FAKTUROID_API_KEY'), getenv('FAKTUROID_USER_AGENT'));
-    }
 }
