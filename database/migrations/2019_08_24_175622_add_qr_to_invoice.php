@@ -14,7 +14,7 @@ class AddQrToInvoice extends Migration
     public function up()
     {
         Schema::table('invoices', function($table) {
-            $table->string('qr_url', 63)->after('paid_amount');
+            $table->string('qr_url', 63)->nullable()->after('paid_amount');
         });
     }
 
