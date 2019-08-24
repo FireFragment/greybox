@@ -2,9 +2,7 @@
   <q-list
     class="rounded-borders shadow-2 q-pb-sm bg-white debaters-sticky-card"
   >
-    <p class="text-center q-pb- q-pt-md q-pl-sm q-pr-sm">
-      {{ $tr("title") }}:
-    </p>
+    <p class="text-center q-pb- q-pt-md q-pl-sm q-pr-sm">{{ $tr("title") }}:</p>
     <q-scroll-area style="height: calc(100vh - 130px);">
       <div class="empty-info" v-if="!pastLogins.length && !showLoading">
         <template v-if="!this.$auth.check()">
@@ -69,15 +67,22 @@ export default {
   },
 
   created() {
-    // TODO - pokud není uživatel přihlášení, hodit hlášku, že se předvyplnění funguje až po přihlášení
     if (!this.$auth.check()) return (this.showLoading = false);
+
+    let cached = this.$db("autofillDebaters");
+
+    if (cached) {
+      this.showLoading = false;
+      return (this.pastLogins = cached);
+    }
+
     this.$api({
       url: "user/" + this.$auth.user().id + "/person",
       method: "get"
     })
       .then(d => {
-        // TODO - pokud je pole prázdné, hodit nějakou hustou hlášku
         this.pastLogins = d.data;
+        this.$db("autofillDebaters", this.pastLogins, true);
       })
       .finally(() => {
         this.showLoading = false;

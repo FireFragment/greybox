@@ -30,7 +30,7 @@
           <q-item-label>{{ event.name }}</q-item-label>
         </q-item-section>
       </q-item>
-      <div v-if="!events.length" class="empty-info">
+      <div v-if="!Object.keys(events).length" class="empty-info">
         {{ $tr("tournament.empty") }}
       </div>
 
@@ -129,6 +129,12 @@ export default {
     value: Boolean
   },
   created() {
+    if (this.events.length) return;
+
+    // Load events from cache if available
+    let cached = this.$db("eventsList");
+    if (cached) return (this.events = cached);
+
     this.$api({
       url: "event",
       sendToken: false,
@@ -136,6 +142,7 @@ export default {
     })
       .then(d => {
         this.events = d.data;
+        this.$db("eventsList", this.$makeIdObject(d.data));
       })
       .finally(() => {
         EventBus.$emit("fullLoader", false);

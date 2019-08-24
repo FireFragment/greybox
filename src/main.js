@@ -46,6 +46,7 @@ import VueI18n from "vue-i18n";
 
 Vue.use(VueI18n);
 Vue.use(VueAxios, axios);
+Vue.use(require("vue-moment"));
 
 // Import localization data from JSONs
 import i18nConfig from "./translation/config.json";
@@ -116,7 +117,6 @@ Vue.mixin({
 
     // Get path to route
     $path: function(route, language = null) {
-      console.log(this, this.$i18n);
       if (!language)
         language = this.$i18n ? this.$i18n.locale : i18nConfig.default;
 
@@ -179,6 +179,42 @@ Vue.mixin({
         .replace(/--+/g, "-") // Replace multiple - with single -
         .replace(/^-+/, "") // Trim - from start of text
         .replace(/-+$/, ""); // Trim - from end of text
+    },
+
+    // Convert array of objects into object of objects (with IDs as keys)
+    $makeIdObject(array) {
+      let result = {};
+
+      array.map(item => {
+        result[item.id] = item;
+      });
+
+      return result;
+    },
+
+    // Simple global database interface
+
+    // @key: Index for the value to be stored under
+    // @value: null = read value; undefined = delete value; other = set value
+    // @personal: true = value will be uncached on logout
+    $db(key, value = null, personal = false) {
+      let dbKey = personal ? "dbPersonal" : "db";
+
+      // Workaround for personal GET and DELETE
+      if (
+        (value === null || value === undefined) &&
+        typeof Vue.prototype[dbKey][key] == "undefined"
+      )
+        dbKey = "dbPersonal";
+
+      // Select request
+      if (value === null) return Vue.prototype[dbKey][key];
+
+      // Delete request
+      if (value === undefined) return delete Vue.prototype[dbKey][key];
+
+      // Insert/update request
+      return (Vue.prototype[dbKey][key] = value);
     }
   }
 });
@@ -209,6 +245,9 @@ Vue.use(VueAuth, {
     redirect: "/"
   }
 });
+
+Vue.prototype.db = {};
+Vue.prototype.dbPersonal = {};
 
 new Vue({
   router,

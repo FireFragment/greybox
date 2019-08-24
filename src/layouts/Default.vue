@@ -107,7 +107,7 @@
           <img alt="Logo ADK" src="../assets/logo.gif" />
         </div>
       </transition>
-      <router-view />
+      <router-view :key="$route.path" />
     </q-page-container>
   </q-layout>
 </template>

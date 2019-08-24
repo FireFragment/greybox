@@ -3,7 +3,7 @@ import Router from "vue-router";
 import DefaultLayout from "./layouts/Default.vue";
 import Home from "./pages/Home.vue";
 import About from "./pages/About.vue";
-import Tournament from "./pages/Tournament.vue";
+import Event from "./pages/Event.vue";
 import Login from "./pages/Auth/Login.vue";
 import SignUp from "./pages/Auth/SignUp.vue";
 import Logout from "./pages/Auth/Logout.vue";
@@ -35,7 +35,7 @@ export default new Router({
           path: CZroutes.tournament + "/:id-:slug",
           alias: ENroutes.tournament + "/:id-:slug",
           name: "tournament",
-          component: Tournament
+          component: Event
         },
         {
           path: CZroutes.login,

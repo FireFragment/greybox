@@ -1,5 +1,7 @@
 {
   "empty": "No events are available at the moment",
+  "deadline": "Registration deadline",
+  "note": "Note",
   "gdpr": {
     "label": "I agree with",
     "link": "sign up conditions",
