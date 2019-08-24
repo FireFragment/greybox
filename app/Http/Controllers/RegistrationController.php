@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Registration;
 use Illuminate\Http\Request;
 
-class RegistrationController extends Controller
+class RegistrationController extends FakturoidController
 {
     public function __construct()
     {
@@ -98,19 +98,55 @@ class RegistrationController extends Controller
         }
     }
 
-    // TBD check API token
     public function confirm($id)
     {
         try {
+            $fc = $this->getFakturoidClient();
+            $user = \Auth::user();
             $registration = Registration::findOrFail($id);
-            try {
-                $registration->update([
-                    'confirmed' => true
-                ]);
-                return response()->json($registration, 200);
-            }  catch (\Illuminate\Database\QueryException $e) {
-                return response()->json(['message' => $e->getMessage()], 500);
+            $event = $registration->event()->first();
+
+            $client = $user->clients()->first(); // TODO: default client? nebo to nějak udělat
+            if ($client === null) {
+                // TODO: přidat data z Person
+                $clientData['name'] = $user->username;
+                $subject = $fc->createSubject($clientData);
+                $clientData['fakturoid_id'] = $subject->getBody()->id;
+                $clientData['country'] = $subject->getBody()->country;
+                $clientData['user'] = $user->id;
+                $client = \App\Client::create($clientData);
             }
+
+            foreach ($user->registrations()->select('role', \DB::raw('count(*) as quantity'))->where('event_id', $event->id)->groupBy('role')->get() as $reg) {
+                $role = \App\Role::findOrFail($reg->role);
+                $price = $role->prices()->where('event', $event->id)->first();
+                $invoiceLines[] = [
+                    'name' => $role->name,
+                    'quantity' => $reg->quantity,
+                    'unit_name' => 'osob', // TODO: vymyslet něco chytřejšího
+                    'unit_price' => $price->amount
+                ];
+            }
+
+            // TODO: vyřešit negenerování faktur v hodnotě 0
+            // TODO: vyřešit už existující invoice
+            $invoiceData = [
+                'subject_id' => $client->fakturoid_id,
+                // TODO: nenastavovat automaticky
+                'taxable_fulfillment_due' => "2019-07-21",
+                'client' => $client->id,
+                'lines' => $invoiceLines
+            ];
+            $fi = $fc->createInvoice($invoiceData);
+            $fakturoidInvoice = $fi->getBody();
+            $invoiceData = $this->fillInvoiceData($invoiceData, $fakturoidInvoice);
+            $invoice = \App\Invoice::create($invoiceData);
+            $invoice->update(['qr_url' => $invoice->generateQr()]);
+            
+            $registration->invoiceLines = $invoiceLines;
+            $registration->client = $client;
+            $registration->invoice = $invoice;
+            return response()->json($registration, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }

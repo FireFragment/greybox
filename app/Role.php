@@ -28,6 +28,11 @@ class Role extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     protected $hidden = [
     ];
+
+    public function prices()
+    {
+        return $this->hasMany(Price::class, 'role', 'id');
+    }
 }
 
 // TODO: Delete timestamps

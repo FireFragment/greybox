@@ -34,6 +34,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 	$router->post('registration', ['uses' => 'RegistrationController@create']);
 	$router->delete('registration/{id}', ['uses' => 'RegistrationController@delete']);
 	$router->put('registration/{id}', ['uses' => 'RegistrationController@update']);
+	$router->put('registration/{id}/confirm', ['uses' => 'RegistrationController@confirm']);
 
 	$router->get('team',  ['uses' => 'TeamController@showAll']);
 	$router->get('team/{id}', ['uses' => 'TeamController@showOne']);

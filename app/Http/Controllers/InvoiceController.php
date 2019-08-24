@@ -52,6 +52,7 @@ class InvoiceController extends FakturoidController
 
             $data = [
                 'subject_id' => $client->fakturoid_id,
+                // TODO: nenastavovat automaticky
                 'taxable_fulfillment_due' => "2019-07-21",
                 'client' => $client->id
             ];
@@ -62,15 +63,7 @@ class InvoiceController extends FakturoidController
                 $fi = $fc->createInvoice($data);
                 $fakturoidInvoice = $fi->getBody();
 
-                $data['fakturoid_id'] = $fakturoidInvoice->id;
-                $data['number'] = $fakturoidInvoice->number;
-                $data['status'] = $fakturoidInvoice->status;
-                $data['issued_on'] = $fakturoidInvoice->issued_on;
-                $data['due_on'] = $fakturoidInvoice->due_on;
-                $data['currency'] = $fakturoidInvoice->currency;
-                $data['language'] = $fakturoidInvoice->language;
-                $data['total'] = $fakturoidInvoice->total;
-                $data['paid_amount'] = $fakturoidInvoice->paid_amount;
+                $data = $this->fillInvoiceData($data, $fakturoidInvoice);
 
                 try {
                     $invoice = Invoice::create($data);

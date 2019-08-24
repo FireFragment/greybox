@@ -55,4 +55,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         return $this->hasMany(Registration::class, 'registered_by', 'id');
     }
+
+    public function clients()
+    {
+        return $this->hasMany(Client::class, 'user', 'id');
+    }
 }
