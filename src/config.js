@@ -1,6 +1,6 @@
 export default {
   debug: true,
   api: {
-    baseURL: "http://debate-greybox.herokuapp.com/api/"
+    baseURL: "https://debate-greybox.herokuapp.com/api/"
   }
 };

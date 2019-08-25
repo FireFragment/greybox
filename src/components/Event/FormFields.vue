@@ -172,23 +172,21 @@
     <div class="block">
       <q-checkbox v-model="vegetarian" label="Vegetariánská strana" />
     </div>
-    <!--
-        <div class="block">
-          <q-checkbox
-            v-model="accomodation"
-            label="Nechci zařídit ubytování"
-          />
-          <q-icon name="fas fa-info-circle" class="q-pl-sm">
-            <q-tooltip
-              anchor="top middle"
-              self="bottom middle"
-              :offset="[0, 0]"
-            >
-              Pro individuální požadavky k ubytování vyplňte prosím poznámku.
-            </q-tooltip>
-          </q-icon>
-        </div>
 
+    <div class="block">
+      <q-checkbox
+        v-model="accomodation"
+        :true-value="false"
+        :false-value="true"
+        label="Nechci zařídit ubytování"
+      />
+      <q-icon name="fas fa-info-circle" class="q-pl-sm">
+        <q-tooltip anchor="top middle" self="bottom middle" :offset="[0, 0]">
+          Pro individuální požadavky k ubytování vyplňte prosím poznámku.
+        </q-tooltip>
+      </q-icon>
+    </div>
+    <!--
         <template>
           <div class="q-mr-lg">
             <q-separator class="q-pl-md q-mt-sm q-pb-none" />
@@ -315,12 +313,12 @@ export default {
       street: null,
       city: null,
       zip: null,
-      phone: "+420",
+      // phone: "+420",
       vegetarian: false,
       accomodation: true,
-      parentName: null,
-      parentPhone: "+420",
-      parentEmail: null,
+      // parentName: null,
+      // parentPhone: "+420",
+      // parentEmail: null,
       note: null,
       accept: false,
       acceptError: false,
@@ -398,7 +396,7 @@ export default {
     sendForm() {
       if (!this.accept) return (this.acceptError = true);
 
-      this.$emit("submit", {
+      let formData = {
         name: this.name,
         surname: this.surname,
         birthdate:
@@ -412,8 +410,27 @@ export default {
         vegetarian: this.vegetarian,
         city: this.city,
         zip: this.zip.replace(" ", ""),
-        note: this.note
-      });
+        note: this.note,
+        accomodation: this.accomodation
+      };
+
+      // Check if autofill data have changed or not
+      let autofillData = false;
+      if (this.autofill) {
+        autofillData = {
+          id: this.autofill.id,
+          edited: false
+        };
+
+        for (let index in formData)
+          if (
+            formData[index] != this.autofill[index] &&
+            index !== "accomodation"
+          )
+            autofillData.edited = true;
+      }
+
+      this.$emit("submit", formData, autofillData);
     },
 
     // Key pressed inside select

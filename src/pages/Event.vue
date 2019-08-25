@@ -53,7 +53,7 @@
       @selected="typePicked"
       :hideFirst="type === 'single'"
     />
-    <div class="row q-col-gutter-md reverse" v-else>
+    <div class="row q-col-gutter-md reverse" v-else-if="!checkout">
       <div class="col-12 col-sm-4 col-md-6">
         <debatersCard @debaterSelected="debaterSelected" />
       </div>
@@ -62,6 +62,40 @@
         <form-fields @submit="sendForm" :autofill="autofillData" />
       </div>
     </div>
+    <checkout v-else :form-data="dataToSubmit" />
+
+    <q-dialog v-model="showGroupModal" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <div class="text-h6">Přihláška úspěšně uložena!</div>
+        </q-card-section>
+        <q-card-section class="row items-center text-center">
+          <q-avatar
+            icon="fas fa-check"
+            class="margin-center"
+            color="primary"
+            text-color="white"
+          />
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            label="Odeslat přihlášky"
+            color="primary"
+            v-close-popup
+            @click="checkout = true"
+          />
+          <q-btn
+            flat
+            label="Přidat další přihlášku"
+            color="primary"
+            v-close-popup
+            @click="role = autofillData = null"
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -69,6 +103,7 @@
 import debatersCard from "../components/Event/DebatersCard";
 import formFields from "../components/Event/FormFields";
 import pickType from "../components/Event/PickType";
+import checkout from "../components/Event/Checkout";
 
 export default {
   name: "Event",
@@ -76,7 +111,8 @@ export default {
   components: {
     debatersCard,
     formFields,
-    pickType
+    pickType,
+    checkout
   },
 
   data() {
@@ -92,8 +128,11 @@ export default {
           color: "primary"
         }
       },
+      checkout: false,
+      showGroupModal: false,
       autofillData: null,
-      translationPrefix: "tournament."
+      translationPrefix: "tournament.",
+      dataToSubmit: []
     };
   },
 
@@ -141,9 +180,32 @@ export default {
       this.event = events[this.$route.params.id];
     },
 
-    sendForm(data) {
-      // TODO - pokud je posílaný autofillnutý, neodesílat znovu person
-      this.$api({
+    sendForm(data, autofill) {
+      let personData = data;
+
+      let registrationData = {
+        person: null, // TODO - implementovat později nastavení IDčka podle postu
+        event: this.event.id,
+        role: this.role === 0 ? 1 : this.role, // if role is team, set as debater
+        accomodation: data.accomodation,
+        team: null, // TODO - implementovat
+        note: data.note
+      };
+
+      delete personData.accomodation;
+
+      this.dataToSubmit.push({
+        person: personData,
+        registration: registrationData,
+        autofill: autofill
+      });
+
+      if (this.type === "single") this.checkout = true;
+      else this.showGroupModal = true;
+
+      // TODO - přesunout "do košíku"
+      // TODO - pokud je posílaný autofillnutý, posílat update (nebo nic) a ne create
+      /*this.$api({
         url: "person",
         sendToken: false,
         data: data,
@@ -151,7 +213,7 @@ export default {
       }).then(data => {
         console.log(data);
         // TODO - odeslat Registration
-      });
+      });*/
     },
 
     typePicked(key, value) {
