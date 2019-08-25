@@ -17,7 +17,36 @@
       "closing": "I take into consideration the fact that I can withdraw this personal data processing consent via a letter or email addressed to the Association’s president whenever I would deem it necessary. The withdrawal of the consent can mean that I shall not be allowed to participate in certain Association’s events and my results in the Association’s competitions shall not be calculated.\n"
     }
   },
-  "debatersCard": {
+  "fields": {
+    "name": "Name",
+    "surname": "Surname",
+    "birthdate": "Date of birth",
+    "birthDay": "Day",
+    "birthMonth": "Month",
+    "birthYear": "Year",
+    "id_number": "ID number",
+    "street": "Street and number",
+    "city": "City",
+    "zip": "ZIP code (PSČ)",
+    "phone": "Phone number",
+    "vegetarian": "Vegetarian",
+    "accomodation": "I don't need accomodation",
+    "legalGuardian": "Legal guardian",
+    "parentName": "Full name",
+    "parentPhone":  "Phone number",
+    "parentEmail": "E-mail address",
+    "note": "Note"
+  },
+  "fieldNotes": {
+    "id_number": "Please fill in your ID number if you have one.",
+    "accomodation": "Use the note field bellow for special accomodation requirements."
+  },
+  "registrationFields": {
+    "accomodation": "Accomodation",
+    "role": "Role",
+    "team": "Team"
+  },
+  "autofill": {
     "title": "Autofill data of previously registered people",
     "empty": "You have no people to autofill.",
     "notLoggedIn": {

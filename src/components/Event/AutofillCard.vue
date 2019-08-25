@@ -56,7 +56,7 @@ export default {
     return {
       pastLogins: [],
       showLoading: true,
-      translationPrefix: "tournament.debatersCard."
+      translationPrefix: "tournament.autofill."
     };
   },
 

@@ -46,23 +46,37 @@
       ]"
       @selected="typePicked"
     />
-    <pick-type
-      v-else-if="role === null"
-      name="role"
-      :values="roles"
-      @selected="typePicked"
-      :hideFirst="type === 'single'"
-    />
+    <template v-else-if="role === null">
+      <pick-type
+        name="role"
+        :values="roles"
+        @selected="typePicked"
+        :hideFirst="type === 'single'"
+      />
+      <q-btn
+        v-if="dataToSubmit.length"
+        label="Odeslat přihlášky"
+        type="reset"
+        color="blue-9"
+        class="q-mt-xl float-right"
+        @click="goTo('checkout')"
+      />
+    </template>
     <div class="row q-col-gutter-md reverse" v-else-if="!checkout">
       <div class="col-12 col-sm-4 col-md-6">
-        <debatersCard @debaterSelected="debaterSelected" />
+        <autofill-card @debaterSelected="debaterSelected" />
       </div>
       <div class="col-12 col-sm-8 col-md-6">
-        <!-- TODO - pokud je role 0 (tým), zobrazit zvláštní screenu -->
-        <form-fields @submit="sendForm" :autofill="autofillData" />
+        <form-fields
+          v-if="role !== 0"
+          @submit="sendForm"
+          :autofill="autofillData"
+          @goToRolePick="goTo('role')"
+        />
+        <team-form v-else></team-form>
       </div>
     </div>
-    <checkout v-else :form-data="dataToSubmit" />
+    <checkout v-else :form-data="dataToSubmit" @goToRolePick="goTo('role')" />
 
     <q-dialog v-model="showGroupModal" persistent>
       <q-card>
@@ -81,17 +95,17 @@
         <q-card-actions align="right">
           <q-btn
             flat
+            label="Přidat další přihlášku"
+            color="primary"
+            v-close-popup
+            @click="goTo('role')"
+          />
+          <q-btn
+            flat
             label="Odeslat přihlášky"
             color="primary"
             v-close-popup
             @click="checkout = true"
-          />
-          <q-btn
-            flat
-            label="Přidat další přihlášku"
-            color="primary"
-            v-close-popup
-            @click="role = autofillData = null"
           />
         </q-card-actions>
       </q-card>
@@ -100,19 +114,21 @@
 </template>
 
 <script>
-import debatersCard from "../components/Event/DebatersCard";
+import autofillCard from "../components/Event/AutofillCard";
 import formFields from "../components/Event/FormFields";
 import pickType from "../components/Event/PickType";
 import checkout from "../components/Event/Checkout";
+import teamForm from "../components/Event/TeamForm";
 
 export default {
   name: "Event",
 
   components: {
-    debatersCard,
+    autofillCard,
     formFields,
     pickType,
-    checkout
+    checkout,
+    teamForm
   },
 
   data() {
@@ -200,10 +216,9 @@ export default {
         autofill: autofill
       });
 
-      if (this.type === "single") this.checkout = true;
+      if (this.type === "single") this.goTo("checkout");
       else this.showGroupModal = true;
 
-      // TODO - přesunout "do košíku"
       // TODO - pokud je posílaný autofillnutý, posílat update (nebo nic) a ne create
       /*this.$api({
         url: "person",
@@ -223,6 +238,12 @@ export default {
 
     debaterSelected(data) {
       this.autofillData = data;
+    },
+
+    goTo(phase) {
+      if (phase === "role")
+        this.role = this.autofillData = this.checkout = null;
+      else if (phase === "checkout") this.role = this.checkout = true;
     }
   }
 };

@@ -1,10 +1,10 @@
 <template>
-  <q-form @submit="sendForm">
+  <q-form @submit="sendForm" @reset="resetForm">
     <div class="row q-col-gutter-md q-pb-sm">
       <q-input
         outlined
         v-model="name"
-        label="Jméno *"
+        :label="$tr('fields.name') + ' *'"
         class="col-12 col-sm-6"
         lazy-rules
         :rules="[val => (val && val.length > 0) || 'Vyplňte prosím toto pole']"
@@ -13,7 +13,7 @@
       <q-input
         outlined
         v-model="surname"
-        label="Příjmení *"
+        :label="$tr('fields.surname') + ' *'"
         class="col-12 col-sm-6"
         lazy-rules
         :rules="[val => (val && val.length > 0) || 'Vyplňte prosím toto pole']"
@@ -22,14 +22,14 @@
 
     <div class="row q-col-gutter-sm" @keydown="selectKeyPress">
       <div class="col-12 q-field" style="color: rgba(0,0,0,0.54);">
-        Zadejte datum narození *:
+        {{ $tr("fields.birthdate") }} *
       </div>
       <q-select
         outlined
         v-model="birthDay"
         :options="days"
         option-value="label"
-        label="Den"
+        :label="$tr('fields.birthDay')"
         class="q-pt-sm q-mb-sm col-4"
         data-select-value="birthDay"
         data-select-options="days"
@@ -47,7 +47,7 @@
         v-model="birthMonth"
         :options="months"
         option-value="label"
-        label="Měsíc"
+        :label="$tr('fields.birthMonth')"
         class="q-pt-sm q-mb-sm col-4"
         data-select-value="birthMonth"
         data-select-options="months"
@@ -64,7 +64,7 @@
         outlined
         v-model="birthYear"
         :options="years"
-        label="Rok"
+        :label="$tr('fields.birthYear')"
         class="q-pt-sm q-mb-sm col-4"
         data-select-value="birthYear"
         data-select-options="years"
@@ -81,7 +81,7 @@
     <q-input
       outlined
       v-model="id_number"
-      label="Číslo občanského průkazu"
+      :label="$tr('fields.id_number')"
       class="q-pt-sm"
       mask="#########"
       fill-mask="_"
@@ -101,7 +101,7 @@
       <template v-slot:append>
         <q-icon name="fas fa-info-circle" />
         <q-tooltip anchor="top middle" self="bottom middle" :offset="[0, -10]">
-          Vyplňte prosím, pokud již občanský průkaz máte.
+          {{ $tr("fieldNotes.id_number") }}
         </q-tooltip>
       </template>
     </q-input>
@@ -109,7 +109,7 @@
     <q-input
       outlined
       v-model="street"
-      label="Ulice a číslo *"
+      :label="$tr('fields.street') + ' *'"
       class="q-pt-sm"
       input-class="smartform-street-and-number"
       lazy-rules
@@ -123,7 +123,7 @@
     <q-input
       outlined
       v-model="city"
-      label="Město *"
+      :label="$tr('fields.city') + ' *'"
       class="q-pt-sm"
       input-class="smartform-city"
       lazy-rules
@@ -137,7 +137,7 @@
     <q-input
       outlined
       v-model="zip"
-      label="Číslo PSČ *"
+      :label="$tr('fields.zip') + ' *'"
       class="q-pt-sm"
       input-class="smartform-zip"
       mask="### ##"
@@ -158,7 +158,7 @@
         <q-input
           outlined
           v-model="phone"
-          label="Telefonní číslo"
+          :label="$tr('fields.phone')"
           mask="+### #########"
           fill-mask="#"
           class="q-pt-sm"
@@ -170,7 +170,7 @@
         </q-input>
         -->
     <div class="block">
-      <q-checkbox v-model="vegetarian" label="Vegetariánská strana" />
+      <q-checkbox v-model="vegetarian" :label="$tr('fields.vegetarian')" />
     </div>
 
     <div class="block">
@@ -178,11 +178,11 @@
         v-model="accomodation"
         :true-value="false"
         :false-value="true"
-        label="Nechci zařídit ubytování"
+        :label="$tr('fields.accomodation')"
       />
       <q-icon name="fas fa-info-circle" class="q-pl-sm">
         <q-tooltip anchor="top middle" self="bottom middle" :offset="[0, 0]">
-          Pro individuální požadavky k ubytování vyplňte prosím poznámku.
+          {{ $tr("fieldNotes.accomodation") }}
         </q-tooltip>
       </q-icon>
     </div>
@@ -191,11 +191,11 @@
           <div class="q-mr-lg">
             <q-separator class="q-pl-md q-mt-sm q-pb-none" />
           </div>
-          <h2 class="text-h6 q-pa-xs q-mt-sm">Zákonný zástupce</h2>
+          <h2 class="text-h6 q-pa-xs q-mt-sm">{{ $tr('fields.legalGuardian') }}</h2>
           <q-input
             outlined
             v-model="parentName"
-            label="Celé jméno *"
+            :label="$tr('fields.parentName') + ' *'"
             class="col-12 col-sm-6"
             lazy-rules
             :rules="[
@@ -210,7 +210,7 @@
           <q-input
             outlined
             v-model="parentPhone"
-            label="Telefonní číslo *"
+            :label="$tr('fields.parentPhone') + ' *'"
             mask="+### #########"
             fill-mask="#"
             class="q-pt-sm"
@@ -228,7 +228,7 @@
             outlined
             type="email"
             v-model="parentEmail"
-            label="E-mailová adresa *"
+            :label="$tr('fields.parentEmail') + ' *'"
             class="q-pt-sm"
             lazy-rules
             :rules="[
@@ -244,7 +244,13 @@
           </div>
         </template>
 -->
-    <q-input v-model="note" class="q-mt-sm" outlined autogrow label="Poznámka">
+    <q-input
+      v-model="note"
+      class="q-mt-sm"
+      outlined
+      autogrow
+      :label="$tr('fields.note')"
+    >
       <template v-slot:prepend>
         <q-icon name="fas fa-sticky-note" />
       </template>
@@ -254,30 +260,27 @@
       v-model="accept"
       :class="{ 'q-field--error': acceptError && !accept }"
     >
-      {{ $tr("tournament.gdpr.label") }}
-      <a @click="showGDPRModal = true">{{ $tr("tournament.gdpr.link") }}</a>
+      {{ $tr("gdpr.label") }}
+      <a @click="showGDPRModal = true">{{ $tr("gdpr.link") }}</a>
     </q-checkbox>
     <q-dialog v-model="showGDPRModal">
       <q-card class="dialog-medium">
         <q-card-section class="row items-center">
           <div class="text-h6">
-            {{ $tr("tournament.gdpr.modal.title") }}
+            {{ $tr("gdpr.modal.title") }}
           </div>
           <q-space />
           <q-btn icon="close" flat round dense v-close-popup />
         </q-card-section>
 
         <q-card-section>
-          {{ $tr("tournament.gdpr.modal.opening") }}
+          {{ $tr("gdpr.modal.opening") }}
           <ul>
-            <li
-              v-for="item in $tr('tournament.gdpr.modal.list')"
-              v-bind:key="item"
-            >
+            <li v-for="item in $tr('gdpr.modal.list')" v-bind:key="item">
               {{ item }}
             </li>
           </ul>
-          {{ $tr("tournament.gdpr.modal.closing") }}
+          {{ $tr("gdpr.modal.closing") }}
         </q-card-section>
       </q-card>
     </q-dialog>
@@ -307,6 +310,7 @@ export default {
 
   data() {
     return {
+      translationPrefix: "tournament.",
       name: null,
       surname: null,
       id_number: null,
@@ -326,8 +330,8 @@ export default {
       birthDay: null,
       birthMonth: null,
       birthYear: null,
-      days: [],
       selectSearch: null,
+      days: [],
       months: [
         "leden",
         "únor",
@@ -407,9 +411,9 @@ export default {
           this.birthDay.value,
         id_number: this.id_number === "_________" ? null : this.id_number,
         street: this.street,
-        vegetarian: this.vegetarian,
         city: this.city,
         zip: this.zip.replace(" ", ""),
+        vegetarian: this.vegetarian,
         note: this.note,
         accomodation: this.accomodation
       };
@@ -431,6 +435,10 @@ export default {
       }
 
       this.$emit("submit", formData, autofillData);
+    },
+
+    resetForm() {
+      this.$emit("goToRolePick");
     },
 
     // Key pressed inside select
