@@ -21,7 +21,7 @@ class RoleController extends Controller
     {
         $roles = Role::all();
         foreach ($roles as $role) {
-            $role->name_translation = $role->translation()->get();
+            $role->name = $role->translation()->get();
         }
         return response()->json($roles);
     }
@@ -29,7 +29,7 @@ class RoleController extends Controller
     public function showOne($id)
     {
         $role = Role::find($id);
-        $role->name_translation = $role->translation()->get();
+        $role->name = $role->translation()->get();
         return response()->json($role);
     }
 
@@ -45,10 +45,10 @@ class RoleController extends Controller
                 'en' => $request->input('name_en')
             ]);
             $role = Role::create([
-                'name_translation' => $translation->id,
+                'name' => $translation->id,
                 'icon' => $request->input('icon')
             ]);
-            $role->name_translation = $translation;
+            $role->name = $translation;
             return response()->json($role, 201);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
@@ -65,7 +65,7 @@ class RoleController extends Controller
             if ($request->has('name_en')) $this->updateColumn($translation, 'en', $request->input('name_en'));
             if ($request->has('icon')) $this->updateColumn($role, 'icon', $request->input('icon'));
 
-            $role->name_translation = $translation;
+            $role->name = $translation;
             return response()->json($role, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);

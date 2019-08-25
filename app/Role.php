@@ -18,7 +18,7 @@ class Role extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $fillable = [
-        'name', 'name_translation', 'icon'
+        'name', 'icon'
     ];
 
     /**
@@ -36,7 +36,7 @@ class Role extends Model implements AuthenticatableContract, AuthorizableContrac
 
     public function translation()
     {
-        return $this->belongsTo(Translation::class, 'name_translation', 'id');
+        return $this->belongsTo(Translation::class, 'name', 'id');
     }
 }
 
