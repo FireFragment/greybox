@@ -18,7 +18,7 @@ class Role extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $fillable = [
-        'name', 'icon'
+        'name', 'name_translation', 'icon'
     ];
 
     /**
@@ -32,6 +32,11 @@ class Role extends Model implements AuthenticatableContract, AuthorizableContrac
     public function prices()
     {
         return $this->hasMany(Price::class, 'role', 'id');
+    }
+
+    public function translation()
+    {
+        return $this->belongsTo(Translation::class, 'name_translation', 'id');
     }
 }
 

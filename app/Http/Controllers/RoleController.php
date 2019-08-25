@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Role;
+use App\Role,
+    App\Translation;
 use Illuminate\Http\Request;
 
 class RoleController extends Controller
@@ -18,23 +19,36 @@ class RoleController extends Controller
 
     public function showAll()
     {
-        return response()->json(Role::all());
+        $roles = Role::all();
+        foreach ($roles as $role) {
+            $role->name_translation = $role->translation()->get();
+        }
+        return response()->json($roles);
     }
 
     public function showOne($id)
     {
         $role = Role::find($id);
+        $role->name_translation = $role->translation()->get();
         return response()->json($role);
     }
 
     public function create(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required'
+            'name_cz' => 'required'
         ]);
 
         try {
-            $role = Role::create($request->all());
+            $translation = Translation::create([
+                'cz' => $request->input('name_cz'),
+                'en' => $request->input('name_en')
+            ]);
+            $role = Role::create([
+                'name_translation' => $translation->id,
+                'icon' => $request->input('icon')
+            ]);
+            $role->name_translation = $translation;
             return response()->json($role, 201);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
@@ -45,10 +59,13 @@ class RoleController extends Controller
     {
         try {
             $role = Role::findOrFail($id);
+            $translation = $role->translation()->first();
 
-            if ($request->has('name')) $this->updateColumn($role, 'name', $request->input('name'));
+            if ($request->has('name_cz')) $this->updateColumn($translation, 'cz', $request->input('name_cz'));
+            if ($request->has('name_en')) $this->updateColumn($translation, 'en', $request->input('name_en'));
             if ($request->has('icon')) $this->updateColumn($role, 'icon', $request->input('icon'));
 
+            $role->name_translation = $translation;
             return response()->json($role, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
@@ -58,7 +75,10 @@ class RoleController extends Controller
     public function delete($id)
     {
         try {
-            Role::findOrFail($id)->delete();
+            $role = Role::findOrFail($id);
+            $role->delete();
+            $translation = $role->translation();
+            $translation->delete();
             return response()->json(['message' => 'Deleted successfully.'], 204);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
