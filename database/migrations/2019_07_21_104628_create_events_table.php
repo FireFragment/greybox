@@ -15,17 +15,13 @@ class CreateEventsTable extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->increments('id');
-            // TODO: solve translations
             $table->string('name', 127);
             $table->date('beginning');
             $table->date('end');
             $table->string('place', 127);
             $table->dateTime('soft_deadline');
             $table->dateTime('hard_deadline');
-            // $table->unsignedInteger('organizer');
             $table->text('note')->nullable();
-            // TODO: solve organizers
-            // $table->foreign('organizer')->references('id')->on('users')->onDelete('restrict');
             $table->timestamps();
         });
 

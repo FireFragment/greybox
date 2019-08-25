@@ -78,4 +78,10 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->post('price', ['uses' => 'PriceController@create']);
     $router->delete('price/{id}', ['uses' => 'PriceController@delete']);
     $router->put('price/{id}', ['uses' => 'PriceController@update']);
+
+    $router->get('translation',  ['uses' => 'TranslationController@showAll']);
+    $router->get('translation/{id}', ['uses' => 'TranslationController@showOne']);
+    $router->post('translation', ['uses' => 'TranslationController@create']);
+    $router->delete('translation/{id}', ['uses' => 'TranslationController@delete']);
+    $router->put('translation/{id}', ['uses' => 'TranslationController@update']);
 });
