@@ -112,6 +112,6 @@ $app->router->group([
 /*
  * Set default locale
  */
-app('translator')->setLocale('cz');
+app('translator')->setLocale('cs');
 
 return $app;

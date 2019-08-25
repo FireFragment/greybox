@@ -268,7 +268,7 @@ class UserController extends Controller
     public function showPeople($id) {
         $user = User::find($id);
         $registrations = $user->registrations()->select('person')->whereNotNull('person')->groupBy('person')->get();
-        
+
         $people = array();
         foreach ($registrations as $registration)
         {

@@ -18,7 +18,7 @@ class Translation extends Model implements AuthenticatableContract, Authorizable
      * @var array
      */
     protected $fillable = [
-        'cz', 'en'
+        'cs', 'en'
     ];
 
     /**

@@ -36,12 +36,12 @@ class RoleController extends Controller
     public function create(Request $request)
     {
         $this->validate($request, [
-            'name_cz' => 'required'
+            'name_cs' => 'required'
         ]);
 
         try {
             $translation = Translation::create([
-                'cz' => $request->input('name_cz'),
+                'cs' => $request->input('name_cs'),
                 'en' => $request->input('name_en')
             ]);
             $role = Role::create([
@@ -61,7 +61,7 @@ class RoleController extends Controller
             $role = Role::findOrFail($id);
             $translation = $role->translation()->first();
 
-            if ($request->has('name_cz')) $this->updateColumn($translation, 'cz', $request->input('name_cz'));
+            if ($request->has('name_cs')) $this->updateColumn($translation, 'cs', $request->input('name_cs'));
             if ($request->has('name_en')) $this->updateColumn($translation, 'en', $request->input('name_en'));
             if ($request->has('icon')) $this->updateColumn($role, 'icon', $request->input('icon'));
 

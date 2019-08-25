@@ -14,7 +14,7 @@ class AddLocaleToUser extends Migration
     public function up()
     {
         Schema::table('users', function($table) {
-            $table->string('preferred_locale', 2)->after('password')->default('cz');
+            $table->string('preferred_locale', 2)->after('password')->default('cs');
         });
     }
 

@@ -42,7 +42,7 @@ class TranslationController extends Controller
         try {
             $translation = Translation::findOrFail($id);
 
-            if ($request->has('cz')) $this->updateColumn($translation, 'cz', $request->input('cz'));
+            if ($request->has('cs')) $this->updateColumn($translation, 'cs', $request->input('cs'));
             if ($request->has('en')) $this->updateColumn($translation, 'en', $request->input('en'));
 
             return response()->json($translation, 200);
