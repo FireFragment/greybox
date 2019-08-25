@@ -21,3 +21,23 @@
 
 		dd
 			margin-left: .5rem
+
+	.team-form
+		.q-card
+			.q-card__section
+				&:not(.header)
+					padding-top: 1rem
+
+				&.header
+					background-color: rgba(0,0,0,.1)
+
+					.col .q-btn
+						margin-right: .5rem
+
+.hidable
+	transition: height .5s linear
+	height: 0
+	overflow: hidden
+
+	&.visible
+		height: 100%

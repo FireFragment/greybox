@@ -8,6 +8,7 @@ import config from "./config";
 import VueAuth from "@d0whc3r/vue-auth-plugin";
 import smartformModule from "@smartform.cz/smartform";
 import { EventBus } from "./event-bus";
+import SlideUpDown from "vue-slide-up-down";
 
 Vue.config.productionTip = false;
 
@@ -47,6 +48,7 @@ import VueI18n from "vue-i18n";
 Vue.use(VueI18n);
 Vue.use(VueAxios, axios);
 Vue.use(require("vue-moment"));
+Vue.component("slide-up-down", SlideUpDown);
 
 // Import localization data from JSONs
 import i18nConfig from "./translation/config.json";
