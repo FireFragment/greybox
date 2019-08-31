@@ -112,7 +112,7 @@ class RegistrationController extends FakturoidController
                 $role = \App\Role::findOrFail($reg->role);
                 $price = $role->prices()->where('event', $event->id)->first();
                 $invoiceLines[] = [
-                    'name' => $role->name,
+                    'name' => $role->translation()->first()->cs, // TODO: vyřešit překlad
                     'quantity' => $reg->quantity,
                     'unit_name' => 'osob', // TODO: vymyslet něco chytřejšího
                     'unit_price' => $price->amount
@@ -134,7 +134,7 @@ class RegistrationController extends FakturoidController
                     $client = \App\Client::create($clientData);
                 }
                 $registration->client = $client;
-                
+
                 // TODO: vyřešit už existující invoice
                 $invoiceData = [
                     'subject_id' => $client->fakturoid_id,
@@ -148,6 +148,12 @@ class RegistrationController extends FakturoidController
                 $invoiceData = $this->fillInvoiceData($invoiceData, $fakturoidInvoice);
                 $invoice = \App\Invoice::create($invoiceData);
                 $invoice->update(['qr_url' => $invoice->generateQr()]);
+                $invoice->qr_full_url = "qrs/$invoice->qr_url.png";
+                if ($invoice->getPdf($fc)) {
+                    $invoice->pdf_url = $invoice->qr_url;
+                    $invoice->pdf_full_url = "invoices/$invoice->pdf_url.pdf";
+                }
+
                 $registration->invoice = $invoice;
             }
 

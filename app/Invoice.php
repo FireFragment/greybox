@@ -43,7 +43,7 @@ class Invoice extends Model implements AuthenticatableContract, AuthorizableCont
         $payment->setVariableSymbol($this->number);
         $payment->setAmount($this->total);
         $payment->setCurrency($this->currency);
-        $payment->setDueDate($this->due_on);
+        $payment->setDueDate($this->due_on); // TODO: smazat?
 
         if (file_exists("qrs/$this->qr_url.png")) {
             $qrFileName = $this->qr_url;
@@ -58,5 +58,28 @@ class Invoice extends Model implements AuthenticatableContract, AuthorizableCont
 
         $this->qr_url = $qrFileName;
         return $this->qr_url;
+    }
+
+    public function getPdf(\Fakturoid\Client $fc)
+    {
+        $invoiceFileName = $this->qr_url;
+        $invoicePdf = $fc->getInvoicePdf($this->fakturoid_id);
+        $count = 1;
+
+        while ($invoicePdf->getStatusCode() !== 200) {
+            sleep(2);
+            $invoicePdf = $fc->getInvoicePdf($this->fakturoid_id);
+            $count++;
+
+            if ($count >= 5 && $invoicePdf->getStatusCode() !== 200) {
+                return false;
+            }
+        }
+
+        $invoiceFile = fopen("invoices/$invoiceFileName.pdf", 'w');
+        fwrite($invoiceFile, $invoicePdf->getBody());
+        fclose($invoiceFile);
+
+        return true;
     }
 }
