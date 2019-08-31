@@ -20,13 +20,11 @@ class CreateTranslationsTable extends Migration
             $table->timestamps();
         });
 
-        // TODO: drop duplicate columns
         Schema::table('events', function($table) {
-            $table->string('name', 127)->nullable()->change();
-            $table->unsignedInteger('name_translation')->after('name')->nullable();
-            $table->foreign('name_translation')->references('id')->on('translations');
-            $table->unsignedInteger('note_translation')->after('note')->nullable();
-            $table->foreign('note_translation')->references('id')->on('translations');
+            $table->unsignedInteger('name')->nullable()->change();
+            $table->foreign('name')->references('id')->on('translations');
+            $table->unsignedInteger('note')->nullable()->change();
+            $table->foreign('note')->references('id')->on('translations');
         });
 
         Schema::table('roles', function($table) {
@@ -45,10 +43,9 @@ class CreateTranslationsTable extends Migration
 
         Schema::table('events', function($table) {
             $table->string('name', 127)->change();
-            $table->dropForeign(['name_translation']);
-            $table->dropColumn('name_translation');
-            $table->dropForeign(['note_translation']);
-            $table->dropColumn('note_translation');
+            $table->dropForeign(['name']);
+            $table->text('note')->change();
+            $table->dropForeign(['note']);
         });
 
         Schema::table('roles', function($table) {
