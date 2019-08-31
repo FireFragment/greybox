@@ -34,6 +34,11 @@ class Event extends Model implements AuthenticatableContract, AuthorizableContra
         return $this->hasMany(Price::class, 'event', 'id');
     }
 
+    public function registrations()
+    {
+        return $this->hasMany(Registration::class, 'event_id', 'id');
+    }
+
     public function nameTranslation()
     {
         return $this->belongsTo(Translation::class, 'name', 'id');

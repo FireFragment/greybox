@@ -14,7 +14,8 @@ class EventController extends Controller
         $this->middleware('auth', ['only' => [
             'create',
             'update',
-            'delete'
+            'delete',
+            'showRegistrations'
         ]]);
     }
 
@@ -123,5 +124,25 @@ class EventController extends Controller
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
+    }
+
+    public function showRegistrations($id)
+    {
+        $event = Event::find($id);
+        $registrations = $event->registrations()->get();
+
+        foreach ($registrations as $registration) {
+            $registration->role = $registration->role()->first();
+            $registration->role->name = $registration->role->translation()->first();
+            $registration->person = $registration->person()->first();
+            $registration->team = $registration->team()->first();
+        }
+
+        $event->prices = $event->prices()->get();
+        for ($i=0; $i<count($event->prices); $i++) {
+            $event->prices[$i]->role = $event->prices[$i]->role()->get();
+        }
+
+        return response()->json($registrations);
     }
 }
