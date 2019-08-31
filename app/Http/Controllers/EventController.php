@@ -55,8 +55,7 @@ class EventController extends Controller
             'hard_deadline' => 'required'
         ]);
 
-        // TODO: Solve authorization
-        // $this->authorize('create', null, \Auth::user());
+        $this->authorize('create', Event::class);
 
         try {
             $nameTranslation = Translation::create([
@@ -91,6 +90,8 @@ class EventController extends Controller
     public function update($id, Request $request)
     {
         try {
+            $this->authorize('update', Event::class);
+
             $event = Event::findOrFail($id);
             $nameTranslation = $event->nameTranslation()->first();
             $noteTranslation = $event->noteTranslation()->first();
@@ -115,6 +116,8 @@ class EventController extends Controller
 
     public function delete($id)
     {
+        $this->authorize('delete', Event::class);
+
         try {
             $event = Event::findOrFail($id);
             $event->delete();
@@ -129,6 +132,8 @@ class EventController extends Controller
     public function showRegistrations($id)
     {
         $event = Event::find($id);
+        $this->authorize('showRegistrations', $event);
+
         $registrations = $event->registrations()->get();
 
         foreach ($registrations as $registration) {
