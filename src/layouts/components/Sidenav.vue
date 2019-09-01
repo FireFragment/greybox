@@ -34,30 +34,6 @@
         {{ $tr("tournament.empty") }}
       </div>
 
-      <q-item-label header>{{ $tr("general.essentialLinks") }}</q-item-label>
-      <q-item
-        clickable
-        tag="a"
-        target="_blank"
-        href="https://debatovani.cz/greybox/"
-      >
-        <q-item-section avatar>
-          <q-icon name="fas fa-chart-bar" />
-        </q-item-section>
-        <q-item-section>
-          <q-item-label>{{ $tr("general.statistics") }}</q-item-label>
-          <q-item-label caption>greybox v1.0</q-item-label>
-        </q-item-section>
-      </q-item>
-      <q-item :to="$path('about')" exact>
-        <q-item-section avatar>
-          <q-icon name="info" />
-        </q-item-section>
-        <q-item-section>
-          <q-item-label>{{ $tr("general.aboutUs") }}</q-item-label>
-        </q-item-section>
-      </q-item>
-
       <q-item-label header>{{ $tr("general.user") }}</q-item-label>
       <template v-if="$auth.check() && $auth.user()">
         <q-item clickable>
@@ -111,6 +87,30 @@
           <q-item-section>{{ $tr("auth.passwordReset") }}</q-item-section>
         </q-item>
       </template>
+
+      <q-item-label header>{{ $tr("general.essentialLinks") }}</q-item-label>
+      <q-item
+        clickable
+        tag="a"
+        target="_blank"
+        href="https://debatovani.cz/greybox/"
+      >
+        <q-item-section avatar>
+          <q-icon name="fas fa-chart-bar" />
+        </q-item-section>
+        <q-item-section>
+          <q-item-label>{{ $tr("general.statistics") }}</q-item-label>
+          <q-item-label caption>greybox v1.0</q-item-label>
+        </q-item-section>
+      </q-item>
+      <q-item :to="$path('about')" exact>
+        <q-item-section avatar>
+          <q-icon name="info" />
+        </q-item-section>
+        <q-item-section>
+          <q-item-label>{{ $tr("general.aboutUs") }}</q-item-label>
+        </q-item-section>
+      </q-item>
     </q-list>
   </q-drawer>
 </template>
