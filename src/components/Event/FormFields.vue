@@ -391,6 +391,20 @@ export default {
         e.preventDefault();
       });
     });
+
+    window.smartform.rebindAllForms(true, () => {
+      let instance = window.smartform.getInstance(
+        window.smartform.getInstanceIds()[0]
+      );
+
+      [
+        "smartform-street-and-number",
+        "smartform-city",
+        "smartform-zip"
+      ].forEach(input => {
+        instance.getBox(input).setLimit(3);
+      });
+    });
   },
 
   beforeDestroy() {
