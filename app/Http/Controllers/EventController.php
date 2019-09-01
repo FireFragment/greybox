@@ -23,8 +23,8 @@ class EventController extends Controller
     {
         $events = Event::all();
         foreach ($events as $event) {
-            $event->name = $event->nameTranslation()->get();
-            $event->note = $event->noteTranslation()->get();
+            $event->name = $event->nameTranslation()->first();
+            $event->note = $event->noteTranslation()->first();
         }
         return response()->json($events);
     }
@@ -33,8 +33,8 @@ class EventController extends Controller
     {
         $event = Event::find($id);
 
-        $event->name = $event->nameTranslation()->get();
-        $event->note = $event->noteTranslation()->get();
+        $event->name = $event->nameTranslation()->first();
+        $event->note = $event->noteTranslation()->first();
 
         $event->prices = $event->prices()->get();
         for ($i=0; $i<count($event->prices); $i++) {

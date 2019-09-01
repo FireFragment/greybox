@@ -21,7 +21,7 @@ class RoleController extends Controller
     {
         $roles = Role::all();
         foreach ($roles as $role) {
-            $role->name = $role->translation()->get();
+            $role->name = $role->translation()->first();
         }
         return response()->json($roles);
     }
@@ -29,7 +29,7 @@ class RoleController extends Controller
     public function showOne($id)
     {
         $role = Role::find($id);
-        $role->name = $role->translation()->get();
+        $role->name = $role->translation()->first();
         return response()->json($role);
     }
 
