@@ -24,11 +24,47 @@
         {{ $tr("deadline") }}:
         {{ event.soft_deadline | moment("D. M. Y H:mm") }}
       </p>
-      <p v-if="event.note">{{ $tr("note") }}: {{ $tr(event.note) }}</p>
+      <p v-if="event.note">{{ $tr(event.note) }}</p>
     </div>
 
+    <div v-if="event.hard_deadline < now" class="row justify-center">
+      <div class="col-12 col-md-4">
+        <q-banner class="bg-primary text-white q-mt-xl">
+          <template v-slot:avatar>
+            <q-icon name="far fa-calendar-times" color="white" />
+          </template>
+          Na tento turnaj již není možné se registrovat.
+        </q-banner>
+      </div>
+    </div>
+    <div v-else-if="!$auth.check()" class="row justify-center">
+      <div class="col-12 col-md-6">
+        <q-banner class="bg-primary text-white q-mt-xl">
+          <template v-slot:avatar>
+            <q-icon name="fas fa-info" color="white" />
+          </template>
+          Před registrací na turnaj se musíte nejprve přihlásit do systému.
+          <template v-slot:action>
+            <q-btn
+              flat
+              color="white"
+              class="hidden-link"
+              label="Přihlášení"
+              :to="$path('login')"
+            />
+            <q-btn
+              flat
+              color="white"
+              class="hidden-link"
+              label="Registrace"
+              :to="$path('signUp')"
+            />
+          </template>
+        </q-banner>
+      </div>
+    </div>
     <pick-type
-      v-if="!type"
+      v-else-if="!type"
       name="type"
       :values="[
         {
@@ -235,7 +271,7 @@ export default {
       let personData = data;
 
       let registrationData = {
-        person: null, // TODO - implementovat později nastavení IDčka podle postu
+        person: null,
         event: this.event.id,
         role: this.role === 0 ? 1 : this.role, // if role is team, set as debater
         accommodation: data.accommodation,
@@ -271,6 +307,26 @@ export default {
       if (phase === "role")
         this.role = this.autofillData = this.checkout = null;
       else if (phase === "checkout") this.role = this.checkout = true;
+    }
+  },
+
+  computed: {
+    now() {
+      let d = new Date();
+
+      return (
+        [
+          d.getFullYear(),
+          ("0" + (d.getMonth() + 1)).substr(-2),
+          ("0" + d.getDate()).substr(-2)
+        ].join("-") +
+        " " +
+        [
+          ("0" + d.getHours()).substr(-2),
+          ("0" + d.getMinutes()).substr(-2),
+          ("0" + d.getSeconds()).substr(-2)
+        ].join(":")
+      );
     }
   }
 };

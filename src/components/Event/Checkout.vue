@@ -89,6 +89,7 @@ export default {
             method: "put"
           })
             .then(data => {
+              // TODO - redirect to confirm page with received data
               this.$flash("Registrace úšpěšně odeslána!", "success");
               console.log("Registration confirmed!", data.data);
             })

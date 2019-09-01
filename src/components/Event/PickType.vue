@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="row picking-buttons items-stretch">
+    <div class="row picking-buttons items-stretch q-mt-lg">
       <div class="col" v-if="values.length < 4"></div>
       <picking-button
         v-for="btn in options"
