@@ -16,8 +16,7 @@ class RegistrationController extends FakturoidController
             'create',
             'update',
             'delete',
-            'confirm',
-            'showByEvent'
+            'confirm'
         ]]);
     }
 
@@ -148,10 +147,10 @@ class RegistrationController extends FakturoidController
                 $invoiceData = $this->fillInvoiceData($invoiceData, $fakturoidInvoice);
                 $invoice = \App\Invoice::create($invoiceData);
                 $invoice->update(['qr_url' => $invoice->generateQr()]);
-                $invoice->qr_full_url = "qrs/$invoice->qr_url.png";
+                $invoice->qr_full_url = "https://debate-greybox.herokuapp.com/qrs/$invoice->qr_url.png"; // TODO: nastavovat adresu dynamicky
                 if ($invoice->getPdf($fc)) {
                     $invoice->pdf_url = $invoice->qr_url;
-                    $invoice->pdf_full_url = "invoices/$invoice->pdf_url.pdf";
+                    $invoice->pdf_full_url = "https://debate-greybox.herokuapp.com/invoices/$invoice->pdf_url.pdf";
                 }
 
                 $registration->invoice = $invoice;
