@@ -19,7 +19,7 @@
             '/' +
             event.id +
             '-' +
-            $slug(event.name + ' ' + event.place)
+            $slug($tr(event.name) + ' ' + event.place)
         "
         exact
       >
@@ -27,7 +27,7 @@
           <q-icon name="fas fa-trophy" />
         </q-item-section>
         <q-item-section>
-          <q-item-label>{{ event.name }}</q-item-label>
+          <q-item-label>{{ $tr(event.name) }}</q-item-label>
         </q-item-section>
       </q-item>
       <div v-if="!Object.keys(events).length" class="empty-info">
@@ -133,7 +133,10 @@ export default {
 
     // Load events from cache if available
     let cached = this.$db("eventsList");
-    if (cached) return (this.events = cached);
+    if (cached) {
+      EventBus.$emit("fullLoader", false);
+      return (this.events = cached);
+    }
 
     this.$api({
       url: "event",

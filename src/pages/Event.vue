@@ -1,6 +1,6 @@
 <template>
   <q-page padding v-if="event">
-    <h1 class="text-center text-h4">Registrace na turnaj {{ event.name }}</h1>
+    <h1 class="text-center text-h4">Registrace na {{ $tr(event.name) }}</h1>
     <div class="text-center close-paragraphs q-p-1">
       <p>
         <template
@@ -24,7 +24,7 @@
         {{ $tr("deadline") }}:
         {{ event.soft_deadline | moment("D. M. Y H:mm") }}
       </p>
-      <p v-if="event.note">{{ $tr("note") }}: {{ event.note }}</p>
+      <p v-if="event.note">{{ $tr("note") }}: {{ $tr(event.note) }}</p>
     </div>
 
     <pick-type
@@ -119,6 +119,7 @@ import formFields from "../components/Event/FormFields";
 import pickType from "../components/Event/PickType";
 import checkout from "../components/Event/Checkout";
 import teamForm from "../components/Event/TeamForm";
+import { EventBus } from "../event-bus";
 
 export default {
   name: "Event",
@@ -159,27 +160,32 @@ export default {
     let cached = this.$db("rolesList");
     if (cached) return (this.roles = cached);
 
+    EventBus.$emit("fullLoader", true);
     this.$api({
       url: "role",
       method: "get"
-    }).then(d => {
-      let colors = {
-        1: "blue-9",
-        2: "indigo-6",
-        3: "cyan-9",
-        4: "green"
-      };
-
-      for (let role of d.data)
-        this.roles[role.id] = {
-          value: role.id,
-          label: role.name,
-          icon: role.icon,
-          color: colors[role.id]
+    })
+      .then(d => {
+        let colors = {
+          1: "blue-9",
+          2: "indigo-6",
+          3: "cyan-9",
+          4: "green"
         };
 
-      this.$db("rolesList", this.roles);
-    });
+        for (let role of d.data)
+          this.roles[role.id] = {
+            value: role.id,
+            label: this.$tr(role.name),
+            icon: role.icon,
+            color: colors[role.id]
+          };
+
+        this.$db("rolesList", this.roles);
+      })
+      .finally(() => {
+        EventBus.$emit("fullLoader", false);
+      });
   },
 
   methods: {

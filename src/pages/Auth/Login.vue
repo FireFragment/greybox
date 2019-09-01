@@ -111,7 +111,10 @@ export default {
     if (this.$auth.check()) this.$router.replace({ name: "home" });
 
     // Auto login user with passed data
-    if (this.loginData) this.login(this.loginData);
+    if (this.loginData) {
+      EventBus.$emit("fullLoader", false);
+      this.login(this.loginData);
+    }
   }
 };
 </script>

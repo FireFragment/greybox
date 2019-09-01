@@ -129,13 +129,19 @@ export default {
         this.$q.platform.is.desktop &&
         localStorage.getItem("leftDrawerOpen") !== "false",
       user: null,
-      fullLoader: true
+      fullLoader: 0 // number of active loadings
     };
   },
 
   created() {
+    // Show loading until events load
+    this.fullLoader = 1;
+
     EventBus.$on("fullLoader", value => {
-      this.fullLoader = value;
+      if (value) this.fullLoader++;
+      else this.fullLoader--;
+
+      if (this.fullLoader < 0) this.fullLoader = 0;
     });
   },
 

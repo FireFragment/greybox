@@ -109,6 +109,18 @@ Vue.mixin({
     // Translation simplification
     // If translationPrefix data is set in component, it will be automcatically placed in front of translation keys
     $tr: function(key, options = null, usePrefix = true) {
+      // Translate object received from API
+      if (typeof key === "object") {
+        let object = key[0];
+        let locale = this.$i18n ? this.$i18n.locale : i18nConfig.default;
+
+        if (!object) return "";
+
+        // TODO - upravit až Vašek upraví API
+        return key[0][locale];
+      }
+
+      // Translate string from JSON
       let prefix = this.translationPrefix;
 
       // Use prefix
