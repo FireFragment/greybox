@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Registration;
+use http\Env\Response;
 use Illuminate\Http\Request;
 
 class RegistrationController extends FakturoidController
@@ -45,6 +46,16 @@ class RegistrationController extends FakturoidController
             'event' => 'required'
         ]);
 
+        $event = \App\Event::find($request->input('event'));
+        if (null !== $event) {
+            // TODO: allow for superadmin
+            if (strtotime($event->hard_deadline) < time()) {
+                return response()->json(['message' => 'missedDeadline'], 403);
+            }
+        } else {
+            return response()->json(['message' => 'eventNotFound'], 404);
+        }
+
         try {
             $registration = Registration::create([
                 'person' => $request->input('person'),
@@ -63,10 +74,11 @@ class RegistrationController extends FakturoidController
                 'team' => $request->input('team'),
                 'registered_by' => \Auth::user()->id // to be checked
             ]);
+            // TODO: refresh from DB https://laravel.com/docs/5.8/eloquent#retrieving-models
             return response()->json($registration, 201);
         } catch (\Illuminate\Database\QueryException $e) {
             $code = $e->getCode();
-            if (23000 === $code) {
+            if (23000 == $code) {
                 return response()->json(['message' => 'duplicateRegistration'], 409);
             }
             return response()->json(['message' => $e->getMessage(), 'code' => $code], 500);
