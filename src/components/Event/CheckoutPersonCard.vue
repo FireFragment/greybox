@@ -34,7 +34,12 @@
           v-for="(value, fieldName) in person.registration"
           v-bind:key="'registration-fields-' + fieldName"
         >
-          <template v-if="['team', 'accomodation', 'role'].includes(fieldName)">
+          <template
+            v-if="
+              ['teamName', 'accomodation', 'role'].includes(fieldName) &&
+                (fieldName !== 'teamName' || value)
+            "
+          >
             <dt>{{ $tr("registrationFields." + fieldName) }}:</dt>
             <dd v-if="fieldName === 'role'">
               {{ $db("rolesList")[value].label }}
@@ -43,7 +48,7 @@
               {{ value ? "Ano" : "Ne" }}
             </dd>
             <dd v-else>
-              TODO: implementovat týmy
+              {{ value }}
             </dd>
           </template>
         </div>

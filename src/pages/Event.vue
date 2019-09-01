@@ -73,7 +73,12 @@
           :autofill="autofillData"
           @goToRolePick="goTo('role')"
         />
-        <team-form v-else></team-form>
+        <team-form
+          v-else
+          @submit="submitTeamForm"
+          @goToRolePick="goTo('role')"
+          :autofill="autofillData"
+        ></team-form>
       </div>
     </div>
     <checkout v-else :form-data="dataToSubmit" @goToRolePick="goTo('role')" />
@@ -202,6 +207,30 @@ export default {
       this.event = events[this.$route.params.id];
     },
 
+    submitTeamForm(people, teamName) {
+      EventBus.$emit("fullLoader", true);
+      this.$api({
+        url: "team",
+        data: {
+          name: teamName,
+          event: this.event.id
+        }
+      })
+        .then(data => {
+          for (let index in people) {
+            let person = people[index];
+
+            person.formData.team = data.data.id;
+            person.formData.teamName = teamName;
+
+            this.sendForm(person.formData, person.autofillData);
+          }
+        })
+        .finally(() => {
+          EventBus.$emit("fullLoader", false);
+        });
+    },
+
     sendForm(data, autofill) {
       let personData = data;
 
@@ -210,10 +239,13 @@ export default {
         event: this.event.id,
         role: this.role === 0 ? 1 : this.role, // if role is team, set as debater
         accomodation: data.accomodation,
-        team: null, // TODO - implementovat
+        team: data.team || null,
+        teamName: data.teamName || null,
         note: data.note
       };
 
+      delete personData.team;
+      delete personData.teamName;
       delete personData.accomodation;
 
       this.dataToSubmit.push({
@@ -224,17 +256,6 @@ export default {
 
       if (this.type === "single") this.goTo("checkout");
       else this.showGroupModal = true;
-
-      // TODO - pokud je posílaný autofillnutý, posílat update (nebo nic) a ne create
-      /*this.$api({
-        url: "person",
-        sendToken: false,
-        data: data,
-        alerts: false
-      }).then(data => {
-        console.log(data);
-        // TODO - odeslat Registration
-      });*/
     },
 
     typePicked(key, value) {

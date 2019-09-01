@@ -1,9 +1,9 @@
 <template>
-  <q-form @submit="sendForm" @reset="resetForm">
+  <q-form @submit="sendForm" @reset="resetForm" ref="q-form">
     <div class="row q-col-gutter-md q-pb-sm">
       <q-input
         outlined
-        v-model="name"
+        v-model="values.name"
         :label="$tr('fields.name') + ' *'"
         class="col-12 col-sm-6"
         lazy-rules
@@ -12,7 +12,7 @@
 
       <q-input
         outlined
-        v-model="surname"
+        v-model="values.surname"
         :label="$tr('fields.surname') + ' *'"
         class="col-12 col-sm-6"
         lazy-rules
@@ -26,7 +26,7 @@
       </div>
       <q-select
         outlined
-        v-model="birthDay"
+        v-model="values.birthDay"
         :options="days"
         option-value="label"
         :label="$tr('fields.birthDay')"
@@ -44,7 +44,7 @@
 
       <q-select
         outlined
-        v-model="birthMonth"
+        v-model="values.birthMonth"
         :options="months"
         option-value="label"
         :label="$tr('fields.birthMonth')"
@@ -62,7 +62,7 @@
 
       <q-select
         outlined
-        v-model="birthYear"
+        v-model="values.birthYear"
         :options="years"
         :label="$tr('fields.birthYear')"
         class="q-pt-sm q-mb-sm col-4"
@@ -80,7 +80,7 @@
 
     <q-input
       outlined
-      v-model="id_number"
+      v-model="values.id_number"
       :label="$tr('fields.id_number')"
       class="q-pt-sm"
       mask="#########"
@@ -108,7 +108,7 @@
 
     <q-input
       outlined
-      v-model="street"
+      v-model="values.street"
       :label="$tr('fields.street') + ' *'"
       class="q-pt-sm"
       input-class="smartform-street-and-number"
@@ -122,7 +122,7 @@
 
     <q-input
       outlined
-      v-model="city"
+      v-model="values.city"
       :label="$tr('fields.city') + ' *'"
       class="q-pt-sm"
       input-class="smartform-city"
@@ -136,7 +136,7 @@
 
     <q-input
       outlined
-      v-model="zip"
+      v-model="values.zip"
       :label="$tr('fields.zip') + ' *'"
       class="q-pt-sm"
       input-class="smartform-zip"
@@ -157,7 +157,7 @@
     <!--
         <q-input
           outlined
-          v-model="phone"
+          v-model="values.phone"
           :label="$tr('fields.phone')"
           mask="+### #########"
           fill-mask="#"
@@ -170,12 +170,15 @@
         </q-input>
         -->
     <div class="block">
-      <q-checkbox v-model="vegetarian" :label="$tr('fields.vegetarian')" />
+      <q-checkbox
+        v-model="values.vegetarian"
+        :label="$tr('fields.vegetarian')"
+      />
     </div>
 
     <div class="block">
       <q-checkbox
-        v-model="accomodation"
+        v-model="values.accomodation"
         :true-value="false"
         :false-value="true"
         :label="$tr('fields.accomodation')"
@@ -194,7 +197,7 @@
           <h2 class="text-h6 q-pa-xs q-mt-sm">{{ $tr('fields.legalGuardian') }}</h2>
           <q-input
             outlined
-            v-model="parentName"
+            v-model="values.parentName"
             :label="$tr('fields.parentName') + ' *'"
             class="col-12 col-sm-6"
             lazy-rules
@@ -209,7 +212,7 @@
 
           <q-input
             outlined
-            v-model="parentPhone"
+            v-model="values.parentPhone"
             :label="$tr('fields.parentPhone') + ' *'"
             mask="+### #########"
             fill-mask="#"
@@ -227,7 +230,7 @@
           <q-input
             outlined
             type="email"
-            v-model="parentEmail"
+            v-model="values.parentEmail"
             :label="$tr('fields.parentEmail') + ' *'"
             class="q-pt-sm"
             lazy-rules
@@ -245,7 +248,7 @@
         </template>
 -->
     <q-input
-      v-model="note"
+      v-model="values.note"
       class="q-mt-sm"
       outlined
       autogrow
@@ -257,8 +260,8 @@
     </q-input>
 
     <q-checkbox
-      v-model="accept"
-      :class="{ 'q-field--error': acceptError && !accept }"
+      v-model="values.accept"
+      :class="{ 'q-field--error': acceptError && !values.accept }"
     >
       {{ $tr("gdpr.label") }}
       <a @click="showGDPRModal = true">{{ $tr("gdpr.link") }}</a>
@@ -285,7 +288,7 @@
       </q-card>
     </q-dialog>
 
-    <div class="text-center">
+    <div class="text-center" v-if="!isTeam">
       <q-btn label="Pokračovat" type="submit" color="primary" />
       <q-btn
         label="Vymazat"
@@ -305,31 +308,34 @@ export default {
   name: "FormFields",
 
   props: {
-    autofill: Object
+    autofill: Object,
+    isTeam: Boolean
   },
 
   data() {
     return {
       translationPrefix: "tournament.",
-      name: null,
-      surname: null,
-      id_number: null,
-      street: null,
-      city: null,
-      zip: null,
-      // phone: "+420",
-      vegetarian: false,
-      accomodation: true,
-      // parentName: null,
-      // parentPhone: "+420",
-      // parentEmail: null,
-      note: null,
-      accept: false,
+      values: {
+        name: null,
+        surname: null,
+        id_number: null,
+        street: null,
+        city: null,
+        zip: null,
+        // phone: "+420",
+        vegetarian: false,
+        accomodation: true,
+        // parentName: null,
+        // parentPhone: "+420",
+        // parentEmail: null,
+        note: null,
+        accept: false,
+        birthDay: null,
+        birthMonth: null,
+        birthYear: null
+      },
       acceptError: false,
       showGDPRModal: false,
-      birthDay: null,
-      birthMonth: null,
-      birthYear: null,
       selectSearch: null,
       days: [],
       months: [
@@ -398,25 +404,9 @@ export default {
 
   methods: {
     sendForm() {
-      if (!this.accept) return (this.acceptError = true);
+      if (!this.values.accept) return !(this.acceptError = true);
 
-      let formData = {
-        name: this.name,
-        surname: this.surname,
-        birthdate:
-          this.birthYear +
-          "-" +
-          this.birthMonth.value +
-          "-" +
-          this.birthDay.value,
-        id_number: this.id_number === "_________" ? null : this.id_number,
-        street: this.street,
-        city: this.city,
-        zip: this.zip.replace(" ", ""),
-        vegetarian: this.vegetarian,
-        note: this.note,
-        accomodation: this.accomodation
-      };
+      let formData = this.submitData;
 
       // Check if autofill data have changed or not
       let autofillData = false;
@@ -435,6 +425,10 @@ export default {
       }
 
       this.$emit("submit", formData, autofillData);
+      return {
+        formData: formData,
+        autofillData: autofillData
+      };
     },
 
     resetForm() {
@@ -482,7 +476,7 @@ export default {
           if (value.startsWith(this.selectSearch)) match = option;
         });
 
-      if (match) this[selectValue] = match;
+      if (match) this.values[selectValue] = match;
       else this.selectResetSearch();
     },
     selectResetSearch() {
@@ -496,11 +490,41 @@ export default {
       for (let key in data) {
         if (key === "birthdate") {
           let value = data[key].split("-");
-          this.birthYear = parseInt(value[0]);
-          this.birthMonth = this.months[parseInt(value[1]) - 1];
-          this.birthDay = this.days[parseInt(value[2]) - 1];
-        } else this[key] = data[key];
+          this.values.birthYear = parseInt(value[0]);
+          this.values.birthMonth = this.months[parseInt(value[1]) - 1];
+          this.values.birthDay = this.days[parseInt(value[2]) - 1];
+        } else this.values[key] = data[key];
       }
+    },
+
+    values: {
+      handler() {
+        this.$emit("input", this.submitData);
+      },
+      deep: true
+    }
+  },
+
+  computed: {
+    submitData() {
+      return {
+        name: this.values.name ? this.values.name.trim() : null,
+        surname: this.values.surname ? this.values.surname.trim() : null,
+        birthdate:
+          this.values.birthYear +
+          "-" +
+          (this.values.birthMonth ? this.values.birthMonth.value : "00") +
+          "-" +
+          (this.values.birthDay ? this.values.birthDay.value : "00"),
+        id_number:
+          this.values.id_number === "_________" ? null : this.values.id_number,
+        street: this.values.street,
+        city: this.values.city,
+        zip: this.values.zip ? this.values.zip.replace(" ", "") : "",
+        vegetarian: this.values.vegetarian,
+        note: this.values.note,
+        accomodation: this.values.accomodation
+      };
     }
   }
 };

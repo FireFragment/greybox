@@ -44,7 +44,7 @@
   "registrationFields": {
     "accomodation": "Accomodation",
     "role": "Role",
-    "team": "Team"
+    "teamName": "Team"
   },
   "autofill": {
     "title": "Autofill data of previously registered people",

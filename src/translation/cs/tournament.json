@@ -44,7 +44,7 @@
   "registrationFields": {
     "accomodation": "Ubytování",
     "role": "Role",
-    "team": "Tým"
+    "teamName": "Tým"
   },
   "autofill": {
     "title": "Převyplnit údaje dle dříve zadaných osob",

@@ -47,6 +47,17 @@ export default {
   methods: {
     sendForm() {
       this.loading = !this.loading;
+
+      // TODO - pokud je posílaný autofillnutý, posílat update (nebo nic) a ne create
+      /*this.$api({
+        url: "person",
+        sendToken: false,
+        data: data,
+        alerts: false
+      }).then(data => {
+        console.log(data);
+        // TODO - odeslat Registration
+      });*/
     }
   },
   components: {
