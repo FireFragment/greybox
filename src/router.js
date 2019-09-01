@@ -11,6 +11,7 @@ import PasswordReset from "./pages/Auth/PasswordReset.vue";
 
 import CZroutes from "./translation/cs/paths";
 import ENroutes from "./translation/en/paths";
+import NewPassword from "./pages/Auth/NewPassword";
 
 Vue.use(Router);
 
@@ -61,6 +62,12 @@ export default new Router({
           alias: ENroutes.passwordReset,
           name: "password-reset",
           component: PasswordReset
+        },
+        {
+          path: CZroutes.newPassword,
+          alias: ENroutes.newPassword,
+          name: "new-password",
+          component: NewPassword
         }
       ]
     }

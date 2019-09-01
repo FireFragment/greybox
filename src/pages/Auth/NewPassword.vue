@@ -1,23 +1,12 @@
 <template>
   <q-page padding>
-    <h1 class="text-center text-h4">Registrace uživatele</h1>
+    <h1 class="text-center text-h4">{{ $tr("auth.passwordReset") }}</h1>
     <div class="row q-col-gutter-md">
-      <q-form @submit="signUp" class="col-12 col-sm-6 q-mt-lg offset-sm-3">
-        <q-input
-          outlined
-          type="email"
-          v-model="email"
-          label="E-mail"
-          lazy-rules
-          :rules="[
-            val => (val !== null && val !== '') || 'Vyplňte prosím e-mail'
-          ]"
-        >
-          <template v-slot:prepend>
-            <q-icon name="fas fa-at" />
-          </template>
-        </q-input>
-
+      <q-form
+        @submit="onSubmit"
+        @reset="onReset"
+        class="col-12 col-sm-6 q-mt-lg offset-sm-3"
+      >
         <q-input
           v-model="password"
           outlined
@@ -64,8 +53,8 @@
           </template>
         </q-input>
 
-        <div class="text-center">
-          <q-btn label="Registrovat" type="submit" color="primary" />
+        <div class="text-center q-mt-sm">
+          <q-btn :label="$tr('general.save')" type="submit" color="primary" />
         </div>
       </q-form>
     </div>
@@ -76,10 +65,9 @@
 import { EventBus } from "../../event-bus";
 
 export default {
-  name: "PageSignUp",
+  name: "PageNewPassword",
   data() {
     return {
-      email: null,
       password: null,
       passwordConfirmation: null,
       isPwd: true,
@@ -87,7 +75,7 @@ export default {
     };
   },
   methods: {
-    signUp() {
+    changePassword() {
       this.$api({
         url: "user",
         sendToken: false,
@@ -122,3 +110,5 @@ export default {
   }
 };
 </script>
+
+<style scoped></style>

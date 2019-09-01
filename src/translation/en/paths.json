@@ -4,5 +4,6 @@
   "login": "login",
   "signUp": "sign-up",
   "logout": "logout",
-  "passwordReset": "password-reset"
+  "passwordReset": "password-reset",
+  "newPassword": "new-password"
 }

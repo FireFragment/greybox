@@ -4,5 +4,6 @@
   "login": "prihlaseni",
   "signUp": "registrace",
   "logout": "odhlaseni",
-  "passwordReset": "obnovit-heslo"
+  "passwordReset": "obnovit-heslo",
+  "newPassword": "nove-heslo"
 }

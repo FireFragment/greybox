@@ -10,5 +10,6 @@
   "passwordReset": "Obnovit heslo",
   "logout": "Odhlásit se",
   "accountSettings": "Nastavení účtu",
-  "downloadPersonalData": "Stáhnout osobní údaje"
+  "downloadPersonalData": "Stáhnout osobní údaje",
+  "save": "Uložit"
 }
