@@ -178,14 +178,14 @@
 
     <div class="block">
       <q-checkbox
-        v-model="values.accomodation"
+        v-model="values.accommodation"
         :true-value="false"
         :false-value="true"
-        :label="$tr('fields.accomodation')"
+        :label="$tr('fields.accommodation')"
       />
       <q-icon name="fas fa-info-circle" class="q-pl-sm">
         <q-tooltip anchor="top middle" self="bottom middle" :offset="[0, 0]">
-          {{ $tr("fieldNotes.accomodation") }}
+          {{ $tr("fieldNotes.accommodation") }}
         </q-tooltip>
       </q-icon>
     </div>
@@ -324,7 +324,7 @@ export default {
         zip: null,
         // phone: "+420",
         vegetarian: false,
-        accomodation: true,
+        accommodation: true,
         // parentName: null,
         // parentPhone: "+420",
         // parentEmail: null,
@@ -419,7 +419,7 @@ export default {
         for (let index in formData)
           if (
             formData[index] != this.autofill[index] &&
-            index !== "accomodation"
+            index !== "accommodation"
           )
             autofillData.edited = true;
       }
@@ -523,7 +523,7 @@ export default {
         zip: this.values.zip ? this.values.zip.replace(" ", "") : "",
         vegetarian: this.values.vegetarian,
         note: this.values.note,
-        accomodation: this.values.accomodation
+        accommodation: this.values.accommodation
       };
     }
   }

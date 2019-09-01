@@ -30,7 +30,7 @@
     "zip": "ZIP code (PSČ)",
     "phone": "Phone number",
     "vegetarian": "Vegetarian",
-    "accomodation": "I don't need accomodation",
+    "accommodation": "I don't need accommodation",
     "legalGuardian": "Legal guardian",
     "parentName": "Full name",
     "parentPhone":  "Phone number",
@@ -39,10 +39,10 @@
   },
   "fieldNotes": {
     "id_number": "Please fill in your ID number if you have one.",
-    "accomodation": "Use the note field bellow for special accomodation requirements."
+    "accommodation": "Use the note field bellow for special accommodation requirements."
   },
   "registrationFields": {
-    "accomodation": "Accomodation",
+    "accommodation": "Accomodation",
     "role": "Role",
     "teamName": "Team"
   },

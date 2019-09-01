@@ -30,7 +30,7 @@
     "zip": "PSČ",
     "phone": "Telefonní číslo",
     "vegetarian": "Vegetariánská strana",
-    "accomodation": "Nechci zařídit ubytování",
+    "accommodation": "Nechci zařídit ubytování",
     "legalGuardian": "Zákonný zástupce",
     "parentName": "Celé jméno",
     "parentPhone":  "Telefonní číslo",
@@ -39,10 +39,10 @@
   },
   "fieldNotes": {
     "id_number": "Vyplňte prosím, pokud již občanský průkaz máte.",
-    "accomodation": "Pro individuální požadavky k ubytování vyplňte prosím poznámku."
+    "accommodation": "Pro individuální požadavky k ubytování vyplňte prosím poznámku."
   },
   "registrationFields": {
-    "accomodation": "Ubytování",
+    "accommodation": "Ubytování",
     "role": "Role",
     "teamName": "Tým"
   },

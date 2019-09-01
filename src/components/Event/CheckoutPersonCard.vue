@@ -36,7 +36,7 @@
         >
           <template
             v-if="
-              ['teamName', 'accomodation', 'role'].includes(fieldName) &&
+              ['teamName', 'accommodation', 'role'].includes(fieldName) &&
                 (fieldName !== 'teamName' || value)
             "
           >
@@ -44,7 +44,7 @@
             <dd v-if="fieldName === 'role'">
               {{ $db("rolesList")[value].label }}
             </dd>
-            <dd v-else-if="fieldName === 'accomodation'">
+            <dd v-else-if="fieldName === 'accommodation'">
               {{ value ? "Ano" : "Ne" }}
             </dd>
             <dd v-else>

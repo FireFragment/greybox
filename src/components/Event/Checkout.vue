@@ -48,16 +48,85 @@ export default {
     sendForm() {
       this.loading = !this.loading;
 
-      // TODO - pokud je posílaný autofillnutý, posílat update (nebo nic) a ne create
-      /*this.$api({
-        url: "person",
-        sendToken: false,
-        data: data,
-        alerts: false
-      }).then(data => {
-        console.log(data);
-        // TODO - odeslat Registration
-      });*/
+      // Send person and registration requests
+      let registrationPromise = new Promise((resolve, reject) => {
+        let registerCount = this.formData.length;
+        let registered = 0;
+
+        for (let index in this.formData) {
+          let person = this.formData[index];
+
+          let createPerson = this._createPerson(person);
+
+          createPerson
+            .then(person_id => {
+              person.registration.person = person_id;
+              this.$api({
+                url: "registration",
+                data: person.registration,
+                method: "post",
+                alerts: false
+              })
+                .then(data => {
+                  registered++;
+                  if (registerCount <= registered) return resolve(data);
+                })
+                .catch(data => {
+                  reject(data);
+                });
+            })
+            .catch(data => {
+              reject(data);
+            });
+        }
+      });
+
+      // All done -> ask for confirmation
+      registrationPromise
+        .then(data => {
+          this.$api({
+            url: "registration/" + data.data.id + "/confirm",
+            method: "put"
+          })
+            .then(data => {
+              this.$flash("Registrace úšpěšně odeslána!", "success");
+              console.log("Registration confirmed!", data.data);
+            })
+            .finally(() => {
+              this.loading = false;
+            });
+        })
+        .catch(() => {
+          this.loading = false;
+          this.$flash(
+            "V průběhu registrace nastala chyba, opakujte akci.",
+            "error"
+          );
+        });
+    },
+
+    // Create or update person
+    _createPerson(person) {
+      return new Promise((resolve, reject) => {
+        let autofill = person.autofill;
+
+        // Person is just autofilled and not edited -> return ID
+        if (autofill && !autofill.edited) return resolve(autofill.id);
+
+        // Person is autofilled and edited / newly created
+        this.$api({
+          url: "person" + (autofill ? "/" + autofill.id : ""),
+          data: person.person,
+          method: autofill ? "put" : "post",
+          alerts: false
+        })
+          .then(data => {
+            resolve(data.data.id);
+          })
+          .catch(data => {
+            reject(data);
+          });
+      });
     }
   },
   components: {

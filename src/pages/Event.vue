@@ -238,7 +238,7 @@ export default {
         person: null, // TODO - implementovat později nastavení IDčka podle postu
         event: this.event.id,
         role: this.role === 0 ? 1 : this.role, // if role is team, set as debater
-        accomodation: data.accomodation,
+        accommodation: data.accommodation,
         team: data.team || null,
         teamName: data.teamName || null,
         note: data.note
@@ -246,7 +246,7 @@ export default {
 
       delete personData.team;
       delete personData.teamName;
-      delete personData.accomodation;
+      delete personData.accommodation;
 
       this.dataToSubmit.push({
         person: personData,
