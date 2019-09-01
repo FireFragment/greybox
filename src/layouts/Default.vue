@@ -89,7 +89,7 @@
           </q-list>
         </q-btn-dropdown>
         <q-btn stretch flat v-else :to="$path('login')">
-          <q-icon name="fas fa-sign-in-alt" />
+          <q-icon name="fas fa-user" />
         </q-btn>
       </q-toolbar>
     </q-header>
