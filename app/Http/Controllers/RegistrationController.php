@@ -65,7 +65,11 @@ class RegistrationController extends FakturoidController
             ]);
             return response()->json($registration, 201);
         } catch (\Illuminate\Database\QueryException $e) {
-            return response()->json(['message' => $e->getMessage(), 'code' => $e->getCode()], 500);
+            $code = $e->getCode();
+            if (23000 === $code) {
+                return response()->json(['message' => 'duplicateRegistration'], 409);
+            }
+            return response()->json(['message' => $e->getMessage(), 'code' => $code], 500);
         }        
     }
     
