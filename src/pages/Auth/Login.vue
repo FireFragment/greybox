@@ -42,7 +42,9 @@
         </q-input>
         <div class="q-mt-sm q-mb-lg text-center">
           {{ $tr("auth.recoverPasswordQuestion") }}
-          <a href="#">{{ $tr("auth.recoverPasswordLink") }}</a>
+          <a href="$path('passwordReset')">{{
+            $tr("auth.recoverPasswordLink")
+          }}</a>
         </div>
 
         <div class="text-center">
