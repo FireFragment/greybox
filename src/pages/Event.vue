@@ -117,7 +117,13 @@
         ></team-form>
       </div>
     </div>
-    <checkout v-else :form-data="dataToSubmit" @goToRolePick="goTo('role')" />
+    <checkout
+      v-else-if="!confirmData"
+      :form-data="dataToSubmit"
+      @confirm="checkoutConfirmed"
+      @goToRolePick="goTo('role')"
+    />
+    <checkout-confirm v-else :data="confirmData"></checkout-confirm>
 
     <q-dialog v-model="showGroupModal" persistent>
       <q-card>
@@ -160,6 +166,7 @@ import formFields from "../components/Event/FormFields";
 import pickType from "../components/Event/PickType";
 import checkout from "../components/Event/Checkout";
 import teamForm from "../components/Event/TeamForm";
+import checkoutConfirm from "../components/Event/CheckoutConfirm";
 import { EventBus } from "../event-bus";
 
 export default {
@@ -170,7 +177,8 @@ export default {
     formFields,
     pickType,
     checkout,
-    teamForm
+    teamForm,
+    checkoutConfirm
   },
 
   data() {
@@ -187,6 +195,7 @@ export default {
         }
       },
       checkout: false,
+      confirmData: null,
       showGroupModal: false,
       autofillData: null,
       translationPrefix: "tournament.",
@@ -307,6 +316,10 @@ export default {
       if (phase === "role")
         this.role = this.autofillData = this.checkout = null;
       else if (phase === "checkout") this.role = this.checkout = true;
+    },
+
+    checkoutConfirmed(data) {
+      this.confirmData = data;
     }
   },
 
