@@ -9,6 +9,13 @@ const ORGANIZER_ROLE_ID = 4;
 
 class EventPolicy extends Policy
 {
+    public function showAll(User $user)
+    {
+        if ($this->isSuperAdmin($user)) {
+            return true;
+        }
+    }
+
     public function create(User $user)
     {
         if (parent::create($user)) {

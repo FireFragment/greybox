@@ -21,7 +21,12 @@ class EventController extends Controller
 
     public function showAll()
     {
-        $events = Event::all();
+        $user = \Auth::user();
+        if ($user !== null && $user->can('showAll', Event::class)) {
+            $events = Event::all();
+        } else {
+            $events = Event::where('hard_deadline', '>', date("Y-m-d H:i:s"))->get();
+        }
         foreach ($events as $event) {
             $event->name = $event->nameTranslation()->first();
             $event->note = $event->noteTranslation()->first();
