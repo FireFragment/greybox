@@ -60,4 +60,9 @@ class EventPolicy extends Policy
 
         return false;
     }
+
+    public function showUserRegistrations(User $user)
+    {
+        return $this->isSuperAdmin($user);
+    }
 }

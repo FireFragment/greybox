@@ -152,9 +152,24 @@ class EventController extends Controller
             $registration->team = $registration->team()->first();
         }
 
-        $event->prices = $event->prices()->get();
-        for ($i=0; $i<count($event->prices); $i++) {
-            $event->prices[$i]->role = $event->prices[$i]->role()->get();
+        return response()->json($registrations);
+    }
+
+    public function showUserRegistrations($eventId, $userId)
+    {
+        $event = Event::find($eventId);
+        $user = \App\User::find($userId);
+        if ($user->id !== \Auth::user()->id) {
+            $this->authorize('showUserRegistrations', Event::class);
+        }
+
+        $registrations = $event->registrations()->where('registered_by', $user->id)->get();
+
+        foreach ($registrations as $registration) {
+            $registration->role = $registration->role()->first();
+            $registration->role->name = $registration->role->translation()->first();
+            $registration->person = $registration->person()->first();
+            $registration->team = $registration->team()->first();
         }
 
         return response()->json($registrations);
