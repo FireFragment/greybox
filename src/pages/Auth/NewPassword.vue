@@ -1,12 +1,10 @@
 <template>
   <q-page padding>
-    <h1 class="text-center text-h4">{{ $tr("auth.passwordReset") }}</h1>
+    <h1 class="text-center text-h4">
+      {{ $tr("auth.passwordReset") }} - token {{ $route.params.token }}
+    </h1>
     <div class="row q-col-gutter-md">
-      <q-form
-        @submit="onSubmit"
-        @reset="onReset"
-        class="col-12 col-sm-6 q-mt-lg offset-sm-3"
-      >
+      <q-form @submit="submit" class="col-12 col-sm-6 q-mt-lg offset-sm-3">
         <q-input
           v-model="password"
           outlined
@@ -54,7 +52,13 @@
         </q-input>
 
         <div class="text-center q-mt-sm">
-          <q-btn :label="$tr('general.save')" type="submit" color="primary" />
+          <q-btn type="submit" color="primary" :loading="loading">
+            {{ $tr("auth.passwordReset") }}
+            <template v-slot:loading>
+              <q-spinner-hourglass class="on-left" />
+              Obnovuji
+            </template>
+          </q-btn>
         </div>
       </q-form>
     </div>
@@ -62,8 +66,6 @@
 </template>
 
 <script>
-import { EventBus } from "../../event-bus";
-
 export default {
   name: "PageNewPassword",
   data() {
@@ -71,41 +73,14 @@ export default {
       password: null,
       passwordConfirmation: null,
       isPwd: true,
-      isPwd2: true
+      isPwd2: true,
+      loading: false
     };
   },
   methods: {
-    changePassword() {
-      this.$api({
-        url: "user",
-        sendToken: false,
-        data: {
-          username: this.email,
-          password: this.password,
-          password_confirmation: this.passwordConfirmation
-        },
-        alerts: false
-      })
-        .then(() => {
-          EventBus.$emit("fullLoader", true);
-          this.$router.push({
-            name: "login",
-            params: {
-              loginData: {
-                username: this.email,
-                password: this.password
-              }
-            }
-          });
-        })
-        .catch(data => {
-          if (data.response.data)
-            for (let index in data.response.data)
-              data.response.data[index].forEach(message => {
-                this.$flash(message, "error", false, 5000);
-              });
-          else this.$flash("An error had occured, please try again.", "error");
-        });
+    submit() {
+      this.loading = true;
+      console.log(this.password, this.passwordConfirmation);
     }
   },
   created() {

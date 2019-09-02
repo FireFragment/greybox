@@ -65,7 +65,13 @@
         </q-input>
 
         <div class="text-center">
-          <q-btn label="Registrovat" type="submit" color="primary" />
+          <q-btn type="submit" color="primary" :loading="loading">
+            Registrovat
+            <template v-slot:loading>
+              <q-spinner-hourglass class="on-left" />
+              Registruji
+            </template>
+          </q-btn>
         </div>
       </q-form>
     </div>
@@ -83,7 +89,8 @@ export default {
       password: null,
       passwordConfirmation: null,
       isPwd: true,
-      isPwd2: true
+      isPwd2: true,
+      loading: false
     };
   },
   created() {
@@ -91,6 +98,9 @@ export default {
   },
   methods: {
     signUp() {
+      if (this.loading) return;
+
+      this.loading = true;
       this.$api({
         url: "user",
         sendToken: false,
@@ -120,6 +130,9 @@ export default {
                 this.$flash(message, "error", false, 5000);
               });
           else this.$flash("An error had occured, please try again.", "error");
+        })
+        .finally(() => {
+          this.loading = false;
         });
     }
   }

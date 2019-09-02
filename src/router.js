@@ -64,8 +64,8 @@ export default new Router({
           component: PasswordReset
         },
         {
-          path: CZroutes.newPassword,
-          alias: ENroutes.newPassword,
+          path: CZroutes.passwordReset + "/:token",
+          alias: ENroutes.passwordReset + "/:token",
           name: "new-password",
           component: NewPassword
         }

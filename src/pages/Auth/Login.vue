@@ -48,7 +48,13 @@
         </div>
 
         <div class="text-center">
-          <q-btn :label="$tr('auth.toLogin')" type="submit" color="primary" />
+          <q-btn type="submit" color="primary" :loading="loading">
+            {{ $tr("auth.toLogin") }}
+            <template v-slot:loading>
+              <q-spinner-hourglass class="on-left" />
+              Přihlašuji
+            </template>
+          </q-btn>
         </div>
       </q-form>
     </div>
@@ -67,12 +73,15 @@ export default {
     return {
       email: null,
       password: null,
-      isPwd: true
+      isPwd: true,
+      loading: false
     };
   },
   methods: {
     login(userData = null) {
-      EventBus.$emit("fullLoader", true);
+      if (this.loading) return;
+
+      this.loading = true;
       let requestData = userData;
       if (!requestData)
         requestData = {
@@ -83,13 +92,13 @@ export default {
       this.$auth
         .login(requestData)
         .then(data => {
+          EventBus.$emit("fullLoader", true);
           this.$auth.options.fetchData.url =
             this.apiSettings.baseURL + "user/" + data.data.id;
 
           this.$auth
             .fetchUser()
             .then(() => {
-              EventBus.$emit("fullLoader", false);
               if (userData) {
                 this.$router.replace({ name: "home" });
                 this.$flash("Registrace úspěšná", "done");
@@ -100,12 +109,18 @@ export default {
             })
             .catch(data => {
               this.$flash(data.response.statusText, "error");
+            })
+            .finally(() => {
+              EventBus.$emit("fullLoader", false);
             });
         })
         .catch(data => {
           this.$router.replace(this.$path("login"));
           EventBus.$emit("fullLoader", false);
           this.$flash(data.response.data.message, "error");
+        })
+        .finally(() => {
+          this.loading = false;
         });
     }
   },
