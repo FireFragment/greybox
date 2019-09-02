@@ -2,6 +2,10 @@
   "empty": "Momentálně se nelze registrovat na žádné akce",
   "deadline": "Konec přihlášek",
   "note": "Poznámka",
+  "types": {
+    "individual": "Jednotlivec",
+    "group": "Skupina"
+  },
   "gdpr": {
     "label": "Souhlasím s",
     "link": "podmínkami přihlášení",

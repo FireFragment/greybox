@@ -2,6 +2,10 @@
   "empty": "No events are available at the moment",
   "deadline": "Registration deadline",
   "note": "Note",
+  "types": {
+    "individual": "Individual",
+    "group": "Group"
+  },
   "gdpr": {
     "label": "I agree with",
     "link": "sign up conditions",

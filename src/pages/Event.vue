@@ -68,13 +68,13 @@
       name="type"
       :values="[
         {
-          label: 'Jednotlivec',
+          label: $tr('types.individual'),
           icon: 'user',
           color: 'primary',
           value: 'single'
         },
         {
-          label: 'Skupina',
+          label: $tr('types.group'),
           icon: 'users',
           color: 'blue-9',
           value: 'group'
@@ -186,14 +186,7 @@ export default {
       event: null,
       type: null, // single/group
       role: null,
-      roles: {
-        0: {
-          value: 0,
-          label: "Tým",
-          icon: "users",
-          color: "primary"
-        }
-      },
+      roles: {},
       checkout: false,
       confirmData: null,
       showGroupModal: false,
@@ -204,18 +197,59 @@ export default {
   },
 
   created() {
-    this.getEventObject();
+    // Promise to return object with event details
+    let eventPromise = new Promise((resolve, reject) => {
+      let eventId = this.$route.params.id;
 
-    // Load events from cache if available
-    let cached = this.$db("rolesList");
-    if (cached) return (this.roles = cached);
+      // Try to load event from cache
+      let cached = this.$db("event-" + eventId);
 
-    EventBus.$emit("fullLoader", true);
-    this.$api({
-      url: "role",
-      method: "get"
-    })
-      .then(d => {
+      if (cached) return resolve([cached, false]);
+
+      // Not cached -> load from API
+      EventBus.$emit("fullLoader", true);
+      this.$api({
+        url: "event/" + eventId,
+        method: "get"
+      })
+        .then(d => {
+          let event = d.data;
+          this.$db("event-" + eventId, event);
+          resolve([event, true]);
+        })
+        .catch(reject);
+    });
+
+    eventPromise.then(([event, isLoading]) => {
+      this.event = event;
+
+      // Can't register to event -> don't even load roles
+      if (event.hard_deadline < this.now || !this.$auth.check()) {
+        if (isLoading) return EventBus.$emit("fullLoader", false);
+        return;
+      }
+
+      // Promise to return all roles
+      let rolesPromise = new Promise((resolve, reject) => {
+        // Load roles from cache if available
+        let cached = this.$db("rolesList");
+        if (cached) return resolve([cached, isLoading]);
+
+        if (!isLoading) EventBus.$emit("fullLoader", true);
+
+        // Not cached -> load from API
+        this.$api({
+          url: "role",
+          method: "get"
+        })
+          .then(d => {
+            this.$db("rolesList", d.data);
+            resolve([d.data, true]);
+          })
+          .catch(reject);
+      });
+
+      rolesPromise.then(([roles, isLoading]) => {
         let colors = {
           1: "blue-9",
           2: "indigo-6",
@@ -223,35 +257,42 @@ export default {
           4: "green"
         };
 
-        for (let role of d.data)
-          this.roles[role.id] = {
-            value: role.id,
-            label: this.$tr(role.name),
-            icon: role.icon,
-            color: colors[role.id]
-          };
+        // Check if roles are present in event's prices
+        for (let role of roles) {
+          let isPresent = false;
+          for (let price of event.prices) {
+            if (price.role.id === role.id) {
+              isPresent = true;
+              break;
+            }
+          }
 
-        this.$db("rolesList", this.roles);
-      })
-      .finally(() => {
-        EventBus.$emit("fullLoader", false);
+          if (isPresent) {
+            // Debater role is present -> push team role
+            if (role.id === 1)
+              this.roles[0] = {
+                value: 0,
+                label: "Tým",
+                icon: "users",
+                color: "primary"
+              };
+
+            // Push role to role list
+            this.roles[role.id] = {
+              value: role.id,
+              label: role.name,
+              icon: role.icon,
+              color: colors[role.id]
+            };
+          }
+        }
+
+        if (isLoading) return EventBus.$emit("fullLoader", false);
       });
+    });
   },
 
   methods: {
-    // Get event data from local DB
-    getEventObject() {
-      let events = this.$db("eventsList");
-
-      // DB might not be available yet - try later
-      if (!events)
-        return setTimeout(() => {
-          this.getEventObject();
-        }, 500);
-
-      this.event = events[this.$route.params.id];
-    },
-
     submitTeamForm(people, teamName) {
       EventBus.$emit("fullLoader", true);
       this.$api({

@@ -29,8 +29,8 @@ export default {
   },
   computed: {
     options() {
-      return Object.values(this.values).filter((item, index) => {
-        return !this.hideFirst || index !== 0;
+      return Object.values(this.values).filter(item => {
+        return !this.hideFirst || item.value !== 0;
       });
     }
   },

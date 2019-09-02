@@ -3,7 +3,7 @@
     <q-btn
       :icon="'fas fa-' + icon"
       size="xl"
-      :label="label"
+      :label="typeof label === 'object' ? $tr(label) : label"
       stack
       :color="color"
       :no-caps="true"
@@ -15,7 +15,7 @@
 <script>
 export default {
   props: {
-    label: String,
+    label: [String, Object],
     icon: String,
     color: String
   },
