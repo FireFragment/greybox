@@ -1,6 +1,13 @@
 <template>
   <q-page padding>
     <h1 class="text-center text-h4">{{ $tr("auth.passwordReset") }}</h1>
+    <div class="text-center close-paragraphs q-p-1">
+      <p>
+        Po odeslání formuláře Vám na e-mail přijde odkaz pro vytvoření nového
+        hesla, kterým se následně budete moct přihlásit do systému.
+      </p>
+    </div>
+
     <div class="row q-col-gutter-md">
       <q-form @submit="submit" class="col-12 col-sm-6 q-mt-lg offset-sm-3">
         <q-input
