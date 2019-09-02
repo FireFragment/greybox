@@ -38,12 +38,16 @@ class EventController extends Controller
     {
         $event = Event::find($id);
 
+        if (null === $event) {
+            return response()->json(['message' => 'eventNotFound'], 404);
+        }
+
         $event->name = $event->nameTranslation()->first();
         $event->note = $event->noteTranslation()->first();
 
         $event->prices = $event->prices()->get();
         for ($i=0; $i<count($event->prices); $i++) {
-            $event->prices[$i]->role = $event->prices[$i]->role()->get();
+            $event->prices[$i]->role = $event->prices[$i]->role()->first();
         }
 
         return response()->json($event);
