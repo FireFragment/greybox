@@ -86,6 +86,9 @@ export default {
       isPwd2: true
     };
   },
+  created() {
+    if (this.$auth.check()) this.$router.replace({ name: "home" });
+  },
   methods: {
     signUp() {
       this.$api({

@@ -107,6 +107,9 @@ export default {
           else this.$flash("An error had occured, please try again.", "error");
         });
     }
+  },
+  created() {
+    if (this.$auth.check()) this.$router.replace({ name: "home" });
   }
 };
 </script>

@@ -37,6 +37,9 @@ export default {
     return {
       email: null
     };
+  },
+  created() {
+    if (this.$auth.check()) this.$router.replace({ name: "home" });
   }
 };
 </script>
