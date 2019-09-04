@@ -1,3 +1,107 @@
+start app: php -S localhost:8000 -t public
+
+Zbyněk TODO:
+jo, mám takovej drobnej nápad, prosím, kromě těch členských v novém greyboxu, přidal bys prosím proklik na registraci (nový greybox) do toho starého?
+a ještě jsem přišel na další věc - chybí mi tam teď ten seznam lidí co jsem zaregistroval, nebo potvrzovací mail
+nebo mám to psát jinam?
+
+Kuxa TODO:
+Když posílám požadavek na vytvoření týmu, přichází mi v odpovědi i event. Mám teda při registraci týmu posílat i ID turnaje, jo? V apiary to nikde není totiž   Aha, to je taky relikt z předchozí verze.   Asi bych to tam nechal
+Teď jsem poslal registraci s tím, že člověk byl autofillnutý (takže jsem předtím neposílal person a jen jsem použil IDčko), a u většiny polí mi to vrátilo null. Mně to nevadí, ty políčka nepoužívám, ale jen jsem se chtěl ujistit, jestli to je správný chování, nebo to je nějaký bug v důsledku toho autofillu
+2. Implementuješ do faktur překlady? Konkrétně co se dívám tak to je u rolí (resp. invoiceLines[0].name) a unit_name (invoiceLines[0].unitName)
+2. Implementuju, ale strašně se mi do toho nechce :smile:
+S tím organizátorem už se mi to stalo, budu to muset nějak ošetřit.
+Ještě bychom měli vyřešit rušení registrací, ale to asi počká do příštího sprintu :D
+git bot 6:22 PM
+A kdybych zavolal GET registration, tak mi to vyplivne úplně všechny registrace, i minulé, jo?
+Václav Soukup 6:23 PM
+Teď to vyplyne fakt všechny
+git bot 6:23 PM
+Jo, ok
+Spěchat s tím nemusíš, než se k tomu dostanu, mám důležitějších věcí tak na týden čistýho času :smile:
+git bot 7:56 PM
+Teď zkouším odeslat formulář a zase na mě vyskočila 500
+Měl jsem tam 3 lidi: person 429, 430 a nový 471, registration 1094, 1095, 1096 (na confirm jsem posílal 1096)
+Václav Soukup 7:58 PM
+Zase ta reg confirmation?
+git bot 7:58 PM
+Dva debatéři, jeden rozhodčí, event 5
+Jj
+Václav Soukup 7:58 PM
+Ověřím. Dej mi tak 20 minut pls
+:+1:
+1
+
+git bot 7:59 PM
+A to stejné mi teď dělá i když posílám jenom 430 jako debatéra samostatně na event 6, registrace 1100
+git bot 8:11 PM
+A ještě mám spíš osobní otázku - jak to bude s platbama, když se bude registrace platit zvlášť? Třeba u nás, kdy nás registruju já, ale platbu posíláme každý zvlášť
+Václav Soukup 8:17 PM
+Když to pošlete se správným variabilním symbolem, tak fakturoid to sečte
+git bot 8:24 PM
+Geniální :heart:
+git bot 8:30 PM
+Ještě mám drobnost, se kterou se budeš srát 2 hodiny a ovlivní 0,001 % výsledku - u unit_name se neskloňuje, viz "1 osob" :confused: :smile:
+image.png
+image.png
+
+
+Václav Soukup 8:30 PM
+image.png
+image.png
+
+
+:joy:
+1
+
+git bot 8:31 PM
+Chápu :smile: :smile:
+Václav Soukup 8:31 PM
+to už tam mám delší dobu
+git bot 8:31 PM
+Jj :smile:
+Václav Soukup 8:32 PM
+hele, mě to nevrací 500, ale zároveň mi to taky nevrací nic rozumnýho
+new messages
+git bot 8:33 PM
+Wtf, to je divný :smile:
+Mně to občas funguje a občas ne
+Nevšiml jsem si ničeho, co by to způsobovalo
+Václav Soukup 8:33 PM
+Btw, když je celková cena 0, tak se faktura nevygeneruje.
+git bot 8:34 PM
+Ok :thumbsup: a co se vrátí?
+Václav Soukup 8:34 PM
+200, ale nebudou tam údaje k faktuře
+můžu tam dát něco dalšího, jestli chceš
+git bot 8:35 PM
+Dobrý, nemusíš. Takže tam úplně chybí invoiceLines atd., jo?
+Václav Soukup 8:36 PM
+invoiceLines tam je, ale totalAmount = 0 a není tam invoice
+git bot 8:36 PM
+Jo, ok
+To, že se u confirmu vygeneruje faktura za všechny registrace danýho uživatele (mám tam 11 debatérů, i když v téhle konkrétní registraci jsem měl jenom jednoho, těch 10 bylo v dřívějších) je fičura, nebo bug? :smile:
+Václav Soukup 8:37 PM
+Aha, to je bug :smile:
+git bot 8:37 PM
+Nebyl jsem si jistej právě :smile:
+Václav Soukup 8:39 PM
+Opravím to, aby to dalo pro danýho uživatele vracelo jenom registrace z toho turnaje.
+Nebo takové, které ještě nebyly confirmed?
+To je jedna z věcí, co ještě nemám promyšlený - když přiregistruju další lidi, vystavím další fakturu, nebo změním tu stávající?
+co myslíš?
+git bot 8:42 PM
+Ty jo, tak to nevím, moc se nedokážů vžít do té situace. Ale přijde mi praktičtější vystavit novou, kdyby někdo dělal víc registrací protože potřebuje víc faktur.
+
+A kdyby někdo dělal víc registrací protože třeba na někoho zapomněl, tak pro něho není velkej problém zaplatit dvě faktury místo jedné (edited)
+
+git bot 9:16 PM
+Zkouším, zatím mi všech asi 5 pokusů selhalo 500 :confused: :smile:
+Super, teď se povedlo, funguje, díky
+Co jsem tak zkoušel, tak si myslím, že ta 500 se vyřeší odhlášením a znovu přihlášením
+Nejsem si jistej, ale je to jediná společná věc, které jsem si všiml. Že první confirm po přihlášení jde, další už ne
+
+
 Vašek TODO:
 Vyřešit posílání api_token u update user
 Opravit routy podle https://stackoverflow.com/questions/34182806/multiple-route-file-instead-of-one-main-route-file-in-laravel-5

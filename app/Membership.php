@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 
-class Person extends Model implements AuthenticatableContract, AuthorizableContract
+class Membership extends Model implements AuthenticatableContract, AuthorizableContract
 {
     use Authenticatable, Authorizable;
 
@@ -18,7 +18,7 @@ class Person extends Model implements AuthenticatableContract, AuthorizableContr
      * @var array
      */
     protected $fillable = [
-        'name', 'surname', 'birthdate', 'id_number', 'street', 'city', 'zip', 'vegetarian', 'note'
+        'person', 'beginning', 'end', 'application', 'legal_guardian'
     ];
 
     /**
@@ -29,14 +29,20 @@ class Person extends Model implements AuthenticatableContract, AuthorizableContr
     protected $hidden = [
     ];
 
-    public function user()
+    public function person()
     {
-        return $this->hasOne('App\User');
+        return $this->belongsTo(Person::class, 'person', 'id');
     }
 
-    public function membership()
+    public function isExpired()
     {
-        // TODO: to be changed to hasMany maybe - in case of repeated membership
-        return $this->hasOne('App\Membership', 'person', 'id');
+        return strtotime($this->end) < time();
+    }
+
+    public static function setForSeason()
+    {
+        $year = date('Y') + 1;
+        // TODO: solve as option
+        return "$year-08-31";
     }
 }

@@ -118,12 +118,15 @@ class RegistrationController extends FakturoidController
         try {
             $fc = $this->getFakturoidClient();
             $user = \Auth::user();
-            $registration = Registration::findOrFail($id);
-            $event = $registration->event()->first();
+            $reg = Registration::findOrFail($id);
+            $event = $reg->event()->first();
+            $data = new \stdClass();
 
             $totalAmount = 0;
             $invoiceLines = [];
-            foreach ($user->registrations()->select('role', \DB::raw('count(*) as quantity'))->where('event_id', $event->id)->groupBy('role')->get() as $reg) {
+            // TODO: solve repetition with lazy/eager loading
+            $registrations = $user->registrations()->where('event_id', $event->id);
+            foreach ($registrations->select('role', \DB::raw('count(*) as quantity'))->groupBy('role')->get() as $reg) {
                 $role = \App\Role::findOrFail($reg->role);
                 $price = $role->prices()->where('event', $event->id)->first();
                 $invoiceLines[] = [
@@ -134,8 +137,40 @@ class RegistrationController extends FakturoidController
                 ];
                 $totalAmount += $reg->quantity * $price->amount;
             }
-            $registration->invoiceLines = $invoiceLines;
-            $registration->totalAmount = $totalAmount;
+
+            $membershipsCount = 0;
+            // TODO: solve repetition with lazy/eager loading
+            $registrations = $user->registrations()->where('event_id', $event->id);
+            foreach ($registrations->get() as $registration) {
+                $person = $registration->person()->first();
+                // TODO: to be deleted if person required in registration
+                if (null !== $person) {
+                    $membership = $person->membership()->first();
+                    if (null === $membership) {
+                        $membership = \App\Membership::create([
+                            'person' => $person->id,
+                            'beginning' => date('Y-m-d'),
+                            'end' => \App\Membership::setForSeason()
+                        ]);
+                        $membershipsCount++;
+                    } elseif ($membership->isExpired()) {
+                        $this->updateColumn($membership, 'end', \App\Membership::setForSeason());
+                        $membershipsCount++;
+                    }
+                }
+            }
+            if ($membershipsCount > 0) {
+                $invoiceLines[] = [
+                    'name' => 'členský příspěvek', // TODO: solve translations and maybe add surnames
+                    'quantity' => $membershipsCount,
+                    'unit_name' => 'osob', // TODO: vymyslet něco chytřejšího
+                    'unit_price' => 50
+                ];
+            }
+            $totalAmount += ($membershipsCount * 50);
+
+            $data->invoiceLines = $invoiceLines;
+            $data->totalAmount = $totalAmount;
 
             if ($totalAmount > 0) {
                 $client = $user->clients()->first(); // TODO: default client? nebo to nějak udělat
@@ -148,7 +183,7 @@ class RegistrationController extends FakturoidController
                     $clientData['user'] = $user->id;
                     $client = \App\Client::create($clientData);
                 }
-                $registration->client = $client;
+                $data->client = $client;
 
                 // TODO: vyřešit už existující invoice
                 $invoiceData = [
@@ -169,10 +204,10 @@ class RegistrationController extends FakturoidController
                     $invoice->pdf_full_url = "https://debate-greybox.herokuapp.com/invoices/$invoice->pdf_url.pdf";
                 }
 
-                $registration->invoice = $invoice;
+                $data->invoice = $invoice;
             }
 
-            return response()->json($registration, 200);
+            return response()->json($data, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
