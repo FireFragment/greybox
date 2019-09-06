@@ -42,7 +42,7 @@
           >
             <dt>{{ $tr("registrationFields." + fieldName) }}:</dt>
             <dd v-if="fieldName === 'role'">
-              {{ $db("rolesList")[value].label }}
+              {{ $tr($db("rolesList")[value].name) }}
             </dd>
             <dd v-else-if="fieldName === 'accommodation'">
               {{ value ? "Ano" : "Ne" }}
