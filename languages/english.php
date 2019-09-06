@@ -372,4 +372,6 @@ $lang['draw'] = 'draw';
 $lang['lost'] = 'lost';
 $lang['debate %s ended up in draw, that is illegal in a league'] = 'debate %s ended up in draw, that is illegal in a league';
 $lang['league %s: recount failed'] = 'league %s: recount failed';
+
+$lang['greybox20'] = 'register for tournaments';
 ?>

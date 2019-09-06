@@ -21,6 +21,7 @@ $GLOBALS["page"]->links[] = array("./?page=souteze",$lang["competitions"],"soute
 $GLOBALS["page"]->links[] = array("./?page=turnaje",$lang["tournaments"],"turnaj");
 $GLOBALS["page"]->links[] = array("./?page=debaty",$lang["debates"],"debata");
 $GLOBALS["page"]->links[] = array("./?page=teze",$lang["resolutions"],"teze");
+$GLOBALS["page"]->links[] = array("./registrace/",$lang["greybox20"],"registrace");
 
 // page := array(keyword, title, section)
 $GLOBALS["page"]->default_page = array("default",null, "home");

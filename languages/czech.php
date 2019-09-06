@@ -374,4 +374,6 @@ $lang['draw'] = 'remíza';
 $lang['lost'] = 'prohráli';
 $lang['debate %s ended up in draw, that is illegal in a league'] = 'ligová debata %s skončila remízou, to by se nemělo státá';
 $lang['league %s: recount failed'] = 'liga %s: přepočet selhal';
+
+$lang['greybox20'] = 'přihlašování na turnaje';
 ?>
