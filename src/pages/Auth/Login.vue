@@ -1,17 +1,15 @@
 <template>
   <q-page padding>
-    <h1 class="text-center text-h4">{{ $tr("auth.login") }}</h1>
+    <h1 class="text-center text-h4">{{ $tr("login.title") }}</h1>
     <div class="row q-col-gutter-md">
       <q-form @submit="login" class="col-12 col-sm-6 q-mt-lg offset-sm-3">
         <q-input
           outlined
           type="email"
           v-model="email"
-          :label="$tr('auth.loginEmail')"
+          :label="$tr('loginEmail')"
           lazy-rules
-          :rules="[
-            val => (val !== null && val !== '') || $tr(`auth.emailError`)
-          ]"
+          :rules="[val => (val !== null && val !== '') || $tr(`emailError`)]"
         >
           <template v-slot:prepend>
             <q-icon name="fas fa-at" />
@@ -22,12 +20,10 @@
           v-model="password"
           outlined
           :type="isPwd ? 'password' : 'text'"
-          :label="$tr('auth.password')"
+          :label="$tr('password')"
           class="q-mt-sm"
           lazy-rules
-          :rules="[
-            val => (val !== null && val !== '') || $tr('auth.passwordError')
-          ]"
+          :rules="[val => (val !== null && val !== '') || $tr('passwordError')]"
         >
           <template v-slot:prepend>
             <q-icon name="fas fa-key" />
@@ -41,18 +37,16 @@
           </template>
         </q-input>
         <div class="q-mt-sm q-mb-lg text-center">
-          {{ $tr("auth.recoverPasswordQuestion") }}
-          <a href="$path('passwordReset')">{{
-            $tr("auth.recoverPasswordLink")
-          }}</a>
+          {{ $tr("recoverPasswordQuestion") }}
+          <a href="$path('passwordReset')">{{ $tr("recoverPasswordLink") }}</a>
         </div>
 
         <div class="text-center">
           <q-btn type="submit" color="primary" :loading="loading">
-            {{ $tr("auth.toLogin") }}
+            {{ $tr("login.submit") }}
             <template v-slot:loading>
               <q-spinner-hourglass class="on-left" />
-              Přihlašuji
+              {{ $tr("login.loading") }}
             </template>
           </q-btn>
         </div>
@@ -71,6 +65,7 @@ export default {
   },
   data() {
     return {
+      translationPrefix: "auth.",
       email: null,
       password: null,
       isPwd: true,
@@ -89,6 +84,7 @@ export default {
           password: this.password
         };
 
+      let invalidCredentials = this.$tr("login.validation.invalidCredentials");
       this.$auth
         .login(requestData)
         .then(data => {
@@ -104,7 +100,7 @@ export default {
                 this.$flash("Registrace úspěšná", "done");
               } else {
                 this.$router.push({ name: "home" });
-                this.$flash(this.$tr("auth.loginSuccess"), "done");
+                this.$flash(this.$tr("login.success"), "done");
               }
             })
             .catch(data => {
@@ -114,10 +110,10 @@ export default {
               EventBus.$emit("fullLoader", false);
             });
         })
-        .catch(data => {
+        .catch(() => {
           this.$router.replace(this.$path("login"));
           EventBus.$emit("fullLoader", false);
-          this.$flash(data.response.data.message, "error");
+          this.$flash(invalidCredentials, "error");
         })
         .finally(() => {
           this.loading = false;

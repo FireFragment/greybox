@@ -72,7 +72,7 @@
             <q-icon name="fas fa-sign-in-alt" />
           </q-item-section>
 
-          <q-item-section>{{ $tr("auth.login") }}</q-item-section>
+          <q-item-section>{{ $tr("auth.login.link") }}</q-item-section>
         </q-item>
 
         <q-item clickable :to="$path('signUp')">
@@ -80,7 +80,7 @@
             <q-icon name="fas fa-user-plus" />
           </q-item-section>
 
-          <q-item-section>{{ $tr("auth.signUp") }}</q-item-section>
+          <q-item-section>{{ $tr("auth.signUp.link") }}</q-item-section>
         </q-item>
 
         <q-item clickable :to="$path('passwordReset')">

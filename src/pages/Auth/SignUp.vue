@@ -1,6 +1,6 @@
 <template>
   <q-page padding>
-    <h1 class="text-center text-h4">Registrace uživatele</h1>
+    <h1 class="text-center text-h4">{{ $tr("signUp.title") }}</h1>
     <div class="row q-col-gutter-md">
       <q-form @submit="signUp" class="col-12 col-sm-6 q-mt-lg offset-sm-3">
         <q-input
@@ -22,7 +22,7 @@
           v-model="password"
           outlined
           :type="isPwd ? 'password' : 'text'"
-          label="Heslo"
+          :label="$tr('password')"
           class="q-mt-sm"
           lazy-rules
           :rules="[
@@ -45,7 +45,7 @@
           v-model="passwordConfirmation"
           outlined
           :type="isPwd2 ? 'password' : 'text'"
-          :label="$tr('auth.confirmPassword')"
+          :label="$tr('confirmPassword')"
           class="q-mt-sm"
           lazy-rules
           :rules="[
@@ -66,10 +66,10 @@
 
         <div class="text-center">
           <q-btn type="submit" color="primary" :loading="loading">
-            Registrovat
+            {{ $tr("signUp.submit") }}
             <template v-slot:loading>
               <q-spinner-hourglass class="on-left" />
-              Registruji
+              {{ $tr("signUp.loading") }}
             </template>
           </q-btn>
         </div>
@@ -85,6 +85,7 @@ export default {
   name: "PageSignUp",
   data() {
     return {
+      translationPrefix: "auth.",
       email: null,
       password: null,
       passwordConfirmation: null,
@@ -127,7 +128,17 @@ export default {
           if (data.response.data)
             for (let index in data.response.data)
               data.response.data[index].forEach(message => {
-                this.$flash(message, "error", false, 5000);
+                this.$flash(
+                  this.$tr(
+                    "signUp.validation." +
+                      index +
+                      "." +
+                      message.substr(11).replace(".", "-")
+                  ),
+                  "error",
+                  false,
+                  7500
+                );
               });
           else this.$flash("An error had occured, please try again.", "error");
         })
