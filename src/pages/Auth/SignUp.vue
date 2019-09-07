@@ -138,7 +138,7 @@ export default {
                   9000
                 );
               });
-          else this.$flash("An error had occured, please try again.", "error");
+          else this.$flash(this.$tr("general.error", null, false), "error");
         })
         .finally(() => {
           this.loading = false;

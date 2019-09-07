@@ -101,7 +101,7 @@ export default {
             .then(() => {
               if (userData) {
                 this.$router.replace({ name: "home" });
-                this.$flash("Registrace úspěšná", "done");
+                this.$flash(this.$tr("signUp.success"), "done");
               } else {
                 this.$router.push({ name: "home" });
                 this.$flash(this.$tr("login.success"), "done");

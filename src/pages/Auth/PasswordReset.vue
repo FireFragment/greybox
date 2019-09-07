@@ -72,7 +72,7 @@ export default {
               data.response.data[index].forEach(message => {
                 this.$flash(this.$tr("passwordReset." + message), "error");
               });
-          else this.$flash("An error had occured, please try again.", "error");
+          else this.$flash(this.$tr("general.error", null, false), "error");
         })
         .finally(() => {
           this.loading = false;

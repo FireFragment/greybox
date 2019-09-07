@@ -84,7 +84,7 @@
                 <q-icon name="fas fa-sign-out-alt" />
               </q-item-section>
 
-              <q-item-section>{{ $tr("general.logout") }}</q-item-section>
+              <q-item-section>{{ $tr("auth.logout.link") }}</q-item-section>
             </q-item>
           </q-list>
         </q-btn-dropdown>

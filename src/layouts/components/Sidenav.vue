@@ -10,7 +10,7 @@
         </q-item-section>
       </q-item>
 
-      <q-item-label header>{{ $tr("general.tournaments") }}</q-item-label>
+      <q-item-label header>{{ $tr("tournament.title") }}</q-item-label>
       <q-item
         v-for="event in events"
         v-bind:key="event.id"
@@ -63,7 +63,7 @@
             <q-icon name="fas fa-sign-out-alt" />
           </q-item-section>
 
-          <q-item-section>{{ $tr("auth.logout") }}</q-item-section>
+          <q-item-section>{{ $tr("auth.logout.link") }}</q-item-section>
         </q-item>
       </template>
       <template v-else>
