@@ -7,7 +7,6 @@ import apiCall from "./api";
 import config from "./config";
 import VueAuth from "@d0whc3r/vue-auth-plugin";
 import smartformModule from "@smartform.cz/smartform";
-import { EventBus } from "./event-bus";
 import SlideUpDown from "vue-slide-up-down";
 
 Vue.config.productionTip = false;
@@ -16,30 +15,6 @@ Vue.config.productionTip = false;
 smartformModule.load();
 window.smartform.beforeInit = () => {
   window.smartform.setClientId("8ndPcVUJ5B");
-
-  let instance = window.smartform.getInstance(
-    window.smartform.getInstanceIds()[0]
-  );
-
-  // Emit inner event on option select
-  instance.setSelectionCallback((element, text, fieldType) => {
-    EventBus.$emit("smartFormAutocomplete", {
-      field: fieldType.substr("10"),
-      value: text
-    });
-  });
-};
-
-window.smartform.afterInit = () => {
-  let instance = window.smartform.getInstance(
-    window.smartform.getInstanceIds()[0]
-  );
-
-  ["smartform-street-and-number", "smartform-city", "smartform-zip"].forEach(
-    input => {
-      instance.getBox(input).setLimit(3);
-    }
-  );
 };
 
 // Localization

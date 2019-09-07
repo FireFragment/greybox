@@ -13,7 +13,7 @@ function apiCall(options) {
     headers: {},
     alerts: {
       success: null,
-      error: this.$tr("general.error")
+      error: this.$tr("general.error", null, false)
     }
   };
 

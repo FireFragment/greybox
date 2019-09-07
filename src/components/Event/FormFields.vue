@@ -111,7 +111,9 @@
       v-model="values.street"
       :label="$tr('fields.street') + ' *'"
       class="q-pt-sm"
-      input-class="smartform-street-and-number"
+      :input-class="
+        'smartform-street-and-number ' + 'smartform-instance-' + _uid
+      "
       lazy-rules
       :rules="[val => (val && val.length > 0) || 'Vyplňte prosím toto pole']"
     >
@@ -125,7 +127,7 @@
       v-model="values.city"
       :label="$tr('fields.city') + ' *'"
       class="q-pt-sm"
-      input-class="smartform-city"
+      :input-class="'smartform-city ' + 'smartform-instance-' + _uid"
       lazy-rules
       :rules="[val => (val && val.length > 0) || 'Vyplňte prosím toto pole']"
     >
@@ -139,7 +141,7 @@
       v-model="values.zip"
       :label="$tr('fields.zip') + ' *'"
       class="q-pt-sm"
-      input-class="smartform-zip"
+      :input-class="'smartform-zip ' + 'smartform-instance-' + _uid"
       mask="### ##"
       fill-mask="_"
       hint="Vzor: 796 01"
@@ -376,10 +378,11 @@ export default {
       };
     }
 
-    // Listen to SmartForm address autocomplet
-    EventBus.$on("smartFormAutocomplete", data => {
-      let varName = data.field !== "street-and-number" ? data.field : "street";
-      this[varName] = data.value;
+    // Smartform autocomplete select
+    EventBus.$on("smartform", data => {
+      // If instance ID is this form
+      if (data.instance.substr(-(this._uid + "").length) == this._uid)
+        this.values[data.field] = data.value;
     });
   },
 
@@ -392,17 +395,34 @@ export default {
       });
     });
 
+    // Renitialize smartform
     window.smartform.rebindAllForms(true, () => {
-      let instance = window.smartform.getInstance(
-        window.smartform.getInstanceIds()[0]
-      );
+      // Loop through instances
+      window.smartform.getInstanceIds().forEach(id => {
+        let instance = window.smartform.getInstance(id);
 
-      [
-        "smartform-street-and-number",
-        "smartform-city",
-        "smartform-zip"
-      ].forEach(input => {
-        instance.getBox(input).setLimit(3);
+        // Set limit to 3 results for every field
+        [
+          "smartform-street-and-number",
+          "smartform-city",
+          "smartform-zip"
+        ].forEach(input => {
+          instance.getBox(input).setLimit(3);
+        });
+
+        // Run this callback on selection
+        instance.setSelectionCallback((element, value, fieldType) => {
+          let field = fieldType.substr("10");
+
+          let varName = field !== "street-and-number" ? field : "street";
+
+          // Emit global event so other form instances can receive it
+          EventBus.$emit("smartform", {
+            instance: id,
+            field: varName,
+            value: value
+          });
+        });
       });
     });
   },
