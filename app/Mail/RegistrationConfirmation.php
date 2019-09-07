@@ -11,22 +11,22 @@ class RegistrationConfirmation extends Mailable
 {
     use Queueable, SerializesModels;
 
+    private $locale;
     public $event;
     public $people;
     public $invoice;
-    private $locale;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(\App\Event $event, $people, $invoice, $locale)
+    public function __construct($locale, \App\Event $event, $people, $invoice = null)
     {
+        $this->locale = $locale;
         $this->event = $event;
         $this->people = $people;
         $this->invoice = $invoice;
-        $this->locale = $locale;
     }
 
     /**
@@ -44,7 +44,14 @@ class RegistrationConfirmation extends Mailable
         }
         $subject = Lang::get('messages.registration.confirmation') . ' - ' . $eventName;
 
-        // TODO: solve attachment, invoiceLines
+        if (null !== $this->invoice) {
+            $this->attach($this->invoice->pdf_full_url, [
+                'as' => 'adk-' . substr($this->invoice->pdf_url, 0, 7) . '.pdf',
+                'mime' => 'application/pdf',
+            ]);
+        }
+
+        // TODO: solve invoiceLines, late registrations
 
         return $this
             ->subject($subject)

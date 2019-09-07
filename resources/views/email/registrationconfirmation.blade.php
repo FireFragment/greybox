@@ -12,5 +12,8 @@
     </li>
     @endforeach
 </ul>
-<p>{{ __('messages.registration.confirmation.after_list') }}</p>
+@isset($invoice)
+<p>{{ __('messages.registration.confirmation.before_price') }} {{ number_format($invoice->total, 0) }} {{ $invoice->currency }} {{ __('messages.registration.confirmation.before_date') }} {{ date('d. m. Y', strtotime($invoice->due_on)) }} {{ __('messages.registration.confirmation.after_date') }}</p>
+@endisset
+<p>{{ __('messages.registration.confirmation.mistake') }}</p>
 <p>{{ __('messages.best') }},<br>{{ __('messages.cda') }}</p>

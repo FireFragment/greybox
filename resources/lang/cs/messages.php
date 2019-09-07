@@ -15,5 +15,8 @@ return [
     'registration.confirmation.before_event_name' => 'potvrzujeme Vaši přihlášku na',
     'registration.confirmation.after_event_name' => 'Budeme se těšit zanedlouho na viděnou.', // TODO: add number of days and/or place
     'registration.confirmation.before_list' => 'Seznam účastníků',
-    'registration.confirmation.after_list' => 'Pokud je někde chyba, odpovězte nám prosím na tento email.'
+    'registration.confirmation.before_price' => 'Pokud jste tak ještě neučinil(a), prosím uhraďte',
+    'registration.confirmation.before_date' => 'do',
+    'registration.confirmation.after_date' => 'na účet ADK. Podrobnosti platby najdete v přiložené faktuře.',
+    'registration.confirmation.mistake' => 'Pokud je někde chyba, odpovězte nám prosím na tento email.'
 ];

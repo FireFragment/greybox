@@ -15,5 +15,8 @@ return [
     'registration.confirmation.before_event_name' => 'we have received your registration for the',
     'registration.confirmation.after_event_name' => 'We are looking forward to see you soon.', // TODO: add number of days and/or place
     'registration.confirmation.before_list' => 'Participants',
-    'registration.confirmation.after_list' => 'If you find any mistake, please reply to this email.'
+    'registration.confirmation.before_price' => 'If you haven\'t done so yet, please send',
+    'registration.confirmation.before_date' => 'before',
+    'registration.confirmation.after_date' => 'to CDA\'s bank account. You can find the payment details in the attached invoice.',
+    'registration.confirmation.mistake' => 'If you find any mistake, please reply to this email.'
 ];

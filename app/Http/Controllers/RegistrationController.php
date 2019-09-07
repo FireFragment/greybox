@@ -124,6 +124,7 @@ class RegistrationController extends FakturoidController
             $event = $reg->event()->first();
             $data = new \stdClass();
             $people = [];
+            $invoice = null;
 
             $totalAmount = 0;
             $invoiceLines = [];
@@ -213,13 +214,12 @@ class RegistrationController extends FakturoidController
                     $invoice->pdf_url = $invoice->qr_url;
                     $invoice->pdf_full_url = "https://debate-greybox.herokuapp.com/invoices/$invoice->pdf_url.pdf";
                 }
-
-                // TODO: vyřešit jak nastavit locale pouze pro email / případně jak používat locale vůbec
-                app('translator')->setLocale($user->preferredLocale());
-                Mail::to($user->username)->send(new RegistrationConfirmation($event, $people, $invoice, $user->preferred_locale));
-
                 $data->invoice = $invoice;
             }
+
+            // TODO: vyřešit jak nastavit locale pouze pro email / případně jak používat locale vůbec
+            app('translator')->setLocale($user->preferredLocale());
+            Mail::to($user->username)->send(new RegistrationConfirmation($user->preferred_locale, $event, $people, $invoice));
 
             return response()->json($data, 200);
         } catch (\Illuminate\Database\QueryException $e) {
