@@ -75,17 +75,71 @@ export default {
       passwordConfirmation: null,
       isPwd: true,
       isPwd2: true,
-      loading: false
+      loading: false,
+      token: null
     };
   },
   methods: {
     submit() {
       this.loading = true;
-      console.log(this.password, this.passwordConfirmation);
+
+      this.$api({
+        url: "reset",
+        sendToken: false,
+        data: {
+          password: this.password,
+          password_confirmation: this.passwordConfirmation,
+          token: this.token
+        },
+        alerts: false,
+        method: "put"
+      })
+        .then(() => {
+          this.$flash(this.$tr("passwordReset.successReset"), "success");
+          this.$router.replace(this.$path("login"));
+        })
+        .catch(data => {
+          if (data.response.data) {
+            let response = data.response.data;
+
+            // Just one error
+            if (response.message) {
+              this.$flash(
+                this.$tr("passwordReset.validation." + response.message),
+                "error",
+                false,
+                9000
+              );
+
+              // Invalid token -> redirect to generate a new one
+              if (response.message === "tokenNotFound")
+                this.$router.replace(this.$path("passwordReset"));
+            } // More errors - same as in sign up
+            else
+              for (let index in data.response.data)
+                data.response.data[index].forEach(message => {
+                  this.$flash(
+                    this.$tr(
+                      "signUp.validation." +
+                        index +
+                        "." +
+                        message.substr(11).replace(".", "-")
+                    ),
+                    "error",
+                    false,
+                    9000
+                  );
+                });
+          } else this.$flash(this.$tr("general.error", null, false), "error");
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     }
   },
   created() {
-    let token = this.$route.params.token;
+    this.token = this.$route.params.token;
+
     if (this.$auth.check()) this.$router.replace({ name: "home" });
   }
 };

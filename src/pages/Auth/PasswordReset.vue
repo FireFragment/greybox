@@ -61,8 +61,8 @@ export default {
         alerts: false,
         method: "post"
       })
-        .then(data => {
-          this.$flash(data.data.message, "success");
+        .then(() => {
+          this.$flash(this.$tr("passwordReset.successEmail"), "success");
           this.$router.replace({ name: "home" });
         })
         .catch(data => {
