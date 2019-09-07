@@ -1,7 +1,6 @@
 start app: php -S localhost:8000 -t public
 
 Zbyněk TODO:
-jo, mám takovej drobnej nápad, prosím, kromě těch členských v novém greyboxu, přidal bys prosím proklik na registraci (nový greybox) do toho starého?
 a ještě jsem přišel na další věc - chybí mi tam teď ten seznam lidí co jsem zaregistroval, nebo potvrzovací mail
 nebo mám to psát jinam?
 

@@ -124,9 +124,8 @@ class UserController extends Controller
             }
             return response()->json($user, 201);
         } catch (\Illuminate\Database\QueryException $e) {
-            if ($e->getCode() == 23000) {
-                $code = 409;
-                $message = "duplicateEntry";
+            if (23000 == $e->getCode() || 23505 == $e->getCode()) {
+                return response()->json(['username' => ['validation.unique']], 409);
             } else {
                 $code = 500;
                 $message = $e->getMessage();
