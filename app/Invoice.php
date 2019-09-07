@@ -50,7 +50,7 @@ class Invoice extends Model implements AuthenticatableContract, AuthorizableCont
         } else {
             $qrFileName = uniqid($this->number, true);
         }
-        $qrImage = $payment->getQrImage(true)->writeString();
+        $qrImage = $payment->getQrImage()->writeString();
 
         $qrFile = fopen("qrs/$qrFileName.png", 'w');
         fwrite($qrFile, $qrImage);

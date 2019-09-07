@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\RegistrationConfirmation;
 use App\Registration;
 use http\Env\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class RegistrationController extends FakturoidController
 {
@@ -121,6 +123,7 @@ class RegistrationController extends FakturoidController
             $reg = Registration::findOrFail($id);
             $event = $reg->event()->first();
             $data = new \stdClass();
+            $people = [];
 
             $totalAmount = 0;
             $invoiceLines = [];
@@ -156,6 +159,13 @@ class RegistrationController extends FakturoidController
                     } elseif ($membership->isExpired()) {
                         $this->updateColumn($membership, 'end', \App\Membership::setForSeason());
                         $membershipsCount++;
+                    }
+                    $roleName = $registration->role()->first()->translation()->first()->cs; // TODO: solve for English
+                    $team = $registration->team()->first();
+                    if (null !== $team) {
+                        $people[$roleName][$team->name][] = $person->name . ' ' . $person->surname;
+                    } else {
+                        $people[$roleName]['emptyTeamName'][] = $person->name . ' ' . $person->surname;
                     }
                 }
             }
@@ -203,6 +213,10 @@ class RegistrationController extends FakturoidController
                     $invoice->pdf_url = $invoice->qr_url;
                     $invoice->pdf_full_url = "https://debate-greybox.herokuapp.com/invoices/$invoice->pdf_url.pdf";
                 }
+
+                // TODO: vyřešit jak nastavit locale pouze pro email / případně jak používat locale vůbec
+                app('translator')->setLocale($user->preferredLocale());
+                Mail::to($user->username)->send(new RegistrationConfirmation($event, $people, $invoice, $user->preferred_locale));
 
                 $data->invoice = $invoice;
             }

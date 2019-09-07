@@ -5,6 +5,12 @@ a ještě jsem přišel na další věc - chybí mi tam teď ten seznam lidí co
 nebo mám to psát jinam?
 
 Kuxa TODO:
+Dělám na tom obnovení hesla a všiml jsem si, že z jednoho tokenu jde obnovit heslo několikrát. Nemáš to teď nějak ošetřené, že token při použití deaktivuješ?
+Po obnovení ho smažu, ok?
+A když už jsi v tom, bylo by fancy udělat třeba životnost tokenu max hodinu nebo tak :smile:
+Zapracuj, co uznáš za vhodné :smile: A když bude něco špatně s tokenem, tak vždycky vracej 404
+new messages
+A možná i udělat to, že pokud si vygeneruješ token, tak se předchozí automaticky deaktivují (pokud to ještě nemáš)
 Když posílám požadavek na vytvoření týmu, přichází mi v odpovědi i event. Mám teda při registraci týmu posílat i ID turnaje, jo? V apiary to nikde není totiž   Aha, to je taky relikt z předchozí verze.   Asi bych to tam nechal
 Teď jsem poslal registraci s tím, že člověk byl autofillnutý (takže jsem předtím neposílal person a jen jsem použil IDčko), a u většiny polí mi to vrátilo null. Mně to nevadí, ty políčka nepoužívám, ale jen jsem se chtěl ujistit, jestli to je správný chování, nebo to je nějaký bug v důsledku toho autofillu
 2. Implementuješ do faktur překlady? Konkrétně co se dívám tak to je u rolí (resp. invoiceLines[0].name) a unit_name (invoiceLines[0].unitName)
