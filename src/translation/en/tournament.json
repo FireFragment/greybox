@@ -5,7 +5,8 @@
   "note": "Note",
   "types": {
     "individual": "Individual",
-    "group": "Group"
+    "group": "Group",
+    "team": "Team"
   },
   "gdpr": {
     "label": "I agree with",

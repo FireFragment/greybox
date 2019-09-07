@@ -3,7 +3,7 @@
     <q-btn
       :icon="'fas fa-' + icon"
       size="xl"
-      :label="typeof label === 'object' ? $tr(label) : label"
+      :label="$tr(label)"
       stack
       :color="color"
       :no-caps="true"

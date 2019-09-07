@@ -5,7 +5,8 @@
   "note": "Poznámka",
   "types": {
     "individual": "Jednotlivec",
-    "group": "Skupina"
+    "group": "Skupina",
+    "team": "Tým"
   },
   "gdpr": {
     "label": "Souhlasím s",

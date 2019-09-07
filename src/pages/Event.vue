@@ -68,13 +68,13 @@
       name="type"
       :values="[
         {
-          label: $tr('types.individual'),
+          label: 'tournament.types.individual',
           icon: 'user',
           color: 'primary',
           value: 'single'
         },
         {
-          label: $tr('types.group'),
+          label: 'tournament.types.group',
           icon: 'users',
           color: 'blue-9',
           value: 'group'
@@ -183,6 +183,7 @@ export default {
 
   data() {
     return {
+      translationPrefix: "tournament.",
       event: null,
       type: null, // single/group
       role: null,
@@ -191,7 +192,6 @@ export default {
       confirmData: null,
       showGroupModal: false,
       autofillData: null,
-      translationPrefix: "tournament.",
       dataToSubmit: []
     };
   },
@@ -272,11 +272,10 @@ export default {
             if (role.id === 1)
               this.roles[0] = {
                 value: 0,
-                label: "Tým",
+                label: "tournament.types.team",
                 icon: "users",
                 color: "primary"
               };
-
             // Push role to role list
             this.roles[role.id] = {
               value: role.id,
