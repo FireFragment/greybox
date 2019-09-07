@@ -1,6 +1,30 @@
 <template>
   <q-page padding>
     <h1 class="text-center text-h4">{{ $tr("signUp.title") }}</h1>
+    <div class="text-center close-paragraphs q-p-1">
+      <p>
+        <a href="javascript:void(0)" @click="whySignUpModal = true">{{
+          $tr("signUp.modal.link")
+        }}</a>
+
+        <q-dialog v-model="whySignUpModal">
+          <q-card class="dialog-medium">
+            <q-card-section class="row items-center">
+              <div class="text-h6">
+                {{ $tr("signUp.modal.title") }}
+              </div>
+              <q-space />
+              <q-btn icon="close" flat round dense v-close-popup />
+            </q-card-section>
+
+            <q-card-section>
+              <div v-html="$tr('signUp.modal.text')"></div>
+            </q-card-section>
+          </q-card>
+        </q-dialog>
+      </p>
+    </div>
+
     <div class="row q-col-gutter-md">
       <q-form @submit="signUp" class="col-12 col-sm-6 q-mt-lg offset-sm-3">
         <q-input
@@ -89,7 +113,8 @@ export default {
       passwordConfirmation: null,
       isPwd: true,
       isPwd2: true,
-      loading: false
+      loading: false,
+      whySignUpModal: false
     };
   },
   created() {
