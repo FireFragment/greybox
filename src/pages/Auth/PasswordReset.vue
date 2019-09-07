@@ -1,10 +1,9 @@
 <template>
   <q-page padding>
-    <h1 class="text-center text-h4">{{ $tr("auth.passwordReset") }}</h1>
+    <h1 class="text-center text-h4">{{ $tr("passwordReset.title") }}</h1>
     <div class="text-center close-paragraphs q-p-1">
       <p>
-        Po odeslání formuláře Vám na e-mail přijde odkaz pro vytvoření nového
-        hesla, kterým se následně budete moct přihlásit do systému.
+        {{ $tr("passwordReset.instructions") }}
       </p>
     </div>
 
@@ -14,11 +13,9 @@
           outlined
           type="email"
           v-model="email"
-          :label="$tr('auth.yourEmail')"
+          :label="$tr('fields.email')"
           lazy-rules
-          :rules="[
-            val => (val !== null && val !== '') || $tr('auth.emailError')
-          ]"
+          :rules="[val => (val !== null && val !== '') || $tr(`errors.email`)]"
         >
           <template v-slot:prepend>
             <q-icon name="fas fa-at" />
@@ -27,10 +24,10 @@
 
         <div class="text-center q-mt-sm">
           <q-btn type="submit" color="primary" :loading="loading">
-            {{ $tr("auth.sendLink") }}
+            {{ $tr("passwordReset.submit") }}
             <template v-slot:loading>
               <q-spinner-hourglass class="on-left" />
-              Odesílám
+              {{ $tr("passwordReset.loading") }}
             </template>
           </q-btn>
         </div>
@@ -44,6 +41,7 @@ export default {
   name: "PasswordReset",
   data() {
     return {
+      translationPrefix: "auth.",
       email: null,
       loading: false
     };
@@ -68,12 +66,13 @@ export default {
           this.$router.replace({ name: "home" });
         })
         .catch(data => {
-          this.$flash(
-            data.response.data.message
-              ? data.response.data.message
-              : "An error had occured, please try again.",
-            "error"
-          );
+          this.email = null;
+          if (data.response.data)
+            for (let index in data.response.data)
+              data.response.data[index].forEach(message => {
+                this.$flash(this.$tr("passwordReset." + message), "error");
+              });
+          else this.$flash("An error had occured, please try again.", "error");
         })
         .finally(() => {
           this.loading = false;

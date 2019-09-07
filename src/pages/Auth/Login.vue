@@ -7,9 +7,9 @@
           outlined
           type="email"
           v-model="email"
-          :label="$tr('loginEmail')"
+          :label="$tr('fields.email')"
           lazy-rules
-          :rules="[val => (val !== null && val !== '') || $tr(`emailError`)]"
+          :rules="[val => (val !== null && val !== '') || $tr(`errors.email`)]"
         >
           <template v-slot:prepend>
             <q-icon name="fas fa-at" />
@@ -20,10 +20,12 @@
           v-model="password"
           outlined
           :type="isPwd ? 'password' : 'text'"
-          :label="$tr('password')"
+          :label="$tr('fields.password')"
           class="q-mt-sm"
           lazy-rules
-          :rules="[val => (val !== null && val !== '') || $tr('passwordError')]"
+          :rules="[
+            val => (val !== null && val !== '') || $tr('errors.password')
+          ]"
         >
           <template v-slot:prepend>
             <q-icon name="fas fa-key" />
@@ -37,8 +39,10 @@
           </template>
         </q-input>
         <div class="q-mt-sm q-mb-lg text-center">
-          {{ $tr("recoverPasswordQuestion") }}
-          <a href="$path('passwordReset')">{{ $tr("recoverPasswordLink") }}</a>
+          {{ $tr("passwordReset.loginQuestion") }}
+          <router-link :to="$path('passwordReset')">{{
+            $tr("passwordReset.loginLink")
+          }}</router-link>
         </div>
 
         <div class="text-center">

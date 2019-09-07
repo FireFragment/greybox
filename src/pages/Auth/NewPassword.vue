@@ -1,7 +1,7 @@
 <template>
   <q-page padding>
     <h1 class="text-center text-h4">
-      {{ $tr("auth.passwordReset") }} - token {{ $route.params.token }}
+      {{ $tr("passwordReset.title") }}
     </h1>
     <div class="row q-col-gutter-md">
       <q-form @submit="submit" class="col-12 col-sm-6 q-mt-lg offset-sm-3">
@@ -9,11 +9,11 @@
           v-model="password"
           outlined
           :type="isPwd ? 'password' : 'text'"
-          label="Heslo"
+          :label="$tr('fields.password')"
           class="q-mt-sm"
           lazy-rules
           :rules="[
-            val => (val !== null && val !== '') || 'Vyplňte prosím heslo'
+            val => (val !== null && val !== '') || $tr(`errors.password`)
           ]"
         >
           <template v-slot:prepend>
@@ -32,11 +32,11 @@
           v-model="passwordConfirmation"
           outlined
           :type="isPwd2 ? 'password' : 'text'"
-          :label="$tr('auth.confirmPassword')"
+          :label="$tr('fields.passwordConfirm')"
           class="q-mt-sm"
           lazy-rules
           :rules="[
-            val => (val !== null && val !== '') || 'Vyplňte prosím heslo'
+            val => (val !== null && val !== '') || $tr(`errors.passwordConfirm`)
           ]"
         >
           <template v-slot:prepend>
@@ -53,10 +53,10 @@
 
         <div class="text-center q-mt-sm">
           <q-btn type="submit" color="primary" :loading="loading">
-            {{ $tr("auth.passwordReset") }}
+            {{ $tr("passwordReset.submit") }}
             <template v-slot:loading>
               <q-spinner-hourglass class="on-left" />
-              Obnovuji
+              {{ $tr("passwordReset.loading") }}
             </template>
           </q-btn>
         </div>
@@ -70,6 +70,7 @@ export default {
   name: "PageNewPassword",
   data() {
     return {
+      translationPrefix: "auth.",
       password: null,
       passwordConfirmation: null,
       isPwd: true,
@@ -84,6 +85,7 @@ export default {
     }
   },
   created() {
+    let token = this.$route.params.token;
     if (this.$auth.check()) this.$router.replace({ name: "home" });
   }
 };
