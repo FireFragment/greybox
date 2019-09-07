@@ -212,6 +212,7 @@ class UserController extends Controller
         $user = User::where('username', $username)->first();
         if (!empty($user)) {
             try {
+                DB::delete('delete from password_resets where email = ?', array($username));
                 $recovery_token = sha1($user->id.time());
                 DB::insert('insert into password_resets (email, token, created_at) values (?, ?, now())', array($username, $recovery_token));
 
@@ -241,23 +242,32 @@ class UserController extends Controller
             'password' => 'required|min:8|confirmed|regex:'.$this->regex
         ]);
 
-        $username = DB::select('select email from password_resets where token = ?', array($request->input('token')));
+        $token = $request->input('token');
+        $username = DB::select('select email, created_at from password_resets where token = ?', array($token));
         if (!empty($username)) {
-            $user = User::where('username', $username[0]->email)->first();
-            if (!empty($user)) {
-                try {
-                    $hasher = app()->make('hash');
-                    $password = $hasher->make($request->input('password'));
+            // TODO: set cron for deleting expired tokens
+            // TODO: solve timezones
+            $difference = time() - strtotime($username[0]->created_at);
+            if ($difference < 60*60*24) {
+                $user = User::where('username', $username[0]->email)->first();
+                if (!empty($user)) {
+                    try {
+                        $hasher = app()->make('hash');
+                        $password = $hasher->make($request->input('password'));
 
-                    $user->update([
-                        'password' => $password
-                    ]);
-                    return response()->json($user, 200);
-                } catch (\Illuminate\Database\QueryException $e) {
-                    return response()->json(['message' => $e->getMessage()], 500);
+                        $user->update([
+                            'password' => $password
+                        ]);
+                        DB::delete('delete from password_resets where token = ?', array($token));
+                        return response()->json($user, 200);
+                    } catch (\Illuminate\Database\QueryException $e) {
+                        return response()->json(['message' => $e->getMessage()], 500);
+                    }
+                } else {
+                    return response()->json(['message' => 'userNotFound'], 404);
                 }
             } else {
-                return response()->json(['message' => 'userNotFound'], 404);
+                return response()->json(['message' => 'tokenExpired'], 404);
             }
         } else {
             return response()->json(['message' => 'tokenNotFound'], 404);
