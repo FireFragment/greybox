@@ -13,7 +13,7 @@ function apiCall(options) {
     headers: {},
     alerts: {
       success: null,
-      error: "An error had occured, please try again."
+      error: this.$tr("general.error")
     }
   };
 
