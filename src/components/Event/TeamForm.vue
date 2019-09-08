@@ -1,5 +1,6 @@
 <template>
-  <q-form class="team-form" @submit="submitForm">
+  <!-- Submit on validation error is needed in order to inform user about errors -->
+  <q-form class="team-form" @submit="submitForm" @validation-error="submitForm">
     <q-input
       outlined
       v-model="teamName"
@@ -110,7 +111,7 @@ export default {
       let validationPromise = new Promise((resolve, reject) => {
         this.acceptError = !this.accept;
 
-        if (!this.accept) return reject();
+        if (!this.accept) reject();
 
         let cards = this.$refs["person-card"];
         let validated = 0;
