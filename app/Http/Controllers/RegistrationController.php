@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\RegistrationConfirmation;
 use App\Registration;
+use Fakturoid\Exception as FakturoidException;
 use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -133,13 +134,15 @@ class RegistrationController extends FakturoidController
             foreach ($registrations->select('role', \DB::raw('count(*) as quantity'))->groupBy('role')->get() as $reg) {
                 $role = \App\Role::findOrFail($reg->role);
                 $price = $role->prices()->where('event', $event->id)->first();
+                // TODO: solve properly
+                $unitPrice = isset($price->amount) ? $price->amount : 0;
                 $invoiceLines[] = [
                     'name' => $role->translation()->first()->cs, // TODO: vyřešit překlad
                     'quantity' => $reg->quantity,
                     'unit_name' => 'osob', // TODO: vymyslet něco chytřejšího
-                    'unit_price' => $price->amount
+                    'unit_price' => $unitPrice
                 ];
-                $totalAmount += $reg->quantity * $price->amount;
+                $totalAmount += $reg->quantity * $unitPrice;
             }
 
             $membershipsCount = 0;
@@ -188,7 +191,15 @@ class RegistrationController extends FakturoidController
                 if ($client === null) {
                     // TODO: přidat data z Person
                     $clientData['name'] = $user->username;
-                    $subject = $fc->createSubject($clientData);
+                    try {
+                        $subject = $fc->createSubject($clientData);
+                    } catch (FakturoidException $e) {
+                        return response()->json([
+                            'message' => 'fakturoidFull',
+                            'fakturoidMessage' => $e->getMessage(),
+                            'fakturoidCode' => $e->getCode()
+                        ], 403);
+                    }
                     $clientData['fakturoid_id'] = $subject->getBody()->id;
                     $clientData['country'] = $subject->getBody()->country;
                     $clientData['user'] = $user->id;
@@ -204,7 +215,15 @@ class RegistrationController extends FakturoidController
                     'client' => $client->id,
                     'lines' => $invoiceLines
                 ];
-                $fi = $fc->createInvoice($invoiceData);
+                try {
+                    $fi = $fc->createInvoice($invoiceData);
+                } catch (FakturoidException $e) {
+                    return response()->json([
+                        'message' => 'clientNotFound',
+                        'fakturoidMessage' => $e->getMessage(),
+                        'fakturoidCode' => $e->getCode()
+                    ], 404);
+                }
                 $fakturoidInvoice = $fi->getBody();
                 $invoiceData = $this->fillInvoiceData($invoiceData, $fakturoidInvoice);
                 $invoice = \App\Invoice::create($invoiceData);
