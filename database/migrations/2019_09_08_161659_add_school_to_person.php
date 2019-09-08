@@ -14,7 +14,7 @@ class AddSchoolToPerson extends Migration
     public function up()
     {
         Schema::table('people', function($table) {
-            $table->string('school', 255)->after('vegetarian');
+            $table->string('school', 255)->nullable()->after('vegetarian');
         });
     }
 
