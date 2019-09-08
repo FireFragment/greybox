@@ -45,17 +45,7 @@ class PersonController extends Controller
         // $this->authorize('create', null, \Auth::user());
 
         try {
-            $person = Person::create([
-                'name' => $request->input('name'),
-                'surname' => $request->input('surname'),
-                'birthdate' => $request->input('birthdate'),
-                'id_number' => $request->input('id_number'),
-                'street' => $request->input('street'),
-                'city' => $request->input('city'),
-                'zip' => $request->input('zip'),
-                'vegetarian' => $request->input('vegetarian'),
-                'note' => $request->input('note')
-            ]);
+            $person = Person::create($request->all());
 
             return response()->json($person, 201);
         } catch (\Illuminate\Database\QueryException $e) {
@@ -76,6 +66,7 @@ class PersonController extends Controller
             if ($request->has('city')) $person->update(['city' => $request->input('city')]);
             if ($request->has('zip')) $person->update(['zip' => $request->input('zip')]);
             if ($request->has('vegetarian')) $person->update(['vegetarian' => $request->input('vegetarian')]);
+            if ($request->has('school')) $person->update(['school' => $request->input('school   ')]);
             if ($request->has('note')) $person->update(['note' => $request->input('note')]);
 
             return response()->json($person, 200);
