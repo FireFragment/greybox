@@ -1,12 +1,18 @@
 {
-  "title": "Turnaje",
+  "link": "Turnaje",
+  "title": "Registrace na",
   "empty": "Momentálně se nelze registrovat na žádné akce",
   "deadline": "Konec přihlášek",
   "note": "Poznámka",
   "types": {
     "individual": "Jednotlivec",
     "group": "Skupina",
-    "team": "Tým"
+    "team": "Tým",
+    "debater": "Debatér"
+  },
+  "errors": {
+    "deadline": "Na tento turnaj již není možné se registrovat.",
+    "auth": "Před registrací na turnaj se musíte nejprve přihlásit do systému."
   },
   "gdpr": {
     "label": "Souhlasím s",
@@ -23,7 +29,19 @@
       "closing": "Beru na vědomí, že souhlas se zpracováním osobních údajů mohu kdykoli odvolat, a to písemně nebo elektronickou poštou k rukám prezidenta spolku. Odvolání souhlasu může mít za následek, že se nebudu moci účastnit některých akcí pořádaných spolkem a nebudou moci být vypočítány mé výsledky v soutěžích pořádaných spolkem."
     }
   },
+  "groupModal": {
+    "title": "Přihláška úspěšně uložena!",
+    "anotherPerson": "Přidat další přihlášku",
+    "submit": "Odeslat přihlášky"
+  },
+  "buttons": {
+    "continue": "Pokračovat",
+    "clear": "Vymazat",
+    "addDebater": "Přidat debatéra",
+    "goToCheckout": "Odeslat přihlášky"
+  },
   "fields": {
+    "teamName": "Název týmu",
     "name": "Jméno",
     "surname": "Příjmení",
     "birthdate": "Datum narození",

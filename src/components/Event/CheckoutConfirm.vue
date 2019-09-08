@@ -6,9 +6,7 @@
           <q-icon name="fas fa-check" color="white" />
         </template>
         {{ $tr("title") }}
-        <template v-if="data.totalAmount"
-          >{{ $tr("invoiceTitle") }}</template
-        >
+        <template v-if="data.totalAmount">{{ $tr("invoiceTitle") }}</template>
       </q-banner>
     </div>
     <div class="col-12">
@@ -25,7 +23,9 @@
                 </q-item-section>
 
                 <q-item-section>
-                  <q-item-label caption>{{ $tr("invoice.total") }}</q-item-label>
+                  <q-item-label caption>{{
+                    $tr("invoice.total")
+                  }}</q-item-label>
                   <q-item-label
                     >{{
                       data.invoice.total
@@ -43,7 +43,9 @@
                 </q-item-section>
 
                 <q-item-section>
-                  <q-item-label caption>{{ $tr("invoice.dueOn") }}</q-item-label>
+                  <q-item-label caption>{{
+                    $tr("invoice.dueOn")
+                  }}</q-item-label>
                   <q-item-label>{{
                     data.invoice.due_on | moment("D. M. Y")
                   }}</q-item-label>
@@ -62,9 +64,9 @@
                 </q-item-section>
 
                 <q-item-section>
-                  <q-item-label class="text-black"
-                    >{{ $tr("invoice.download") }}</q-item-label
-                  >
+                  <q-item-label class="text-black">{{
+                    $tr("invoice.download")
+                  }}</q-item-label>
                 </q-item-section>
               </q-item>
             </q-list>

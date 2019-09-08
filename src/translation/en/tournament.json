@@ -1,12 +1,18 @@
 {
-  "title": "Tournaments",
+  "link": "Tournaments",
+  "title": "Register for",
   "empty": "No events are available at the moment",
   "deadline": "Registration deadline",
   "note": "Note",
   "types": {
     "individual": "Individual",
     "group": "Group",
-    "team": "Team"
+    "team": "Team",
+    "debater": "Debater"
+  },
+  "errors": {
+    "deadline": "This tournament is already past deadline, registrations are not accepted.",
+    "auth": "Plese login or sign up before registering for a tournament."
   },
   "gdpr": {
     "label": "I agree with",
@@ -23,7 +29,19 @@
       "closing": "I take into consideration the fact that I can withdraw this personal data processing consent via a letter or email addressed to the Association’s president whenever I would deem it necessary. The withdrawal of the consent can mean that I shall not be allowed to participate in certain Association’s events and my results in the Association’s competitions shall not be calculated.\n"
     }
   },
+  "groupModal": {
+    "title": "Registration successfully saved!",
+    "anotherPerson": "Add another person",
+    "submit": "Submit registration"
+  },
+  "buttons": {
+    "continue": "Continue",
+    "clear": "Clear form",
+    "addDebater": "Add a debater",
+    "goToCheckout": "Submit registration"
+  },
   "fields": {
+    "teamName": "Team name",
     "name": "Name",
     "surname": "Surname",
     "birthdate": "Date of birth",

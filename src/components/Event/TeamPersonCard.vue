@@ -17,7 +17,7 @@
                 {{ formData.name }} {{ formData.surname }}
               </template>
               <template v-else>
-                Debatér {{ index + 1 }}
+                {{ $tr("types.debater") }} {{ index + 1 }}
               </template>
             </div>
           </div>
@@ -65,6 +65,7 @@ export default {
   },
   data() {
     return {
+      translationPrefix: "tournament.",
       formData: {}
     };
   },

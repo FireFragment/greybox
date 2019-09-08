@@ -7,5 +7,9 @@
   "accountSettings": "Nastavení účtu",
   "downloadPersonalData": "Stáhnout osobní údaje",
   "save": "Uložit",
-  "error": "Vyskytla se chyba, opakujte akci později"
+  "error": "Vyskytla se chyba, opakujte akci později",
+  "form": {
+    "error": "Formulář obsahuje chyby",
+    "fieldError": "Vyplňte prosím toto pole"
+  }
 }

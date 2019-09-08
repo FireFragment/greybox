@@ -1,6 +1,8 @@
 <template>
   <q-page padding v-if="event">
-    <h1 class="text-center text-h4">Registrace na {{ $tr(event.name) }}</h1>
+    <h1 class="text-center text-h4">
+      {{ $tr("title") }} {{ $tr(event.name) }}
+    </h1>
     <div class="text-center close-paragraphs q-p-1">
       <p>
         <template
@@ -33,7 +35,7 @@
           <template v-slot:avatar>
             <q-icon name="far fa-calendar-times" color="white" />
           </template>
-          Na tento turnaj již není možné se registrovat.
+          {{ $tr("errors.deadline") }}
         </q-banner>
       </div>
     </div>
@@ -43,20 +45,20 @@
           <template v-slot:avatar>
             <q-icon name="fas fa-info" color="white" />
           </template>
-          Před registrací na turnaj se musíte nejprve přihlásit do systému.
+          {{ $tr("errors.auth") }}
           <template v-slot:action>
             <q-btn
               flat
               color="white"
               class="hidden-link"
-              label="Přihlášení"
+              :label="$tr('auth.login.link', null, false)"
               :to="$path('login')"
             />
             <q-btn
               flat
               color="white"
               class="hidden-link"
-              label="Registrace"
+              :label="$tr('auth.signUp.link', null, false)"
               :to="$path('signUp')"
             />
           </template>
@@ -91,7 +93,7 @@
       />
       <q-btn
         v-if="dataToSubmit.length"
-        label="Odeslat přihlášky"
+        :label="$tr('buttons.goToCheckout')"
         type="reset"
         color="blue-9"
         class="q-mt-xl float-right"
@@ -128,7 +130,7 @@
     <q-dialog v-model="showGroupModal" persistent>
       <q-card>
         <q-card-section class="row items-center">
-          <div class="text-h6">Přihláška úspěšně uložena!</div>
+          <div class="text-h6">{{ $tr("groupModal.title") }}</div>
         </q-card-section>
         <q-card-section class="row items-center text-center">
           <q-avatar
@@ -142,14 +144,14 @@
         <q-card-actions align="right">
           <q-btn
             flat
-            label="Přidat další přihlášku"
+            :label="$tr('groupModal.anotherPerson')"
             color="primary"
             v-close-popup
             @click="goTo('role')"
           />
           <q-btn
             flat
-            label="Odeslat přihlášky"
+            :label="$tr('groupModal.submit')"
             color="primary"
             v-close-popup
             @click="checkout = true"

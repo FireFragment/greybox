@@ -4,10 +4,13 @@
     <q-input
       outlined
       v-model="teamName"
-      :label="'Název týmu'"
+      :label="$tr('fields.teamName')"
       class="col-12 col-sm-6"
       lazy-rules
-      :rules="[val => (val && val.length > 0) || 'Vyplňte prosím toto pole']"
+      :rules="[
+        val =>
+          (val && val.length > 0) || $tr('general.form.fieldError', null, false)
+      ]"
     />
 
     <person-card
@@ -27,17 +30,17 @@
       <q-btn
         color="blue-9"
         icon="fas fa-plus"
-        label="Přidat debatéra"
+        :label="$tr('buttons.addDebater')"
         @click="addPerson"
       />
       <q-btn
-        label="Pokračovat"
+        :label="$tr('buttons.continue')"
         type="submit"
         color="primary"
         class="q-ml-sm q-mr-sm"
       />
       <q-btn
-        label="Vymazat"
+        :label="$tr('buttons.clear')"
         type="reset"
         color="primary"
         @click="$emit('goToRolePick')"
@@ -62,6 +65,7 @@ export default {
   },
   data() {
     return {
+      translationPrefix: "tournament.",
       people: {},
       visibleId: null,
       teamName: null,
@@ -159,7 +163,7 @@ export default {
           this.$emit("submit", this.people, this.teamName);
         })
         .catch(() => {
-          this.$flash("Formulář obsahuje chyby", "error");
+          this.$flash(this.$tr("general.form.error", null, false), "error");
         });
     }
   },

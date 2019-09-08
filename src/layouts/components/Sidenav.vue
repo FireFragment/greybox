@@ -10,7 +10,7 @@
         </q-item-section>
       </q-item>
 
-      <q-item-label header>{{ $tr("tournament.title") }}</q-item-label>
+      <q-item-label header>{{ $tr("tournament.link") }}</q-item-label>
       <q-item
         v-for="event in events"
         v-bind:key="event.id"

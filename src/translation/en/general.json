@@ -7,5 +7,9 @@
   "accountSettings": "Account Settings",
   "downloadPersonalData": "Download personal data",
   "save": "Save",
-  "error": "An error has occured, please try again later"
+  "error": "An error has occured, please try again later",
+  "form": {
+    "error": "Please check the form for errors",
+    "fieldError": "This field is required"
+  }
 }

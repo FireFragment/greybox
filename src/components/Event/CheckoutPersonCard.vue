@@ -15,7 +15,9 @@
           <template v-if="value && fieldName.substr(-4) !== 'name'">
             <dt>{{ $tr("fields." + fieldName) }}:</dt>
             <dd v-if="fieldName === 'vegetarian'">
-              {{ value ? $tr('checkout.values.yes') : $tr('checkout.values.yes') }}
+              {{
+                value ? $tr("checkout.values.yes") : $tr("checkout.values.yes")
+              }}
             </dd>
             <dd v-else-if="fieldName === 'birthdate'">
               {{ value | moment("D. M. Y") }}
@@ -45,7 +47,9 @@
               {{ roleName }}
             </dd>
             <dd v-else-if="fieldName === 'accommodation'">
-              {{ value ? $tr('checkout.values.yes') : $tr('checkout.values.yes') }}
+              {{
+                value ? $tr("checkout.values.yes") : $tr("checkout.values.yes")
+              }}
             </dd>
             <dd v-else>
               {{ value }}

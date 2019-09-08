@@ -7,7 +7,11 @@
         :label="$tr('fields.name') + ' *'"
         class="col-12 col-sm-6"
         lazy-rules
-        :rules="[val => (val && val.length > 0) || 'Vyplňte prosím toto pole']"
+        :rules="[
+          val =>
+            (val && val.length > 0) ||
+            $tr('general.form.fieldError', null, false)
+        ]"
       />
 
       <q-input
@@ -16,7 +20,11 @@
         :label="$tr('fields.surname') + ' *'"
         class="col-12 col-sm-6"
         lazy-rules
-        :rules="[val => (val && val.length > 0) || 'Vyplňte prosím toto pole']"
+        :rules="[
+          val =>
+            (val && val.length > 0) ||
+            $tr('general.form.fieldError', null, false)
+        ]"
       />
     </div>
 
@@ -35,7 +43,7 @@
         data-select-options="days"
         @focus="selectResetSearch"
         lazy-rules
-        :rules="[val => val || 'Vyplňte prosím toto pole']"
+        :rules="[val => val || $tr('general.form.fieldError', null, false)]"
       >
         <template v-slot:prepend>
           <q-icon name="event" />
@@ -53,7 +61,7 @@
         data-select-options="months"
         @focus="selectResetSearch"
         lazy-rules
-        :rules="[val => val || 'Vyplňte prosím toto pole']"
+        :rules="[val => val || $tr('general.form.fieldError', null, false)]"
       >
         <template v-slot:prepend>
           <q-icon name="event" />
@@ -70,7 +78,7 @@
         data-select-options="years"
         @focus="selectResetSearch"
         lazy-rules
-        :rules="[val => val || 'Vyplňte prosím toto pole']"
+        :rules="[val => val || $tr('general.form.fieldError', null, false)]"
       >
         <template v-slot:prepend>
           <q-icon name="event" />
@@ -92,7 +100,7 @@
           !val ||
           val === '#########' ||
           val.toString().match(/\d{9}/) ||
-          'Vyplňte prosím toto pole'
+          $tr('general.form.fieldError', null, false)
       ]"
     >
       <template v-slot:prepend>
@@ -115,7 +123,10 @@
         'smartform-street-and-number ' + 'smartform-instance-' + _uid
       "
       lazy-rules
-      :rules="[val => (val && val.length > 0) || 'Vyplňte prosím toto pole']"
+      :rules="[
+        val =>
+          (val && val.length > 0) || $tr('general.form.fieldError', null, false)
+      ]"
     >
       <template v-slot:prepend>
         <q-icon name="fas fa-home" />
@@ -129,7 +140,10 @@
       class="q-pt-sm"
       :input-class="'smartform-city ' + 'smartform-instance-' + _uid"
       lazy-rules
-      :rules="[val => (val && val.length > 0) || 'Vyplňte prosím toto pole']"
+      :rules="[
+        val =>
+          (val && val.length > 0) || $tr('general.form.fieldError', null, false)
+      ]"
     >
       <template v-slot:prepend>
         <q-icon name="fas fa-city" />
@@ -149,7 +163,7 @@
       :rules="[
         val =>
           (val && val.toString().match(/\d{3} ?\d{2}/)) ||
-          'Vyplňte prosím toto pole'
+          $tr('general.form.fieldError', null, false)
       ]"
     >
       <template v-slot:prepend>
@@ -204,7 +218,7 @@
             class="col-12 col-sm-6"
             lazy-rules
             :rules="[
-              val => (val && val.length > 0) || 'Vyplňte prosím toto pole'
+              val => (val && val.length > 0) || $tr('general.form.fieldError', null, false)
             ]"
           >
             <template v-slot:prepend>
@@ -222,7 +236,7 @@
             hint="Např.: +420 123456789"
             lazy-rules
             :rules="[
-              val => (val && val.length > 0) || 'Vyplňte prosím toto pole'
+              val => (val && val.length > 0) || $tr('general.form.fieldError', null, false)
             ]"
           >
             <template v-slot:prepend>
@@ -237,7 +251,7 @@
             class="q-pt-sm"
             lazy-rules
             :rules="[
-              val => (val !== null && val !== '') || 'Vyplňte prosím e-mail'
+              val => (val !== null && val !== '') || $tr('general.form.fieldError', null, false)
             ]"
           >
             <template v-slot:prepend>
@@ -265,9 +279,9 @@
       <g-d-p-r-checkbox v-model="values.accept" :error="acceptError" />
 
       <div class="text-center">
-        <q-btn label="Pokračovat" type="submit" color="primary" />
+        <q-btn :label="$tr('buttons.continue')" type="submit" color="primary" />
         <q-btn
-          label="Vymazat"
+          :label="$tr('buttons.clear')"
           type="reset"
           color="primary"
           flat
