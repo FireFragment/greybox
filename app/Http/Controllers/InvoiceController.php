@@ -115,11 +115,9 @@ class InvoiceController extends FakturoidController
     {
         try {
             $invoice = Invoice::findOrFail($id);
-
             try {
                 $fc = $this->getFakturoidClient();
                 $fc->deleteInvoice($invoice->fakturoid_id);
-
                 try {
                     $invoice->delete();
                     return response()->json(['message' => 'Deleted successfully.'], 204);
@@ -127,7 +125,11 @@ class InvoiceController extends FakturoidController
                     return response()->json(['message' => $e->getMessage(), 'code' => $e->getCode()], 500);
                 }
             } catch (FakturoidException $e) {
-                return response()->json(['message' => $e->getMessage(), 'code' => $e->getCode()], 500);
+                return response()->json([
+                    'message' => 'invoiceNotFound',
+                    'fakturoidMessage' => $e->getMessage(),
+                    'fakturoidCode' => $e->getCode()
+                ], 404);
             }
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage(), 'code' => $e->getCode()], 404);
