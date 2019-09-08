@@ -18,7 +18,11 @@
             </q-card-section>
 
             <q-card-section>
-              <div v-html="$tr('signUp.modal.text')"></div>
+              <ul>
+                <li v-for="item in $tr('signUp.modal.list')" v-bind:key="item">
+                  {{ item }}
+                </li>
+              </ul>
             </q-card-section>
           </q-card>
         </q-dialog>
