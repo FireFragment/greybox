@@ -42,7 +42,7 @@
           >
             <dt>{{ $tr("registrationFields." + fieldName) }}:</dt>
             <dd v-if="fieldName === 'role'">
-              {{ $tr($db("rolesList")[value].name) }}
+              {{ roleName }}
             </dd>
             <dd v-else-if="fieldName === 'accommodation'">
               {{ value ? "Ano" : "Ne" }}
@@ -66,6 +66,15 @@ export default {
     return {
       translationPrefix: "tournament."
     };
+  },
+  computed: {
+    roleName() {
+      let roleObject;
+      this.$db("rolesList").forEach(item => {
+        if (item.id === this.person.registration.role) roleObject = item;
+      });
+      return this.$tr(roleObject.name);
+    }
   },
   name: "CheckoutPersonCard"
 };
