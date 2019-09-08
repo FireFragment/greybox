@@ -61,6 +61,14 @@ export default {
           createPerson
             .then(person_id => {
               person.registration.person = person_id;
+              this.formData[index].registration.person = person_id;
+
+              if (person.registered_data) {
+                registered++;
+                if (registerCount <= registered)
+                  return resolve(person.registered_data);
+              }
+
               this.$api({
                 url: "registration",
                 data: person.registration,
@@ -69,6 +77,7 @@ export default {
               })
                 .then(data => {
                   registered++;
+                  this.formData[index].registered_data = data;
                   if (registerCount <= registered) return resolve(data);
                 })
                 .catch(data => {
@@ -112,6 +121,10 @@ export default {
 
         // Person is just autofilled and not edited -> return ID
         if (autofill && !autofill.edited) return resolve(autofill.id);
+
+        // Person already created -> don't recreate
+        if (person.registration.person)
+          return resolve(person.registration.person);
 
         // Person is autofilled and edited / newly created
         this.$api({
