@@ -59,7 +59,8 @@
     "parentName": "Celé jméno",
     "parentPhone":  "Telefonní číslo",
     "parentEmail": "E-mailová adresa",
-    "note": "Poznámka"
+    "note": "Poznámka",
+    "school": "Škola"
   },
   "fieldNotes": {
     "id_number": "Vyplňte prosím, pokud již občanský průkaz máte.",

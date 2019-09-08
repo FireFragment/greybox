@@ -59,7 +59,8 @@
     "parentName": "Full name",
     "parentPhone":  "Phone number",
     "parentEmail": "E-mail address",
-    "note": "Note"
+    "note": "Note",
+    "school": "School"
   },
   "fieldNotes": {
     "id_number": "Please fill in your ID number if you have one.",
