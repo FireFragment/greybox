@@ -3,9 +3,9 @@
     <div class="row full-width text-center">
       <img class="q-mx-auto" alt="Logo ADK" src="../assets/logo_napis.png" />
     </div>
-    <div class="row q-mt-xl" v-if="!$auth.check()">
+    <div class="row q-mt-xl flex-center" v-if="!$auth.check()">
       <q-btn
-        class="q-mx-md hidden-link"
+        class="q-mx-md q-mb-md hidden-link"
         :to="$path('login')"
         icon="fas fa-sign-in-alt"
         :label="$tr('auth.login.link')"
@@ -13,7 +13,7 @@
         size="lg"
       />
       <q-btn
-        class="q-mx-md hidden-link"
+        class="q-mx-md q-mb-md hidden-link"
         :to="$path('signUp')"
         icon="fas fa-user-plus"
         :label="$tr('auth.signUp.link')"

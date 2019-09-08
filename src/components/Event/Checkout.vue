@@ -13,10 +13,11 @@
         :label="$tr('back')"
         color="blue-9"
         @click="$emit('goToRolePick')"
+        class="q-my-xs"
       />
       <q-btn
         :loading="loading"
-        class="float-right"
+        class="float-right q-my-xs"
         size="lg"
         color="primary"
         @click="sendForm"

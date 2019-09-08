@@ -1,5 +1,5 @@
 <template>
-  <div class="col-3 q-pa-xs items-stretch">
+  <div class="col-12 col-sm-6 col-md-3 q-pa-xs items-stretch">
     <q-card>
       <q-card-section>
         <div class="text-h6">

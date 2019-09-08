@@ -38,7 +38,7 @@
         :options="days"
         option-value="label"
         :label="$tr('fields.birthDay')"
-        class="q-pt-sm q-mb-sm col-4"
+        class="q-pt-sm q-mb-sm col-12 col-md-4"
         data-select-value="birthDay"
         data-select-options="days"
         @focus="selectResetSearch"
@@ -57,7 +57,7 @@
         option-value="label"
         :option-label="item => $tr(item.label, null, false)"
         :label="$tr('fields.birthMonth')"
-        class="q-pt-sm q-mb-sm col-4"
+        class="q-pt-sm q-mb-sm col-12 col-md-4"
         data-select-value="birthMonth"
         data-select-options="months"
         @focus="selectResetSearch"
@@ -74,7 +74,7 @@
         v-model="values.birthYear"
         :options="years"
         :label="$tr('fields.birthYear')"
-        class="q-pt-sm q-mb-sm col-4"
+        class="q-pt-sm q-mb-sm col-12 col-md-4"
         data-select-value="birthYear"
         data-select-options="years"
         @focus="selectResetSearch"
@@ -296,7 +296,12 @@
       <g-d-p-r-checkbox v-model="values.accept" :error="acceptError" />
 
       <div class="text-center">
-        <q-btn :label="$tr('buttons.continue')" type="submit" color="primary" />
+        <q-btn
+          :label="$tr('buttons.continue')"
+          class="q-my-sm"
+          type="submit"
+          color="primary"
+        />
         <q-btn
           :label="$tr('buttons.clear')"
           type="reset"

@@ -56,7 +56,9 @@
                   .toUpperCase()
               }}</template>
             </q-avatar>
-            {{ $auth.user().username }}
+            <span class="username">
+              {{ $auth.user().username }}
+            </span>
           </template>
           <q-list>
             <!--
