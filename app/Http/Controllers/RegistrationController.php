@@ -130,7 +130,10 @@ class RegistrationController extends FakturoidController
             $totalAmount = 0;
             $invoiceLines = [];
             // TODO: solve repetition with lazy/eager loading
-            $registrations = $user->registrations()->where('event_id', $event->id);
+            $registrations = $user->registrations()->where([['event_id', '=', $event->id],['confirmed', '=', false]]);
+            if (0 === count($registrations->get())) {
+                return response()->json(['message' => 'noRegistration'], 404);
+            }
             foreach ($registrations->select('role', \DB::raw('count(*) as quantity'))->groupBy('role')->get() as $reg) {
                 $role = \App\Role::findOrFail($reg->role);
                 $price = $role->prices()->where('event', $event->id)->first();
@@ -147,7 +150,7 @@ class RegistrationController extends FakturoidController
 
             $membershipsCount = 0;
             // TODO: solve repetition with lazy/eager loading
-            $registrations = $user->registrations()->where('event_id', $event->id);
+            $registrations = $user->registrations()->where([['event_id', '=', $event->id],['confirmed', '=', false]]);
             foreach ($registrations->get() as $registration) {
                 $person = $registration->person()->first();
                 // TODO: to be deleted if person required in registration
@@ -239,6 +242,8 @@ class RegistrationController extends FakturoidController
             // TODO: vyřešit jak nastavit locale pouze pro email / případně jak používat locale vůbec
             app('translator')->setLocale($user->preferredLocale());
             Mail::to($user->username)->send(new RegistrationConfirmation($user->preferred_locale, $event, $people, $invoice));
+
+            $registrations->update(['confirmed' => true]);
 
             return response()->json($data, 200);
         } catch (\Illuminate\Database\QueryException $e) {
