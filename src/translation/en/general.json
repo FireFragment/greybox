@@ -12,5 +12,10 @@
   "form": {
     "error": "Please check the form for errors",
     "fieldError": "This field is required"
+  },
+  "404": {
+    "title": "404 - page not found",
+    "text": "Unfortunately, we couldn't find the page you are looking for.",
+    "button": "Back home"
   }
 }

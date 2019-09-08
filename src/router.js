@@ -8,6 +8,7 @@ import Login from "./pages/Auth/Login.vue";
 import SignUp from "./pages/Auth/SignUp.vue";
 import Logout from "./pages/Auth/Logout.vue";
 import PasswordReset from "./pages/Auth/PasswordReset.vue";
+import NotFound404 from "./pages/404.vue";
 
 import CZroutes from "./translation/cs/paths";
 import ENroutes from "./translation/en/paths";
@@ -70,6 +71,19 @@ export default new Router({
           alias: ENroutes.passwordReset + "/:token",
           name: "new-password",
           component: NewPassword
+        }
+      ]
+    },
+
+    // 404 not found
+    {
+      path: "*",
+      component: DefaultLayout,
+      children: [
+        {
+          path: "",
+          name: "404",
+          component: NotFound404
         }
       ]
     }

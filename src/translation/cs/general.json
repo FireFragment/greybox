@@ -12,5 +12,10 @@
   "form": {
     "error": "Formulář obsahuje chyby",
     "fieldError": "Vyplňte prosím toto pole"
+  },
+  "404": {
+    "title": "404 - stránka nenalezena",
+    "text": "Stránku, kterou hledáte, se nám bohužel nepodařilo nalézt.",
+    "button": "Zpět na začátek"
   }
 }

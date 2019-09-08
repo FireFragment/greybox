@@ -1,5 +1,6 @@
 module.exports = {
-  publicPath: process.env.NODE_ENV === "production" ? "/greybox/registrace/" : "",
+  publicPath:
+    process.env.NODE_ENV === "production" ? "/greybox/registrace/" : "",
   outputDir: "registrace",
   pluginOptions: {
     quasar: {}
