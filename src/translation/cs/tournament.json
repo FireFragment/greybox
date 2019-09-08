@@ -64,7 +64,8 @@
   },
   "fieldNotes": {
     "id_number": "Vyplňte prosím, pokud již občanský průkaz máte.",
-    "accommodation": "Pro individuální požadavky k ubytování vyplňte prosím poznámku."
+    "accommodation": "Pro individuální požadavky k ubytování vyplňte prosím poznámku.",
+    "example": "Vzor:"
   },
   "registrationFields": {
     "accommodation": "Ubytování",

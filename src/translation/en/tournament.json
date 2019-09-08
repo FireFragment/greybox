@@ -64,7 +64,8 @@
   },
   "fieldNotes": {
     "id_number": "Please fill in your ID number if you have one.",
-    "accommodation": "Use the note field bellow for special accommodation requirements."
+    "accommodation": "Use the note field below for special accommodation requirements.",
+    "example": "Ex.:"
   },
   "registrationFields": {
     "accommodation": "Accomodation",
@@ -94,7 +95,7 @@
     },
     "confirm": {
       "title": "Thank you for your registration!",
-      "invoiceTitle": "Please find payment details bellow",
+      "invoiceTitle": "Please find payment details below",
       "invoice": {
         "total": "Total",
         "dueOn": "Due date",

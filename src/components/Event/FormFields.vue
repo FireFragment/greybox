@@ -55,6 +55,7 @@
         v-model="values.birthMonth"
         :options="months"
         option-value="label"
+        :option-label="item => $tr(item.label, null, false)"
         :label="$tr('fields.birthMonth')"
         class="q-pt-sm q-mb-sm col-4"
         data-select-value="birthMonth"
@@ -93,7 +94,7 @@
       class="q-pt-sm"
       mask="#########"
       fill-mask="_"
-      hint="Vzor: 123456789"
+      :hint="$tr('fieldNotes.example') + ' 123456789'"
       lazy-rules
       :rules="[
         val =>
@@ -158,7 +159,7 @@
       :input-class="'smartform-zip ' + 'smartform-instance-' + _uid"
       mask="### ##"
       fill-mask="_"
-      hint="Vzor: 796 01"
+      :hint="$tr('fieldNotes.example') + ' 796 01'"
       lazy-rules
       :rules="[
         val =>
@@ -346,20 +347,7 @@ export default {
       acceptError: false,
       selectSearch: null,
       days: [],
-      months: [
-        "leden",
-        "únor",
-        "březen",
-        "duben",
-        "květen",
-        "červen",
-        "červenec",
-        "srpen",
-        "září",
-        "říjen",
-        "listopad",
-        "prosinec"
-      ],
+      months: [],
       years: []
     };
   },
@@ -375,10 +363,9 @@ export default {
     for (let i = new Date().getFullYear() - 10; i >= 1900; i--) {
       this.years.push(i);
     }
-    for (let i = 0; i < this.months.length; i++) {
-      let monthName = this.months[i];
+    for (let i = 0; i < 12; i++) {
       this.months[i] = {
-        label: monthName,
+        label: "general.months."+i,
         value: ("0" + (i + 1)).substr(-2),
         searchable: i + 1
       };

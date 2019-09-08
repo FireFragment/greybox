@@ -17,5 +17,19 @@
     "title": "404 - page not found",
     "text": "Unfortunately, we couldn't find the page you are looking for.",
     "button": "Back home"
-  }
+  },
+  "months": [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  ]
 }
