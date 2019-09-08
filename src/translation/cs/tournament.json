@@ -54,13 +54,36 @@
   },
   "autofill": {
     "title": "Převyplnit údaje dle dříve zadaných osob",
-    "empty": "Nemáte žádné osoby k předvyplnění.",
-    "notLoggedIn": {
-      "pre": "Pro předvyplnění osob je nutné se nejprve",
-      "signUp": "registrovat",
-      "or": "nebo",
-      "login": "přihlásit",
-      "post": "."
+    "empty": "Nemáte žádné osoby k předvyplnění."
+  },
+  "checkout": {
+    "submit": "Potvrdit přihlásku",
+    "loading": "Odesílám",
+    "back": "Přidat dalšího člověka",
+    "success": "Registrace úšpěšně odeslána",
+    "error": "V průběhu registrace nastala chyba, opakujte akci",
+    "values": {
+      "yes": "Ano",
+      "no": "Ne"
+    },
+    "validation": {
+      "duplicateRegistration": "{person} je na tento turnaj již zaregistrován/a",
+      "missedDeadline": "Na tento turnaj již není možné se registrovat",
+      "eventNotFound": "Turnaj nebyl nalezen",
+      "clientNotFound": "Při generování faktury nastal problém, opakujte prosím akci později",
+      "fakturoidFull": "Při generování faktury nastal problém, opakujte prosím akci později"
+    },
+    "confirm": {
+      "title": "Registrace úspěšně odeslána, děkujeme!",
+      "invoiceTitle": "Níže najdete podrobnosti k platbě",
+      "invoice": {
+        "total": "Celková cena",
+        "dueOn": "Datum splatnosti",
+        "download": "Stáhnout fakturu",
+        "item": "Položka",
+        "quantity": "Počet",
+        "price": "Cena"
+      }
     }
   }
 }

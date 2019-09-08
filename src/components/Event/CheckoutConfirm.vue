@@ -5,9 +5,9 @@
         <template v-slot:avatar>
           <q-icon name="fas fa-check" color="white" />
         </template>
-        Registrace úspěšně odeslána, děkujeme!
+        {{ $tr("title") }}
         <template v-if="data.totalAmount"
-          >Níže najdete podrobnosti k platbě</template
+          >{{ $tr("invoiceTitle") }}</template
         >
       </q-banner>
     </div>
@@ -17,14 +17,15 @@
           <q-card class="my-card">
             <img :src="data.invoice.qr_full_url" />
 
-            <q-list>
+            <!-- Key is needed to rerender on language change -->
+            <q-list v-bind:key="$tr('invoice.item')">
               <q-item>
                 <q-item-section avatar>
                   <q-icon color="primary" name="fas fa-dollar-sign" />
                 </q-item-section>
 
                 <q-item-section>
-                  <q-item-label caption>Celková cena</q-item-label>
+                  <q-item-label caption>{{ $tr("invoice.total") }}</q-item-label>
                   <q-item-label
                     >{{
                       data.invoice.total
@@ -42,7 +43,7 @@
                 </q-item-section>
 
                 <q-item-section>
-                  <q-item-label caption>Datum splatnosti</q-item-label>
+                  <q-item-label caption>{{ $tr("invoice.dueOn") }}</q-item-label>
                   <q-item-label>{{
                     data.invoice.due_on | moment("D. M. Y")
                   }}</q-item-label>
@@ -62,7 +63,7 @@
 
                 <q-item-section>
                   <q-item-label class="text-black"
-                    >Stáhnout fakturu</q-item-label
+                    >{{ $tr("invoice.download") }}</q-item-label
                   >
                 </q-item-section>
               </q-item>
@@ -92,27 +93,31 @@ export default {
   },
   data() {
     return {
-      // "quantity": 11, "unit_name": "osob", "unit_price"
-      columns: [
+      translationPrefix: "tournament.checkout.confirm."
+    };
+  },
+  computed: {
+    columns() {
+      return [
         {
-          label: "Role",
+          label: this.$tr("invoice.item"),
           name: "name",
           align: "left",
           field: "name"
         },
         {
-          label: "Počet",
+          label: this.$tr("invoice.quantity"),
           name: "quantity",
           align: "center",
           field: row => row.quantity + " " + row.unit_name
         },
         {
-          label: "Cena",
+          label: this.$tr("invoice.price"),
           name: "unit_price",
           field: row => row.unit_price + " " + this.data.invoice.currency
         }
-      ]
-    };
+      ];
+    }
   }
 };
 </script>

@@ -87,7 +87,7 @@
         name="role"
         :values="roles"
         @selected="typePicked"
-        :hideFirst="type === 'single'"
+        :hideFirst="type === 'single' && !dataToSubmit.length"
       />
       <q-btn
         v-if="dataToSubmit.length"

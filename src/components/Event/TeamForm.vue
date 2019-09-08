@@ -111,7 +111,8 @@ export default {
       let validationPromise = new Promise((resolve, reject) => {
         this.acceptError = !this.accept;
 
-        if (!this.accept) reject();
+        if (!this.accept || !this.teamName || !this.teamName.trim().length)
+          reject();
 
         let cards = this.$refs["person-card"];
         let validated = 0;

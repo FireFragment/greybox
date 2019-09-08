@@ -54,13 +54,36 @@
   },
   "autofill": {
     "title": "Autofill data of previously registered people",
-    "empty": "You have no people to autofill.",
-    "notLoggedIn": {
-      "pre": "You need to",
-      "signUp": "sign up",
-      "or": "or",
-      "login": "login",
-      "post": " before being able to autofill data."
+    "empty": "You have no people to autofill."
+  },
+  "checkout": {
+    "submit": "Confirm registration",
+    "loading": "Confirming",
+    "back": "Add another person",
+    "success": "Registration successfully confirmed",
+    "error": "An error has occured during registration, please try again later",
+    "values": {
+      "yes": "Yes",
+      "no": "No"
+    },
+    "validation": {
+      "duplicateRegistration": "{person} has already registered for this tournament",
+      "missedDeadline": "This tournament is already past deadline, registrations are not accepted",
+      "eventNotFound": "Tournament not found",
+      "clientNotFound": "There has been an error generating an invoice, please try again later",
+      "fakturoidFull": "There has been an error generating an invoice, please try again later"
+    },
+    "confirm": {
+      "title": "Thank you for your registration!",
+      "invoiceTitle": "Please find payment details bellow",
+      "invoice": {
+        "total": "Total",
+        "dueOn": "Due date",
+        "download": "Download invoice",
+        "item": "Item",
+        "quantity": "Quantity",
+        "price": "Price"
+      }
     }
   }
 }

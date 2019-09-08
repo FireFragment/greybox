@@ -10,7 +10,7 @@
 
     <div class="q-pt-md">
       <q-btn
-        label="Přidat dalšího člověka"
+        :label="$tr('back')"
         color="blue-9"
         @click="$emit('goToRolePick')"
       />
@@ -21,10 +21,10 @@
         color="primary"
         @click="sendForm"
       >
-        Potvrdit přihlášku
+        {{ $tr("submit") }}
         <template v-slot:loading>
           <q-spinner-hourglass class="on-left" />
-          Odesílám
+          {{ $tr("loading") }}
         </template>
       </q-btn>
     </div>
@@ -41,6 +41,7 @@ export default {
   },
   data() {
     return {
+      translationPrefix: "tournament.checkout.",
       loading: false
     };
   },
@@ -81,11 +82,11 @@ export default {
                   if (registerCount <= registered) return resolve(data);
                 })
                 .catch(data => {
-                  reject(data);
+                  reject([data, person]);
                 });
             })
             .catch(data => {
-              reject(data);
+              reject([data, person]);
             });
         }
       });
@@ -98,19 +99,42 @@ export default {
             method: "put"
           })
             .then(data => {
-              this.$flash("Registrace úšpěšně odeslána!", "success");
+              this.$flash(this.$tr("success"), "success");
               this.$emit("confirm", data.data);
+            })
+            .catch(data => {
+              if (data.response.data) {
+                let message = data.response.data.message;
+
+                if (message)
+                  return this.$flash(
+                    this.$tr("validation." + message),
+                    "error"
+                  );
+              }
+
+              this.$flash(this.$tr("error"), "error");
             })
             .finally(() => {
               this.loading = false;
             });
         })
-        .catch(() => {
+        .catch(([data, person = null]) => {
           this.loading = false;
-          this.$flash(
-            "V průběhu registrace nastala chyba, opakujte akci.",
-            "error"
-          );
+
+          if (data.response.data) {
+            let message = data.response.data.message;
+
+            if (message)
+              return this.$flash(
+                this.$tr("validation." + message, {
+                  person: person.person.name + " " + person.person.surname
+                }),
+                "error"
+              );
+          }
+
+          this.$flash(this.$tr("error"), "error");
         });
     },
 
