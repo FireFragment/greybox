@@ -21,6 +21,7 @@
       @toggleVisibility="toggleVisibility"
       @delete="deletePerson"
     />
+    <g-d-p-r-checkbox v-model="accept" :error="acceptError" />
     <div class="text-center">
       <q-btn
         color="blue-9"
@@ -48,9 +49,11 @@
 
 <script>
 import personCard from "./TeamPersonCard";
+import GDPRCheckbox from "./GDPRCheckbox";
 export default {
   name: "TeamForm",
   components: {
+    GDPRCheckbox,
     personCard
   },
   props: {
@@ -60,7 +63,9 @@ export default {
     return {
       people: {},
       visibleId: null,
-      teamName: null
+      teamName: null,
+      accept: false,
+      acceptError: false
     };
   },
   created() {
@@ -103,11 +108,15 @@ export default {
 
     submitForm() {
       let validationPromise = new Promise((resolve, reject) => {
+        this.acceptError = !this.accept;
+
+        if (!this.accept) return reject();
+
         let cards = this.$refs["person-card"];
         let validated = 0;
         let hasError = false;
 
-        if (!cards.length) reject();
+        if (!cards.length) return reject();
 
         // Validate and submit all people
         cards.forEach(item => {

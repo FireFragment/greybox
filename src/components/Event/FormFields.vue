@@ -261,54 +261,30 @@
       </template>
     </q-input>
 
-    <q-checkbox
-      v-model="values.accept"
-      :class="{ 'q-field--error': acceptError && !values.accept }"
-    >
-      {{ $tr("gdpr.label") }}
-      <a @click="showGDPRModal = true">{{ $tr("gdpr.link") }}</a>
-    </q-checkbox>
-    <q-dialog v-model="showGDPRModal">
-      <q-card class="dialog-medium">
-        <q-card-section class="row items-center">
-          <div class="text-h6">
-            {{ $tr("gdpr.modal.title") }}
-          </div>
-          <q-space />
-          <q-btn icon="close" flat round dense v-close-popup />
-        </q-card-section>
+    <template v-if="!isTeam">
+      <g-d-p-r-checkbox v-model="values.accept" :error="acceptError" />
 
-        <q-card-section>
-          {{ $tr("gdpr.modal.opening") }}
-          <ul>
-            <li v-for="item in $tr('gdpr.modal.list')" v-bind:key="item">
-              {{ item }}
-            </li>
-          </ul>
-          {{ $tr("gdpr.modal.closing") }}
-        </q-card-section>
-      </q-card>
-    </q-dialog>
-
-    <div class="text-center" v-if="!isTeam">
-      <q-btn label="Pokračovat" type="submit" color="primary" />
-      <q-btn
-        label="Vymazat"
-        type="reset"
-        color="primary"
-        flat
-        class="q-pt-sm q-ml-sm"
-      />
-    </div>
+      <div class="text-center">
+        <q-btn label="Pokračovat" type="submit" color="primary" />
+        <q-btn
+          label="Vymazat"
+          type="reset"
+          color="primary"
+          flat
+          class="q-pt-sm q-ml-sm"
+        />
+      </div>
+    </template>
   </q-form>
 </template>
 
 <script>
 import { EventBus } from "../../event-bus";
+import GDPRCheckbox from "./GDPRCheckbox";
 
 export default {
   name: "FormFields",
-
+  components: { GDPRCheckbox },
   props: {
     autofill: Object,
     isTeam: Boolean
@@ -337,7 +313,6 @@ export default {
         birthYear: null
       },
       acceptError: false,
-      showGDPRModal: false,
       selectSearch: null,
       days: [],
       months: [
@@ -387,14 +362,6 @@ export default {
   },
 
   mounted() {
-    // Remove label toggling on inner link click
-    document.querySelectorAll(".q-checkbox__label a").forEach(link => {
-      link.addEventListener("click", e => {
-        e.stopPropagation();
-        e.preventDefault();
-      });
-    });
-
     // Renitialize smartform
     window.smartform.rebindAllForms(true, () => {
       // Loop through instances
@@ -427,18 +394,10 @@ export default {
     });
   },
 
-  beforeDestroy() {
-    document.querySelectorAll(".q-checkbox__label a").forEach(link => {
-      link.removeEventListener("click", e => {
-        e.stopPropagation();
-        e.preventDefault();
-      });
-    });
-  },
-
   methods: {
     sendForm() {
-      if (!this.values.accept) return !(this.acceptError = true);
+      if (!this.isTeam && !this.values.accept)
+        return !(this.acceptError = true);
 
       let formData = this.submitData;
 
