@@ -12,7 +12,8 @@
   },
   "errors": {
     "deadline": "Na tento turnaj již není možné se registrovat.",
-    "auth": "Před registrací na turnaj se musíte nejprve přihlásit do systému."
+    "auth": "Před registrací na turnaj se musíte nejprve přihlásit do systému.",
+    "teamLength": "Maximální počet členů týmu je {len}"
   },
   "gdpr": {
     "label": "Souhlasím s",

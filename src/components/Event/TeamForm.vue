@@ -30,11 +30,13 @@
       <q-btn
         color="blue-9"
         icon="fas fa-plus"
+        :disabled="Object.keys(people).length >= maxMembers"
         :label="$tr('buttons.addDebater')"
         @click="addPerson"
       />
       <q-btn
         :label="$tr('buttons.continue')"
+        :disabled="!Object.keys(people).length"
         type="submit"
         color="primary"
         class="q-ml-sm q-mr-sm"
@@ -70,7 +72,8 @@ export default {
       visibleId: null,
       teamName: null,
       accept: false,
-      acceptError: false
+      acceptError: false,
+      maxMembers: 5
     };
   },
   created() {
@@ -85,6 +88,12 @@ export default {
       this.$delete(this.people, id);
     },
     addPerson() {
+      if (Object.keys(this.people).length >= this.maxMembers)
+        return this.$flash(
+          this.$tr("errors.teamLength", { len: this.maxMembers }),
+          "error"
+        );
+
       let id;
       do {
         id = this.generateId();

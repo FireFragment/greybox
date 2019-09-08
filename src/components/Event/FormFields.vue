@@ -365,7 +365,7 @@ export default {
     }
     for (let i = 0; i < 12; i++) {
       this.months[i] = {
-        label: "general.months."+i,
+        label: "general.months." + i,
         value: ("0" + (i + 1)).substr(-2),
         searchable: i + 1
       };
