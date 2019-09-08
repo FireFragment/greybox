@@ -45,7 +45,7 @@ class RegistrationConfirmation extends Mailable
         $subject = Lang::get('messages.registration.confirmation') . ' - ' . $eventName;
 
         if (null !== $this->invoice) {
-            $this->attach($this->invoice->pdf_full_url, [
+            $this->attach(getcwd().'/invoices/'.$this->invoice->pdf_url.'.pdf', [
                 'as' => 'adk-' . substr($this->invoice->pdf_url, 0, 7) . '.pdf',
                 'mime' => 'application/pdf',
             ]);
