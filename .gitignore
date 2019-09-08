@@ -1,6 +1,9 @@
 .DS_Store
 node_modules
 /dist
+/registrace
+dist.zip
+registrace.zip
 
 # local env files
 .env.local
