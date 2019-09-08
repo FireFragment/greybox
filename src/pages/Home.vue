@@ -8,7 +8,7 @@
         class="q-mx-md hidden-link"
         :to="$path('login')"
         icon="fas fa-sign-in-alt"
-        label="Přihlásit se"
+        :label="$tr('auth.login.link')"
         color="primary"
         size="lg"
       />
@@ -16,7 +16,7 @@
         class="q-mx-md hidden-link"
         :to="$path('signUp')"
         icon="fas fa-user-plus"
-        label="Registrace"
+        :label="$tr('auth.signUp.link')"
         color="blue-9"
         size="lg"
       />
