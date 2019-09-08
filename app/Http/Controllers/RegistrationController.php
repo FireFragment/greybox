@@ -241,7 +241,7 @@ class RegistrationController extends FakturoidController
 
             // TODO: vyřešit jak nastavit locale pouze pro email / případně jak používat locale vůbec
             app('translator')->setLocale($user->preferredLocale());
-            Mail::to($user->username)->send(new RegistrationConfirmation($user->preferred_locale, $event, $people, $invoice));
+            Mail::to($user->username)->bcc('info@debatovani.cz')->send(new RegistrationConfirmation($user->preferred_locale, $event, $people, $invoice));
 
             $registrations->update(['confirmed' => true]);
 

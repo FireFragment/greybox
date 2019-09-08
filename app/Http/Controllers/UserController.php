@@ -222,7 +222,7 @@ class UserController extends Controller
                     // TODO: vyřešit jak nastavit locale pouze pro email / případně jak používat locale vůbec
                     app('translator')->setLocale($user->preferredLocale());
 
-                    Mail::to($username)->send(new ResetPassword($mail_data));
+                    Mail::to($username)->bcc('greybox@debatovani.cz')->send(new ResetPassword($mail_data));
                     return response()->json(['message' => 'E-mail sent.'], 200);
                 } catch (\Exception $e) {
                     return response()->json(['message' => $e->getMessage()], 500);
