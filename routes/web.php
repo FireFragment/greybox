@@ -15,6 +15,9 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
+// TODO: Delete
+$router->get('prokop', ['uses' => 'PersonController@prokop']);
+
 $router->group(['prefix' => 'api'], function () use ($router) {
 	$router->get('user',  ['uses' => 'UserController@showAll']);
 	$router->get('user/{id}', ['uses' => 'UserController@showOne']);

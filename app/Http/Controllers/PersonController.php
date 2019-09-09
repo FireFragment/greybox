@@ -84,4 +84,11 @@ class PersonController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
+
+    // TODO: Delete
+    public function prokop()
+    {
+        $schools = Person::select('school')->whereNotNull('school')->groupBy('school')->get();
+        return response()->json($schools);
+    }
 }
