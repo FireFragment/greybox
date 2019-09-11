@@ -1,5 +1,8 @@
 start app: php -S localhost:8000 -t public
 
+Pro Kuxu TODO: rozdělení note u člověka a registrace
+Accommodation
+
 Fakturoid errors TODO:
 "fakturoidMessage": "{\"errors\":{\"due\":[\"Datum splatnosti v minulosti\"],\"client_name\":[\"je povinná položka\"],\"subject_id\":[\"Kontakt neexistuje.\"]}}",
     "fakturoidCode": 422
@@ -47,6 +50,7 @@ Jj :smile:
 
 
 Vašek TODO:
+Drop user.person_id
 Vyřešit posílání api_token u update user
 Opravit routy podle https://stackoverflow.com/questions/34182806/multiple-route-file-instead-of-one-main-route-file-in-laravel-5
 Udělat heslo nullovatelné a vynullovat po resetu.
