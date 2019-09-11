@@ -43,7 +43,6 @@ class Invoice extends Model implements AuthenticatableContract, AuthorizableCont
         $payment->setVariableSymbol($this->number);
         $payment->setAmount($this->total);
         $payment->setCurrency($this->currency);
-        $payment->setDueDate($this->due_on); // TODO: smazat?
 
         if (file_exists("qrs/$this->qr_url.png")) {
             $qrFileName = $this->qr_url;
@@ -81,5 +80,14 @@ class Invoice extends Model implements AuthenticatableContract, AuthorizableCont
         fclose($invoiceFile);
 
         return true;
+    }
+
+    static public function calculateDue($dueDate)
+    {
+        $difference = strtotime($dueDate) - time();
+        if (0 > $difference){
+            return 0;
+        }
+        return round($difference / (24 * 60 * 60));
     }
 }

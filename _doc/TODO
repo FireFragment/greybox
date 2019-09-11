@@ -1,5 +1,9 @@
 start app: php -S localhost:8000 -t public
 
+Fakturoid errors TODO:
+"fakturoidMessage": "{\"errors\":{\"due\":[\"Datum splatnosti v minulosti\"],\"client_name\":[\"je povinná položka\"],\"subject_id\":[\"Kontakt neexistuje.\"]}}",
+    "fakturoidCode": 422
+
 Kuxa TODO:
 Když posílám požadavek na vytvoření týmu, přichází mi v odpovědi i event. Mám teda při registraci týmu posílat i ID turnaje, jo? V apiary to nikde není totiž   Aha, to je taky relikt z předchozí verze.   Asi bych to tam nechal
 Teď jsem poslal registraci s tím, že člověk byl autofillnutý (takže jsem předtím neposílal person a jen jsem použil IDčko), a u většiny polí mi to vrátilo null. Mně to nevadí, ty políčka nepoužívám, ale jen jsem se chtěl ujistit, jestli to je správný chování, nebo to je nějaký bug v důsledku toho autofillu

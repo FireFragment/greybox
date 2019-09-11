@@ -215,6 +215,7 @@ class RegistrationController extends FakturoidController
                     'subject_id' => $client->fakturoid_id,
                     // TODO: vyřešit, proč se nepropisuje do faktur
                     'taxable_fulfillment_due' => $event->end,
+                    'due' => \App\Invoice::calculateDue($event->soft_deadline),
                     'client' => $client->id,
                     'lines' => $invoiceLines
                 ];
