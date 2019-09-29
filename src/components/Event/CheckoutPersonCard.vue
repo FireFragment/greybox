@@ -48,7 +48,7 @@
             </dd>
             <dd v-else-if="fieldName === 'accommodation'">
               {{
-                value ? $tr("checkout.values.yes") : $tr("checkout.values.yes")
+                value ? $tr("checkout.values.yes") : $tr("checkout.values.no")
               }}
             </dd>
             <dd v-else>
