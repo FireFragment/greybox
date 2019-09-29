@@ -172,6 +172,7 @@
       </template>
     </q-input>
 
+    <!-- -SCHOOL FIELD-
     <q-input
       outlined
       v-model="values.school"
@@ -187,6 +188,7 @@
         <q-icon name="fas fa-school" />
       </template>
     </q-input>
+    -->
     <!--
         <q-input
           outlined
@@ -346,8 +348,8 @@ export default {
         accept: false,
         birthDay: null,
         birthMonth: null,
-        birthYear: null,
-        school: null
+        birthYear: null
+        // -SCHOOL FIELD- school: null
       },
       acceptError: false,
       selectSearch: null,
@@ -526,7 +528,7 @@ export default {
       return {
         name: this.values.name ? this.values.name.trim() : null,
         surname: this.values.surname ? this.values.surname.trim() : null,
-        school: this.values.school ? this.values.school.trim() : null,
+        // -SCHOOL FIELD- school: this.values.school ? this.values.school.trim() : null,
         birthdate:
           this.values.birthYear +
           "-" +
