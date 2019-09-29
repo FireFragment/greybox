@@ -2,9 +2,11 @@
   <div>
     <div class="row">
       <person-card
-        v-for="person in formData"
+        v-for="(person, index) in formData"
         v-bind:key="JSON.stringify(person)"
         :person="person"
+        :person-index="index"
+        @remove="removePerson"
       />
     </div>
 
@@ -165,6 +167,10 @@ export default {
             reject(data);
           });
       });
+    },
+
+    removePerson(index) {
+      this.$emit("removePerson", index);
     }
   },
   components: {

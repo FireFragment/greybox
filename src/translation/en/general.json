@@ -9,6 +9,7 @@
   "downloadPersonalData": "Download personal data",
   "save": "Save",
   "error": "An error has occured, please try again later",
+  "confirmAction": "Confirm action",
   "form": {
     "error": "Please check the form for errors",
     "fieldError": "This field is required"

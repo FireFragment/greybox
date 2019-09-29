@@ -87,6 +87,14 @@
       "yes": "Yes",
       "no": "No"
     },
+    "actions": {
+      "remove": "Remove person",
+      "removeModal": {
+        "title": "Are you sure you want to remove this person's registration?",
+        "remove": "Remove",
+        "cancel": "Cancel"
+      }
+    },
     "validation": {
       "duplicateRegistration": "{person} has already registered for this tournament",
       "missedDeadline": "This tournament is already past deadline, registrations are not accepted",

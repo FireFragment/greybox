@@ -2,8 +2,29 @@
   <div class="col-12 col-sm-6 col-md-3 q-pa-xs items-stretch">
     <q-card>
       <q-card-section>
-        <div class="text-h6">
-          {{ person.person.name }} {{ person.person.surname }}
+        <div class="row items-center no-wrap">
+          <div class="col">
+            <div class="text-h6">
+              {{ person.person.name }} {{ person.person.surname }}
+            </div>
+          </div>
+
+          <div class="col-auto">
+            <q-btn color="grey-7" round flat icon="more_vert">
+              <q-menu cover auto-close>
+                <q-list class="checkout-person-card-menu">
+                  <q-item clickable @click="removePerson">
+                    <q-item-section avatar>
+                      <q-icon name="fas fa-trash-alt" />
+                    </q-item-section>
+                    <q-item-section>{{
+                      $tr("checkout.actions.remove")
+                    }}</q-item-section>
+                  </q-item>
+                </q-list>
+              </q-menu>
+            </q-btn>
+          </div>
         </div>
       </q-card-section>
 
@@ -64,7 +85,8 @@
 <script>
 export default {
   props: {
-    person: Object
+    person: Object,
+    personIndex: Number
   },
   data() {
     return {
@@ -80,6 +102,23 @@ export default {
       return this.$tr(roleObject.name);
     }
   },
-  name: "CheckoutPersonCard"
+  name: "CheckoutPersonCard",
+  methods: {
+    removePerson() {
+      this.$q
+        .dialog({
+          class: "simple-confirm-dialog",
+          title: this.$tr("general.confirmAction", null, false),
+          message: this.$tr("checkout.actions.removeModal.title"),
+          cancel: this.$tr("checkout.actions.removeModal.cancel"),
+          ok: {
+            label: this.$tr("checkout.actions.removeModal.remove")
+          }
+        })
+        .onOk(() => {
+          this.$emit("remove", this.personIndex);
+        });
+    }
+  }
 };
 </script>

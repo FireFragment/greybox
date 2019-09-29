@@ -124,6 +124,7 @@
       :form-data="dataToSubmit"
       @confirm="checkoutConfirmed"
       @goToRolePick="goTo('role')"
+      @removePerson="removePerson"
     />
     <checkout-confirm v-else :data="confirmData"></checkout-confirm>
 
@@ -362,6 +363,12 @@ export default {
 
     checkoutConfirmed(data) {
       this.confirmData = data;
+    },
+
+    removePerson(index) {
+      this.dataToSubmit.splice(index, 1);
+
+      if (!this.dataToSubmit.length) this.goTo("role");
     }
   },
 

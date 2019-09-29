@@ -87,6 +87,14 @@
       "yes": "Ano",
       "no": "Ne"
     },
+    "actions": {
+      "remove": "Odstranit přihlášku",
+      "removeModal": {
+        "title": "Opravdu si přejete odstranit tuto přihlášku?",
+        "remove": "Odstranit",
+        "cancel": "Zrušit"
+      }
+    },
     "validation": {
       "duplicateRegistration": "{person} je na tento turnaj již zaregistrován/a",
       "missedDeadline": "Na tento turnaj již není možné se registrovat",
