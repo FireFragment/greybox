@@ -135,4 +135,16 @@ class InvoiceController extends FakturoidController
             return response()->json(['message' => $e->getMessage(), 'code' => $e->getCode()], 404);
         }
     }
+
+    public function massUpdate() {
+        $invoices = Invoice::all();
+        $fc = $this->getFakturoidClient();
+
+        foreach ($invoices as $invoice) {
+            $invoice->fakturoidId = $invoice->fakturoid_id;
+            $invoice->fakturoidData = $fc->getInvoice($invoice->fakturoid_id)->getBody();
+        }
+
+        return response()->json($invoices, 200);
+    }
 }

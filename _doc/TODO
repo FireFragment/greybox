@@ -2,6 +2,7 @@ start app: php -S localhost:8000 -t public
 
 Pro Kuxu TODO: rozdělení note u člověka a registrace
 Accommodation
+Checkbox - chci se stát členem ADK + nějaký tooltip
 
 Fakturoid errors TODO:
 "fakturoidMessage": "{\"errors\":{\"due\":[\"Datum splatnosti v minulosti\"],\"client_name\":[\"je povinná položka\"],\"subject_id\":[\"Kontakt neexistuje.\"]}}",
