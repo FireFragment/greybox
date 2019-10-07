@@ -31,6 +31,14 @@ class Invoice extends Model implements AuthenticatableContract, AuthorizableCont
         'fakturoid_id'
     ];
 
+    public $lines = [];
+    public $due;
+
+    public function __construct($dueDate)
+    {
+        $this->setDue($dueDate);
+    }
+
     public function client()
     {
         return $this->belongsTo(Client::class, 'client', 'id');
@@ -82,12 +90,45 @@ class Invoice extends Model implements AuthenticatableContract, AuthorizableCont
         return true;
     }
 
-    static public function calculateDue($dueDate)
+    public function setDue($dueDate)
     {
         $difference = strtotime($dueDate) - time();
-        if (0 > $difference){
-            return 0;
+        if (0 >= $difference){
+            $this->due = 0;
+        } else {
+            $this->due = round($difference / (24 * 60 * 60));
         }
-        return round($difference / (24 * 60 * 60));
+    }
+
+    public function setLine($description, $quantity, $unit, $price)
+    {
+        $this->lines[] = [
+            'name' => $description,
+            'quantity' => $quantity,
+            'unit_name' => $unit,
+            'unit_price' => $price
+        ];
+    }
+
+    public function setFakturoidData($fakturoidInvoice)
+    {
+        $this->fakturoid_id = $fakturoidInvoice->id;
+        $this->number = $fakturoidInvoice->number;
+        $this->status = $fakturoidInvoice->status;
+        $this->issued_on = $fakturoidInvoice->issued_on;
+        $this->due_on = $fakturoidInvoice->due_on;
+        $this->currency = $fakturoidInvoice->currency;
+        $this->language = $fakturoidInvoice->language;
+        $this->total = $fakturoidInvoice->total;
+        $this->paid_amount = $fakturoidInvoice->paid_amount;
+    }
+
+    public function setFullUrls(\Fakturoid\Client $fc) {
+
+        $this->qr_full_url = "https://debate-greybox.herokuapp.com/qrs/$this->qr_url.png"; // TODO: nastavovat adresu dynamicky
+        if ($this->getPdf($fc)) {
+            $this->pdf_url = $this->qr_url; // TODO: To be deleted
+            $this->pdf_full_url = "https://debate-greybox.herokuapp.com/invoices/$this->pdf_url.pdf";
+        }
     }
 }
