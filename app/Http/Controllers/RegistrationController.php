@@ -134,18 +134,24 @@ class RegistrationController extends FakturoidController
             if (0 === count($registrations->get())) {
                 return response()->json(['message' => 'noRegistration'], 404);
             }
-            foreach ($registrations->select('role', \DB::raw('count(*) as quantity'))->groupBy('role')->get() as $reg) {
+            foreach ($registrations->select('role', 'accommodation', \DB::raw('count(*) as quantity'))->groupBy('role', 'accommodation')->get() as $reg) {
                 $role = \App\Role::findOrFail($reg->role);
-                $price = $role->prices()->where('event', $event->id)->first();
+                $prices = $role->prices()->where('event', $event->id)->get();
                 // TODO: solve properly
-                $unitPrice = isset($price->amount) ? $price->amount : 0;
-                $invoiceLines[] = [
-                    'name' => $role->translation()->first()->cs, // TODO: vyřešit překlad
-                    'quantity' => $reg->quantity,
-                    'unit_name' => 'osob', // TODO: vymyslet něco chytřejšího
-                    'unit_price' => $unitPrice
-                ];
-                $totalAmount += $reg->quantity * $unitPrice;
+                foreach ($prices as $price) {
+                    $priceDescription = $price->translation()->first();
+                    if (false == $reg->accommodation && 'Accommodation' == $priceDescription->en) {
+                        continue;
+                    }
+                    $unitPrice = $price->getAmount();
+                    $invoiceLines[] = [
+                        'name' => $priceDescription->cs, // TODO: vyřešit překlad
+                        'quantity' => $reg->quantity,
+                        'unit_name' => $role->translation()->first()->cs, // TODO: vyřešit překlad
+                        'unit_price' => $unitPrice
+                    ];
+                    $totalAmount += $reg->quantity * $unitPrice;
+                }
             }
 
             $membershipsCount = 0;
