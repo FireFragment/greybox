@@ -240,5 +240,15 @@ Vue.prototype.dbPersonal = {};
 new Vue({
   router,
   i18n,
-  render: h => h(App)
+  render: h => h(App),
+  mounted() {
+    let path = this.$route.path;
+    let route = this.$route.matched[1];
+    let regex = route.regex;
+
+    // Actual path doesn't match primary route
+    // -> alias was accessed
+    // -> switch language
+    if (!path.match(regex)) this.$i18n.locale = "en";
+  }
 }).$mount("#app");

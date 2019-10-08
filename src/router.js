@@ -25,7 +25,8 @@ export default new Router({
       component: DefaultLayout,
       children: [
         {
-          path: "",
+          path: CZroutes.home,
+          alias: ENroutes.home,
           name: "home",
           component: Home
         },

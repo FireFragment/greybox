@@ -1,7 +1,7 @@
 <template>
   <q-drawer v-bind:value="value" v-on:input="$emit('input', value)" bordered>
     <q-list>
-      <q-item to="/" exact>
+      <q-item :to="$path('home')" exact>
         <q-item-section avatar>
           <q-icon name="home" />
         </q-item-section>
