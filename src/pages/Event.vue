@@ -102,7 +102,7 @@
     </template>
     <div class="row q-col-gutter-md reverse" v-else-if="!checkout">
       <div class="col-12 col-sm-4 col-md-6">
-        <autofill-card @debaterSelected="debaterSelected" />
+        <autofill-card @person-selected="debaterSelected" />
       </div>
       <div class="col-12 col-sm-8 col-md-6">
         <form-fields

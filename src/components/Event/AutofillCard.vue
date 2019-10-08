@@ -13,9 +13,14 @@
         dense
         v-for="(pastLogin, index) in pastLogins"
         v-bind:key="index"
-        @click="selectDebater(index)"
+        @click="selectPerson(index)"
         class="q-pt-sm q-pb-sm"
       >
+        <!--
+        TODO: Catch on q-item:
+        @mouseenter="showDeleteButton = index"
+        @mouseleave="showDeleteButton = null"
+        -->
         <q-item-section>{{
           pastLogin.name + " " + pastLogin.surname
         }}</q-item-section>
@@ -24,7 +29,12 @@
             :style="'background-color: ' + $stringToHslColor(pastLogin.name)"
             size="30px"
           >
+            <!-- TODO: Catch on q-avatar: @click.stop="deletePerson" -->
             <img src="https://cdn.quasar.dev/img/avatar.png" v-if="!true" />
+            <q-icon
+              name="fas fa-trash-alt"
+              v-else-if="showDeleteButton === index"
+            />
             <template v-else>{{
               pastLogin.name.substr(0, 1).toUpperCase()
             }}</template>
@@ -43,13 +53,19 @@ export default {
     return {
       pastLogins: [],
       showLoading: true,
-      translationPrefix: "tournament.autofill."
+      translationPrefix: "tournament.autofill.",
+      showDeleteButton: null
     };
   },
 
   methods: {
-    selectDebater(index) {
-      this.$emit("debaterSelected", this.pastLogins[index]);
+    selectPerson(index) {
+      this.$emit("person-selected", this.pastLogins[index]);
+    },
+
+    deletePerson() {
+      // TODO: delete person from autofill
+      // console.log("Delete person #" + this.showDeleteButton);
     }
   },
 
