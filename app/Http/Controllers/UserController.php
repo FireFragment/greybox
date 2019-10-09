@@ -40,11 +40,13 @@ class UserController extends Controller
                     $api_token = sha1($user->id.time());
 
                     $user->update(['api_token' => $api_token]);
+                    $user->setRole(); // TODO: vyřešit elegantněji
 
                     $return_value = array(
                         'id_token' => $api_token,
                         'id' => $user->id,
                         'username' => $user->username,
+                        'role' => $user->role,
                         'api_token' => $user->api_token,
                         'created_at' => $user->created_at,
                         'updated_at' => $user->updated_at

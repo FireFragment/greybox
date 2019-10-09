@@ -1,5 +1,58 @@
 start app: php -S localhost:8000 -t public
 
+TODO: nové
+Václav Soukup 12:05 AM
+Používáš někde pdf_url (pozor ne pdf_full_url), které ti posílám v registration/{id}/confirm?
+Nepoužívám
+Prosím Tě, bylo by možné uživateli testo@va.ci (id 292) dohodit nějaké osoby do autofillu? Potřeboval bych implementovat mazání lidí z autofillu, ale zároveň si nechci mazat svoje lidi a ani nechci vytvářet fejkové přihlášky na Hradec :smile: Díky moc (edited)
+Ideálně co nejvíc, klidně stejné hodnoty
+Václav Soukup 1:07 PM
+Hele a jak je chceš mazat? Já ti v té službě dávám všechny lidi, které ten daný člověk už někdy zaregistroval
+git bot 1:09 PM
+Myslel jsem pomocí metody delete person https://greybox.docs.apiary.io/#reference/0/people/delete-person
+Když jsem třeba v minulosti registroval někoho, kdo už odešel z klubu, ať mi tam nepřekáží
+Nebo se ta metoda k tomuhle použít nedá?
+Václav Soukup 1:10 PM
+To ti neprojde, protože ten člověk je už někde zaregistrovaný.
+git bot 1:10 PM
+Ahaa, takže to momentálně nijak nejde zařídit, jo?
+Václav Soukup 1:10 PM
+Nejde
+To musíme nějak vymyslet
+Asi ti budu muset udělat novou službu pro seznam lidí do autofillu
+Tam budu automaticky dávat všechny už zaregistrované, ale nebudou tam constraints, takže je bude možné mazat.
+git bot 1:13 PM
+Ok tak pohoda, já to nechám zatím viset v Trellu
+Asi to není teď prioritní
+Václav Soukup 1:13 PM
+Ok
+git bot 1:22 PM
+Jinak potom teda kdyžtak sepiš ty věci, co bych měl udělat přednostně, a při chvíli na ně sednu
+Václav Soukup 1:32 PM
+1) Formulář pro zadání fakturačních údajů - název*, adresa (zase rozdělené na ulice, město, zip), IČ, DIČ      *povinné
+2) Tabulka s přehledem přihlášených lidí na turnaji pro organizátora - budu ti muset na to udělat nějakou servisu, ještě tam není. Každopádně můžeš počítat se sloupci: Jméno, role (debatér/rozhodčí/dozor), tým, ubytování, vegetarián, přihlásil (jméno nebo email), poznámka
+git bot 1:55 PM
+1) a) Takže název bude vždy povinný? Nebo se můžu rozhodnout vůbec neměnit fakturační údaje a zůstane tam e-mail jako doteď?
+b) Pokud název bude vždy povinný, mám do toho políčka předvyplňovat e-mail, nebo ho nechat prázdné?
+c) Bude možnost nějak získat předchozí fakturační údaje pro předvyplnění, nebo budou muset vždycky být zadané znovu?
+2) Admina teda poznám podle admin: true na user/id, jo? A nebylo by praktičtější (vzhledem k budoucímu rozšíření) posílat třeba pole role s možnostmi none, admin, organizer atd, ať jsme připravení na víc rolí do budoucna?
+Václav Soukup 2:00 PM
+1) Hele, já můžu mít k jednomu uživateli více fakturačních údajů (někteří to dokonce i využijí). Takže by tam mohlo být něco jako defaultní, vybrat z již zadaných, přidat nový.
+2) Tak tam dejte to role a hodnoty, které navrhuješ.
+git bot 2:05 PM
+1) Na tohle je API nachystané, nebo ještě ne? A co a) a b)?
+2) To musíš napřed změnit Ty v API, ne?
+Václav Soukup 2:13 PM
+1) API je nachystané ...téměř. Můžeš vytvářet libovolný počet klientů a ti jsou vázaní na uživatele. https://greybox.docs.apiary.io/#reference/0/clients
+a) Asi bych u toho výběru fakturačních údajů zobrazil defaultní variantu, která bude email uživatele.
+b) Já bych defaultně jenom řekl, že fakturační údaje budou jenom email a teprve na kliknutí zobrazil ten formulář pro úpravy.
+2) Jj, musím, ale můžeš počítat s těmito hodnoty. Já to do API dodělám podle tvého návrhu.
+git bot 2:18 PM
+Dobře, super :slightly_smiling_face: Dnes ani zítra se do toho nejspíš nepustím, tak jen potom dej vědět, až to bude ready
+Václav Soukup 2:20 PM
+Ok. Já se k tomu dneska určitě taky nedostanu, ale mohl bych asi zítra večer něco zvládnout.
+Udělal jsem už pár změn ohledně té slevy, ale budu to potřebovat otestovat a trochu se bojím to nasazovat teď, když se bude nejvíc lidí přihlašovat
+
 Pro Kuxu TODO: rozdělení note u člověka a registrace
 Accommodation
 Checkbox - chci se stát členem ADK + nějaký tooltip

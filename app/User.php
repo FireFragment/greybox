@@ -30,6 +30,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'password' // , 'api_token'  temporary workaround
     ];
 
+    public $role;
+
     /**
      * @return boolean
      */
@@ -59,5 +61,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function clients()
     {
         return $this->hasMany(Client::class, 'user', 'id');
+    }
+
+    public function setRole() {
+        $this->role = 'none';
+        if ($this->isAdmin()) $this->role = 'admin';
     }
 }
