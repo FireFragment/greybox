@@ -77,7 +77,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->delete('invoice/{id}', ['uses' => 'InvoiceController@delete']);
     $router->put('invoice/{id}', ['uses' => 'InvoiceController@update']);
     //$router->get('invoice/{id}/pdf', ['uses' => 'InvoiceController@showOnePdf']);
-    $router->put('invoice/', ['uses' => 'InvoiceController@massUpdate']);
+    //$router->put('invoice/', ['uses' => 'InvoiceController@massUpdate']);
 
     $router->get('price',  ['uses' => 'PriceController@showAll']);
     $router->get('price/{id}', ['uses' => 'PriceController@showOne']);
