@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Invoice;
 use App\Mail\RegistrationConfirmation;
 use App\Registration;
 use Fakturoid\Exception as FakturoidException;
@@ -125,27 +126,28 @@ class RegistrationController extends FakturoidController
             $event = $reg->event()->first();
             $data = new \stdClass();
             $people = [];
-            $invoice = null;
+            $invoice = new Invoice($event->soft_deadline);
 
             $totalAmount = 0;
-            $invoiceLines = [];
             // TODO: solve repetition with lazy/eager loading
             $registrations = $user->registrations()->where([['event_id', '=', $event->id],['confirmed', '=', false]]);
             if (0 === count($registrations->get())) {
                 return response()->json(['message' => 'noRegistration'], 404);
             }
-            foreach ($registrations->select('role', \DB::raw('count(*) as quantity'))->groupBy('role')->get() as $reg) {
+            foreach ($registrations->select('role', 'accommodation', \DB::raw('count(*) as quantity'))->groupBy('role', 'accommodation')->get() as $reg) {
                 $role = \App\Role::findOrFail($reg->role);
-                $price = $role->prices()->where('event', $event->id)->first();
+                $prices = $role->prices()->where('event', $event->id)->get();
                 // TODO: solve properly
-                $unitPrice = isset($price->amount) ? $price->amount : 0;
-                $invoiceLines[] = [
-                    'name' => $role->translation()->first()->cs, // TODO: vyřešit překlad
-                    'quantity' => $reg->quantity,
-                    'unit_name' => 'osob', // TODO: vymyslet něco chytřejšího
-                    'unit_price' => $unitPrice
-                ];
-                $totalAmount += $reg->quantity * $unitPrice;
+                foreach ($prices as $price) {
+                    $priceDescription = $price->translation()->first();
+                    if (false == $reg->accommodation && 'Accommodation' == $priceDescription->en) {
+                        continue;
+                    }
+                    $unitPrice = $price->getAmount();
+                    // TODO: vyřešit překlad
+                    $invoice->setLine($priceDescription->cs, $reg->quantity, $role->translation()->first()->cs, $unitPrice);
+                    $totalAmount += $reg->quantity * $unitPrice;
+                }
             }
 
             $membershipsCount = 0;
@@ -177,16 +179,12 @@ class RegistrationController extends FakturoidController
                 }
             }
             if ($membershipsCount > 0) {
-                $invoiceLines[] = [
-                    'name' => 'členský příspěvek', // TODO: solve translations and maybe add surnames
-                    'quantity' => $membershipsCount,
-                    'unit_name' => 'osob', // TODO: vymyslet něco chytřejšího
-                    'unit_price' => 50
-                ];
+                // TODO: solve translations and maybe add surnames, change unit a set price dynamically
+                $invoice->setLine('členský příspěvek', $membershipsCount, 'osob', 50);
             }
             $totalAmount += ($membershipsCount * 50);
 
-            $data->invoiceLines = $invoiceLines;
+            $data->invoiceLines = $invoice->lines;
             $data->totalAmount = $totalAmount;
 
             if ($totalAmount > 0) {
@@ -209,15 +207,17 @@ class RegistrationController extends FakturoidController
                     $client = \App\Client::create($clientData);
                 }
                 $data->client = $client;
+                $invoice->client = $client->id;
+                $invoice->taxable_fulfillment_due = $event->end;
 
                 // TODO: vyřešit už existující invoice
                 $invoiceData = [
                     'subject_id' => $client->fakturoid_id,
                     // TODO: vyřešit, proč se nepropisuje do faktur
                     'taxable_fulfillment_due' => $event->end,
-                    'due' => \App\Invoice::calculateDue($event->soft_deadline),
+                    'due' => $invoice->due,
                     'client' => $client->id,
-                    'lines' => $invoiceLines
+                    'lines' => $invoice->lines
                 ];
                 try {
                     $fi = $fc->createInvoice($invoiceData);
@@ -229,14 +229,10 @@ class RegistrationController extends FakturoidController
                     ], 404);
                 }
                 $fakturoidInvoice = $fi->getBody();
-                $invoiceData = $this->fillInvoiceData($invoiceData, $fakturoidInvoice);
-                $invoice = \App\Invoice::create($invoiceData);
-                $invoice->update(['qr_url' => $invoice->generateQr()]);
-                $invoice->qr_full_url = "https://debate-greybox.herokuapp.com/qrs/$invoice->qr_url.png"; // TODO: nastavovat adresu dynamicky
-                if ($invoice->getPdf($fc)) {
-                    $invoice->pdf_url = $invoice->qr_url;
-                    $invoice->pdf_full_url = "https://debate-greybox.herokuapp.com/invoices/$invoice->pdf_url.pdf";
-                }
+                $invoice->setFakturoidData($fakturoidInvoice);
+                $invoice->generateQr();
+                $invoice->save();
+                $invoice->setFullUrls($fc);
                 $data->invoice = $invoice;
             }
 
