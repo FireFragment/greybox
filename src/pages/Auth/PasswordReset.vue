@@ -68,10 +68,16 @@ export default {
         .catch(data => {
           this.email = null;
           if (data.response.data)
-            for (let index in data.response.data)
-              data.response.data[index].forEach(message => {
-                this.$flash(this.$tr("passwordReset." + message), "error");
-              });
+            for (let index in data.response.data) {
+              let msg = data.response.data[index];
+
+              if (typeof msg === "object")
+                msg.forEach(message => {
+                  this.$flash(this.$tr("passwordReset." + message), "error");
+                });
+              else
+                this.$flash(this.$tr("passwordReset.validation."+msg), "error");
+            }
           else this.$flash(this.$tr("general.error", null, false), "error");
         })
         .finally(() => {
