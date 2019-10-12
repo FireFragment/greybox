@@ -96,7 +96,7 @@ export default {
       })
         .then(() => {
           this.$flash(this.$tr("passwordReset.successReset"), "success");
-          this.$router.replace(this.$path("login"));
+          this.$router.replace(this.$path("auth.login"));
         })
         .catch(data => {
           if (data.response.data) {
@@ -113,7 +113,7 @@ export default {
 
               // Invalid token -> redirect to generate a new one
               if (response.message === "tokenNotFound")
-                this.$router.replace(this.$path("passwordReset"));
+                this.$router.replace(this.$path("auth.passwordReset"));
             } // More errors - same as in sign up
             else
               for (let index in data.response.data)

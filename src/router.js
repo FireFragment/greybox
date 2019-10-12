@@ -10,6 +10,8 @@ import Logout from "./pages/Auth/Logout.vue";
 import PasswordReset from "./pages/Auth/PasswordReset.vue";
 import NotFound404 from "./pages/404.vue";
 
+import EventRegistrations from "./pages/Admin/EventRegistrations";
+
 import CZroutes from "./translation/cs/paths";
 import ENroutes from "./translation/en/paths";
 import NewPassword from "./pages/Auth/NewPassword";
@@ -42,34 +44,44 @@ export default new Router({
           name: "tournament",
           component: Event
         },
+
+        // Admin
         {
-          path: CZroutes.login,
-          alias: ENroutes.login,
+          path: CZroutes.admin.eventRegistrations,
+          alias: ENroutes.admin.eventRegistrations,
+          name: "event-registrations",
+          component: EventRegistrations
+        },
+
+        // Auth
+        {
+          path: CZroutes.auth.login,
+          alias: ENroutes.auth.login,
           name: "login",
           component: Login,
           props: true
         },
         {
-          path: CZroutes.signUp,
-          alias: ENroutes.signUp,
+          path: CZroutes.auth.signUp,
+          alias: ENroutes.auth.signUp,
           name: "sign-up",
           component: SignUp
         },
         {
-          path: CZroutes.logout,
-          alias: ENroutes.logout,
+          path: CZroutes.auth.logout,
+          alias: ENroutes.auth.logout,
           name: "logout",
           component: Logout
         },
         {
-          path: CZroutes.passwordReset,
-          alias: ENroutes.passwordReset,
+          path: CZroutes.auth.passwordReset,
+          alias: ENroutes.auth.passwordReset,
           name: "password-reset",
           component: PasswordReset
         },
         {
-          path: CZroutes.passwordReset + "/:token",
-          alias: ENroutes.passwordReset + "/:token",
+          path: CZroutes.auth.passwordReset + "/:token",
+          alias: ENroutes.auth.passwordReset + "/:token",
           name: "new-password",
           component: NewPassword
         }

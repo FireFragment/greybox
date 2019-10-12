@@ -2,8 +2,13 @@
   "home": "",
   "about": "o-webu",
   "tournament": "turnaje",
-  "login": "prihlaseni",
-  "signUp": "registrace",
-  "logout": "odhlaseni",
-  "passwordReset": "obnovit-heslo"
+  "auth": {
+    "login": "prihlaseni",
+    "signUp": "registrace",
+    "logout": "odhlaseni",
+    "passwordReset": "obnovit-heslo"
+  },
+  "admin": {
+    "eventRegistrations": "prihlaseni-na-turnaje"
+  }
 }

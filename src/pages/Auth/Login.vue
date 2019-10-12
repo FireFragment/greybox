@@ -40,7 +40,7 @@
         </q-input>
         <div class="q-mt-sm q-mb-lg text-center">
           {{ $tr("passwordReset.loginQuestion") }}
-          <router-link :to="$path('passwordReset')">{{
+          <router-link :to="$path('auth.passwordReset')">{{
             $tr("passwordReset.loginLink")
           }}</router-link>
         </div>
@@ -115,7 +115,7 @@ export default {
             });
         })
         .catch(() => {
-          this.$router.replace(this.$path("login"));
+          this.$router.replace(this.$path("auth.login"));
           EventBus.$emit("fullLoader", false);
           this.$flash(invalidCredentials, "error");
         })

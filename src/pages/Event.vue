@@ -52,14 +52,14 @@
               color="white"
               class="hidden-link"
               :label="$tr('auth.login.link', null, false)"
-              :to="$path('login')"
+              :to="$path('auth.login')"
             />
             <q-btn
               flat
               color="white"
               class="hidden-link"
               :label="$tr('auth.signUp.link', null, false)"
-              :to="$path('signUp')"
+              :to="$path('auth.signUp')"
             />
           </template>
         </q-banner>

@@ -85,7 +85,7 @@
             </q-item>
             -->
 
-            <q-item :to="$path('logout')" clickable>
+            <q-item :to="$path('auth.logout')" clickable>
               <q-item-section avatar>
                 <q-icon name="fas fa-sign-out-alt" />
               </q-item-section>
@@ -94,7 +94,7 @@
             </q-item>
           </q-list>
         </q-btn-dropdown>
-        <q-btn stretch flat v-else :to="$path('login')">
+        <q-btn stretch flat v-else :to="$path('auth.login')">
           <q-icon name="fas fa-user" />
         </q-btn>
       </q-toolbar>

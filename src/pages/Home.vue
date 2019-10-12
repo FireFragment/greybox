@@ -6,7 +6,7 @@
     <div class="row q-mt-xl flex-center" v-if="!$auth.check()">
       <q-btn
         class="q-mx-md q-mb-md hidden-link"
-        :to="$path('login')"
+        :to="$path('auth.login')"
         icon="fas fa-sign-in-alt"
         :label="$tr('auth.login.link')"
         color="primary"
@@ -14,7 +14,7 @@
       />
       <q-btn
         class="q-mx-md q-mb-md hidden-link"
-        :to="$path('signUp')"
+        :to="$path('auth.signUp')"
         icon="fas fa-user-plus"
         :label="$tr('auth.signUp.link')"
         color="blue-9"

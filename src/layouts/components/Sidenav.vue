@@ -34,6 +34,21 @@
         {{ $tr("tournament.empty") }}
       </div>
 
+      <template v-if="$auth.check() && $auth.user() && $auth.user().role === 'admin'">
+        <!-- TODO - change for role -->
+        <q-item-label header>{{ $tr("admin.title") }}</q-item-label>
+        <q-item :to="$path('admin.eventRegistrations')" exact>
+          <q-item-section avatar>
+            <q-icon name="fas fa-trophy" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>{{
+              $tr("admin.eventRegistrations.link")
+            }}</q-item-label>
+          </q-item-section>
+        </q-item>
+      </template>
+
       <q-item-label header>{{ $tr("general.user") }}</q-item-label>
       <template v-if="$auth.check() && $auth.user()">
         <!--
@@ -58,7 +73,7 @@
         </q-item>
         -->
 
-        <q-item :to="$path('logout')" clickable>
+        <q-item :to="$path('auth.logout')" clickable>
           <q-item-section avatar>
             <q-icon name="fas fa-sign-out-alt" />
           </q-item-section>
@@ -67,7 +82,7 @@
         </q-item>
       </template>
       <template v-else>
-        <q-item clickable :to="$path('login')">
+        <q-item clickable :to="$path('auth.login')">
           <q-item-section avatar>
             <q-icon name="fas fa-sign-in-alt" />
           </q-item-section>
@@ -75,7 +90,7 @@
           <q-item-section>{{ $tr("auth.login.link") }}</q-item-section>
         </q-item>
 
-        <q-item clickable :to="$path('signUp')">
+        <q-item clickable :to="$path('auth.signUp')">
           <q-item-section avatar>
             <q-icon name="fas fa-user-plus" />
           </q-item-section>
@@ -83,7 +98,7 @@
           <q-item-section>{{ $tr("auth.signUp.link") }}</q-item-section>
         </q-item>
 
-        <q-item clickable :to="$path('passwordReset')">
+        <q-item clickable :to="$path('auth.passwordReset')">
           <q-item-section avatar>
             <q-icon name="fas fa-undo" />
           </q-item-section>
