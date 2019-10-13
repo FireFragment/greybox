@@ -92,9 +92,18 @@ class UserController extends Controller
     public function showOne($id)
     {
         $user = User::find($id);
-        $user->person = $user->person()->get();
         $this->authorize('showOne', $user, \Auth::user());
-        return response()->json($user);
+        $user->setRole();
+        $return_value = array(
+            'id' => $user->id,
+            'username' => $user->username,
+            'person' => $user->person()->first(),
+            'role' => $user->role,
+            'api_token' => $user->api_token,
+            'created_at' => $user->created_at,
+            'updated_at' => $user->updated_at
+        );
+        return response()->json($return_value);
     }
 
     public function create(Request $request)
