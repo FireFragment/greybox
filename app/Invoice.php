@@ -127,6 +127,7 @@ class Invoice extends Model implements AuthenticatableContract, AuthorizableCont
 
         $this->qr_full_url = "https://debate-greybox.herokuapp.com/qrs/$this->qr_url.png"; // TODO: nastavovat adresu dynamicky
         if ($this->getPdf($fc)) {
+            $this->pdf_url = $this->qr_url;
             $this->pdf_full_url = "https://debate-greybox.herokuapp.com/invoices/$this->pdf_url.pdf";
         }
     }
