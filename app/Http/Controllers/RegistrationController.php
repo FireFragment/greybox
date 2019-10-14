@@ -140,8 +140,13 @@ class RegistrationController extends FakturoidController
                 // TODO: solve properly
                 foreach ($prices as $price) {
                     $priceDescription = $price->translation()->first();
-                    if (false == $reg->accommodation && 'Accommodation' == $priceDescription->en) {
-                        continue;
+                    if ('Accommodation' == $priceDescription->en) {
+                        if (false == $reg->accommodation) {
+                            continue;
+                        }
+                        if ($event->isDiscountAvailable()) {
+                            $invoice->setLine('sleva za včasnou platbu', $reg->quantity, 'osob', -150);
+                        }
                     }
                     $unitPrice = $price->getAmount();
                     // TODO: vyřešit překlad
