@@ -150,7 +150,7 @@ class RegistrationController extends FakturoidController
                     }
                     $unitPrice = $price->getAmount();
                     // TODO: vyřešit překlad
-                    $invoice->setLine($priceDescription->cs, $reg->quantity, $role->translation()->first()->cs, $unitPrice);
+                    $invoice->setLine($role->translation()->first()->cs.' - '.$priceDescription->cs, $reg->quantity, 'osob', $unitPrice);
                     $totalAmount += $reg->quantity * $unitPrice;
                 }
             }
