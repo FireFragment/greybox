@@ -216,6 +216,12 @@ class RegistrationController extends FakturoidController
                 $invoice->client = $client->id;
                 $invoice->taxable_fulfillment_due = $event->end;
 
+                $invoiceText = null;
+                $invoiceTextTranslation = $event->invoiceTextTranslation()->first();
+                if (!empty($invoiceTextTranslation)) {
+                    $invoiceText = $invoiceTextTranslation->cs;
+                }
+
                 // TODO: vyřešit už existující invoice
                 $invoiceData = [
                     'subject_id' => $client->fakturoid_id,
@@ -223,6 +229,7 @@ class RegistrationController extends FakturoidController
                     'taxable_fulfillment_due' => $event->end,
                     'due' => $invoice->due,
                     'client' => $client->id,
+                    'note' => $invoiceText,
                     'lines' => $invoice->lines
                 ];
                 try {

@@ -18,7 +18,7 @@ class Event extends Model implements AuthenticatableContract, AuthorizableContra
      * @var array
      */
     protected $fillable = [
-        'name', 'beginning', 'end', 'place', 'soft_deadline', 'hard_deadline', 'note'
+        'name', 'beginning', 'end', 'place', 'soft_deadline', 'hard_deadline', 'invoice_text', 'note'
     ];
 
     /**
@@ -42,6 +42,11 @@ class Event extends Model implements AuthenticatableContract, AuthorizableContra
     public function nameTranslation()
     {
         return $this->belongsTo(Translation::class, 'name', 'id');
+    }
+
+    public function invoiceTextTranslation()
+    {
+        return $this->belongsTo(Translation::class, 'invoice_text', 'id');
     }
 
     public function noteTranslation()
