@@ -49,7 +49,7 @@ class Event extends Model implements AuthenticatableContract, AuthorizableContra
         return $this->belongsTo(Translation::class, 'note', 'id');
     }
 
-    private function getDiscountTime()
+    public function getDiscountTime()
     {
         $softDeadlineDate = substr($this->soft_deadline, 0, 10);
         $softDeadlineMidnight = $softDeadlineDate . ' 23:59:59';

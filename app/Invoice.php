@@ -36,7 +36,7 @@ class Invoice extends Model implements AuthenticatableContract, AuthorizableCont
 
     public function __construct($dueDate)
     {
-        $this->setDue($dueDate);
+        $this->setDue(strtotime($dueDate));
     }
 
     public function client()
@@ -90,9 +90,9 @@ class Invoice extends Model implements AuthenticatableContract, AuthorizableCont
         return true;
     }
 
-    public function setDue($dueDate)
+    public function setDue($dueTime)
     {
-        $difference = strtotime($dueDate) - time();
+        $difference = $dueTime - time();
         if (0 >= $difference){
             $this->due = 0;
         } else {

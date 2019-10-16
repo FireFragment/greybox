@@ -146,6 +146,7 @@ class RegistrationController extends FakturoidController
                         }
                         if ($event->isDiscountAvailable()) {
                             $invoice->setLine('sleva za včasnou platbu', $reg->quantity, 'osob', -150);
+                            $invoice->setDue($event->getDiscountTime());
                         }
                     }
                     $unitPrice = $price->getAmount();
