@@ -247,13 +247,19 @@ class RegistrationController extends FakturoidController
                 $invoice->save();
                 $invoice->setFullUrls($fc);
                 $data->invoice = $invoice;
+            } else {
+                $invoice = null;
             }
 
             // TODO: vyřešit jak nastavit locale pouze pro email / případně jak používat locale vůbec
             app('translator')->setLocale($user->preferredLocale());
             Mail::to($user->username)->bcc('info@debatovani.cz')->send(new RegistrationConfirmation($user->preferred_locale, $event, $people, $invoice));
 
-            $registrations->update(['confirmed' => true]);
+            $invoiceId = null;
+            if (null !== $invoice) {
+                $invoiceId = $invoice->id;
+            }
+            $registrations->update(['confirmed' => true, 'invoice' => $invoiceId]);
 
             return response()->json($data, 200);
         } catch (\Illuminate\Database\QueryException $e) {
