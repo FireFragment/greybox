@@ -47,7 +47,12 @@ class EventController extends Controller
 
         $event->prices = $event->prices()->get();
         for ($i=0; $i<count($event->prices); $i++) {
-            $event->prices[$i]->role = $event->prices[$i]->role()->first();
+            $priceDescription = $event->prices[$i]->translation()->first();
+            if ('Accommodation' == $priceDescription->en) {
+                unset($event->prices[$i]);
+            } else {
+                $event->prices[$i]->role = $event->prices[$i]->role()->first();
+            }
         }
 
         return response()->json($event);
