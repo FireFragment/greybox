@@ -34,8 +34,9 @@
         {{ $tr("tournament.empty") }}
       </div>
 
-      <template v-if="$auth.check() && $auth.user() && $auth.user().role === 'admin'">
-        <!-- TODO - change for role -->
+      <template
+        v-if="$auth.check() && $auth.user() && $auth.user().role === 'admin'"
+      >
         <q-item-label header>{{ $tr("admin.title") }}</q-item-label>
         <q-item :to="$path('admin.eventRegistrations')" exact>
           <q-item-section avatar>
