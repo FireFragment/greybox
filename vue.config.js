@@ -1,7 +1,6 @@
 module.exports = {
-  publicPath:
-    process.env.NODE_ENV === "production" ? "/greybox/registrace/" : "",
-  outputDir: "registrace",
+  publicPath: process.env.VUE_APP_BASE_ROUTE,
+  outputDir: process.env.VUE_APP_BUILD_DIR,
   pluginOptions: {
     quasar: {}
   },

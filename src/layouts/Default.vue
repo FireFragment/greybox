@@ -20,6 +20,14 @@
               <img src="../assets/logo.png" />
             </q-avatar>
             greybox 2.0
+            <span v-if="env.VUE_APP_MODE !== 'production'" class="mode-flag">
+              <template v-if="env.VUE_APP_MODE === 'debug'">
+                debug
+              </template>
+              <template v-else>
+                dev
+              </template>
+            </span>
           </span>
         </q-toolbar-title>
 

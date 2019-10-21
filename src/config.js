@@ -1,6 +1,6 @@
 export default {
   debug: true,
   api: {
-    baseURL: "https://debate-greybox.herokuapp.com/api/"
+    baseURL: process.env.VUE_APP_API_URL + "api/"
   }
 };
