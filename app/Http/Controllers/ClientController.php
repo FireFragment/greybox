@@ -104,4 +104,24 @@ class ClientController extends FakturoidController
             return response()->json(['message' => $e->getMessage(), 'code' => $e->getCode()], 404);
         }
     }
+
+    public function showAllFromFakturoid()
+    {
+        $this->authorize('showAllFromFakturoid', new Client());
+        $fc = $this->getFakturoidClient();
+        $subjects = $fc->getSubjects()->getBody();
+        $foundClientIds = array();
+
+        foreach ($subjects as $subject) {
+            $client = Client::where('fakturoid_id', $subject->id)->first();
+            $subject->client = $client;
+            if (!empty($client)) {
+                $foundClientIds[] = $client->id;
+            }
+        }
+
+        $unusedClients = Client::whereNotIn('id', $foundClientIds)->get()->toArray();
+
+        return response()->json(array_merge($subjects, $unusedClients), 200);
+    }
 }

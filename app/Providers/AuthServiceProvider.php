@@ -33,6 +33,7 @@ class AuthServiceProvider extends ServiceProvider
         Gate::policy('App\User', 'App\Policies\UserPolicy');
         Gate::policy('App\Registration', 'App\Policies\RegistrationPolicy');
         Gate::policy('App\Event', 'App\Policies\EventPolicy');
+        Gate::policy('App\Client', 'App\Policies\ClientPolicy');
 
         $this->app['auth']->viaRequest('api', function ($request) {
             if ($request->header('Authorization')) {
