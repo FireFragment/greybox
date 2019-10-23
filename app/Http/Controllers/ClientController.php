@@ -109,8 +109,24 @@ class ClientController extends FakturoidController
     {
         $this->authorize('showAllFromFakturoid', new Client());
         $fc = $this->getFakturoidClient();
-        $subjects = $fc->getSubjects()->getBody();
+        $subjects = array();
         $foundClientIds = array();
+
+        $link = $fc->getSubjects()->getHeader('Link');
+
+        if (!empty($link)) {
+            $parts = explode('=', $link);
+            preg_match('/[0-9]+/', $parts[1], $lastPage);
+        } else {
+            $lastPage[] = 1;
+        }
+
+        for ($page = 1; $page <= $lastPage[0]; $page++) {
+            $subjectsPage = $fc->getSubjects(["page" => $page])->getBody();
+            foreach ($subjectsPage as $subject) {
+                array_push($subjects, $subject);
+            }
+        }
 
         foreach ($subjects as $subject) {
             $client = Client::where('fakturoid_id', $subject->id)->first();
