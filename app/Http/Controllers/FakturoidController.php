@@ -6,6 +6,7 @@ abstract class FakturoidController extends Controller
 {
     /*
      * @return Fakturoid\Client
+     * TODO: To be deleted
      */
     public function getFakturoidClient()
     {

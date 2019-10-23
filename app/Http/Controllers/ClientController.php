@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Client;
 use Fakturoid\Exception as FakturoidException;
 use Illuminate\Http\Request;
+use App\Services\FakturoidClientService;
 
 class ClientController extends FakturoidController
 {
@@ -108,25 +109,9 @@ class ClientController extends FakturoidController
     public function showAllFromFakturoid()
     {
         $this->authorize('showAllFromFakturoid', new Client());
-        $fc = $this->getFakturoidClient();
-        $subjects = array();
+        $fcs = new FakturoidClientService();
+        $subjects = $fcs->getAllSubjects();
         $foundClientIds = array();
-
-        $link = $fc->getSubjects()->getHeader('Link');
-
-        if (!empty($link)) {
-            $parts = explode('=', $link);
-            preg_match('/[0-9]+/', $parts[1], $lastPage);
-        } else {
-            $lastPage[] = 1;
-        }
-
-        for ($page = 1; $page <= $lastPage[0]; $page++) {
-            $subjectsPage = $fc->getSubjects(["page" => $page])->getBody();
-            foreach ($subjectsPage as $subject) {
-                array_push($subjects, $subject);
-            }
-        }
 
         foreach ($subjects as $subject) {
             $client = Client::where('fakturoid_id', $subject->id)->first();
