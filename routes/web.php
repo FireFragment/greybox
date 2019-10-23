@@ -70,7 +70,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->post('client', ['uses' => 'ClientController@create']);
     $router->delete('client/{id}', ['uses' => 'ClientController@delete']);
     $router->put('client/{id}', ['uses' => 'ClientController@update']);
-    $router->get('client/fakturoid', ['uses' => 'ClientController@showAllFromFakturoid']);
+    $router->get('clientfakturoid', ['uses' => 'ClientController@showAllFromFakturoid']);
 
     $router->get('invoice',  ['uses' => 'InvoiceController@showAll']);
     $router->get('invoice/{id}', ['uses' => 'InvoiceController@showOne']);

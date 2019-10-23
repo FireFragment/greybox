@@ -1,9 +1,6 @@
 start app: php -S localhost:8000 -t public
 
 TODO: nové
-Václav Soukup 12:05 AM
-Používáš někde pdf_url (pozor ne pdf_full_url), které ti posílám v registration/{id}/confirm?
-Nepoužívám
 Prosím Tě, bylo by možné uživateli testo@va.ci (id 292) dohodit nějaké osoby do autofillu? Potřeboval bych implementovat mazání lidí z autofillu, ale zároveň si nechci mazat svoje lidi a ani nechci vytvářet fejkové přihlášky na Hradec :smile: Díky moc (edited)
 Ideálně co nejvíc, klidně stejné hodnoty
 Václav Soukup 1:07 PM
@@ -54,7 +51,6 @@ Ok. Já se k tomu dneska určitě taky nedostanu, ale mohl bych asi zítra veče
 Udělal jsem už pár změn ohledně té slevy, ale budu to potřebovat otestovat a trochu se bojím to nasazovat teď, když se bude nejvíc lidí přihlašovat
 
 Pro Kuxu TODO: rozdělení note u člověka a registrace
-Accommodation
 Checkbox - chci se stát členem ADK + nějaký tooltip
 
 Fakturoid errors TODO:
