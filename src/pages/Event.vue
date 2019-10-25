@@ -332,9 +332,11 @@ export default {
         note: data.note
       };
 
+      // Move data from person to registration
       delete personData.team;
       delete personData.teamName;
       delete personData.accommodation;
+      delete personData.note;
 
       this.dataToSubmit.push({
         person: personData,
