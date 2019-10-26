@@ -1,53 +1,64 @@
 <template>
-  <q-btn
-    color="white"
-    round
-    flat
-    icon="edit"
-    :loading="loading"
-    @click="openMenu"
-    ref="main-btn"
-  >
-    <q-menu cover auto-close loading v-if="clients">
-      <q-list>
-        <q-item clickable @click="editClient()">
-          <q-item-section>Přidat nové údaje</q-item-section>
-          <q-item-section avatar>
-            <q-icon name="fas fa-plus" />
-          </q-item-section>
-        </q-item>
-        <q-separator v-if="clients.length" />
-        <q-item
-          clickable
-          @click="selectClient(client)"
-          v-for="client in clients"
-          v-bind:key="client.id"
-        >
-          <q-item-section>{{ client.name }} </q-item-section>
-          <q-item-section avatar>
-            <q-btn
-              color="black"
-              round
-              flat
-              icon="edit"
-              @click.stop="editClient(client)"
-            />
-          </q-item-section>
-        </q-item>
-      </q-list>
-    </q-menu>
-  </q-btn>
+  <div>
+    <q-btn
+      color="white"
+      round
+      flat
+      icon="edit"
+      :loading="loading"
+      @click="openMenu"
+      ref="main-btn"
+    >
+      <q-menu cover auto-close loading v-if="clients">
+        <q-list>
+          <q-item clickable @click="editClient()">
+            <q-item-section>Přidat nové údaje</q-item-section>
+            <q-item-section avatar>
+              <q-icon name="fas fa-plus" />
+            </q-item-section>
+          </q-item>
+          <q-separator v-if="clients.length" />
+          <q-item
+            clickable
+            @click="selectClient(client)"
+            v-for="client in clients"
+            v-bind:key="client.id"
+          >
+            <q-item-section>{{ client.name }} </q-item-section>
+            <q-item-section avatar>
+              <q-btn
+                color="black"
+                round
+                flat
+                icon="edit"
+                @click.stop="editClient(client)"
+              />
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </q-menu>
+    </q-btn>
+    <edit-dialog
+      @state-change="modalChange"
+      :visible="showEditModal"
+      :client="editedClient"
+    />
+  </div>
 </template>
 
 <script>
+import editDialog from "./BillingEditDialog";
+
 export default {
   name: "BillingMenu",
+  components: { editDialog },
   data() {
     return {
-      translationPrefix: "tournament.checkout.billing.menu.",
+      translationPrefix: "tournament.checkout.billing.",
       loading: false,
       clients: null,
-      editedClient: null
+      editedClient: null,
+      showEditModal: false
     };
   },
   methods: {
@@ -74,7 +85,12 @@ export default {
     editClient(client = null) {
       this.editedClient = client;
 
+      this.showEditModal = true;
       console.log("editing ", client);
+    },
+
+    modalChange(value) {
+      this.showEditModal = value;
     }
   },
   mounted() {

@@ -116,8 +116,20 @@
     },
     "billing": {
       "title": "Fakturační údaje",
-      "menu": {
-        "title": "Změna fakturačních údajů"
+      "modal": {
+        "title": "Úprava fakturačních údajů"
+      },
+      "fields": {
+        "name": "Název",
+        "full_name": "Celé jméno",
+        "email": "E-mail",
+        "registration_no": "IČO",
+        "street": "Ulice",
+        "city": "Město",
+        "zip": "PSČ"
+      },
+      "fieldNotes": {
+        "example": "Ex.:"
       }
     }
   }
