@@ -1,5 +1,31 @@
 <template>
   <div>
+    <div class="row q-mb-md">
+      <div class="col-12 col-sm-6 col-md-3 q-pa-xs items-stretch">
+        <q-card class="thin-header-card normal-margin-card">
+          <q-card-section class="bg-blue-9 text-white card-header">
+            <div class="row items-center no-wrap">
+              <div class="col">
+                <div class="text-h6">{{ $tr("billing.title") }}</div>
+              </div>
+              <div class="col-auto">
+                <billing-menu @selected="changeBilling" />
+              </div>
+            </div>
+          </q-card-section>
+
+          <q-card-section>
+            <div v-if="!billingClient">
+              {{ $auth.user().username }}
+            </div>
+            <div v-else>
+              {{ billingClient.name }}
+            </div>
+          </q-card-section>
+        </q-card>
+      </div>
+    </div>
+
     <div class="row">
       <person-card
         v-for="(person, index) in formData"
@@ -36,6 +62,7 @@
 
 <script>
 import personCard from "./CheckoutPersonCard";
+import billingMenu from "./BillingMenu";
 
 export default {
   name: "Checkout",
@@ -45,7 +72,8 @@ export default {
   data() {
     return {
       translationPrefix: "tournament.checkout.",
-      loading: false
+      loading: false,
+      billingClient: null
     };
   },
   methods: {
@@ -171,10 +199,16 @@ export default {
 
     removePerson(index) {
       this.$emit("removePerson", index);
+    },
+
+    changeBilling(client) {
+      this.billingClient = client;
+      // TODO emit event with client.id
     }
   },
   components: {
-    personCard
+    personCard,
+    billingMenu
   }
 };
 </script>

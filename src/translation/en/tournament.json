@@ -113,6 +113,12 @@
         "quantity": "Quantity",
         "price": "Price"
       }
+    },
+    "billing": {
+      "title": "Fakturační údaje",
+      "menu": {
+        "title": "Změna fakturačních údajů"
+      }
     }
   }
 }

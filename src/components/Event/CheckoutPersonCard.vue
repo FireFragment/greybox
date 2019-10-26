@@ -1,7 +1,7 @@
 <template>
   <div class="col-12 col-sm-6 col-md-3 q-pa-xs items-stretch">
-    <q-card>
-      <q-card-section>
+    <q-card class="thin-header-card normal-margin-card">
+      <q-card-section class="bg-primary text-white card-header">
         <div class="row items-center no-wrap">
           <div class="col">
             <div class="text-h6">
@@ -10,7 +10,7 @@
           </div>
 
           <div class="col-auto">
-            <q-btn color="grey-7" round flat icon="more_vert">
+            <q-btn color="white" round flat icon="more_vert">
               <q-menu cover auto-close>
                 <q-list class="checkout-person-card-menu">
                   <q-item clickable @click="removePerson">
