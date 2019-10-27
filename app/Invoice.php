@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Collection;
 use Laravel\Lumen\Auth\Authorizable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -33,6 +34,7 @@ class Invoice extends Model implements AuthenticatableContract, AuthorizableCont
 
     public $lines = [];
     public $due;
+    private $totalAmount = 0;
 
     public function __construct($dueDate)
     {
@@ -110,6 +112,16 @@ class Invoice extends Model implements AuthenticatableContract, AuthorizableCont
         ];
     }
 
+    private function addUpToTotalAmount($addition)
+    {
+        $this->totalAmount = $this->totalAmount + $addition;
+    }
+
+    public function getTotalAmount(): float
+    {
+        return $this->totalAmount;
+    }
+
     public function setFakturoidData($fakturoidInvoice)
     {
         $this->fakturoid_id = $fakturoidInvoice->id;
@@ -123,12 +135,74 @@ class Invoice extends Model implements AuthenticatableContract, AuthorizableCont
         $this->paid_amount = $fakturoidInvoice->paid_amount;
     }
 
-    public function setFullUrls(\Fakturoid\Client $fc) {
-
+    public function setFullUrls(\Fakturoid\Client $fc)
+    {
         $this->qr_full_url = "https://debate-greybox.herokuapp.com/qrs/$this->qr_url.png"; // TODO: nastavovat adresu dynamicky
         if ($this->getPdf($fc)) {
             $this->pdf_url = $this->qr_url;
             $this->pdf_full_url = "https://debate-greybox.herokuapp.com/invoices/$this->pdf_url.pdf";
         }
+    }
+
+    public function setRegistrationFeeLines(Collection $registrationQuantifiedRoles, Event $event)
+    {
+        foreach ($registrationQuantifiedRoles as $reg) {
+            $role = \App\Role::findOrFail($reg->role);
+            $prices = $role->prices()->where('event', $event->id)->get();
+            // TODO: solve properly
+            foreach ($prices as $price) {
+                $priceDescription = $price->translation()->first();
+                if ('Accommodation' == $priceDescription->en) {
+                    if (false == $reg->accommodation) {
+                        continue;
+                    }
+                    if ($event->isDiscountAvailable()) {
+                        $this->setLine('sleva za včasnou platbu', $reg->quantity, 'osob', -150);
+                        $this->setDue($event->getDiscountTime());
+                    }
+                }
+                $unitPrice = $price->getAmount();
+                // TODO: vyřešit překlad
+                $this->setLine($role->translation()->first()->cs.' - '.$priceDescription->cs, $reg->quantity, 'osob', $unitPrice);
+                $this->addUpToTotalAmount($reg->quantity * $unitPrice);
+            }
+        }
+    }
+
+    public function setMembershipFeeLines(Collection $registrationGroup)
+    {
+        $membershipsCount = 0;
+        $people = array();
+        foreach ($registrationGroup as $registration) {
+            $person = $registration->person()->first();
+            // TODO: to be deleted if person required in registration
+            if (null !== $person) {
+                $membership = $person->membership()->first();
+                if (null === $membership) {
+                    $membership = \App\Membership::create([
+                        'person' => $person->id,
+                        'beginning' => date('Y-m-d'),
+                        'end' => \App\Membership::setForSeason()
+                    ]);
+                    $membershipsCount++;
+                } elseif ($membership->isExpired()) {
+                    $this->updateColumn($membership, 'end', \App\Membership::setForSeason());
+                    $membershipsCount++;
+                }
+                $roleName = $registration->role()->first()->translation()->first()->cs; // TODO: solve for English
+                $team = $registration->team()->first();
+                if (null !== $team) {
+                    $people[$roleName][$team->name][] = $person->name . ' ' . $person->surname;
+                } else {
+                    $people[$roleName]['emptyTeamName'][] = $person->name . ' ' . $person->surname;
+                }
+            }
+        }
+        if ($membershipsCount > 0) {
+            // TODO: solve translations and maybe add surnames, change unit a set price dynamically
+            $this->setLine('členský příspěvek', $membershipsCount, 'osob', 50);
+        }
+        $this->addUpToTotalAmount($membershipsCount * 50);
+        return $people;
     }
 }

@@ -121,81 +121,28 @@ class RegistrationController extends FakturoidController
     {
         try {
             $fc = $this->getFakturoidClient();
-            $user = \Auth::user();
-            $reg = Registration::findOrFail($id);
-            $event = $reg->event()->first();
+            $registration = Registration::findOrFail($id);
+            $registrationGroup = $registration->getRegistrationGroup();
+            $event = $registration->event()->first();
             $data = new \stdClass();
-            $people = [];
             $invoice = new Invoice($event->soft_deadline);
+            $user = $registration->registeredBy()->first();
 
-            $totalAmount = 0;
-            // TODO: solve repetition with lazy/eager loading
-            $registrations = $user->registrations()->where([['event_id', '=', $event->id],['confirmed', '=', false]]);
-            if (0 === count($registrations->get())) {
+            $registrations = $registrationGroup;
+
+            if (0 === count($registrationGroup)) {
                 return response()->json(['message' => 'noRegistration'], 404);
             }
-            foreach ($registrations->select('role', 'accommodation', \DB::raw('count(*) as quantity'))->groupBy('role', 'accommodation')->get() as $reg) {
-                $role = \App\Role::findOrFail($reg->role);
-                $prices = $role->prices()->where('event', $event->id)->get();
-                // TODO: solve properly
-                foreach ($prices as $price) {
-                    $priceDescription = $price->translation()->first();
-                    if ('Accommodation' == $priceDescription->en) {
-                        if (false == $reg->accommodation) {
-                            continue;
-                        }
-                        if ($event->isDiscountAvailable()) {
-                            $invoice->setLine('sleva za včasnou platbu', $reg->quantity, 'osob', -150);
-                            $invoice->setDue($event->getDiscountTime());
-                        }
-                    }
-                    $unitPrice = $price->getAmount();
-                    // TODO: vyřešit překlad
-                    $invoice->setLine($role->translation()->first()->cs.' - '.$priceDescription->cs, $reg->quantity, 'osob', $unitPrice);
-                    $totalAmount += $reg->quantity * $unitPrice;
-                }
-            }
-
-            $membershipsCount = 0;
-            // TODO: solve repetition with lazy/eager loading
-            $registrations = $user->registrations()->where([['event_id', '=', $event->id],['confirmed', '=', false]]);
-            foreach ($registrations->get() as $registration) {
-                $person = $registration->person()->first();
-                // TODO: to be deleted if person required in registration
-                if (null !== $person) {
-                    $membership = $person->membership()->first();
-                    if (null === $membership) {
-                        $membership = \App\Membership::create([
-                            'person' => $person->id,
-                            'beginning' => date('Y-m-d'),
-                            'end' => \App\Membership::setForSeason()
-                        ]);
-                        $membershipsCount++;
-                    } elseif ($membership->isExpired()) {
-                        $this->updateColumn($membership, 'end', \App\Membership::setForSeason());
-                        $membershipsCount++;
-                    }
-                    $roleName = $registration->role()->first()->translation()->first()->cs; // TODO: solve for English
-                    $team = $registration->team()->first();
-                    if (null !== $team) {
-                        $people[$roleName][$team->name][] = $person->name . ' ' . $person->surname;
-                    } else {
-                        $people[$roleName]['emptyTeamName'][] = $person->name . ' ' . $person->surname;
-                    }
-                }
-            }
-            if ($membershipsCount > 0) {
-                // TODO: solve translations and maybe add surnames, change unit a set price dynamically
-                $invoice->setLine('členský příspěvek', $membershipsCount, 'osob', 50);
-            }
-            $totalAmount += ($membershipsCount * 50);
+            $invoice->setRegistrationFeeLines($registration->getQuantifiedRoles(), $event);
+            $people = $invoice->setMembershipFeeLines($registrationGroup);
 
             $data->invoiceLines = $invoice->lines;
-            $data->totalAmount = $totalAmount;
+            $data->totalAmount = $invoice->getTotalAmount();
 
-            if ($totalAmount > 0) {
+            if ($invoice->getTotalAmount() > 0) {
                 $client = $user->clients()->first(); // TODO: default client? nebo to nějak udělat
                 if ($client === null) {
+                    
                     // TODO: přidat data z Person
                     $clientData['name'] = $user->username;
                     try {
@@ -259,7 +206,7 @@ class RegistrationController extends FakturoidController
             if (null !== $invoice) {
                 $invoiceId = $invoice->id;
             }
-            $registrations->update(['confirmed' => true, 'invoice' => $invoiceId]);
+            //$registrations->update(['confirmed' => true, 'invoice' => $invoiceId]);
 
             return response()->json($data, 200);
         } catch (\Illuminate\Database\QueryException $e) {

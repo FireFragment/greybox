@@ -56,4 +56,30 @@ class Registration extends Model implements AuthenticatableContract, Authorizabl
     {
         return $this->belongsTo(Team::class, 'team', 'id');
     }
+
+    private function getRegistrationGroupQuery()
+    {
+        $user = $this->registeredBy()->first();
+        $event = $this->event()->first();
+        return self::where([
+            ['registered_by', '=', $user->id],
+            ['event_id', '=', $event->id],
+            ['confirmed', '=', false]
+        ]);
+    }
+
+    public function getRegistrationGroup()
+    {
+        return $this->getRegistrationGroupQuery()->get();
+    }
+
+    public function getQuantifiedRoles()
+    {
+        $registrationGroupQuery = $this->getRegistrationGroupQuery();
+        $quantifiedRoles = $registrationGroupQuery
+            ->select('role', 'accommodation', \DB::raw('count(*) as quantity'))
+            ->groupBy('role', 'accommodation')
+            ->get();
+        return $quantifiedRoles;
+    }
 }
