@@ -26,6 +26,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 	$router->put('user/{id}', ['uses' => 'UserController@update']);
 	$router->put('user/{id}/password', ['uses' => 'UserController@updatePassword']);
 	$router->get('user/{id}/person', ['uses' => 'UserController@showPeople']);
+    $router->get('user/{id}/client', ['uses' => 'UserController@showClients']);
 
 	$router->post('login', ['uses' => 'UserController@login']);
 	$router->post('logout', ['uses' => 'UserController@logout']);
@@ -91,4 +92,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->post('translation', ['uses' => 'TranslationController@create']);
     $router->delete('translation/{id}', ['uses' => 'TranslationController@delete']);
     $router->put('translation/{id}', ['uses' => 'TranslationController@update']);
+
+    $router->get('country/cs', ['uses' => 'CountryController@showCzech']);
+    $router->get('country/en', ['uses' => 'CountryController@showEnglish']);
 });

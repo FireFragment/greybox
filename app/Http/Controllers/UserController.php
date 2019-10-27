@@ -299,4 +299,10 @@ class UserController extends Controller
         }
         return response()->json($people, 200);
     }
+
+    public function showClients($id) {
+        $user = User::find($id);
+        $clients = $user->clients()->get();
+        return response()->json($clients, 200);
+    }
 }
