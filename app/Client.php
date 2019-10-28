@@ -35,7 +35,7 @@ class Client extends Model implements AuthenticatableContract, AuthorizableContr
     private $fcs;
     private $fakturoid_id;
     private $country;
-    private $user;
+    public $user;
 
     public function __construct(array $attributes = [])
     {
@@ -43,14 +43,21 @@ class Client extends Model implements AuthenticatableContract, AuthorizableContr
         $this->fcs = new FakturoidClientService();
     }
 
-    public function createFakturoidSubject(String $name, int $userId)
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user', 'id');
+    }
+
+    public function createFakturoidSubject(User $user)
     {
         // TODO: přidat data z Person
-        $this->name = $name;
+        $this->user = $user;
+        $this->user()->associate($user);
+        $this->name = $this->user->username;
         $subject = $this->fcs->createSubject(['name' => $this->name])->getBody();
         $this->fakturoid_id = $subject->id;
         $this->country = $subject->country;
-        $this->user = $userId;
+        $this->fill(['name' => $this->name, 'fakturoid_id' => $this->fakturoid_id, 'country' => $this->country]);
         $this->save();
     }
 }

@@ -82,4 +82,13 @@ class Registration extends Model implements AuthenticatableContract, Authorizabl
             ->get();
         return $quantifiedRoles;
     }
+
+    public function confirmRegistrationGroup($invoiceId = null)
+    {
+        $registrationGroupQuery = $this->getRegistrationGroupQuery();
+        $registrationGroupQuery->update([
+            'confirmed' => true,
+            'invoice' => $invoiceId
+        ]);
+    }
 }

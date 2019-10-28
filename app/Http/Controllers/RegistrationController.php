@@ -129,8 +129,6 @@ class RegistrationController extends FakturoidController
             $invoice = new Invoice($event->soft_deadline);
             $user = $registration->registeredBy()->first();
 
-            $registrations = $registrationGroup;
-
             if (0 === count($registrationGroup)) {
                 return response()->json(['message' => 'noRegistration'], 404);
             }
@@ -147,8 +145,8 @@ class RegistrationController extends FakturoidController
                     // TODO: default client, nebo pořadí, nebo podle aktuálnosti?
                     $client = $user->clients()->first();
                     if ($client === null) {
-                        $client = new Client(['name' => $user->username]);
-                        $client->createFakturoidSubject($user->id);
+                        $client = new Client();
+                        $client->createFakturoidSubject($user);
                     }
                 }
                 $data->client = $client;
@@ -173,7 +171,7 @@ class RegistrationController extends FakturoidController
             if (null !== $invoice) {
                 $invoiceId = $invoice->id;
             }
-            //$registrations->update(['confirmed' => true, 'invoice' => $invoiceId]);
+            $registration->confirmRegistrationGroup($invoiceId);
 
             return response()->json($data, 200);
         } catch (\Illuminate\Database\QueryException $e) {
