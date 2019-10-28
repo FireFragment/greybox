@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Services\FakturoidClientService;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Collection;
 use Laravel\Lumen\Auth\Authorizable;
@@ -35,10 +36,14 @@ class Invoice extends Model implements AuthenticatableContract, AuthorizableCont
     public $lines = [];
     public $due;
     private $totalAmount = 0;
+    private $fcs;
+    private $text = null;
+    public $client;
 
     public function __construct($dueDate)
     {
         $this->setDue(strtotime($dueDate));
+        $this->fcs = new FakturoidClientService();
     }
 
     public function client()
@@ -112,6 +117,11 @@ class Invoice extends Model implements AuthenticatableContract, AuthorizableCont
         ];
     }
 
+    public function setText(String $text): void
+    {
+        $this->text = $text;
+    }
+
     private function addUpToTotalAmount($addition)
     {
         $this->totalAmount = $this->totalAmount + $addition;
@@ -120,6 +130,24 @@ class Invoice extends Model implements AuthenticatableContract, AuthorizableCont
     public function getTotalAmount(): float
     {
         return $this->totalAmount;
+    }
+
+    // TODO: vyřešit už existující invoice
+    public function createFakturoidInvoice()
+    {
+        $invoiceData = [
+            'subject_id' => $this->client->fakturoid_id,
+            // TODO: vyřešit, proč se nepropisuje do faktur
+            'taxable_fulfillment_due' => $this->taxable_fulfillment_due,
+            'due' => $this->due,
+            'note' => $this->text,
+            'lines' => $this->lines
+        ];
+        $fakturoidInvoice = $this->fcs->createInvoice($invoiceData)->getBody();
+        $this->setFakturoidData($fakturoidInvoice);
+        $this->generateQr();
+        $this->client()->associate($this->client);
+        $this->save();
     }
 
     public function setFakturoidData($fakturoidInvoice)

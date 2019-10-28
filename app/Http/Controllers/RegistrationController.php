@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Client;
 use App\Invoice;
 use App\Mail\RegistrationConfirmation;
 use App\Registration;
@@ -117,7 +118,7 @@ class RegistrationController extends FakturoidController
         }
     }
 
-    public function confirm($id)
+    public function confirm($id, Request $request)
     {
         try {
             $fc = $this->getFakturoidClient();
@@ -140,58 +141,24 @@ class RegistrationController extends FakturoidController
             $data->totalAmount = $invoice->getTotalAmount();
 
             if ($invoice->getTotalAmount() > 0) {
-                $client = $user->clients()->first(); // TODO: default client? nebo to nějak udělat
-                if ($client === null) {
-                    
-                    // TODO: přidat data z Person
-                    $clientData['name'] = $user->username;
-                    try {
-                        $subject = $fc->createSubject($clientData);
-                    } catch (FakturoidException $e) {
-                        return response()->json([
-                            'message' => 'fakturoidFull',
-                            'fakturoidMessage' => $e->getMessage(),
-                            'fakturoidCode' => $e->getCode()
-                        ], 403);
+                if ($request->has('client')) {
+                    $client = Client::findOrFail($request->input('client'));
+                } else {
+                    // TODO: default client, nebo pořadí, nebo podle aktuálnosti?
+                    $client = $user->clients()->first();
+                    if ($client === null) {
+                        $client = new Client(['name' => $user->username]);
+                        $client->createFakturoidSubject($user->id);
                     }
-                    $clientData['fakturoid_id'] = $subject->getBody()->id;
-                    $clientData['country'] = $subject->getBody()->country;
-                    $clientData['user'] = $user->id;
-                    $client = \App\Client::create($clientData);
                 }
                 $data->client = $client;
-                $invoice->client = $client->id;
+                $invoice->client = $client;
                 $invoice->taxable_fulfillment_due = $event->end;
-
-                $invoiceText = null;
                 $invoiceTextTranslation = $event->invoiceTextTranslation()->first();
                 if (!empty($invoiceTextTranslation)) {
-                    $invoiceText = $invoiceTextTranslation->cs;
+                    $invoice->setText($invoiceTextTranslation->cs);
                 }
-
-                // TODO: vyřešit už existující invoice
-                $invoiceData = [
-                    'subject_id' => $client->fakturoid_id,
-                    // TODO: vyřešit, proč se nepropisuje do faktur
-                    'taxable_fulfillment_due' => $event->end,
-                    'due' => $invoice->due,
-                    'client' => $client->id,
-                    'note' => $invoiceText,
-                    'lines' => $invoice->lines
-                ];
-                try {
-                    $fi = $fc->createInvoice($invoiceData);
-                } catch (FakturoidException $e) {
-                    return response()->json([
-                        'message' => 'clientNotFound',
-                        'fakturoidMessage' => $e->getMessage(),
-                        'fakturoidCode' => $e->getCode()
-                    ], 404);
-                }
-                $fakturoidInvoice = $fi->getBody();
-                $invoice->setFakturoidData($fakturoidInvoice);
-                $invoice->generateQr();
-                $invoice->save();
+                $invoice->createFakturoidInvoice();
                 $invoice->setFullUrls($fc);
                 $data->invoice = $invoice;
             } else {

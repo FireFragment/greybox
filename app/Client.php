@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Services\FakturoidClientService;
 use Illuminate\Auth\Authenticatable;
 use Laravel\Lumen\Auth\Authorizable;
 use Illuminate\Database\Eloquent\Model;
@@ -29,4 +30,27 @@ class Client extends Model implements AuthenticatableContract, AuthorizableContr
     protected $hidden = [
         'fakturoid_id'
     ];
+
+    private $name;
+    private $fcs;
+    private $fakturoid_id;
+    private $country;
+    private $user;
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->fcs = new FakturoidClientService();
+    }
+
+    public function createFakturoidSubject(String $name, int $userId)
+    {
+        // TODO: přidat data z Person
+        $this->name = $name;
+        $subject = $this->fcs->createSubject(['name' => $this->name])->getBody();
+        $this->fakturoid_id = $subject->id;
+        $this->country = $subject->country;
+        $this->user = $userId;
+        $this->save();
+    }
 }

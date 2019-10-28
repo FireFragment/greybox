@@ -4,6 +4,7 @@
 namespace App\Services;
 
 use Fakturoid\Client as FakturoidClient;
+use Fakturoid\Response;
 
 class FakturoidClientService
 {
@@ -20,7 +21,12 @@ class FakturoidClientService
         );
     }
 
-    public function getAllSubjects()
+    public function createSubject(Array $subjectData): Response
+    {
+        return $this->fakturoidClient->createSubject($subjectData);
+    }
+
+    public function getAllSubjects(): array
     {
         $subjects = array();
 
@@ -32,6 +38,11 @@ class FakturoidClientService
         }
 
         return $subjects;
+    }
+
+    public function createInvoice(Array $invoiceData): Response
+    {
+        return $this->fakturoidClient->createInvoice($invoiceData);
     }
 
     private function getPagesCount(): int
