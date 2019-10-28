@@ -120,8 +120,7 @@
         "title": "Úprava fakturačních údajů"
       },
       "fields": {
-        "name": "Název",
-        "full_name": "Celé jméno",
+        "name": "Jméno/Název firmy",
         "email": "E-mail",
         "registration_no": "IČO",
         "street": "Ulice",

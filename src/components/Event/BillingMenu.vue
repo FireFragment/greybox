@@ -86,7 +86,6 @@ export default {
       this.editedClient = client;
 
       this.showEditModal = true;
-      console.log("editing ", client);
     },
 
     modalChange(value) {

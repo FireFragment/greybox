@@ -19,3 +19,21 @@
 .thin-header-card
 	.card-header
 			padding: 8px 16px
+
+.q-card__actions.float-actions
+	display: block
+
+	&::after
+		content: ""
+		display: block
+		float: none
+		clear: both
+
+	.q-btn
+		display: block
+
+		&:first-child
+			float: left
+
+		&:last-child
+			float: right
