@@ -114,34 +114,39 @@
       }
     },
     "billing": {
-      "title": "Fakturační údaje",
+      "title": "Billing information",
+      "addButton": "Add new information",
+      "removeButton": "Remove information",
       "modal": {
-        "title": "Úprava fakturačních údajů"
+        "title": {
+          "add": "Add new billing information",
+          "edit": "Billing information editation"
+        }
       },
       "fields": {
-        "name": "Jméno/Název firmy",
+        "name": "Full name/Company name",
         "email": "E-mail",
-        "registration_no": "IČO",
-        "street": "Ulice",
-        "city": "Město",
-        "zip": "PSČ"
+        "registration_no": "Company registration number",
+        "street": "Street and number",
+        "city": "City",
+        "zip": "ZIP code (PSČ)"
       },
       "fieldNotes": {
         "example": "Ex.:"
       },
       "removeModal": {
-        "title": "Opravdu si přejete odstranit tyto fakturační údaje?",
-        "remove": "Odstranit"
+        "title": "Are you sure you want to remove this billing information?",
+        "remove": "Remove"
       },
       "success": {
-        "add": "Fakturační údaje úspěšně přidány",
-        "edit": "Fakturační údaje úspěšně upraveny",
-        "delete": "Fakturační údaje úspěšně odstraněny"
+        "add": "Billing information successfully created",
+        "edit": "Billing information successfully updated",
+        "delete": "Billing information successfully removed"
       },
       "error": {
-        "add": "Fakturační údaje se nepodařilo přidat, opakujte akci",
-        "edit": "Fakturační údaje se nepodařilo upravit, opakujte akci",
-        "delete": "Fakturační údaje se nepodařilo odstranit, opakujte akci"
+        "add": "An error has occured during creation, please try again later",
+        "edit": "An error has occured during editation, please try again later",
+        "delete": "An error has occured during removal, please try again later"
       }
     }
   }

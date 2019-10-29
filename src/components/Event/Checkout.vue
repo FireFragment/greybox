@@ -19,7 +19,8 @@
               {{ $auth.user().username }}
             </div>
             <div v-else>
-              {{ billingClient.name }}
+              {{ billingClient.name }} <br />
+              {{ billingClient }}
             </div>
           </q-card-section>
         </q-card>

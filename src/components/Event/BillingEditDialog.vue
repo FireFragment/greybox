@@ -3,7 +3,7 @@
     <q-card class="dialog-small">
       <q-card-section class="row items-center">
         <div class="text-h6">
-          {{ $tr("modal.title") }}
+          {{ $tr("modal.title." + (this.client ? "edit" : "add")) }}
         </div>
         <q-space />
         <q-btn icon="close" flat round dense v-close-popup />
@@ -97,13 +97,17 @@
         </q-card-section>
         <q-card-actions class="float-actions">
           <q-btn
-            label="Odstranit údaje"
+            :label="$tr('removeButton')"
             color="red"
             flat
             :class="{ hide: !client }"
             @click="removeClient"
           />
-          <q-btn label="Uložit" type="submit" color="primary" />
+          <q-btn
+            :label="$tr('general.save', null, false)"
+            type="submit"
+            color="primary"
+          />
         </q-card-actions>
       </q-form>
     </q-card>
@@ -148,14 +152,6 @@ export default {
     },
 
     _dialogMounted() {
-      this.$api({
-        //url: "client",
-        url: "user/" + this.$auth.user().id + "/client",
-        method: "get"
-      }).then(data => {
-        console.log(data);
-      });
-
       Object.keys(this.values).forEach(key => {
         this.values[key] =
           this.client && this.client[key] ? this.client[key] : null;
@@ -208,14 +204,16 @@ export default {
         data: this.values,
         alerts: false
       })
-        .then(() => {
+        .then(data => {
           this.stateChange(false);
           this.$flash(
             this.$tr("success." + (isEdit ? "edit" : "add")),
             "success"
           );
 
-          // TODO - reload billing data
+          let client = data.data;
+
+          this.$emit("client-change", client.id, client, !isEdit);
         })
         .catch(data => {
           console.log(data, data.response);
@@ -253,7 +251,7 @@ export default {
             this.stateChange(false);
             this.$flash(this.$tr("success.delete"), "success");
 
-            // TODO - reload billing data
+            this.$emit("client-change", this.client.id, null);
           })
           .catch(data => {
             console.log(data, data.response);

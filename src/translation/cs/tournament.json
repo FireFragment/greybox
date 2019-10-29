@@ -112,6 +112,42 @@
         "quantity": "Počet",
         "price": "Cena"
       }
+    },
+    "billing": {
+      "title": "Fakturační údaje",
+      "addButton": "Přidat nové údaje",
+      "removeButton": "Odstranit údaje",
+      "modal": {
+        "title": {
+          "add": "Přidání nových fakturačních údajů",
+          "edit": "Úprava fakturačních údajů"
+        }
+      },
+      "fields": {
+        "name": "Jméno/Název firmy",
+        "email": "E-mail",
+        "registration_no": "IČO",
+        "street": "Ulice a číslo",
+        "city": "Město",
+        "zip": "PSČ"
+      },
+      "fieldNotes": {
+        "example": "Vzor:"
+      },
+      "removeModal": {
+        "title": "Opravdu si přejete odstranit tyto fakturační údaje?",
+        "remove": "Odstranit"
+      },
+      "success": {
+        "add": "Fakturační údaje úspěšně přidány",
+        "edit": "Fakturační údaje úspěšně upraveny",
+        "delete": "Fakturační údaje úspěšně odstraněny"
+      },
+      "error": {
+        "add": "Fakturační údaje se nepodařilo přidat, opakujte akci",
+        "edit": "Fakturační údaje se nepodařilo upravit, opakujte akci",
+        "delete": "Fakturační údaje se nepodařilo odstranit, opakujte akci"
+      }
     }
   }
 }

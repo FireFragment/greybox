@@ -12,7 +12,7 @@
       <q-menu cover auto-close loading v-if="clients">
         <q-list>
           <q-item clickable @click="editClient()">
-            <q-item-section>Přidat nové údaje</q-item-section>
+            <q-item-section>{{ $tr("addButton") }}</q-item-section>
             <q-item-section avatar>
               <q-icon name="fas fa-plus" />
             </q-item-section>
@@ -40,6 +40,7 @@
     </q-btn>
     <edit-dialog
       @state-change="modalChange"
+      @client-change="clientChange"
       :visible="showEditModal"
       :client="editedClient"
     />
@@ -63,69 +64,76 @@ export default {
   },
   methods: {
     openMenu() {
+      // Clients already available
       if (this.clients) return true;
 
+      // Load clients from API
       this.loading = true;
 
-      // TODO - load clients from API if they were not loaded from cache earlier
-      setTimeout(() => {
-        this.clients = [];
-        this.loading = false;
+      this.$api({
+        //url: "client",
+        url: "user/" + this.$auth.user().id + "/client",
+        method: "get"
+      })
+        .then(data => {
+          this.clients = data.data;
 
-        setTimeout(() => {
-          this.$refs["main-btn"].$el.click();
-        }, 100);
-      }, 1000);
+          // Reopen client menu once loaded
+          setTimeout(() => {
+            this.$refs["main-btn"].$el.click();
+          }, 100);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
 
     selectClient(client) {
       this.$emit("selected", client);
     },
 
+    // Trigger client editing
     editClient(client = null) {
       this.editedClient = client;
 
       this.showEditModal = true;
     },
 
+    // Client was changed - update inner DB
+    clientChange(id, data, isNew = false) {
+      // Add new client
+      if (isNew) {
+        this.selectClient(data);
+        return this.clients.push(data);
+      }
+
+      this.clients.forEach((client, index) => {
+        if (client.id === id) {
+          // Remove client
+          if (!data) this.$delete(this.clients, index);
+          // Update client
+          else this.$set(this.clients, index, data);
+        }
+      });
+    },
+
+    // Modal's state change
     modalChange(value) {
       this.showEditModal = value;
     }
   },
   mounted() {
-    // TODO - load clients from cache if exist
-    this.clients = [
-      {
-        id: 2,
-        name: "Test2",
-        street: "Sesami street",
-        street2: "239/1",
-        city: "Hogsmeade",
-        zip: "12345",
-        country: "US",
-        registration_no: "0987654321",
-        full_name: "Mister Client",
-        email: "mister@client.com",
-        user: 1,
-        created_at: "2019-07-28 00:50:48",
-        updated_at: "2019-07-28 00:50:48"
-      },
-      {
-        id: 6,
-        name: "Test",
-        street: null,
-        street2: null,
-        city: null,
-        zip: null,
-        country: "CZ",
-        registration_no: null,
-        full_name: null,
-        email: null,
-        user: 1,
-        created_at: "2019-07-28 00:50:48",
-        updated_at: "2019-07-28 00:50:48"
-      }
-    ];
+    // Load clients from cache if it exists
+    let cached = this.$db("billingClients");
+
+    if (cached) this.clients = cached;
+  },
+
+  watch: {
+    // Update cache on clients change
+    clients(value) {
+      this.$db("billingClients", value, true);
+    }
   }
 };
 </script>
