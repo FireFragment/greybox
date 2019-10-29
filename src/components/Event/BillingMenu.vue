@@ -101,11 +101,10 @@ export default {
 
     // Client was changed - update inner DB
     clientChange(id, data, isNew = false) {
+      this.selectClient(data);
+
       // Add new client
-      if (isNew) {
-        this.selectClient(data);
-        return this.clients.push(data);
-      }
+      if (isNew) return this.clients.push(data);
 
       this.clients.forEach((client, index) => {
         if (client.id === id) {
