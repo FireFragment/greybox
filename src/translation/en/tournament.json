@@ -91,8 +91,7 @@
       "remove": "Remove person",
       "removeModal": {
         "title": "Are you sure you want to remove this person's registration?",
-        "remove": "Remove",
-        "cancel": "Cancel"
+        "remove": "Remove"
       }
     },
     "validation": {
@@ -129,6 +128,20 @@
       },
       "fieldNotes": {
         "example": "Ex.:"
+      },
+      "removeModal": {
+        "title": "Opravdu si přejete odstranit tyto fakturační údaje?",
+        "remove": "Odstranit"
+      },
+      "success": {
+        "add": "Fakturační údaje úspěšně přidány",
+        "edit": "Fakturační údaje úspěšně upraveny",
+        "delete": "Fakturační údaje úspěšně odstraněny"
+      },
+      "error": {
+        "add": "Fakturační údaje se nepodařilo přidat, opakujte akci",
+        "edit": "Fakturační údaje se nepodařilo upravit, opakujte akci",
+        "delete": "Fakturační údaje se nepodařilo odstranit, opakujte akci"
       }
     }
   }

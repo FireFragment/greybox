@@ -91,8 +91,7 @@
       "remove": "Odstranit přihlášku",
       "removeModal": {
         "title": "Opravdu si přejete odstranit tuto přihlášku?",
-        "remove": "Odstranit",
-        "cancel": "Zrušit"
+        "remove": "Odstranit"
       }
     },
     "validation": {

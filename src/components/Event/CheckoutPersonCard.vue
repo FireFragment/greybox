@@ -105,19 +105,12 @@ export default {
   name: "CheckoutPersonCard",
   methods: {
     removePerson() {
-      this.$q
-        .dialog({
-          class: "simple-confirm-dialog",
-          title: this.$tr("general.confirmAction", null, false),
-          message: this.$tr("checkout.actions.removeModal.title"),
-          cancel: this.$tr("checkout.actions.removeModal.cancel"),
-          ok: {
-            label: this.$tr("checkout.actions.removeModal.remove")
-          }
-        })
-        .onOk(() => {
-          this.$emit("remove", this.personIndex);
-        });
+      this.$confirm({
+        confirm: this.$tr("checkout.actions.removeModal.remove"),
+        message: this.$tr("checkout.actions.removeModal.title")
+      }).onOk(() => {
+        this.$emit("remove", this.personIndex);
+      });
     }
   }
 };

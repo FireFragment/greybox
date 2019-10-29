@@ -9,8 +9,8 @@
         <q-btn icon="close" flat round dense v-close-popup />
       </q-card-section>
 
-      <q-card-section>
-        <q-form ref="q-form">
+      <q-form ref="q-form" @submit="submitForm">
+        <q-card-section>
           <div class="row q-col-gutter-md q-pb-sm">
             <q-input
               outlined
@@ -94,17 +94,18 @@
               </template>
             </q-input>
           </div>
-        </q-form>
-      </q-card-section>
-      <q-card-actions class="float-actions">
-        <q-btn
-          label="Odstranit údaje"
-          color="red"
-          flat
-          :class="{ hide: !client }"
-        />
-        <q-btn label="Uložit" color="primary" />
-      </q-card-actions>
+        </q-card-section>
+        <q-card-actions class="float-actions">
+          <q-btn
+            label="Odstranit údaje"
+            color="red"
+            flat
+            :class="{ hide: !client }"
+            @click="removeClient"
+          />
+          <q-btn label="Uložit" type="submit" color="primary" />
+        </q-card-actions>
+      </q-form>
     </q-card>
   </q-dialog>
 </template>
@@ -147,6 +148,14 @@ export default {
     },
 
     _dialogMounted() {
+      this.$api({
+        //url: "client",
+        url: "user/" + this.$auth.user().id + "/client",
+        method: "get"
+      }).then(data => {
+        console.log(data);
+      });
+
       Object.keys(this.values).forEach(key => {
         this.values[key] =
           this.client && this.client[key] ? this.client[key] : null;
@@ -185,6 +194,83 @@ export default {
             });
           });
         });
+      });
+    },
+
+    submitForm() {
+      EventBus.$emit("fullLoader", true);
+
+      let isEdit = !!this.client;
+
+      this.$api({
+        url: "client" + (isEdit ? "/" + this.client.id : ""),
+        method: isEdit ? "put" : "post",
+        data: this.values,
+        alerts: false
+      })
+        .then(() => {
+          this.stateChange(false);
+          this.$flash(
+            this.$tr("success." + (isEdit ? "edit" : "add")),
+            "success"
+          );
+
+          // TODO - reload billing data
+        })
+        .catch(data => {
+          console.log(data, data.response);
+          // TODO - translate alerts based on short messages
+          /*
+          if (data.response.data) {
+            let message = data.response.data.message;
+
+            if (message)
+              return this.$flash(this.$tr("validation." + message), "error");
+          }
+          */
+          this.$flash(this.$tr("error." + (isEdit ? "edit" : "add")), "error");
+        })
+        .finally(() => {
+          EventBus.$emit("fullLoader", false);
+        });
+    },
+
+    removeClient() {
+      if (!this.client) return false;
+
+      this.$confirm({
+        confirm: this.$tr("removeModal.remove"),
+        message: this.$tr("removeModal.title")
+      }).onOk(() => {
+        EventBus.$emit("fullLoader", true);
+
+        this.$api({
+          url: "client/" + this.client.id,
+          method: "delete",
+          alerts: false
+        })
+          .then(() => {
+            this.stateChange(false);
+            this.$flash(this.$tr("success.delete"), "success");
+
+            // TODO - reload billing data
+          })
+          .catch(data => {
+            console.log(data, data.response);
+            // TODO - translate alerts based on short messages
+            /*
+            if (data.response.data) {
+              let message = data.response.data.message;
+
+              if (message)
+                return this.$flash(this.$tr("validation." + message), "error");
+            }
+            */
+            this.$flash(this.$tr("error.delete"), "error");
+          })
+          .finally(() => {
+            EventBus.$emit("fullLoader", false);
+          });
       });
     }
   }

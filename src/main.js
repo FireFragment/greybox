@@ -199,6 +199,26 @@ Vue.mixin({
 
       // Insert/update request
       return (Vue.prototype[dbKey][key] = value);
+    },
+
+    // Show basic confirm dialog
+    $confirm(settings) {
+      let defaults = {
+        class: "simple-confirm-dialog",
+        title: this.$tr("general.confirmModal.title", null, false),
+        message: null,
+        cancel: this.$tr("general.confirmModal.cancel", null, false),
+        ok: {
+          label: this.$tr("general.confirmModal.confirm", null, false)
+        }
+      };
+
+      // Merge settings with defaults
+      settings = { ...defaults, ...settings };
+
+      if (settings.confirm) settings.ok.label = settings.confirm;
+
+      return this.$q.dialog(settings);
     }
   }
 });

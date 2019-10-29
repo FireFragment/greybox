@@ -9,7 +9,11 @@
   "downloadPersonalData": "Download personal data",
   "save": "Save",
   "error": "An error has occured, please try again later",
-  "confirmAction": "Confirm action",
+  "confirmModal": {
+    "title": "Confirm action",
+    "confirm": "Confirm",
+    "cancel": "Cancel"
+  },
   "form": {
     "error": "Please check the form for errors",
     "fieldError": "This field is required"
