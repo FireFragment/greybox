@@ -198,10 +198,20 @@ export default {
 
       let isEdit = !!this.client;
 
+      let data = { ...this.values };
+
+      // Remove mask from zip
+      data.zip = data.zip
+        ? data.zip
+            .replace(/_/g, "")
+            .replace(" ", "")
+            .trim()
+        : "";
+
       this.$api({
         url: "client" + (isEdit ? "/" + this.client.id : ""),
         method: isEdit ? "put" : "post",
-        data: this.values,
+        data: data,
         alerts: false
       })
         .then(data => {

@@ -19,8 +19,31 @@
               {{ $auth.user().username }}
             </div>
             <div v-else>
-              {{ billingClient.name }} <br />
-              {{ billingClient }}
+              <p class="q-mb-sm">
+                <b>{{ billingClient.name }}</b>
+                <template v-if="billingClient.email">
+                  <br />{{ billingClient.email }}
+                </template>
+              </p>
+              <p class="q-mb-sm" v-if="billingClient.registration_no">
+                {{ $tr("billing.fields.registration_no") }}:
+                {{ billingClient.registration_no }}
+              </p>
+              <p
+                class="q-mb-none"
+                v-if="
+                  billingClient.street ||
+                    billingClient.city ||
+                    billingClient.zip
+                "
+              >
+                {{ billingClient.street }} <br v-if="billingClient.street" />
+                {{ billingClient.city
+                }}<template v-if="billingClient.zip && billingClient.city"
+                  >,
+                </template>
+                {{ billingClient.zip }}
+              </p>
             </div>
           </q-card-section>
         </q-card>
