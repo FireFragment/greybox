@@ -151,7 +151,10 @@ export default {
         .then(data => {
           this.$api({
             url: "registration/" + data.data.id + "/confirm",
-            method: "put"
+            method: "put",
+            data: {
+              client: this.billingClient.id
+            }
           })
             .then(data => {
               this.$flash(this.$tr("success"), "success");
@@ -227,7 +230,6 @@ export default {
 
     changeBilling(client) {
       this.billingClient = client;
-      // TODO emit event with client.id
     }
   },
   components: {
