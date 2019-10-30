@@ -10,14 +10,16 @@
       ref="main-btn"
     >
       <q-menu cover auto-close loading v-if="clients">
-        <q-list>
+        <q-list class="smaller-margin-menu">
           <q-item clickable @click="editClient()">
-            <q-item-section>{{ $tr("addButton") }}</q-item-section>
             <q-item-section avatar>
               <q-icon name="fas fa-plus" />
             </q-item-section>
+            <q-item-section>{{ $tr("addButton") }}</q-item-section>
           </q-item>
+
           <q-separator v-if="clients.length" />
+
           <q-item
             clickable
             @click="selectClient(client)"

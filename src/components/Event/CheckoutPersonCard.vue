@@ -12,7 +12,7 @@
           <div class="col-auto">
             <q-btn color="white" round flat icon="more_vert">
               <q-menu cover auto-close>
-                <q-list class="checkout-person-card-menu">
+                <q-list class="smaller-margin-menu">
                   <q-item clickable @click="removePerson">
                     <q-item-section avatar>
                       <q-icon name="fas fa-trash-alt" />
