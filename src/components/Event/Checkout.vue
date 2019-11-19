@@ -152,9 +152,11 @@ export default {
           this.$api({
             url: "registration/" + data.data.id + "/confirm",
             method: "put",
-            data: {
-              client: this.billingClient.id
-            }
+            data: this.billingClient
+              ? {
+                  client: this.billingClient.id
+                }
+              : {}
           })
             .then(data => {
               this.$flash(this.$tr("success"), "success");
