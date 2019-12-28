@@ -29,11 +29,12 @@ class UserController extends Controller
     public function login(Request $request)
     {
         $this->validate($request, [
-            'username' => 'required',
+            'username' => 'required|email',
             'password' => 'required'
         ]);
+        $username = User::normalizeUserName($request->input('username'));
 
-        $user = User::where('username', $request->input('username'))->first();
+        $user = User::where('username', $username)->first();
         if (!empty($user)) {
             if (Hash::check($request->input('password'), $user->password)) {
                 try {
@@ -122,10 +123,11 @@ class UserController extends Controller
             $password = $hasher->make($request->input('password'));
             // TODO: refactor You may pass a default value as the second argument to the input method. This value will be returned if the requested input value is not present on the request: $name = $request->input('name', 'Sally');
             $preferredLocale = $request->input('preferred_locale');
+            $username = User::normalizeUserName($request->input('username'));
 
             $user = User::create([
                 'person_id' => $request->input('person_id'),
-                'username' => $request->input('username'),
+                'username' => $username,
                 'password' => $password
             ]);
             if (!empty($preferredLocale)) {
@@ -180,9 +182,10 @@ class UserController extends Controller
                     $hasher = app()->make('hash');
                     $password = $hasher->make($request->input('password'));
                     $preferredLocale = $request->input('preferred_locale');
+                    $username = User::normalizeUserName($request->input('username'));
 
                     $user->update([
-                        'username' => $request->input('username'),
+                        'username' => $username,
                         'password' => $password
                     ]);
                     if (!empty($preferredLocale)) {
@@ -218,7 +221,7 @@ class UserController extends Controller
             'username' => 'required|email'
         ]);
 
-        $username = $request->input('username');
+        $username = User::normalizeUserName($request->input('username'));
 
         $user = User::where('username', $username)->first();
         if (!empty($user)) {

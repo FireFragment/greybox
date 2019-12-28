@@ -67,4 +67,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         $this->role = 'none';
         if ($this->isAdmin()) $this->role = 'admin';
     }
+
+    static public function normalizeUserName($username) {
+        return strtolower($username);
+    }
 }
