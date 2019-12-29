@@ -300,7 +300,11 @@ class UserController extends Controller
                 $people[] = $person[0];
             }
         }
-        usort($people, function ($a, $b) {return strcmp($a->surname, $b->surname);});
+
+        usort($people, function ($a, $b) {
+            $coll = new \Collator('cs_CZ');
+            return $coll->compare($a->surname, $b->surname);
+        });
 
         return response()->json($people, 200);
     }
