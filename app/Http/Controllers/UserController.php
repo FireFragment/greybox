@@ -300,6 +300,8 @@ class UserController extends Controller
                 $people[] = $person[0];
             }
         }
+        usort($people, function ($a, $b) {return strcmp($a->surname, $b->surname);});
+
         return response()->json($people, 200);
     }
 
