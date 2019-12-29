@@ -72,6 +72,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->delete('client/{id}', ['uses' => 'ClientController@delete']);
     $router->put('client/{id}', ['uses' => 'ClientController@update']);
     $router->get('clientfakturoid', ['uses' => 'ClientController@showAllFromFakturoid']);
+    $router->put('clientfakturoid', ['uses' => 'ClientController@updateAllFromFakturoid']);
 
     $router->get('invoice',  ['uses' => 'InvoiceController@showAll']);
     $router->get('invoice/{id}', ['uses' => 'InvoiceController@showOne']);

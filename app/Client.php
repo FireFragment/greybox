@@ -18,6 +18,7 @@ class Client extends Model implements AuthenticatableContract, AuthorizableContr
      *
      * @var array
      */
+    // TODO: remove street2 and full_name
     protected $fillable = [
         'fakturoid_id', 'name', 'street', 'street2', 'city', 'zip', 'country', 'registration_no', 'full_name', 'email', 'user'
     ];

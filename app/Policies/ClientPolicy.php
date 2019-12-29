@@ -11,4 +11,9 @@ class ClientPolicy extends Policy
     {
         return $this->isSuperAdmin($user);
     }
+
+    public function updateAllFromFakturoid(User $user)
+    {
+        return $this->isSuperAdmin($user);
+    }
 }
