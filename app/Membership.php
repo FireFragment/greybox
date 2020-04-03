@@ -39,10 +39,14 @@ class Membership extends Model implements AuthenticatableContract, AuthorizableC
         return strtotime($this->end) < time();
     }
 
-    public static function setForSeason()
+    public static function setEndDate(int $currentYear, int $currentMonth): string
     {
-        $year = date('Y') + 1;
+        $endYear = $currentYear;
+
+        if ($currentMonth >= 7) {
+            $endYear = $currentYear + 1;
+        }
         // TODO: solve as option
-        return "$year-08-31";
+        return "$endYear-08-31";
     }
 }

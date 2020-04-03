@@ -210,11 +210,11 @@ class Invoice extends Model implements AuthenticatableContract, AuthorizableCont
                     $membership = \App\Membership::create([
                         'person' => $person->id,
                         'beginning' => date('Y-m-d'),
-                        'end' => \App\Membership::setForSeason()
+                        'end' => \App\Membership::setEndDate(date('Y'), date('n'))
                     ]);
                     $membershipsCount++;
                 } elseif ($membership->isExpired()) {
-                    $this->updateColumn($membership, 'end', \App\Membership::setForSeason());
+                    $this->updateColumn($membership, 'end', \App\Membership::setEndDate(date('Y'), date('n')));
                     $membershipsCount++;
                 }
                 $roleName = $registration->role()->first()->translation()->first()->cs; // TODO: solve for English
