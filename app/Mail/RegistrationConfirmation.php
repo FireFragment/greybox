@@ -11,7 +11,7 @@ class RegistrationConfirmation extends Mailable
 {
     use Queueable, SerializesModels;
 
-    private $locale;
+    public $locale;
     public $event;
     public $people;
     public $invoice;
