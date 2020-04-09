@@ -64,16 +64,8 @@ class RegistrationController extends FakturoidController
         try {
             $registration = Registration::create([
                 'person' => $request->input('person'),
-                'name' => $request->input('name'),
-                'surname' => $request->input('surname'),
-                'birthdate' => $request->input('birthdate'),
-                'id_number' => $request->input('id_number'),
-                'street' => $request->input('street'),
-                'city' => $request->input('city'),
-                'zip' => $request->input('zip'),
                 'note' => $request->input('note'),
                 'event' => $request->input('event'),
-                'event_id' => $request->input('event'),
                 'role' => $request->input('role'),
                 'accommodation' => $request->input('accommodation'),
                 'team' => $request->input('team'),
@@ -97,7 +89,7 @@ class RegistrationController extends FakturoidController
 
             if ($request->has('person')) $this->updateColumn($registration, 'person', $request->input('person'));
             if ($request->has('note')) $this->updateColumn($registration, 'note', $request->input('note'));
-            if ($request->has('event')) $this->updateColumn($registration, 'event_id', $request->input('event'));
+            if ($request->has('event')) $this->updateColumn($registration, 'event', $request->input('event'));
             if ($request->has('role')) $this->updateColumn($registration, 'role', $request->input('role'));
             if ($request->has('accommodation')) $this->updateColumn($registration, 'accommodation', $request->input('accommodation'));
             if ($request->has('team')) $this->updateColumn($registration, 'team', $request->input('team'));

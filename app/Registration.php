@@ -18,7 +18,7 @@ class Registration extends Model implements AuthenticatableContract, Authorizabl
      * @var array
      */
     protected $fillable = [
-        'person', 'name', 'surname', 'birthdate', 'id_number', 'street', 'city', 'zip', 'note', 'event', 'event_id', 'role', 'accommodation', 'confirmed', 'team', 'registered_by'
+        'person', 'note', 'event', 'role', 'accommodation', 'confirmed', 'team', 'registered_by'
     ];
 
     /**
@@ -44,7 +44,7 @@ class Registration extends Model implements AuthenticatableContract, Authorizabl
 
     public function event()
     {
-        return $this->belongsTo(Event::class, 'event_id', 'id');
+        return $this->belongsTo(Event::class, 'event', 'id');
     }
 
     public function role()
@@ -63,7 +63,7 @@ class Registration extends Model implements AuthenticatableContract, Authorizabl
         $event = $this->event()->first();
         return self::where([
             ['registered_by', '=', $user->id],
-            ['event_id', '=', $event->id],
+            ['event', '=', $event->id],
             ['confirmed', '=', false]
         ]);
     }

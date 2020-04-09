@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use rikudou\CzQrPayment\QrPayment;
+use App\Role;
 
 class Invoice extends Model implements AuthenticatableContract, AuthorizableContract
 {
@@ -175,7 +176,7 @@ class Invoice extends Model implements AuthenticatableContract, AuthorizableCont
     public function setRegistrationFeeLines(Collection $registrationQuantifiedRoles, Event $event)
     {
         foreach ($registrationQuantifiedRoles as $reg) {
-            $role = \App\Role::findOrFail($reg->role);
+            $role = Role::findOrFail($reg->role);
             $prices = $role->prices()->where('event', $event->id)->get();
             // TODO: solve properly
             foreach ($prices as $price) {
