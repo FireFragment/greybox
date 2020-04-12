@@ -29,6 +29,7 @@ class EventController extends Controller
         }
         foreach ($events as $event) {
             $event->name = $event->nameTranslation()->first();
+            $event->invoice_text = $event->invoiceTextTranslation()->first();
             $event->note = $event->noteTranslation()->first();
         }
         return response()->json($events);
@@ -43,6 +44,7 @@ class EventController extends Controller
         }
 
         $event->name = $event->nameTranslation()->first();
+        $event->invoice_text = $event->invoiceTextTranslation()->first();
         $event->note = $event->noteTranslation()->first();
 
         $event->prices = $event->prices()->get();
@@ -76,6 +78,13 @@ class EventController extends Controller
                 'cs' => $request->input('name_cs'),
                 'en' => $request->input('name_en')
             ]);
+            $invoiceTextTranslation = new Translation();
+            if ($request->has('invoice_cs')) {
+                $invoiceTextTranslation = Translation::create([
+                    'cs' => $request->input('invoice_cs'),
+                    'en' => $request->input('invoice_en')
+                ]);
+            }
             $noteTranslation = new Translation();
             if ($request->has('note_cs')) {
                 $noteTranslation = Translation::create([
@@ -90,10 +99,12 @@ class EventController extends Controller
                'place' => $request->input('place'),
                'soft_deadline' => $request->input('soft_deadline'),
                'hard_deadline' => $request->input('hard_deadline'),
+               'invoice_text' => $invoiceTextTranslation->id,
                'note' => $noteTranslation->id
             ]);
 
             $event->name = $nameTranslation;
+            $event->invoice_text = $invoiceTextTranslation;
             $event->note = $noteTranslation;
             return response()->json($event, 201);
         } catch (\Illuminate\Database\QueryException $e) {
@@ -107,21 +118,34 @@ class EventController extends Controller
             $this->authorize('update', Event::class);
 
             $event = Event::findOrFail($id);
-            $nameTranslation = $event->nameTranslation()->first();
-            $noteTranslation = $event->noteTranslation()->first();
 
-            if ($request->has('name_cs')) $this->updateColumn($nameTranslation, 'cs', $request->input('name_cs'));
-            if ($request->has('name_en')) $this->updateColumn($nameTranslation, 'en', $request->input('name_en'));
+            if ($request->has('name_cs')) {
+                $nameTranslation = $event->nameTranslation()->updateOrCreate([], [
+                    'cs' => $request->input('name_cs'),
+                    'en' => $request->input('name_en')
+                ]);
+            }
             if ($request->has('beginning')) $this->updateColumn($event, 'beginning', $request->input('beginning'));
             if ($request->has('end')) $this->updateColumn($event, 'end', $request->input('end'));
             if ($request->has('place')) $this->updateColumn($event, 'place', $request->input('place'));
             if ($request->has('soft_deadline')) $this->updateColumn($event, 'soft_deadline', $request->input('soft_deadline'));
             if ($request->has('hard_deadline')) $this->updateColumn($event, 'hard_deadline', $request->input('hard_deadline'));
-            if ($request->has('note_cs')) $this->updateColumn($noteTranslation, 'cs', $request->input('note_cs'));
-            if ($request->has('note_en')) $this->updateColumn($noteTranslation, 'en', $request->input('note_en'));
+            if ($request->has('invoice_cs')) {
+                $invoiceTextTranslation = $event->invoiceTextTranslation()->updateOrCreate([], [
+                    'cs' => $request->input('invoice_cs'),
+                    'en' => $request->input('invoice_en')
+                ]);
+            }
+            if ($request->has('note_cs')) {
+                $noteTranslation = $event->noteTranslation()->getRelated()->updateOrCreate([],[
+                    'cs' => $request->input('note_cs'),
+                    'en' => $request->input('note_en')
+                ]);
+            }
 
-            $event->name = $nameTranslation;
-            $event->note = $noteTranslation;
+            $event->name = $event->nameTranslation()->first();
+            $event->invoice_text = $event->invoiceTextTranslation()->first();
+            $event->note = $event->noteTranslation()->first();
             return response()->json($event, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
@@ -136,6 +160,7 @@ class EventController extends Controller
             $event = Event::findOrFail($id);
             $event->delete();
             $event->nameTranslation()->delete();
+            $event->invoiceTextTranslation()->delete();
             $event->noteTranslation()->delete();
             return response()->json(['message' => 'Deleted successfully.'], 204);
         } catch (\Illuminate\Database\QueryException $e) {
