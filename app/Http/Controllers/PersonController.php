@@ -34,11 +34,7 @@ class PersonController extends Controller
     {
         $this->validate($request, [
             'name' => 'required',
-            'surname' => 'required',
-            'birthdate' => 'required',
-            'street' => 'required',
-            'city' => 'required',
-            'zip' => 'required'
+            'surname' => 'required'
         ]);
 
         // TODO: Solve authorization

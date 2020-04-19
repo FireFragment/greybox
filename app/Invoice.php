@@ -201,7 +201,6 @@ class Invoice extends Model implements AuthenticatableContract, AuthorizableCont
     public function setMembershipFeeLines(Collection $registrationGroup)
     {
         $membershipsCount = 0;
-        $people = array();
         foreach ($registrationGroup as $registration) {
             $person = $registration->person()->first();
             // TODO: to be deleted if person required in registration
@@ -218,6 +217,22 @@ class Invoice extends Model implements AuthenticatableContract, AuthorizableCont
                     $this->updateColumn($membership, 'end', \App\Membership::setEndDate(date('Y'), date('n')));
                     $membershipsCount++;
                 }
+            }
+        }
+        if ($membershipsCount > 0) {
+            // TODO: solve translations and maybe add surnames, change unit a set price dynamically
+            $this->setLine('členský příspěvek', $membershipsCount, 'osob', 50);
+        }
+        $this->addUpToTotalAmount($membershipsCount * 50);
+    }
+
+    public function getPeopleListForEmail(Collection $registrationGroup)
+    {
+        $people = array();
+        foreach ($registrationGroup as $registration) {
+            $person = $registration->person()->first();
+            // TODO: to be deleted if person required in registration
+            if (null !== $person) {
                 $roleName = $registration->role()->first()->translation()->first()->cs; // TODO: solve for English
                 $team = $registration->team()->first();
                 if (null !== $team) {
@@ -227,11 +242,6 @@ class Invoice extends Model implements AuthenticatableContract, AuthorizableCont
                 }
             }
         }
-        if ($membershipsCount > 0) {
-            // TODO: solve translations and maybe add surnames, change unit a set price dynamically
-            $this->setLine('členský příspěvek', $membershipsCount, 'osob', 50);
-        }
-        $this->addUpToTotalAmount($membershipsCount * 50);
         return $people;
     }
 }
