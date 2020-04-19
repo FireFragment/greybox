@@ -28,7 +28,11 @@
       />
     </div>
 
-    <div class="row q-col-gutter-sm" @keydown="selectKeyPress">
+    <div
+      class="row q-col-gutter-sm"
+      @keydown="selectKeyPress"
+      v-if="accommodationType !== 'none' && values.accommodation === true"
+    >
       <div class="col-12 q-field" style="color: rgba(0,0,0,0.54);">
         {{ $tr("fields.birthdate") }} *
       </div>
@@ -90,6 +94,7 @@
     <q-input
       outlined
       v-model="values.id_number"
+      v-if="accommodationType !== 'none' && values.accommodation === true"
       :label="$tr('fields.id_number')"
       class="q-pt-sm"
       mask="#########"
@@ -118,6 +123,7 @@
     <q-input
       outlined
       v-model="values.street"
+      v-if="accommodationType !== 'none' && values.accommodation === true"
       :label="$tr('fields.street') + ' *'"
       class="q-pt-sm"
       :input-class="
@@ -137,6 +143,7 @@
     <q-input
       outlined
       v-model="values.city"
+      v-if="accommodationType !== 'none' && values.accommodation === true"
       :label="$tr('fields.city') + ' *'"
       class="q-pt-sm"
       :input-class="'smartform-city ' + 'smartform-instance-' + _uid"
@@ -154,6 +161,7 @@
     <q-input
       outlined
       v-model="values.zip"
+      v-if="accommodationType !== 'none' && values.accommodation === true"
       :label="$tr('fields.zip') + ' *'"
       class="q-pt-sm"
       :input-class="'smartform-zip ' + 'smartform-instance-' + _uid"
@@ -204,19 +212,33 @@
           </template>
         </q-input>
         -->
-    <div class="block">
+    <div
+      class="block"
+      v-if="accommodationType !== 'none' && values.accommodation === true"
+    >
       <q-checkbox
         v-model="values.vegetarian"
         :label="$tr('fields.vegetarian')"
       />
     </div>
 
-    <div class="block">
+    <div
+      class="block"
+      v-if="accommodationType !== 'required' && accommodationType !== 'none'"
+    >
       <q-checkbox
         v-model="values.accommodation"
+        v-if="accommodationType !== 'opt-in'"
         :true-value="false"
         :false-value="true"
         :label="$tr('fields.accommodation')"
+      />
+      <q-checkbox
+        v-model="values.accommodation"
+        v-else
+        :true-value="true"
+        :false-value="false"
+        :label="$tr('fields.accommodationOptIn')"
       />
       <q-icon name="fas fa-info-circle" class="q-pl-sm">
         <q-tooltip anchor="top middle" self="bottom middle" :offset="[0, 0]">
@@ -282,15 +304,38 @@
           </div>
         </template>
 -->
-    <q-input
+    <!--
+    Note
+        <q-input
       v-model="values.note"
       class="q-mt-sm"
       outlined
       autogrow
       :label="$tr('fields.note')"
     >
-      <template v-slot:prepend>
+          <template v-slot:prepend>
         <q-icon name="fas fa-sticky-note" />
+      </template>
+    </q-input>
+
+    -->
+
+    <!-- temporary e-mail: -->
+    <q-input
+      v-model="values.note"
+      class="q-mt-sm"
+      type="email"
+      outlined
+      :label="$tr('auth.fields.email', null, false)"
+      lazy-rules
+      :rules="[
+        val =>
+          (val !== null && val !== '') ||
+          $tr(`general.form.fieldError`, null, false)
+      ]"
+    >
+      <template v-slot:prepend>
+        <q-icon name="fas fa-at" />
       </template>
     </q-input>
 
@@ -325,7 +370,8 @@ export default {
   components: { GDPRCheckbox },
   props: {
     autofill: Object,
-    isTeam: Boolean
+    isTeam: Boolean,
+    accommodationType: String
   },
 
   data() {
@@ -340,7 +386,7 @@ export default {
         zip: null,
         // phone: "+420",
         vegetarian: false,
-        accommodation: true,
+        accommodation: this.accommodationType !== "opt-in",
         // parentName: null,
         // parentPhone: "+420",
         // parentEmail: null,
@@ -530,11 +576,11 @@ export default {
         surname: this.values.surname ? this.values.surname.trim() : null,
         // -SCHOOL FIELD- school: this.values.school ? this.values.school.trim() : null,
         birthdate:
-          this.values.birthYear +
+          (this.values.birthMonth ? this.values.birthMonth.value : "1970") +
           "-" +
-          (this.values.birthMonth ? this.values.birthMonth.value : "00") +
+          (this.values.birthMonth ? this.values.birthMonth.value : "01") +
           "-" +
-          (this.values.birthDay ? this.values.birthDay.value : "00"),
+          (this.values.birthDay ? this.values.birthDay.value : "01"),
         id_number:
           this.values.id_number === "_________" ? null : this.values.id_number,
         street: this.values.street,

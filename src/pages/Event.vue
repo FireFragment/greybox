@@ -109,6 +109,7 @@
           v-if="role !== 0"
           @submit="sendForm"
           :autofill="autofillData"
+          :accommodationType="accommodationType"
           @goToRolePick="goTo('role')"
         />
         <team-form
@@ -195,6 +196,7 @@ export default {
       confirmData: null,
       showGroupModal: false,
       autofillData: null,
+      accommodationType: "opt-out",
       dataToSubmit: []
     };
   },
@@ -225,6 +227,7 @@ export default {
 
     eventPromise.then(([event, isLoading]) => {
       this.event = event;
+      this.accommodationType = event.accommodation;
 
       // Can't register to event -> don't even load roles
       if (event.hard_deadline < this.now || !this.$auth.check()) {
