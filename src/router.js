@@ -1,5 +1,8 @@
 import Vue from "vue";
 import Router from "vue-router";
+import Middlewares from "./middlewares";
+
+// Templates
 import DefaultLayout from "./layouts/Default.vue";
 import Home from "./pages/Home.vue";
 import About from "./pages/About.vue";
@@ -7,14 +10,15 @@ import Event from "./pages/Event.vue";
 import Login from "./pages/Auth/Login.vue";
 import SignUp from "./pages/Auth/SignUp.vue";
 import Logout from "./pages/Auth/Logout.vue";
+import NewPassword from "./pages/Auth/NewPassword";
 import PasswordReset from "./pages/Auth/PasswordReset.vue";
 import NotFound404 from "./pages/404.vue";
 
 import EventRegistrations from "./pages/Admin/EventRegistrations";
 
+// Translations
 import CZroutes from "./translation/cs/paths";
 import ENroutes from "./translation/en/paths";
-import NewPassword from "./pages/Auth/NewPassword";
 
 Vue.use(Router);
 
@@ -50,7 +54,8 @@ export default new Router({
           path: CZroutes.admin.eventRegistrations,
           alias: ENroutes.admin.eventRegistrations,
           name: "event-registrations",
-          component: EventRegistrations
+          component: EventRegistrations,
+          beforeEnter: Middlewares.admin
         },
 
         // Auth

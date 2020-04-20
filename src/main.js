@@ -251,6 +251,13 @@ Vue.use(VueAuth, {
   }
 });
 
+// Custom auth facade
+Vue.prototype.$auth.isAdmin = () => {
+  let $auth = Vue.prototype.$auth;
+  return $auth.check() && $auth.user() && $auth.user().role === "admin";
+};
+
+// Custom cache DB mechanism
 Vue.prototype.db = {};
 Vue.prototype.dbPersonal = {};
 
