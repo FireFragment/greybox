@@ -386,7 +386,9 @@ export default {
         zip: null,
         // phone: "+420",
         vegetarian: false,
-        accommodation: this.accommodationType !== "opt-in",
+        accommodation:
+          this.accommodationType !== "opt-in" &&
+          this.accommodationType !== "none",
         // parentName: null,
         // parentPhone: "+420",
         // parentEmail: null,
@@ -545,6 +547,17 @@ export default {
     },
     selectResetSearch() {
       this.selectSearch = null;
+    },
+    birthdateFormatter(year, month, day) {
+      if (!year && !month && !day) return null;
+      else
+        return (
+          (year ? year : "0000") +
+          "-" +
+          (month ? month.value : "00") +
+          "-" +
+          (day ? day.value : "00")
+        );
     }
   },
 
@@ -571,25 +584,38 @@ export default {
 
   computed: {
     submitData() {
-      return {
-        name: this.values.name ? this.values.name.trim() : null,
-        surname: this.values.surname ? this.values.surname.trim() : null,
-        // -SCHOOL FIELD- school: this.values.school ? this.values.school.trim() : null,
-        birthdate:
-          (this.values.birthMonth ? this.values.birthMonth.value : "1970") +
-          "-" +
-          (this.values.birthMonth ? this.values.birthMonth.value : "01") +
-          "-" +
-          (this.values.birthDay ? this.values.birthDay.value : "01"),
-        id_number:
-          this.values.id_number === "_________" ? null : this.values.id_number,
-        street: this.values.street,
-        city: this.values.city,
-        zip: this.values.zip ? this.values.zip.replace(" ", "") : "",
-        vegetarian: this.values.vegetarian,
-        note: this.values.note,
-        accommodation: this.values.accommodation
-      };
+      if (
+        this.accommodationType === "none" ||
+        this.values.accommodation === false
+      ) {
+        return {
+          name: this.values.name ? this.values.name.trim() : null,
+          surname: this.values.surname ? this.values.surname.trim() : null,
+          note: this.values.note,
+          accommodation: false
+        };
+      } else {
+        return {
+          name: this.values.name ? this.values.name.trim() : null,
+          surname: this.values.surname ? this.values.surname.trim() : null,
+          // -SCHOOL FIELD- school: this.values.school ? this.values.school.trim() : null,
+          birthdate: this.birthdateFormatter(
+            this.values.birthYear,
+            this.values.birthMonth,
+            this.values.birthDay
+          ),
+          id_number:
+            this.values.id_number === "_________"
+              ? null
+              : this.values.id_number,
+          street: this.values.street,
+          city: this.values.city,
+          zip: this.values.zip ? this.values.zip.replace(" ", "") : "",
+          vegetarian: this.values.vegetarian,
+          note: this.values.note,
+          accommodation: true
+        };
+      }
     }
   }
 };
