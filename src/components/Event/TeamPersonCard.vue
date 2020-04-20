@@ -42,6 +42,7 @@
             @input="catchInput"
             :autofill="autofill"
             :is-team="true"
+            :accommodationType="accommodationType"
           />
         </q-card-section>
       </slide-up-down>
@@ -61,7 +62,8 @@ export default {
     id: [String, Number],
     index: Number,
     visible: Boolean,
-    error: Boolean
+    error: Boolean,
+    accommodationType: String
   },
   data() {
     return {

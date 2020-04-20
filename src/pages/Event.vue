@@ -117,6 +117,7 @@
           @submit="submitTeamForm"
           @goToRolePick="goTo('role')"
           :autofill="autofillData"
+          :accommodationType="accommodationType"
         ></team-form>
       </div>
     </div>

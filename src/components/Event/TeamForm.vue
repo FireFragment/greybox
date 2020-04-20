@@ -24,6 +24,7 @@
       :autofill="person.autofill"
       @toggleVisibility="toggleVisibility"
       @delete="deletePerson"
+      :accommodationType="accommodationType"
     />
     <g-d-p-r-checkbox v-model="accept" :error="acceptError" />
     <div class="text-center">
@@ -64,7 +65,8 @@ export default {
     personCard
   },
   props: {
-    autofill: Object
+    autofill: Object,
+    accommodationType: String
   },
   data() {
     return {
