@@ -82,7 +82,10 @@ export default {
 
       this.loading = true;
       let requestData = userData;
-      if (!requestData)
+      if (
+        typeof requestData !== "object" ||
+        typeof requestData.username === "undefined"
+      )
         requestData = {
           username: this.email,
           password: this.password
@@ -125,9 +128,10 @@ export default {
     }
   },
   created() {
+    // User already logged -> redirect to homepage
     if (this.$auth.check()) this.$router.replace({ name: "home" });
 
-    // Auto login user with passed data
+    // Auto login user with passed data (from registration page)
     if (this.loginData) {
       EventBus.$emit("fullLoader", false);
       this.login(this.loginData);
