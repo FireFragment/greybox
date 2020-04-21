@@ -1,5 +1,5 @@
 <template>
-  <q-drawer v-bind:value="value" v-on:input="$emit('input', value)" bordered>
+  <q-drawer :value="value" @input="toggleDrawerMenu" bordered>
     <q-list>
       <q-item :to="$path('home')" exact>
         <q-item-section avatar>
@@ -168,6 +168,12 @@ export default {
       .finally(() => {
         EventBus.$emit("fullLoader", false);
       });
+  },
+  methods: {
+    // Pass drawer toggle input up the chain so it can be properly closed
+    toggleDrawerMenu(value) {
+      this.$emit("input", value);
+    }
   }
 };
 </script>
