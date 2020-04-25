@@ -90,6 +90,8 @@ $app->alias('mailer', Illuminate\Contracts\Mail\Mailer::class);
 $app->alias('mailer', Illuminate\Contracts\Mail\MailQueue::class);
 $app->register(Illuminate\Mail\MailServiceProvider::class);
 
+$app->configure('queue');
+
 /*
 |--------------------------------------------------------------------------
 | Load The Application Routes

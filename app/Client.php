@@ -61,4 +61,37 @@ class Client extends Model implements AuthenticatableContract, AuthorizableContr
         $this->fill(['name' => $this->name, 'fakturoid_id' => $this->fakturoid_id, 'country' => $this->country]);
         $this->save();
     }
+
+    /**
+     * Confirms whether the (greybox) client is different from Fakturoid subject
+     *
+     * @param $subject
+     * @return boolean
+     */
+    public function isDifferentFromSubject($subject): bool
+    {
+        if ($this->name !== $subject->name) return true;
+        if ($this->street !== $subject->street) return true;
+        if ($this->email !== $subject->email) return true;
+        return false;
+    }
+
+    /**
+     * Updates client data fields from Fakturoid subject and saves to the DB
+     *
+     * @param $subject
+     * @return void
+     */
+    public function updateFromFakturoid($subject): void
+    {
+        $this->update([
+            'name' => $subject->name,
+            'street' => $subject->street,
+            'city' => $subject->city,
+            'zip' => $subject->zip,
+            'country' => $subject->country,
+            'registration_no' => $subject->registration_no,
+            'email' => $subject->email
+        ]);
+    }
 }
