@@ -125,30 +125,4 @@ class ClientController extends FakturoidController
 
         return response()->json(array_merge($subjects, $unusedClients), 200);
     }
-
-    public function updateAllFromFakturoid()
-    {
-        $this->authorize('updateAllFromFakturoid', new Client());
-        $fcs = new FakturoidClientService();
-        $subjects = $fcs->getAllSubjects();
-        $updatedClients = array();
-
-        foreach ($subjects as $subject) {
-            $client = Client::where('fakturoid_id', $subject->id)->first();
-            if (!empty($client)) {
-                if ($client->name !== $subject->name || $client->street != $subject->street || $client->email != $subject->email) {
-                    $this->updateColumn($client, 'name', $subject->name);
-                    $this->updateColumn($client, 'street', $subject->street);
-                    $this->updateColumn($client, 'city', $subject->city);
-                    $this->updateColumn($client, 'zip', $subject->zip);
-                    $this->updateColumn($client, 'country', $subject->country);
-                    $this->updateColumn($client, 'registration_no', $subject->registration_no);
-                    $this->updateColumn($client, 'email', $subject->email);
-                    $updatedClients[] = $client;
-                }
-            }
-        }
-
-        return response()->json($updatedClients, 200);
-    }
 }
