@@ -41,9 +41,11 @@ class Invoice extends Model implements AuthenticatableContract, AuthorizableCont
     private $text = null;
     public $client;
 
-    public function __construct($dueDate)
+    const OPEN_STATUSES = array('open', 'sent', 'overdue');
+    const CLOSED_STATUSES = array('paid', 'cancelled');
+
+    public function __construct()
     {
-        $this->setDue(strtotime($dueDate));
         $this->fcs = new FakturoidClientService();
     }
 
@@ -243,5 +245,40 @@ class Invoice extends Model implements AuthenticatableContract, AuthorizableCont
             }
         }
         return $people;
+    }
+
+    /**
+     * Confirms whether the greybox invoice is different from Fakturoid invoice
+     *
+     * @param $invoice
+     * @return boolean
+     */
+    public function isDifferentFromFakturoidInvoice($invoice): bool
+    {
+        if ($this->status !== $invoice->status) return true;
+        if ($this->due_on !== $invoice->due_on) return true;
+        if ($this->total !== $invoice->total) return true;
+        return false;
+    }
+
+    /**
+     * Updates invoice data fields from Fakturoid invoice
+     *
+     * @param $invoice
+     * @return void
+     */
+    public function updateFromFakturoid($invoice): void
+    {
+        $this->update([
+            'number' => $invoice->number, // TODO: solve client
+            'status' => $invoice->status,
+            'issued_on' => $invoice->issued_on,
+            'taxable_fulfillment_due' => $invoice->taxable_fulfillment_due,
+            'due_on' => $invoice->due_on,
+            'currency' => $invoice->currency,
+            'language' => $invoice->language,
+            'total' => $invoice->total,
+            'paid_amount' => $invoice->paid_amount
+        ]);
     }
 }

@@ -118,7 +118,8 @@ class RegistrationController extends FakturoidController
             $registrationGroup = $registration->getRegistrationGroup();
             $event = $registration->event()->first();
             $data = new \stdClass();
-            $invoice = new Invoice($event->soft_deadline);
+            $invoice = new Invoice();
+            $invoice->setDue(strtotime($event->soft_deadline));
             $user = $registration->registeredBy()->first();
 
             if (0 === count($registrationGroup)) {

@@ -77,7 +77,7 @@ class Client extends Model implements AuthenticatableContract, AuthorizableContr
     }
 
     /**
-     * Updates client data fields from Fakturoid subject and saves to the DB
+     * Updates client data fields from Fakturoid subject
      *
      * @param $subject
      * @return void
