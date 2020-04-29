@@ -6,7 +6,7 @@ namespace App\Services;
 use Fakturoid\Client as FakturoidClient;
 use Fakturoid\Response;
 
-class FakturoidClientService
+class FakturoidClientService // TODO: split into 2 services: subjects and invoices
 {
 
     private $fakturoidClient;
@@ -29,14 +29,16 @@ class FakturoidClientService
     public function getAllSubjects(): array
     {
         $subjects = array();
+        $link = $this->fakturoidClient->getSubjects()->getHeader('Link');
 
-        for ($page = 1; $page <= $this->getPagesCount(); $page++) {
+        for ($page = 1; $page <= $this->getPagesCount($link); $page++)
+        {
             $subjectsPage = $this->fakturoidClient->getSubjects(["page" => $page])->getBody();
-            foreach ($subjectsPage as $subject) {
+            foreach ($subjectsPage as $subject)
+            {
                 array_push($subjects, $subject);
             }
         }
-
         return $subjects;
     }
 
@@ -45,11 +47,30 @@ class FakturoidClientService
         return $this->fakturoidClient->createInvoice($invoiceData);
     }
 
-    private function getPagesCount(): int
+    /*
+     * Get array of all invoices from Fakturoid
+     *
+     * @return array
+     */
+    public function getAllInvoices(): array
     {
-        $link = $this->fakturoidClient->getSubjects()->getHeader('Link');
+        $invoices = array();
+        $link = $this->fakturoidClient->getInvoices()->getHeader('Link');
 
-        if (!empty($link)) {
+        for ($page = 1; $page <= $this->getPagesCount($link); $page++)
+        {
+            $invoicesPage = $this->fakturoidClient->getInvoices(['page' => $page])->getBody();
+            foreach ($invoicesPage as $invoice)
+            {
+                array_push($invoices, $invoice);
+            }
+        }
+        return $invoices;
+    }
+
+    private function getPagesCount($link = null): int
+    {
+        if (null !== $link) {
             $parts = explode('=', $link);
             preg_match('/[0-9]+/', $parts[1], $lastPage);
         } else {
