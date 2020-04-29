@@ -4,6 +4,7 @@ namespace App\Console;
 
 use App\Jobs\FakturoidClientUpdateJob;
 use App\Jobs\FakturoidInvoiceUpdateJob;
+use App\Jobs\PasswordResetsDeleteJob;
 use App\Services\FakturoidClientService;
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
@@ -33,6 +34,10 @@ class Kernel extends ConsoleKernel
 
         $schedule->job(new FakturoidInvoiceUpdateJob(new FakturoidClientService()))
             ->description('Update invoices data from Fakturoid.')
+            ->daily();
+
+        $schedule->job(new PasswordResetsDeleteJob())
+            ->description('Delete password resets older than 24 hours.')
             ->daily();
     }
 }
