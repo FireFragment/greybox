@@ -8,6 +8,7 @@ use App\Jobs\PasswordResetsDeleteJob;
 use App\Services\FakturoidClientService;
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
+use App\Models\Cron;
 
 class Kernel extends ConsoleKernel
 {
@@ -30,14 +31,23 @@ class Kernel extends ConsoleKernel
     {
         $schedule->job(new FakturoidClientUpdateJob(new FakturoidClientService()))
             ->description('Update clients data from Fakturoid subjects.')
-            ->daily();
+            ->everyMinute() // hack for Heroku
+            ->when(function() {
+                return Cron::shouldRun('FakturoidClientUpdateJob', 24);
+            });
 
         $schedule->job(new FakturoidInvoiceUpdateJob(new FakturoidClientService()))
             ->description('Update invoices data from Fakturoid.')
-            ->daily();
+            ->everyMinute() // hack for Heroku
+            ->when(function() {
+                return Cron::shouldRun('FakturoidInvoiceUpdateJob', 24);
+            });
 
         $schedule->job(new PasswordResetsDeleteJob())
             ->description('Delete password resets older than 24 hours.')
-            ->daily();
+            ->everyMinute() // hack for Heroku
+            ->when(function() {
+                return Cron::shouldRun('PasswordResetsDeleteJob', 24);
+            });
     }
 }
