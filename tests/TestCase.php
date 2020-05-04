@@ -2,6 +2,8 @@
 
 abstract class TestCase extends Laravel\Lumen\Testing\TestCase
 {
+    protected $apiPrefix = '/api';
+
     /**
      * Creates the application.
      *
