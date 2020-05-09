@@ -12,10 +12,11 @@ use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
-    private $regex = '/^\S*(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])\S*$/';
+    const PASSWORD_REGEX = '/^\S*(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])\S*$/';
 
     public function __construct()
     {
+        // TODO: solve auth/only
         $this->middleware('auth', ['only' => [
             'logout',
             'showAll',
@@ -33,52 +34,39 @@ class UserController extends Controller
             'password' => 'required'
         ]);
         $username = User::normalizeUserName($request->input('username'));
-
         $user = User::where('username', $username)->first();
-        if (!empty($user)) {
-            if (Hash::check($request->input('password'), $user->password)) {
-                try {
-                    $api_token = sha1($user->id.time());
-
-                    $user->update(['api_token' => $api_token]);
-                    $user->setRole(); // TODO: vyřešit elegantněji
-
-                    $return_value = array(
-                        'id_token' => $api_token,
-                        'id' => $user->id,
-                        'username' => $user->username,
-                        'role' => $user->role,
-                        'api_token' => $user->api_token,
-                        'created_at' => $user->created_at,
-                        'updated_at' => $user->updated_at
-                    );
-
-                    return response()->json($return_value, 200)
-                        ->header('Authorization', 'Bearer '.$api_token)
-                        ->header('Access-Control-Expose-Headers', 'Authorization');
-                } catch (\Illuminate\Database\QueryException $e) {
-                    return response()->json(['message' => $e->getMessage()], 500);
-                }
-            } else {
-                return response()->json(['message' => 'invalidCredentials'], 401);
-            }
-        } else {
+        if (empty($user))
+        {
             return response()->json(['message' => 'invalidCredentials'], 401);
+        }
+        if (!$user->isPasswordCorrect($request->input('password')))
+        {
+            return response()->json(['message' => 'invalidCredentials'], 401);
+        }
+        try {
+            $user->setApiToken();
+            $user->setRole(); // TODO: vyřešit elegantněji
+            $user->id_token = $user->api_token;
+            return response()->json($user, 200)
+                ->header('Authorization', 'Bearer '.$user->api_token)
+                ->header('Access-Control-Expose-Headers', 'Authorization');
+        } catch (\Illuminate\Database\QueryException $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
         }
     }
 
     public function logout(Request $request)
     {
+        $user = User::where('api_token', $request->input('api_token'))->first();
+        if (empty($user))
+        {
+            return response()->json(['message' => 'invalidCredentials'], 401);
+        }
         try {
-            $user = User::where('api_token', $request->input('api_token'))->first();
-            try {
-                $user->update([
-                        'api_token' => null
-                ]);
-                return response()->json($user, 200);
-            } catch (\Illuminate\Database\QueryException $e) {
-                return response()->json(['message' => $e->getMessage()], 500);
-            }
+            $user->update([
+                    'api_token' => null
+            ]);
+            return response()->json(['message' => 'logoutSuccessful'], 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -115,7 +103,7 @@ class UserController extends Controller
              */
             //'person_id' => 'required',
             'username' => 'required|email',
-            'password' => 'required|min:8|confirmed|regex:'.$this->regex
+            'password' => 'required|min:8|confirmed|regex:'.self::PASSWORD_REGEX
         ]);
 
         try {
@@ -171,7 +159,7 @@ class UserController extends Controller
         $this->validate($request, [
             'username' => 'required|email',
             'password_old' => 'required',
-            'password' => 'required|min:8|confirmed|regex:'.$this->regex
+            'password' => 'required|min:8|confirmed|regex:'.self::PASSWORD_REGEX
         ]);
 
         try {
@@ -253,7 +241,7 @@ class UserController extends Controller
     {
         $this->validate($request, [
             'token' => 'required',
-            'password' => 'required|min:8|confirmed|regex:'.$this->regex
+            'password' => 'required|min:8|confirmed|regex:'.self::PASSWORD_REGEX
         ]);
 
         $token = $request->input('token');

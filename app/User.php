@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Auth\Authenticatable;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Lumen\Auth\Authorizable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -27,10 +28,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $hidden = [
-        'password' // , 'api_token'  temporary workaround
+        'password'
     ];
-
-    public $role;
 
     /**
      * @return boolean
@@ -66,9 +65,35 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function setRole() {
         $this->role = 'none';
         if ($this->isAdmin()) $this->role = 'admin';
+        return $this->role;
     }
 
-    static public function normalizeUserName($username) {
+    /**
+     * Sets Api Token parameter and saves to the DB
+     */
+    public function setApiToken()
+    {
+        $this->api_token = sha1($this->id.time());
+        $this->save();
+    }
+
+    /**
+     * Converts username to lowercase
+     * @param string $username
+     * @return string
+     */
+    static public function normalizeUserName(string $username): string
+    {
         return strtolower($username);
+    }
+
+    /**
+     * Check password
+     * @param $password
+     * @return bool
+     */
+    public function isPasswordCorrect($password): bool
+    {
+        return Hash::check($password, $this->password);
     }
 }
