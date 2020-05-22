@@ -304,38 +304,15 @@
           </div>
         </template>
 -->
-    <!--
-    Note
-        <q-input
+    <q-input
       v-model="values.note"
       class="q-mt-sm"
       outlined
       autogrow
       :label="$tr('fields.note')"
     >
-          <template v-slot:prepend>
-        <q-icon name="fas fa-sticky-note" />
-      </template>
-    </q-input>
-
-    -->
-
-    <!-- temporary e-mail: -->
-    <q-input
-      v-model="values.note"
-      class="q-mt-sm"
-      type="email"
-      outlined
-      :label="$tr('auth.fields.email', null, false)"
-      lazy-rules
-      :rules="[
-        val =>
-          (val !== null && val !== '') ||
-          $tr(`general.form.fieldError`, null, false)
-      ]"
-    >
       <template v-slot:prepend>
-        <q-icon name="fas fa-at" />
+        <q-icon name="fas fa-sticky-note" />
       </template>
     </q-input>
 
