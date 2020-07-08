@@ -302,4 +302,27 @@ class UserController extends Controller
         $clients = $user->clients()->get();
         return response()->json($clients, 200);
     }
+
+    public function showTeams($id)
+    {
+        $user = User::find($id);
+        $registrations = $user->registrations()->select('team')->whereNotNull('team')->groupBy('team')->get();
+
+        $teams = array();
+        foreach ($registrations as $registration)
+        {
+            $team = $registration->team()->first();
+            if (!empty($team)) {
+                $teams[] = $team;
+            }
+        }
+
+        usort($teams, function ($a, $b) {
+            $coll = new \Collator('cs_CZ');
+            return $coll->compare($a->name, $b->name);
+        });
+
+        return response()->json($teams, 200);
+
+    }
 }

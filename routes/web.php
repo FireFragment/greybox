@@ -27,6 +27,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 	$router->put('user/{id}/password', ['uses' => 'UserController@updatePassword']);
 	$router->get('user/{id}/person', ['uses' => 'UserController@showPeople']);
     $router->get('user/{id}/client', ['uses' => 'UserController@showClients']);
+    $router->get('user/{id}/team', ['uses' => 'UserController@showTeams']);
 
 	$router->post('login', ['uses' => 'UserController@login']);
 	$router->post('logout', ['uses' => 'UserController@logout']);
