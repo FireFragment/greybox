@@ -31,7 +31,6 @@ class UserWSTest extends TestCase
             'username',
             'role',
             'api_token',
-            'role',
             'created_at',
             'updated_at'
         ]);
@@ -94,6 +93,74 @@ class UserWSTest extends TestCase
 
         $this->seeStatusCode(401);
     }
+
+    public function testShowAllAdmin()
+    {
+        factory(User::class)->create();
+        $admin = factory(User::class)->states('admin')->create();
+        $loginFormValues = array(
+            'username' => $admin->username,
+            'password' => 'testPassword1'
+        );
+        $loggedAdmin = $this->call('POST', $this->apiPrefix.'/login', $loginFormValues);
+
+        $headers = array(
+            'Authorization' => $loggedAdmin['api_token']
+        );
+        $this->get($this->apiPrefix.'/user', $headers);
+        $response = json_decode($this->response->content(), true);
+
+        $this->seeStatusCode(200);
+        $this->assertGreaterThanOrEqual(2, count($response));
+        $this->seeJsonStructure([
+            'id',
+            'username',
+            'api_token',
+            'created_at',
+            'updated_at'
+        ], $response[0]);
+        $this->seeJsonStructure([
+            'id',
+            'username',
+            'api_token',
+            'created_at',
+            'updated_at'
+        ], $response[1]);
+    }
+
+    public function testShowAllNormalUser()
+    {
+        $normalUser = factory(User::class)->create();
+        $loginFormValues = array(
+            'username' => $normalUser->username,
+            'password' => 'testPassword1'
+        );
+        $loggedNormalUser = $this->call('POST', $this->apiPrefix.'/login', $loginFormValues);
+
+        $headers = array(
+            'Authorization' => $loggedNormalUser['api_token']
+        );
+        $this->get($this->apiPrefix.'/user', $headers);
+        $response = json_decode($this->response->content(), true);
+
+        $this->seeStatusCode(200);
+        $this->assertEquals(1, count($response));
+        $this->seeJsonStructure([
+            'id',
+            'username',
+            'api_token',
+            'created_at',
+            'updated_at'
+        ], $response[0]);
+    }
+
+    public function testShowAllNotLogged()
+    {
+        $this->get($this->apiPrefix.'/user');
+        $this->seeStatusCode(401);
+    }
+
+    // TODO: testShowOne, testCreate, test
 
     public function testCreateUser()
     {

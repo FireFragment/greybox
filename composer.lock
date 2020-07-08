@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ac52024aa09de1fea7eabb38708a952d",
+    "content-hash": "f29992a17f27aee0aabe37adf924c40c",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -2213,6 +2213,45 @@
                 "parser"
             ],
             "time": "2020-04-24T13:39:56+00:00"
+        },
+        {
+            "name": "loudislav/debatematch",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/loudislav/DebateMatch.git",
+                "reference": "e13237f93eade09c18e9fab8aee392cabb01a6ac"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/loudislav/DebateMatch/zipball/e13237f93eade09c18e9fab8aee392cabb01a6ac",
+                "reference": "e13237f93eade09c18e9fab8aee392cabb01a6ac",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~8.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "DebateMatch\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "proprietary"
+            ],
+            "authors": [
+                {
+                    "name": "loudislav",
+                    "email": "loudislav@gmail.com"
+                }
+            ],
+            "description": "description",
+            "time": "2020-07-05T15:57:15+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -6225,7 +6264,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "loudislav/debatematch": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

@@ -12,10 +12,16 @@
 */
 
 use Faker\Generator;
+use App\User;
 
-$factory->define(App\User::class, function (Generator $faker) {
+$factory->define(User::class, function (Generator $faker) {
     return [
         'username' => $faker->unique()->safeEmail,
         'password' => app()->make('hash')->make('testPassword1')
     ];
+});
+
+$factory->state(User::class, 'admin', function (Generator $faker) use ($factory) {
+    $user = $factory->raw(User::class);
+    return array_merge($user, ['admin' => true]);
 });
