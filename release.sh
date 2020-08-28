@@ -55,7 +55,6 @@ GIT_API_TOKEN=$(<.GIT_TOKEN)
 
 # POST tag name, release name and changelog to GitHub API
 releaseResult=$(curl \
-    --silent \
     -X POST \
     -H "Accept: application/vnd.github.v3+json" \
     -H "Authorization: token ${GIT_API_TOKEN}" \
@@ -64,6 +63,7 @@ releaseResult=$(curl \
 
 # Replace occurences of new lines inside script to prevent JSON parse fail
 releaseResult=${releaseResult//\\r\\n/"-"}
+releaseResult=${releaseResult//\\n/"-"}
 
 # Parse request JSON response and get upload URL
 releaseUploadUrl=$(python3 -c "import json; print(json.loads('${releaseResult}')['upload_url'])")
