@@ -15,7 +15,8 @@ class TeamController extends Controller
             'showOne',
             'create',
             'delete',
-            'update'
+            'update',
+            'merge'
         ]]);
     }
 
@@ -38,8 +39,6 @@ class TeamController extends Controller
         try {
             $team = Team::create([
                 'name' => $request->input('name'),
-                // TODO: to be deleted
-                'event' => $request->input('event'),
                 'registered_by' => \Auth::user()->id // to be checked
             ]);
             return response()->json($team, 201);
@@ -84,6 +83,21 @@ class TeamController extends Controller
             }  catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['message' => $e->getMessage()], 500);
             }
+        } catch (\Illuminate\Database\QueryException $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function merge(Request $request)
+    {
+        $team = $request->input('team');
+        $merge = $request->input('merge');
+        try {
+            \DB::table('registrations')
+                ->where('team', $team)
+                ->update(['team' => $merge]);
+            Team::findOrFail($team)->delete();
+            return response()->json(['message' => 'Deleted successfully.'], 204);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }

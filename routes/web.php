@@ -46,6 +46,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 	$router->post('team', ['uses' => 'TeamController@create']);
 	$router->delete('team/{id}', ['uses' => 'TeamController@delete']);
 	$router->put('team/{id}', ['uses' => 'TeamController@update']);
+	$router->post('team/merge', ['uses' => 'TeamController@merge']);
 
     $router->get('event',  ['uses' => 'EventController@showAll']);
     $router->get('event/{id}', ['uses' => 'EventController@showOne']);
@@ -54,6 +55,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->put('event/{id}', ['uses' => 'EventController@update']);
     $router->get('event/{id}/registration', ['uses' => 'EventController@showRegistrations']);
     $router->get('event/{eventId}/user/{userId}/registration', ['uses' => 'EventController@showUserRegistrations']);
+    $router->get('event/{eventId}/draw/{roundNumber}', ['uses => EventController@draw']);
 
     $router->get('person',  ['uses' => 'PersonController@showAll']);
     $router->get('person/{id}', ['uses' => 'PersonController@showOne']);

@@ -18,7 +18,7 @@ class Team extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $fillable = [
-        'name', 'event', 'registered_by'
+        'name', 'registered_by'
     ];
 
     /**
