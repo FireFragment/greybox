@@ -98,6 +98,8 @@
       :label="$tr('fields.id_number')"
       class="q-pt-sm"
       mask="#########"
+      @click="moveCaretToFront"
+      @focus="moveCaretToFront"
       fill-mask="_"
       :hint="$tr('fieldNotes.example') + ' 123456789'"
       lazy-rules
@@ -168,6 +170,8 @@
       mask="### ##"
       fill-mask="_"
       :hint="$tr('fieldNotes.example') + ' 796 01'"
+      @click="moveCaretToFront"
+      @focus="moveCaretToFront"
       lazy-rules
       :rules="[
         val =>
@@ -535,6 +539,13 @@ export default {
           "-" +
           (day ? day.value : "00")
         );
+    },
+    moveCaretToFront(event) {
+      let input = event.srcElement;
+      input.setSelectionRange(0, 0);
+      setTimeout(function() {
+        input.setSelectionRange(0, 0);
+      }, 100);
     }
   },
 
