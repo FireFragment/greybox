@@ -28,4 +28,17 @@ read title
 printf "What changes are in this release? Each point on a new line started by *, end with CTRL + D\n"
 readarray -t changelist
 
-# TODO - upload ${title}, ${changelist} and created files to GitHub https://developer.github.com/v3/repos/releases/#create-a-release
+# Load API token from config file
+GIT_API_TOKEN=$(<.GIT_TOKEN)
+
+echo "Creating release..."
+
+# POST tag name, release name and changelog to GitHub API
+curl \
+    -X POST \
+    -H "Accept: application/vnd.github.v3+json" \
+    -H "Authorization: token ${GIT_API_TOKEN}" \
+    https://api.github.com/repos/loudislav/greybox/releases \
+    -d "{\"tag_name\": \"${1}\", \"name\": \"${title}\", \"body\": \"${changelist}\"}"
+
+# TODO - uploade assets to GitHub release https://developer.github.com/v3/repos/releases/#create-a-release
