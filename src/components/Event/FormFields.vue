@@ -29,6 +29,31 @@
     </div>
 
     <div
+      class="block"
+      v-if="accommodationType !== 'required' && accommodationType !== 'none'"
+    >
+      <q-checkbox
+        v-model="values.accommodation"
+        v-if="accommodationType !== 'opt-in'"
+        :true-value="false"
+        :false-value="true"
+        :label="$tr('fields.accommodation')"
+      />
+      <q-checkbox
+        v-model="values.accommodation"
+        v-else
+        :true-value="true"
+        :false-value="false"
+        :label="$tr('fields.accommodationOptIn')"
+      />
+      <q-icon name="fas fa-info-circle" class="q-pl-sm">
+        <q-tooltip anchor="top middle" self="bottom middle" :offset="[0, 0]">
+          {{ $tr("fieldNotes.accommodation") }}
+        </q-tooltip>
+      </q-icon>
+    </div>
+
+    <div
       class="row q-col-gutter-sm"
       @keydown="selectKeyPress"
       v-if="accommodationType !== 'none' && values.accommodation === true"
@@ -225,30 +250,6 @@
       />
     </div>
 
-    <div
-      class="block"
-      v-if="accommodationType !== 'required' && accommodationType !== 'none'"
-    >
-      <q-checkbox
-        v-model="values.accommodation"
-        v-if="accommodationType !== 'opt-in'"
-        :true-value="false"
-        :false-value="true"
-        :label="$tr('fields.accommodation')"
-      />
-      <q-checkbox
-        v-model="values.accommodation"
-        v-else
-        :true-value="true"
-        :false-value="false"
-        :label="$tr('fields.accommodationOptIn')"
-      />
-      <q-icon name="fas fa-info-circle" class="q-pl-sm">
-        <q-tooltip anchor="top middle" self="bottom middle" :offset="[0, 0]">
-          {{ $tr("fieldNotes.accommodation") }}
-        </q-tooltip>
-      </q-icon>
-    </div>
     <!--
         <template>
           <div class="q-mr-lg">
