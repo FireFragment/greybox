@@ -98,7 +98,6 @@
       :label="$tr('fields.id_number')"
       class="q-pt-sm"
       mask="#########"
-      @click="moveCaretToFront"
       @focus="moveCaretToFront"
       fill-mask="_"
       :hint="$tr('fieldNotes.example') + ' 123456789'"
@@ -545,7 +544,7 @@ export default {
       input.setSelectionRange(0, 0);
       setTimeout(function() {
         input.setSelectionRange(0, 0);
-      }, 100);
+      }, 50);
     }
   },
 
