@@ -22,7 +22,7 @@ class TeamController extends Controller
 
     public function showAll()
     {
-        return response()->json(Team::all());
+        return response()->json(Team::orderBy('name')->get());
     }
 
     public function showOne($id)
