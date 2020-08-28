@@ -15,6 +15,18 @@ Main difference is that only **production** has Vue devtools turned off and uses
 
 Configuration can be changed in `.env.[mode]` files in root folder. Current mode will be visible next to logo in navbar (except for production).
 
+### Releasing versions
+After commiting and pushing big progress, you are encouraged to create a new release.
+
+**Preparation:**
+- Generate new GitHub token in [administration](https://github.com/settings/tokens)
+- Add this token to `.GIT_TOKEN` file located in root folder
+
+**Releasing:**
+- Run `./release.sh` script
+- Fill in requested information - version number, release title and release description
+- Wait for the script to make builds and upload release
+
 ### Compiles and hot-reloads for development
 ```
 npm run serve
@@ -29,18 +41,11 @@ npm run build
 
 This command builds **production** mode by default. Use `npm run build:debug` to build debug version or `npm run build:dev` for development.
 
-### Run your tests
-```
-npm run test
-```
 
 ### Lints and fixes files
 ```
 npm run lint
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ## Deployment
 This project is ready to be deployed on apache webserver with history router mode. To change the directory of the app, you need to edit it in `vue.config.js:2`, `src/router.js:19` and `public/.htaccess:7` and rebuild.

@@ -41,9 +41,17 @@ rm -f registrace.zip registrace_debugbox.zip
 npm run build
 npm run build:debug
 
-# ZIP created files
-zip -r registrace.zip registrace
-zip -r registrace_debugbox.zip registrace_debugbox
+# Create zip files
+if ! command -v tar &> /dev/null
+then
+    # tar command not found -> Windows
+    tar.exe -a -c -f registrace.zip registrace
+    tar.exe -a -c -f registrace_debugbox.zip registrace_debugbox
+else
+    # tar command found -> Linux
+    tar -a -c -f registrace.zip registrace
+    tar -a -c -f registrace_debugbox.zip registrace_debugbox
+fi
 
 
 
@@ -66,7 +74,14 @@ releaseResult=${releaseResult//\\r\\n/"-"}
 releaseResult=${releaseResult//\\n/"-"}
 
 # Parse request JSON response and get upload URL
-releaseUploadUrl=$(python3 -c "import json; print(json.loads('${releaseResult}')['upload_url'])")
+if ! command -v py &> /dev/null
+then
+    # py command not found -> Linux
+    releaseUploadUrl=$(python3 -c "import json; print(json.loads('${releaseResult}')['upload_url'])")
+else
+    # py command found -> Windows
+    releaseUploadUrl=$(py -c "import json; print(json.loads('${releaseResult}')['upload_url'])")
+fi
 
 # Remove unnecessary appendix in URL
 releaseUploadUrl=${releaseUploadUrl%\{?name,label\}}
