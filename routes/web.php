@@ -25,7 +25,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 	$router->delete('user/{id}', ['uses' => 'UserController@delete']);
 	$router->put('user/{id}', ['uses' => 'UserController@update']);
 	$router->put('user/{id}/password', ['uses' => 'UserController@updatePassword']);
-	$router->get('user/{id}/person', ['uses' => 'UserController@showPeople']);
+	$router->get('user/{userId}/person[/event/{eventId}]', ['uses' => 'UserController@showPeople']);
     $router->get('user/{id}/client', ['uses' => 'UserController@showClients']);
     $router->get('user/{id}/team', ['uses' => 'UserController@showTeams']);
 

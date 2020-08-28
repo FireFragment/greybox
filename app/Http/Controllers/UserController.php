@@ -276,16 +276,38 @@ class UserController extends Controller
         }
     }
 
-    public function showPeople($id) {
-        $user = User::find($id);
-        $registrations = $user->registrations()->select('person')->whereNotNull('person')->groupBy('person')->get();
+    public function showPeople($userId, $eventId = null)
+    {
+        $user = User::find($userId);
+        $userRegistrations = $user->registrations()->select('person')->whereNotNull('person')->groupBy('person')->get();
+
+        if (null !== $eventId)
+        {
+            $event = \App\Event::find($eventId);
+            $eventRegistrations = $event->registrations()->get();
+        }
 
         $people = array();
-        foreach ($registrations as $registration)
+        foreach ($userRegistrations as $registration)
         {
-            $person = $registration->person()->get();
-            if (!empty($person[0])) {
-                $people[] = $person[0];
+            $person = $registration->person()->first();
+            if (!empty($person))
+            {
+                if (isset($eventRegistrations))
+                {
+                    foreach ($eventRegistrations as $eventRegistration)
+                    {
+                        $eventPerson = $eventRegistration->person()->first();
+
+                        $person->registered = false;
+                        if ($eventPerson->id == $person->id)
+                        {
+                            $person->registered = true;
+                            break;
+                        }
+                    }
+                }
+                $people[] = $person;
             }
         }
 
