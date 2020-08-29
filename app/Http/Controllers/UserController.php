@@ -292,7 +292,16 @@ class UserController extends Controller
             }
         }
 
-        $deletedPeople = $user->deletedAutofills()->get();
+        $deletedAutofills = $user->deletedAutofills()->get();
+        $deletedPeople = array();
+        foreach ($deletedAutofills as $deletedAutofill)
+        {
+            $deletedPerson = $deletedAutofill->person()->first();
+            if (!empty($deletedPerson))
+            {
+                $deletedPeople[] = $deletedPerson;
+            }
+        }
 
         $eventRegisteredPeople = array();
         if (null !== $eventId)
