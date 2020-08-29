@@ -18,7 +18,7 @@ class Registration extends Model implements AuthenticatableContract, Authorizabl
      * @var array
      */
     protected $fillable = [
-        'person', 'note', 'event', 'role', 'accommodation', 'confirmed', 'team', 'registered_by'
+        'person', 'note', 'event', 'role', 'accommodation', 'meals', 'confirmed', 'team', 'registered_by'
     ];
 
     /**

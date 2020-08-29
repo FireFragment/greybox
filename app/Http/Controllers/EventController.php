@@ -60,6 +60,9 @@ class EventController extends Controller
         return response()->json($event);
     }
 
+    /*
+     * TODO: Add accommodation, meals and membership required
+     */
     public function create(Request $request)
     {
         $this->validate($request, [
@@ -112,6 +115,9 @@ class EventController extends Controller
         }
     }
 
+    /*
+     * TODO: Add accommodation, meals and membership required
+     */
     public function update($id, Request $request)
     {
         try {
@@ -203,5 +209,10 @@ class EventController extends Controller
         }
 
         return response()->json($registrations);
+    }
+
+    public function draw($eventId, $roundNumber)
+    {
+        $matchingProcessor = new \DebateMatch\MatchingProcessor();
     }
 }

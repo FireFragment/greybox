@@ -67,7 +67,8 @@ class RegistrationController extends FakturoidController
                 'note' => $request->input('note'),
                 'event' => $request->input('event'),
                 'role' => $request->input('role'),
-                'accommodation' => $request->input('accommodation'),
+                'accommodation' => $request->input('accommodation', 1),
+                'meals' => $request->input('meals', 1),
                 'team' => $request->input('team'),
                 'registered_by' => \Auth::user()->id // to be checked
             ]);
@@ -92,6 +93,7 @@ class RegistrationController extends FakturoidController
             if ($request->has('event')) $this->updateColumn($registration, 'event', $request->input('event'));
             if ($request->has('role')) $this->updateColumn($registration, 'role', $request->input('role'));
             if ($request->has('accommodation')) $this->updateColumn($registration, 'accommodation', $request->input('accommodation'));
+            if ($request->has('meals')) $this->updateColumn($registration, 'meals', $request->input('meals'));
             if ($request->has('team')) $this->updateColumn($registration, 'team', $request->input('team'));
 
             return response()->json($registration, 200);
