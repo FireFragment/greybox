@@ -28,4 +28,9 @@ class Team extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     protected $hidden = [
     ];
+
+    public function registrations()
+    {
+        return $this->hasMany(Registration::class, 'team', 'id');
+    }
 }

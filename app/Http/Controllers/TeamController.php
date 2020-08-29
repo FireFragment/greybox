@@ -27,7 +27,17 @@ class TeamController extends Controller
 
     public function showOne($id)
     {
-        return response()->json(Team::find($id));
+        $team = Team::find($id);
+        $registrations = $team->registrations()->select('person')->whereNotNull('person')->groupBy('person')->limit(5)->get();
+
+        $members = array();
+        foreach ($registrations as $registration)
+        {
+            $members[] = $registration->person()->first();
+        }
+        
+        $team->members = $members;
+        return response()->json($team);
     }
 
     public function create(Request $request)
