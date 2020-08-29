@@ -48,6 +48,12 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 	$router->put('team/{id}', ['uses' => 'TeamController@update']);
 	$router->post('team/merge', ['uses' => 'TeamController@merge']);
 
+    $router->get('institution',  ['uses' => 'InstitutionController@showAll']);
+    $router->get('institution/{id}', ['uses' => 'InstitutionController@showOne']);
+    $router->post('institution', ['uses' => 'InstitutionController@create']);
+    $router->delete('institution/{id}', ['uses' => 'InstitutionController@delete']);
+    $router->put('institution/{id}', ['uses' => 'InstitutionController@update']);
+
     $router->get('event',  ['uses' => 'EventController@showAll']);
     $router->get('event/{id}', ['uses' => 'EventController@showOne']);
     $router->post('event', ['uses' => 'EventController@create']);
