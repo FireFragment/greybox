@@ -34,8 +34,8 @@ git push origin ${version}
 
 # ------------------- DELETE OLD BUILDS AND CREATE NEW ONES
 # Remove old builds
-rm -rf registrace registrace_debugbox registration
-rm -f registrace.zip registrace_debugbox.zip registration.zip
+rm -rf registrace debugbox registration
+rm -f registrace.zip debugbox.zip registration.zip
 
 # Build production & debug
 npm run build
@@ -47,12 +47,12 @@ if ! command -v tar &> /dev/null
 then
     # tar command not found -> Windows
     tar.exe -a -c -f registrace.zip registrace
-    tar.exe -a -c -f registrace_debugbox.zip registrace_debugbox
+    tar.exe -a -c -f debugbox.zip debugbox
     tar.exe -a -c -f registration.zip registration
 else
     # tar command found -> Linux
     tar -a -c -f registrace.zip registrace
-    tar -a -c -f registrace_debugbox.zip registrace_debugbox
+    tar -a -c -f debugbox.zip debugbox
     tar -a -c -f registration.zip registration
 fi
 
@@ -95,8 +95,8 @@ releaseUploadUrl=${releaseUploadUrl%\{?name,label\}}
 printf "\nRelease created, uploading files...\n"
 
 # Choose which files with which labels to upload
-fileNames=("registrace_debugbox.zip" "registrace.zip" "registration.zip")
-fileLabels=("Development%20build" "Production%20build" "International%20production%20build")
+fileNames=("debugbox.zip" "registrace.zip" "registration.zip")
+fileLabels=("Development%20build" "Production%20build" "PDS%20production%20build")
 
 # Loop through files to upload
 for i in ${!fileNames[@]}; do
@@ -123,3 +123,9 @@ for i in ${!fileNames[@]}; do
 
     sleep 1
 done
+
+
+
+# ------------------- CLEAR FOLDER FROM BUILDS
+rm -rf registrace debugbox registration
+rm -f registrace.zip debugbox.zip registration.zip
