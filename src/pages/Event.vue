@@ -236,7 +236,6 @@ export default {
     eventPromise.then(([event, isLoading]) => {
       this.event = event;
       this.accommodationType = event.accommodation;
-      console.log(event);
       this.mealType = event.meals;
       /*
       TODO: Load from event:
