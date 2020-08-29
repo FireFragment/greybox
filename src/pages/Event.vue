@@ -42,7 +42,10 @@
             {{ $tr("deadline") }}:
             {{ event.soft_deadline | moment("D. M. Y H:mm") }}
           </p>
-          <p v-if="event.note">{{ $tr(event.note) }}</p>
+          <p v-if="event.note">
+            <q-icon name="fas fa-info" class="text-primary" />
+            {{ $tr(event.note) }}
+          </p>
         </div>
       </q-card>
     </div>
