@@ -298,6 +298,19 @@
       </q-select>
     </div>
 
+    <!-- International tournament (PDS) option: -->
+    <template v-if="env.VUE_APP_IS_PDS === 'true'">
+      <div class="q-mt-md q-mb-md">
+        <div class="text-bold">{{ $tr("fields.speakerStatus") }}:</div>
+        <q-option-group
+          :options="speakerOptions"
+          label="Notifications"
+          type="radio"
+          v-model="values.speakerStatus"
+        />
+      </div>
+    </template>
+
     <!--
         <template>
           <div class="q-mr-lg">
@@ -429,14 +442,28 @@ export default {
         accept: false,
         birthDay: null,
         birthMonth: null,
-        birthYear: null
+        birthYear: null,
+        speakerStatus: null
         // -SCHOOL FIELD- school: null
       },
       acceptError: false,
       selectSearch: null,
       days: [],
       months: [],
-      years: []
+      years: [],
+      speakerOptions: [
+        { label: this.$tr("tournament.fields.EFL"), value: "efl" },
+        {
+          label: this.$tr("tournament.fields.ESL"),
+          value: "esl",
+          color: "red"
+        },
+        {
+          label: this.$tr("tournament.fields.ENL"),
+          value: "enl",
+          color: "green"
+        }
+      ]
     };
   },
 

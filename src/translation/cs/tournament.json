@@ -64,7 +64,11 @@
     "parentPhone": "Telefonní číslo",
     "parentEmail": "E-mailová adresa",
     "note": "Poznámka",
-    "school": "Škola"
+    "school": "Škola",
+    "speakerStatus": "Speaker status",
+    "EFL": "EFL (English as a Foreign Language)",
+    "ESL": "ESF (English as a Second Language)",
+    "ENL": "ENL (English as a Foreign Language)"
   },
   "fieldNotes": {
     "id_number": "Vyplňte prosím, pokud již občanský průkaz máte.",
