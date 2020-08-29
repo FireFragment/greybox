@@ -30,30 +30,6 @@
 
       <q-card-section>
         <div
-          v-for="(value, fieldName) in person.person"
-          v-bind:key="'person-fields-' + fieldName"
-        >
-          <template v-if="value && fieldName.substr(-4) !== 'name'">
-            <dt>{{ $tr("fields." + fieldName) }}:</dt>
-            <dd v-if="fieldName === 'vegetarian'">
-              {{
-                value ? $tr("checkout.values.yes") : $tr("checkout.values.yes")
-              }}
-            </dd>
-            <dd v-else-if="fieldName === 'birthdate'">
-              {{ value | moment("D. M. Y") }}
-            </dd>
-            <dd v-else-if="value != null">
-              {{ value }}
-            </dd>
-          </template>
-        </div>
-      </q-card-section>
-
-      <q-separator inset />
-
-      <q-card-section>
-        <div
           v-for="(value, fieldName) in person.registration"
           v-bind:key="'registration-fields-' + fieldName"
         >
@@ -73,6 +49,30 @@
               }}
             </dd>
             <dd v-else>
+              {{ value }}
+            </dd>
+          </template>
+        </div>
+      </q-card-section>
+
+      <q-separator v-if="person.registration.accommodation" inset />
+
+      <q-card-section v-if="person.registration.accommodation">
+        <div
+          v-for="(value, fieldName) in person.person"
+          v-bind:key="'person-fields-' + fieldName"
+        >
+          <template v-if="value && fieldName.substr(-4) !== 'name'">
+            <dt>{{ $tr("fields." + fieldName) }}:</dt>
+            <dd v-if="fieldName === 'vegetarian'">
+              {{
+                value ? $tr("checkout.values.yes") : $tr("checkout.values.yes")
+              }}
+            </dd>
+            <dd v-else-if="fieldName === 'birthdate'">
+              {{ value | moment("D. M. Y") }}
+            </dd>
+            <dd v-else-if="value != null">
               {{ value }}
             </dd>
           </template>
