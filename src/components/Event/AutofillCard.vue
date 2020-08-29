@@ -49,6 +49,7 @@
 </template>
 <script>
 import AutofillCardPerson from "./AutofillCardPerson";
+import { EventBus } from "../../event-bus";
 
 export default {
   data() {
@@ -74,11 +75,36 @@ export default {
     deletePerson() {
       let person = this.showDeleteButton;
 
-      // TODO: show delete confirm modal
+      this.$confirm({
+        confirm: this.$tr("general.confirmModal.remove", null, false),
+        message: this.$tr("removeModal.title")
+      }).onOk(() => {
+        EventBus.$emit("fullLoader", true);
 
-      // TODO: delete person from autofill
+        this.$api({
+          url: "deletedautofill",
+          method: "post",
+          alerts: false,
+          data: {
+            person: person.id
+          }
+        })
+          .then(() => {
+            // Remove removed person from cache
+            this.pastLogins = this.pastLogins.filter(
+              item => item.id !== person.id
+            );
+            this.$db("autofillDebaters", this.pastLogins, true);
 
-      alert("Deleting " + person.name);
+            this.$flash(this.$tr("removeModal.success"), "success");
+          })
+          .catch(() => {
+            this.$flash(this.$tr("removeModal.error"), "error");
+          })
+          .finally(() => {
+            EventBus.$emit("fullLoader", false);
+          });
+      });
     }
   },
 

@@ -15,10 +15,10 @@
                 <q-list class="smaller-margin-menu">
                   <q-item clickable @click="removePerson">
                     <q-item-section avatar>
-                      <q-icon name="fas fa-trash-alt" />
+                      <q-icon name="fas fa-trash" />
                     </q-item-section>
                     <q-item-section>{{
-                      $tr("checkout.actions.remove")
+                      $tr("general.confirmModal.remove", null, false)
                     }}</q-item-section>
                   </q-item>
                 </q-list>
@@ -106,7 +106,7 @@ export default {
   methods: {
     removePerson() {
       this.$confirm({
-        confirm: this.$tr("checkout.actions.removeModal.remove"),
+        confirm: this.$tr("general.confirmModal.remove", null, false),
         message: this.$tr("checkout.actions.removeModal.title")
       }).onOk(() => {
         this.$emit("remove", this.personIndex);

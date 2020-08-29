@@ -61,7 +61,7 @@
     "mealsOptIn": "Chci zařídit stravu.",
     "legalGuardian": "Zákonný zástupce",
     "parentName": "Celé jméno",
-    "parentPhone":  "Telefonní číslo",
+    "parentPhone": "Telefonní číslo",
     "parentEmail": "E-mailová adresa",
     "note": "Poznámka",
     "school": "Škola"
@@ -80,7 +80,12 @@
   "autofill": {
     "title": "Předvyplnit údaje dříve zadaných osob",
     "empty": "Nemáte žádné osoby k předvyplnění.",
-    "registered": "Již zaregistrované osoby"
+    "registered": "Již zaregistrované osoby",
+    "removeModal": {
+      "title": "Opravdu si přejete odstranit tuto osobu z našeptávače?",
+      "success": "Osoba úspěšně odstraněna",
+      "error": "Osobu se nepodařilo odstranit, opakujte akci"
+    }
   },
   "checkout": {
     "submit": "Potvrdit přihlásku",
@@ -95,8 +100,7 @@
     "actions": {
       "remove": "Odstranit přihlášku",
       "removeModal": {
-        "title": "Opravdu si přejete odstranit tuto přihlášku?",
-        "remove": "Odstranit"
+        "title": "Opravdu si přejete odstranit tuto přihlášku?"
       }
     },
     "validation": {
@@ -140,8 +144,7 @@
         "example": "Vzor:"
       },
       "removeModal": {
-        "title": "Opravdu si přejete odstranit tyto fakturační údaje?",
-        "remove": "Odstranit"
+        "title": "Opravdu si přejete odstranit tyto fakturační údaje?"
       },
       "success": {
         "add": "Fakturační údaje úspěšně přidány",

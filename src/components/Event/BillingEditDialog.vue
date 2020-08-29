@@ -247,7 +247,7 @@ export default {
       if (!this.client) return false;
 
       this.$confirm({
-        confirm: this.$tr("removeModal.remove"),
+        confirm: this.$tr("general.confirmModal.remove", null, false),
         message: this.$tr("removeModal.title")
       }).onOk(() => {
         EventBus.$emit("fullLoader", true);

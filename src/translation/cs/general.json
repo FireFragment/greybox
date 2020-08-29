@@ -12,7 +12,8 @@
   "confirmModal": {
     "title": "Potvrďte akci",
     "confirm": "Potvrdit",
-    "cancel": "Zrušit"
+    "cancel": "Zrušit",
+    "remove": "Odstranit"
   },
   "form": {
     "error": "Formulář obsahuje chyby",

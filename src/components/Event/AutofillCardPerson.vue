@@ -22,7 +22,7 @@
         <q-icon
           :style="'background-color: ' + $stringToHslColor(person.name)"
           :class="{ shown: showDeleteButton }"
-          name="fas fa-trash-alt"
+          name="fas fa-trash"
         />
       </q-avatar>
     </q-item-section>
