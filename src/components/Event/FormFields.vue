@@ -394,9 +394,9 @@
         <q-btn
           :label="$tr('buttons.clear')"
           type="reset"
-          color="primary"
+          color="negative"
           flat
-          class="q-pt-sm q-ml-sm"
+          class="q-ml-sm q-my-sm"
         />
       </div>
     </template>

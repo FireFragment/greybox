@@ -43,22 +43,22 @@
         :disabled="Object.keys(people).length >= maxMembers"
         :label="$tr('buttons.addDebater')"
         @click="addPerson"
-        class="q-mb-sm"
+        class="q-my-sm"
       />
       <q-btn
         :label="$tr('buttons.continue')"
         :disabled="!Object.keys(people).length"
         type="submit"
         color="primary"
-        class="q-ml-sm q-mr-sm q-mb-sm"
+        class="q-mx-sm q-my-sm"
       />
       <q-btn
         :label="$tr('buttons.clear')"
         type="reset"
-        color="primary"
+        color="negative"
         @click="$emit('goToRolePick')"
         flat
-        class="q-pt-sm q-mb-sm"
+        class="q-my-sm"
       />
     </div>
   </q-form>

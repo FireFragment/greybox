@@ -2,7 +2,7 @@
   <q-list
     class="rounded-borders shadow-2 q-pb-sm bg-white debaters-sticky-card"
   >
-    <q-scroll-area style="height: calc(100vh - 130px);">
+    <q-scroll-area>
       <div
         class="empty-info"
         v-if="
