@@ -123,3 +123,9 @@ for i in ${!fileNames[@]}; do
 
     sleep 1
 done
+
+
+
+# ------------------- CLEAR FOLDER FROM BUILDS
+rm -rf registrace registrace_debugbox registration
+rm -f registrace.zip registrace_debugbox.zip registration.zip
