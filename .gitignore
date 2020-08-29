@@ -4,6 +4,8 @@ node_modules
 registrace.zip
 /registrace_debugbox
 registrace_debugbox.zip
+/registration
+registration.zip
 
 # local env files
 .env.local

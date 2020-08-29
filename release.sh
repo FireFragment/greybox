@@ -34,12 +34,13 @@ git push origin ${version}
 
 # ------------------- DELETE OLD BUILDS AND CREATE NEW ONES
 # Remove old builds
-rm -rf registrace registrace_debugbox
-rm -f registrace.zip registrace_debugbox.zip
+rm -rf registrace registrace_debugbox registration
+rm -f registrace.zip registrace_debugbox.zip registration.zip
 
 # Build production & debug
 npm run build
 npm run build:debug
+npm run build:int
 
 # Create zip files
 if ! command -v tar &> /dev/null
@@ -47,10 +48,12 @@ then
     # tar command not found -> Windows
     tar.exe -a -c -f registrace.zip registrace
     tar.exe -a -c -f registrace_debugbox.zip registrace_debugbox
+    tar.exe -a -c -f registration.zip registration
 else
     # tar command found -> Linux
     tar -a -c -f registrace.zip registrace
     tar -a -c -f registrace_debugbox.zip registrace_debugbox
+    tar -a -c -f registration.zip registration
 fi
 
 
@@ -92,8 +95,8 @@ releaseUploadUrl=${releaseUploadUrl%\{?name,label\}}
 printf "\nRelease created, uploading files...\n"
 
 # Choose which files with which labels to upload
-fileNames=("registrace_debugbox.zip" "registrace.zip")
-fileLabels=("Development%20build" "Production%20build")
+fileNames=("registrace_debugbox.zip" "registrace.zip" "registration.zip")
+fileLabels=("Development%20build" "Production%20build" "International%20production%20build")
 
 # Loop through files to upload
 for i in ${!fileNames[@]}; do
