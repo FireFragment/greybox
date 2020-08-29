@@ -24,8 +24,8 @@
               <template v-if="env.VUE_APP_MODE === 'debug'">
                 debug
               </template>
-              <template v-else-if="env.VUE_IS_PDS">
-                int
+              <template v-else-if="env.VUE_APP_IS_PDS === 'true'">
+                pds
               </template>
               <template v-else>
                 dev

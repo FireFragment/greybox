@@ -37,14 +37,14 @@ After commiting and pushing big progress, you are encouraged to create a new rel
 npm run serve
 ```
 
-This command is in **national development** mode by default. Use `npm run serve:debug` to start local server with debug mode, `serve:prod` for production or `serve:int` for PDS development.
+This command is in **national development** mode by default. Use `npm run serve:debug` to start local server with debug mode, `serve:prod` for production or `serve:pds` for PDS development.
 
 ### Compiles and minifies for production
 ```
 npm run build
 ```
 
-This command builds **national production** mode by default. Use `npm run build:debug` to build debug version, `build:dev` for development or `build:int` for PDS production.
+This command builds **national production** mode by default. Use `npm run build:debug` to build debug version, `build:dev` for development or `build:pds` for PDS production.
 
 
 ### Lints and fixes files
