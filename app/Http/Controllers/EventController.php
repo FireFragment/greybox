@@ -57,6 +57,13 @@ class EventController extends Controller
             }
         }
 
+        $dietaryRequirements = $event->dietaryRequirements()->orderBy('order')->get();
+        foreach ($dietaryRequirements as $dietaryRequirement)
+        {
+            $dietaryRequirement->name = $dietaryRequirement->translation()->first();
+        }
+        $event->dietaryRequirements = $dietaryRequirements;
+
         return response()->json($event);
     }
 

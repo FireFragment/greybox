@@ -104,6 +104,9 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
     $router->post('deletedautofill', ['uses' => 'DeletedAutofillController@create']);
 
+    $router->get('dietaryrequirement',  ['uses' => 'DietaryRequirementController@showAll']);
+    $router->get('dietaryrequirement/{id}', ['uses' => 'DietaryRequirementController@showOne']);
+
     $router->get('country/cs', ['uses' => 'CountryController@showCzech']);
     $router->get('country/en', ['uses' => 'CountryController@showEnglish']);
 });

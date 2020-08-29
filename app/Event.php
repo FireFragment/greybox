@@ -54,6 +54,11 @@ class Event extends Model implements AuthenticatableContract, AuthorizableContra
         return $this->belongsTo(Translation::class, 'note', 'id');
     }
 
+    public function dietaryRequirements()
+    {
+        return $this->belongsToMany('App\DietaryRequirement', 'events_dietary_requirements', 'event', 'dietary_requirement');
+    }
+
     public function getDiscountTime()
     {
         $softDeadlineDate = substr($this->soft_deadline, 0, 10);
