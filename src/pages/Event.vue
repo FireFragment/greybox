@@ -1,32 +1,39 @@
 <template>
   <q-page padding v-if="event">
-    <h1 class="text-center text-h4">
-      {{ $tr("title") }} {{ $tr(event.name) }}
-    </h1>
-    <div class="text-center close-paragraphs q-p-1">
-      <p>
-        <template
-          v-if="event.beginning.substr(0, 4) !== event.end.substr(0, 4)"
-        >
-          <!-- Year is different -->
-          {{ event.beginning | moment("D. M. Y") }} - </template
-        ><template
-          v-else-if="event.beginning.substr(0, 7) !== event.end.substr(0, 7)"
-        >
-          <!-- Month is different -->
-          {{ event.beginning | moment("D. M.") }} - </template
-        ><template v-else-if="event.beginning !== event.end">
-          <!-- Just day is different-->
-          {{ event.beginning | moment("D.") }}-</template
-        >{{ event.end | moment("D. M. Y") }},
-        <!-- else - One day event -->
-        {{ event.place }}
-      </p>
-      <p>
-        {{ $tr("deadline") }}:
-        {{ event.soft_deadline | moment("D. M. Y H:mm") }}
-      </p>
-      <p v-if="event.note">{{ $tr(event.note) }}</p>
+    <!-- Header card -->
+    <div class="text-center">
+      <q-card class="inline-block event-header">
+        <h1 class="text-center text-h4">
+          {{ $tr("title") }} {{ $tr(event.name) }}
+        </h1>
+        <div class="text-center close-paragraphs q-p-1">
+          <p>
+            <template
+              v-if="event.beginning.substr(0, 4) !== event.end.substr(0, 4)"
+            >
+              <!-- Year is different -->
+              {{ event.beginning | moment("D. M. Y") }} - </template
+            ><template
+              v-else-if="
+                event.beginning.substr(0, 7) !== event.end.substr(0, 7)
+              "
+            >
+              <!-- Month is different -->
+              {{ event.beginning | moment("D. M.") }} - </template
+            ><template v-else-if="event.beginning !== event.end">
+              <!-- Just day is different-->
+              {{ event.beginning | moment("D.") }}-</template
+            >{{ event.end | moment("D. M. Y") }},
+            <!-- else - One day event -->
+            {{ event.place }}
+          </p>
+          <p>
+            {{ $tr("deadline") }}:
+            {{ event.soft_deadline | moment("D. M. Y H:mm") }}
+          </p>
+          <p v-if="event.note">{{ $tr(event.note) }}</p>
+        </div>
+      </q-card>
     </div>
 
     <div v-if="event.hard_deadline < now" class="row justify-center">
