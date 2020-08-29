@@ -118,13 +118,12 @@
         </q-select>
       </div>
 
-      <q-input
+      <mask-input
         outlined
         v-model="values.id_number"
         :label="$tr('fields.id_number')"
         class="q-pt-sm"
         mask="#########"
-        @focus="moveCaretToFront"
         fill-mask="_"
         :hint="$tr('fieldNotes.example') + ' 123456789'"
         lazy-rules
@@ -149,7 +148,7 @@
             {{ $tr("fieldNotes.id_number") }}
           </q-tooltip>
         </template>
-      </q-input>
+      </mask-input>
 
       <q-input
         outlined
@@ -189,7 +188,7 @@
         </template>
       </q-input>
 
-      <q-input
+      <mask-input
         outlined
         v-model="values.zip"
         :label="$tr('fields.zip') + ' *'"
@@ -198,8 +197,6 @@
         mask="### ##"
         fill-mask="_"
         :hint="$tr('fieldNotes.example') + ' 796 01'"
-        @click="moveCaretToFront"
-        @focus="moveCaretToFront"
         lazy-rules
         :rules="[
           val =>
@@ -210,7 +207,7 @@
         <template v-slot:prepend>
           <q-icon name="fas fa-file-archive" />
         </template>
-      </q-input>
+      </mask-input>
     </div>
 
     <!-- -SCHOOL FIELD-
@@ -396,10 +393,11 @@
 <script>
 import { EventBus } from "../../event-bus";
 import GDPRCheckbox from "./GDPRCheckbox";
+import MaskInput from "./MaskInput";
 
 export default {
   name: "FormFields",
-  components: { GDPRCheckbox },
+  components: { GDPRCheckbox, MaskInput },
   props: {
     autofill: Object,
     isTeam: Boolean,
@@ -594,13 +592,6 @@ export default {
           "-" +
           (day ? day.value : "00")
         );
-    },
-    moveCaretToFront(event) {
-      let input = event.srcElement;
-      input.setSelectionRange(0, 0);
-      setTimeout(function() {
-        input.setSelectionRange(0, 0);
-      }, 50);
     }
   },
 

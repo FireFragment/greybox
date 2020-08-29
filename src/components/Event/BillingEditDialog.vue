@@ -78,7 +78,7 @@
               </template>
             </q-input>
 
-            <q-input
+            <mask-input
               v-model="values.zip"
               outlined
               :label="$tr('fields.zip')"
@@ -92,7 +92,7 @@
               <template v-slot:prepend>
                 <q-icon name="fas fa-file-archive" />
               </template>
-            </q-input>
+            </mask-input>
           </div>
         </q-card-section>
         <q-card-actions class="float-actions">
@@ -116,9 +116,11 @@
 
 <script>
 import { EventBus } from "../../event-bus";
+import MaskInput from "./MaskInput";
 
 export default {
   name: "BillingEditDialog",
+  components: { MaskInput },
   props: {
     visible: Boolean,
     client: Object
