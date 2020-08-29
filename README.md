@@ -15,11 +15,10 @@ Main difference is that only **production** has Vue devtools turned off and uses
 
 Configuration can be changed in `.env.[mode]` files in root folder. Current mode will be visible next to logo in navbar (except for production).
 
-### Types
-Furthermore, this project uses two types - `national` and `international` with tiny differences amongst each other. 
+### PDS
+This project uses two types - `normal` and `PDS` with tiny differences amongst each other (filtering events etc.). 
 
-Default type is national. Configurations for `development` and `production` can be edited through `.env.international-dev` or `.env.international-prod` respectively. Debug version is not available for international type.
-
+Default type is normal. Configurations for PDS `development` and `production` can be edited through `.env.pds-dev` or `.env.pds-prod` respectively. Debug version is not available for PDS.
 ## Development
 ### Releasing versions
 After commiting and pushing big progress, you are encouraged to create a new release.
@@ -38,14 +37,14 @@ After commiting and pushing big progress, you are encouraged to create a new rel
 npm run serve
 ```
 
-This command is in **national development** mode by default. Use `npm run serve:debug` to start local server with debug mode, `serve:prod` for production or `serve:int` for international development type.
+This command is in **national development** mode by default. Use `npm run serve:debug` to start local server with debug mode, `serve:prod` for production or `serve:int` for PDS development.
 
 ### Compiles and minifies for production
 ```
 npm run build
 ```
 
-This command builds **national production** mode by default. Use `npm run build:debug` to build debug version, `build:dev` for development or `build:int` for international production type.
+This command builds **national production** mode by default. Use `npm run build:debug` to build debug version, `build:dev` for development or `build:int` for PDS production.
 
 
 ### Lints and fixes files

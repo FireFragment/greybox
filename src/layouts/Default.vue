@@ -24,7 +24,7 @@
               <template v-if="env.VUE_APP_MODE === 'debug'">
                 debug
               </template>
-              <template v-else-if="env.VUE_APP_TYPE === 'international'">
+              <template v-else-if="env.VUE_IS_PDS">
                 int
               </template>
               <template v-else>
