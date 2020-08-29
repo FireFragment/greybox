@@ -76,7 +76,8 @@
   },
   "autofill": {
     "title": "Autofill data of previously registered people",
-    "empty": "You have no people to autofill."
+    "empty": "You have no people to autofill.",
+    "registered": "Already registered people"
   },
   "checkout": {
     "submit": "Confirm registration",

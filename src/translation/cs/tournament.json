@@ -75,8 +75,9 @@
     "teamName": "Tým"
   },
   "autofill": {
-    "title": "Převyplnit údaje dle dříve zadaných osob",
-    "empty": "Nemáte žádné osoby k předvyplnění."
+    "title": "Předvyplnit údaje dříve zadaných osob",
+    "empty": "Nemáte žádné osoby k předvyplnění.",
+    "registered": "Již zaregistrované osoby"
   },
   "checkout": {
     "submit": "Potvrdit přihlásku",

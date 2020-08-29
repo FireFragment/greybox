@@ -2,45 +2,45 @@
   <q-list
     class="rounded-borders shadow-2 q-pb-sm bg-white debaters-sticky-card"
   >
-    <p class="text-center q-pb- q-pt-md q-pl-sm q-pr-sm">{{ $tr("title") }}:</p>
     <q-scroll-area style="height: calc(100vh - 130px);">
-      <div class="empty-info" v-if="!pastLogins.length && !showLoading">
+      <div
+        class="empty-info"
+        v-if="
+          !registeredPeople.length &&
+            !notRegisteredPeople.length &&
+            !showLoading
+        "
+      >
         {{ $tr("empty") }}
       </div>
-      <q-item
-        clickable
-        v-ripple
-        dense
-        v-for="(pastLogin, index) in pastLogins"
-        v-bind:key="index"
-        @click="selectPerson(index)"
-        class="q-pt-sm q-pb-sm"
-      >
-        <!--
-        TODO: Catch on q-item:
-        @mouseenter="showDeleteButton = index"
+      <q-item-label header>{{ $tr("title") }}</q-item-label>
+
+      <autofill-card-person
+        v-for="pastLogin in notRegisteredPeople"
+        v-bind:key="'autofill-' + pastLogin.id"
+        @click="selectPerson(pastLogin)"
+        @mouseenter="showDeleteButton = pastLogin"
         @mouseleave="showDeleteButton = null"
-        -->
-        <q-item-section>{{
-          pastLogin.name + " " + pastLogin.surname
-        }}</q-item-section>
-        <q-item-section avatar>
-          <q-avatar
-            :style="'background-color: ' + $stringToHslColor(pastLogin.name)"
-            size="30px"
-          >
-            <!-- TODO: Catch on q-avatar: @click.stop="deletePerson" -->
-            <img src="https://cdn.quasar.dev/img/avatar.png" v-if="!true" />
-            <q-icon
-              name="fas fa-trash-alt"
-              v-else-if="showDeleteButton === index"
-            />
-            <template v-else>{{
-              pastLogin.name.substr(0, 1).toUpperCase()
-            }}</template>
-          </q-avatar>
-        </q-item-section>
-      </q-item>
+        @deletePerson="deletePerson"
+        :person="pastLogin"
+        :showDeleteButton="showDeleteButton === pastLogin"
+      />
+
+      <template v-if="registeredPeople.length">
+        <q-separator spaced />
+        <q-item-label header>{{ $tr("registered") }}</q-item-label>
+
+        <autofill-card-person
+          v-for="pastLogin in registeredPeople"
+          v-bind:key="'autofill-' + pastLogin.id"
+          @mouseenter="showDeleteButton = pastLogin"
+          @mouseleave="showDeleteButton = null"
+          @deletePerson="deletePerson"
+          :person="pastLogin"
+          :showDeleteButton="showDeleteButton === pastLogin"
+          :registered="true"
+        />
+      </template>
     </q-scroll-area>
     <q-inner-loading :showing="showLoading">
       <q-spinner color="primary" size="3em" />
@@ -48,6 +48,8 @@
   </q-list>
 </template>
 <script>
+import AutofillCardPerson from "./AutofillCardPerson";
+
 export default {
   data() {
     return {
@@ -58,14 +60,35 @@ export default {
     };
   },
 
+  components: {
+    AutofillCardPerson
+  },
+
+  props: ["eventId"],
+
   methods: {
-    selectPerson(index) {
-      this.$emit("person-selected", this.pastLogins[index]);
+    selectPerson(person) {
+      this.$emit("person-selected", person);
     },
 
     deletePerson() {
+      let person = this.showDeleteButton;
+
+      // TODO: show delete confirm modal
+
       // TODO: delete person from autofill
-      // console.log("Delete person #" + this.showDeleteButton);
+
+      alert("Deleting " + person.name);
+    }
+  },
+
+  computed: {
+    // Peopla in autofill already registered for this tournament
+    registeredPeople() {
+      return this.pastLogins.filter(item => item.registered);
+    },
+    notRegisteredPeople() {
+      return this.pastLogins.filter(item => !item.registered);
     }
   },
 
@@ -78,7 +101,7 @@ export default {
     }
 
     this.$api({
-      url: "user/" + this.$auth.user().id + "/person",
+      url: "user/" + this.$auth.user().id + "/person/event/" + this.eventId,
       method: "get"
     })
       .then(d => {

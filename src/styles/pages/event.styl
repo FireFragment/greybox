@@ -66,6 +66,31 @@
 		margin-bottom: -15px
 		border: 1px solid rgba(0,0,0,0.12)
 
+// Autofill
+.debaters-sticky-card
+	.q-item__label--header
+		text-align: center
+
+	.q-item
+		.q-avatar
+			transition: color .15s linear
+			cursor: pointer
+
+			.fas
+				position: absolute
+				opacity: 0
+				transition: opacity .1s linear
+
+				&.shown
+					opacity: 1
+
+			&:hover
+				color: rgba(0, 0, 0, .7)
+
+		&.registered
+			opacity: .7
+
+
 .hidable
 	transition: height .5s linear
 	height: 0
