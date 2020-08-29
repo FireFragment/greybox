@@ -14,6 +14,7 @@
       @filter="filterTeamNames"
       @input-value="teamName = $event"
       lazy-rules
+      :loading="loadingTeamFill"
       :rules="[
         val =>
           (val && val.length > 0) || $tr('general.form.fieldError', null, false)
@@ -31,6 +32,7 @@
       :autofill="person.autofill"
       @toggleVisibility="toggleVisibility"
       @delete="deletePerson"
+      :possibleDiets="possibleDiets"
       :accommodationType="accommodationType"
     />
     <g-d-p-r-checkbox v-model="accept" :error="acceptError" />
@@ -73,7 +75,8 @@ export default {
   },
   props: {
     autofill: Object,
-    accommodationType: String
+    accommodationType: String,
+    possibleDiets: Array
   },
   data() {
     return {
@@ -83,9 +86,11 @@ export default {
       people: {},
       visibleId: null,
       teamName: null,
+      teamId: null,
       accept: false,
       acceptError: false,
-      maxMembers: 5
+      maxMembers: 5,
+      loadingTeamFill: false
     };
   },
   created() {
@@ -105,6 +110,8 @@ export default {
   },
   methods: {
     filterTeamNames(val, update) {
+      if (val) this.teamId = null;
+
       update(() => {
         const needle = val.toLocaleLowerCase();
         this.teamsAutofill = this.pastTeams
@@ -120,15 +127,52 @@ export default {
       });
     },
     autofillSelected(value) {
-      let teamId = value.value;
+      this.teamId = value.value;
 
-      // TODO - autofill team members
-      // TODO - save team ID and use it later in registration, don't send team name again
+      this.loadingTeamFill = true;
 
-      alert("Autofill team members with ID #" + teamId);
+      // Team selected -> get its members
+      this.$api({
+        url: "team/" + this.teamId,
+        method: "get"
+      })
+        .then(d => {
+          // Empty people
+          this.people = {};
+          this.addPerson();
+
+          let data = d.data.members;
+
+          // Autofill all members
+          let autofillMember = index => {
+            let member = data[index];
+
+            this.$emit("autofillPerson", member);
+
+            if (!data[index + 1])
+              return this.$nextTick(() => {
+                this.visibleId = null;
+              });
+
+            this.$nextTick(() => {
+              this.addPerson();
+
+              this.$nextTick(() => {
+                autofillMember(index + 1);
+              });
+            });
+          };
+
+          this.$nextTick(() => {
+            autofillMember(0);
+          });
+        })
+        .finally(() => {
+          this.loadingTeamFill = false;
+        });
     },
     toggleVisibility(id) {
-      if (this.visibleId == id) this.visibleId = null;
+      if (this.visibleId === id) this.visibleId = null;
       else this.visibleId = id;
     },
     deletePerson(id) {
@@ -216,7 +260,7 @@ export default {
 
       validationPromise
         .then(() => {
-          this.$emit("submit", this.people, this.teamName);
+          this.$emit("submit", this.people, this.teamName, this.teamId);
         })
         .catch(() => {
           this.$flash(this.$tr("general.form.error", null, false), "error");

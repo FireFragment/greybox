@@ -127,6 +127,7 @@
           v-else
           @submit="submitTeamForm"
           @goToRolePick="goTo('role')"
+          @autofillPerson="debaterSelected"
           :autofill="autofillData"
           :accommodationType="accommodationType"
           :mealType="mealType"
@@ -316,7 +317,23 @@ export default {
   },
 
   methods: {
-    submitTeamForm(people, teamName) {
+    submitTeamForm(people, teamName, teamId) {
+      // Function to call after team ID is known
+      let doneCallback = (id, name) => {
+        for (let index in people) {
+          let person = people[index];
+
+          person.formData.team = id;
+          person.formData.teamName = name;
+
+          this.sendForm(person.formData, person.autofillData);
+        }
+      };
+
+      // Team is autofilled -> call callback right away
+      if (teamId) return doneCallback(teamId, teamName);
+
+      // Team is new -> submit to API first before we can know the ID
       EventBus.$emit("fullLoader", true);
       this.$api({
         url: "team",
@@ -326,14 +343,7 @@ export default {
         }
       })
         .then(data => {
-          for (let index in people) {
-            let person = people[index];
-
-            person.formData.team = data.data.id;
-            person.formData.teamName = teamName;
-
-            this.sendForm(person.formData, person.autofillData);
-          }
+          doneCallback(data.data.id, teamName);
         })
         .finally(() => {
           EventBus.$emit("fullLoader", false);

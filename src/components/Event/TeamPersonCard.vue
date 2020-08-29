@@ -43,6 +43,7 @@
             :autofill="autofill"
             :is-team="true"
             :accommodationType="accommodationType"
+            :possibleDiets="possibleDiets"
           />
         </q-card-section>
       </slide-up-down>
@@ -63,7 +64,8 @@ export default {
     index: Number,
     visible: Boolean,
     error: Boolean,
-    accommodationType: String
+    accommodationType: String,
+    possibleDiets: Array
   },
   data() {
     return {
