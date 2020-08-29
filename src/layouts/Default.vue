@@ -34,12 +34,14 @@
         <q-avatar size="25px" class="lang-switch">
           <img
             src="../assets/en_flag.png"
-            v-if="$i18n.locale === 'cs'"
+            :class="{ 'flag-dimmed': $i18n.locale === 'cs' }"
             @click="$i18n.locale = 'en'"
           />
+        </q-avatar>
+        <q-avatar size="25px" class="lang-switch">
           <img
             src="../assets/cs_flag.png"
-            v-else
+            :class="{ 'flag-dimmed': $i18n.locale === 'en' }"
             @click="$i18n.locale = 'cs'"
           />
         </q-avatar>
