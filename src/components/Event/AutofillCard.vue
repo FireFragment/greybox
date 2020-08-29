@@ -94,7 +94,11 @@ export default {
             this.pastLogins = this.pastLogins.filter(
               item => item.id !== person.id
             );
-            this.$db("autofillDebaters", this.pastLogins, true);
+            this.$db(
+              "autofillDebaters-event" + this.eventId,
+              this.pastLogins,
+              true
+            );
 
             this.$flash(this.$tr("removeModal.success"), "success");
           })
@@ -119,7 +123,7 @@ export default {
   },
 
   created() {
-    let cached = this.$db("autofillDebaters");
+    let cached = this.$db("autofillDebaters-event" + this.eventId);
 
     if (cached) {
       this.showLoading = false;
@@ -132,7 +136,11 @@ export default {
     })
       .then(d => {
         this.pastLogins = d.data;
-        this.$db("autofillDebaters", this.pastLogins, true);
+        this.$db(
+          "autofillDebaters-event" + this.eventId,
+          this.pastLogins,
+          true
+        );
       })
       .finally(() => {
         this.showLoading = false;

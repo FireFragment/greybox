@@ -310,6 +310,11 @@ export default {
     });
   },
 
+  beforeDestroy() {
+    // Invalidate autofill cache
+    this.$db("autofillDebaters-event" + this.event.id, this.DB_DEL);
+  },
+
   methods: {
     submitTeamForm(people, teamName) {
       EventBus.$emit("fullLoader", true);
@@ -381,8 +386,12 @@ export default {
       else if (phase === "checkout") this.role = this.checkout = true;
     },
 
+    // Registration sent
     checkoutConfirmed(data) {
       this.confirmData = data;
+
+      // Remove autofill data to include newly added people later
+      this.$db("autofillDebaters-event" + this.event.id, this.DB_DEL);
     },
 
     removePerson(index) {

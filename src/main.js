@@ -74,11 +74,13 @@ const i18n = new VueI18n({
 });
 
 // Mixins
+const DB_DELETION_CONSTANT = "DELETE-THIS-DATABASE-ITEM"; // when DB item is set to this value, it will be deleted
 Vue.mixin({
   data() {
     return {
       apiSettings: config.api,
-      env: process.env
+      env: process.env,
+      DB_DEL: DB_DELETION_CONSTANT
     };
   },
   methods: {
@@ -186,7 +188,7 @@ Vue.mixin({
 
       // Workaround for personal GET and DELETE
       if (
-        (value === null || value === undefined) &&
+        (value === null || value === DB_DELETION_CONSTANT) &&
         typeof Vue.prototype[dbKey][key] == "undefined"
       )
         dbKey = "dbPersonal";
@@ -195,10 +197,11 @@ Vue.mixin({
       if (value === null) return Vue.prototype[dbKey][key];
 
       // Delete request
-      if (value === undefined) return delete Vue.prototype[dbKey][key];
+      if (value === DB_DELETION_CONSTANT)
+        return Vue.delete(Vue.prototype[dbKey], key);
 
       // Insert/update request
-      return (Vue.prototype[dbKey][key] = value);
+      return Vue.set(Vue.prototype[dbKey], key, value);
     },
 
     // Show basic confirm dialog

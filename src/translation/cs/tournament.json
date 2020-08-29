@@ -81,6 +81,7 @@
     "title": "Předvyplnit údaje dříve zadaných osob",
     "empty": "Nemáte žádné osoby k předvyplnění.",
     "registered": "Již zaregistrované osoby",
+    "removeTooltip": "Odstranit osobu z našeptávače",
     "removeModal": {
       "title": "Opravdu si přejete odstranit tuto osobu z našeptávače?",
       "success": "Osoba úspěšně odstraněna",

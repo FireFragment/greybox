@@ -76,22 +76,35 @@
 
 	.q-item
 		.q-avatar
-			transition: color .15s linear
+			transition: background-color .1s linear
 			cursor: pointer
+
+			&.deleting
+				background-color: $negative !important
+
+				.fas
+					opacity: 1
 
 			.fas
 				position: absolute
 				opacity: 0
 				transition: opacity .1s linear
+				background-color: $negative
+				color: white
 
-				&.shown
+		// Already registered person
+		&.registered
+			&:hover
+				background-color: #eaeaea
+
+				.q-avatar
 					opacity: 1
 
-			&:hover
-				color: rgba(0, 0, 0, .7)
+			.q-item__section--main, .q-avatar
+				opacity: .6
 
-		&.registered
-			opacity: .7
+			.q-avatar
+				transition: opacity .1s linear
 
 
 .hidable
