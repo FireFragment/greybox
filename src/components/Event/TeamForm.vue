@@ -122,6 +122,9 @@ export default {
     autofillSelected(value) {
       let teamId = value.value;
 
+      // TODO - autofill team members
+      // TODO - save team ID and use it later in registration, don't send team name again
+
       alert("Autofill team members with ID #" + teamId);
     },
     toggleVisibility(id) {
