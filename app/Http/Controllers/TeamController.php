@@ -28,14 +28,14 @@ class TeamController extends Controller
     public function showOne($id)
     {
         $team = Team::find($id);
-        $registrations = $team->registrations()->select('person')->whereNotNull('person')->groupBy('person')->limit(5)->get();
+        $registrations = $team->registrations()->select(\DB::raw('person, count(*) as attendance'))->whereNotNull('person')->groupBy('person')->orderBy('attendance', 'DESC')->limit(5)->get();
 
         $members = array();
         foreach ($registrations as $registration)
         {
             $members[] = $registration->person()->first();
         }
-        
+
         $team->members = $members;
         return response()->json($team);
     }
