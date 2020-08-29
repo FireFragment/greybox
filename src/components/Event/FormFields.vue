@@ -552,13 +552,22 @@ export default {
   watch: {
     autofill() {
       let data = this.autofill;
+
+      // Move values from autofill prop to value variable
       for (let key in data) {
+        // Birth date -> split day, month and year
         if (key === "birthdate") {
-          let value = data[key].split("-");
-          this.values.birthYear = parseInt(value[0]);
-          this.values.birthMonth = this.months[parseInt(value[1]) - 1];
-          this.values.birthDay = this.days[parseInt(value[2]) - 1];
-        } else this.values[key] = data[key];
+          // Birthday is not null
+          if (data[key]) {
+            let value = data[key].split("-");
+            this.values.birthYear = parseInt(value[0]);
+            this.values.birthMonth = this.months[parseInt(value[1]) - 1];
+            this.values.birthDay = this.days[parseInt(value[2]) - 1];
+          } else
+            this.values.birthDay = this.values.birthMonth = this.values.birthYear = null;
+        }
+        // Any other field -> pass raw value
+        else this.values[key] = data[key];
       }
     },
 
