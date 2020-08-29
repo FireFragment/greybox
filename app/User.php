@@ -62,6 +62,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $this->hasMany(Client::class, 'user', 'id');
     }
 
+    public function deletedAutofills()
+    {
+        return $this->hasMany(DeletedAutofill::class, 'user', 'id');
+    }
+
     public function setRole() {
         $this->role = 'none';
         if ($this->isAdmin()) $this->role = 'admin';

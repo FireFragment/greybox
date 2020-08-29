@@ -102,6 +102,8 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->delete('translation/{id}', ['uses' => 'TranslationController@delete']);
     $router->put('translation/{id}', ['uses' => 'TranslationController@update']);
 
+    $router->post('deletedautofill', ['uses' => 'DeletedAutofillController@create']);
+
     $router->get('country/cs', ['uses' => 'CountryController@showCzech']);
     $router->get('country/en', ['uses' => 'CountryController@showEnglish']);
 });

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\ResetPassword;
+use App\Repositories\PeopleRepository;
 use App\User;
 use http\Env\Response;
 use Illuminate\Http\Request;
@@ -279,37 +280,36 @@ class UserController extends Controller
     public function showPeople($userId, $eventId = null)
     {
         $user = User::find($userId);
-        $userRegistrations = $user->registrations()->select('person')->whereNotNull('person')->groupBy('person')->get();
 
+        $userRegistrations = $user->registrations()->select('person')->whereNotNull('person')->groupBy('person')->get();
+        $userRegisteredPeople = array();
+        foreach ($userRegistrations as $userRegistration)
+        {
+            $userPerson = $userRegistration->person()->first();
+            if (!empty($userPerson))
+            {
+                $userRegisteredPeople[] = $userPerson;
+            }
+        }
+
+        $deletedPeople = $user->deletedAutofills()->get();
+
+        $eventRegisteredPeople = array();
         if (null !== $eventId)
         {
             $event = \App\Event::find($eventId);
             $eventRegistrations = $event->registrations()->get();
-        }
-
-        $people = array();
-        foreach ($userRegistrations as $registration)
-        {
-            $person = $registration->person()->first();
-            if (!empty($person))
+            foreach ($eventRegistrations as $eventRegistration)
             {
-                if (isset($eventRegistrations))
+                $eventPerson = $eventRegistration->person()->first();
+                if (!empty($eventPerson))
                 {
-                    foreach ($eventRegistrations as $eventRegistration)
-                    {
-                        $eventPerson = $eventRegistration->person()->first();
-
-                        $person->registered = false;
-                        if ($eventPerson->id == $person->id)
-                        {
-                            $person->registered = true;
-                            break;
-                        }
-                    }
+                    $eventRegisteredPeople[] = $eventPerson;
                 }
-                $people[] = $person;
             }
         }
+
+        $people = PeopleRepository::getAutofillPeople($userRegisteredPeople, $deletedPeople, $eventRegisteredPeople);
 
         usort($people, function ($a, $b) {
             $coll = new \Collator('cs_CZ');
