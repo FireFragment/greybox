@@ -72,33 +72,35 @@
         {
           label: 'tournament.types.individual',
           icon: 'user',
-          color: 'primary',
+          color: 'btn-2',
           value: 'single'
         },
         {
           label: 'tournament.types.group',
           icon: 'users',
-          color: 'blue-9',
+          color: 'btn-3',
           value: 'group'
         }
       ]"
       @selected="typePicked"
     />
     <template v-else-if="role === null">
-      <pick-type
-        name="role"
-        :values="roles"
-        @selected="typePicked"
-        :hideFirst="type === 'single' && !dataToSubmit.length"
-      />
-      <q-btn
-        v-if="dataToSubmit.length"
-        :label="$tr('buttons.goToCheckout')"
-        type="reset"
-        color="blue-9"
-        class="q-mt-xl float-right"
-        @click="goTo('checkout')"
-      />
+      <div class="picking-role">
+        <pick-type
+          name="role"
+          :values="roles"
+          @selected="typePicked"
+          :hideFirst="type === 'single' && !dataToSubmit.length"
+        />
+        <q-btn
+          v-if="dataToSubmit.length"
+          :label="$tr('buttons.goToCheckout')"
+          type="reset"
+          color="blue-9"
+          class="q-mt-xl float-right"
+          @click="goTo('checkout')"
+        />
+      </div>
     </template>
     <div class="row q-col-gutter-md reverse" v-else-if="!checkout">
       <div class="col-12 col-sm-4 col-md-6">
@@ -269,13 +271,6 @@ export default {
       });
 
       rolesPromise.then(([roles, isLoading]) => {
-        let colors = {
-          1: "blue-9",
-          2: "indigo-6",
-          3: "cyan-9",
-          4: "green"
-        };
-
         // Check if roles are present in event's prices
         for (let role of roles) {
           let isPresent = false;
@@ -292,15 +287,13 @@ export default {
               this.roles[0] = {
                 value: 0,
                 label: "tournament.types.team",
-                icon: "users",
-                color: "primary"
+                icon: "users"
               };
             // Push role to role list
             this.roles[role.id] = {
               value: role.id,
               label: role.name,
-              icon: role.icon,
-              color: colors[role.id]
+              icon: role.icon
             };
           }
         }

@@ -1,5 +1,5 @@
 <template>
-  <div class="col-12 col-sm-6 col-md q-mb-md text-center">
+  <div class="btn-container col-12 col-sm-6 col-md q-mb-md text-center">
     <q-btn
       :icon="'fas fa-' + icon"
       size="xl"
