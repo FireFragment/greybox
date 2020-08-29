@@ -70,24 +70,6 @@ class TeamController extends Controller
         }
     }
 
-    // TBD check API token
-    public function confirm($id)
-    {
-        try {
-            $team = Team::findOrFail($id);
-            try {
-                $team->update([
-                    'confirmed' => true
-                ]);
-                return response()->json($team, 200);
-            }  catch (\Illuminate\Database\QueryException $e) {
-                return response()->json(['message' => $e->getMessage()], 500);
-            }
-        } catch (\Illuminate\Database\QueryException $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
-        }
-    }
-
     public function merge(Request $request)
     {
         $team = $request->input('team');
