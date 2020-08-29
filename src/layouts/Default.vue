@@ -35,14 +35,14 @@
           <img
             src="../assets/en_flag.png"
             :class="{ 'flag-dimmed': $i18n.locale === 'cs' }"
-            @click="$i18n.locale = 'en'"
+            @click="switchLocale('en')"
           />
         </q-avatar>
         <q-avatar size="25px" class="lang-switch">
           <img
             src="../assets/cs_flag.png"
             :class="{ 'flag-dimmed': $i18n.locale === 'en' }"
-            @click="$i18n.locale = 'cs'"
+            @click="switchLocale('cs')"
           />
         </q-avatar>
 
@@ -165,6 +165,33 @@ export default {
     toggleDrawerMenu() {
       this.leftDrawerOpen = !this.leftDrawerOpen;
       localStorage.setItem("leftDrawerOpen", this.leftDrawerOpen);
+    },
+    switchLocale(locale) {
+      if (this.$i18n.locale !== locale) {
+        //current URL
+        let originalPath = this.$tr(
+          "paths." + this.$router.resolve({}).route.name
+        );
+
+        //change locale
+        this.$i18n.locale = locale;
+
+        //new URL
+        let newPath = this.$tr("paths." + this.$router.resolve({}).route.name);
+
+        //get URL from router
+        let url = this.$router.resolve({});
+        url = url.location;
+
+        // Homepage cases
+        if (originalPath == "") url.path = "/en/";
+        else if (newPath == "") url.path = "/";
+        // replace url in router with localized one
+        else url.path = url.path.replace(originalPath, newPath);
+
+        // go to new url
+        this.$router.push(url);
+      }
     }
   }
 };
