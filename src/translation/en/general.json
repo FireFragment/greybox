@@ -12,7 +12,8 @@
   "confirmModal": {
     "title": "Confirm action",
     "confirm": "Confirm",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "remove": "Remove"
   },
   "form": {
     "error": "Please check the form for errors",

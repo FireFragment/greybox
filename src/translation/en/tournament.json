@@ -80,7 +80,12 @@
   "autofill": {
     "title": "Autofill data of previously registered people",
     "empty": "You have no people to autofill.",
-    "registered": "Already registered people"
+    "registered": "Already registered people",
+    "removeModal": {
+      "title": "Are you sure you want to remove this person from autofill?",
+      "success": "Person successfully removed",
+      "error": "An error has occured during removal, please try again later"
+    }
   },
   "checkout": {
     "submit": "Confirm registration",
@@ -95,8 +100,7 @@
     "actions": {
       "remove": "Remove person",
       "removeModal": {
-        "title": "Are you sure you want to remove this person's registration?",
-        "remove": "Remove"
+        "title": "Are you sure you want to remove this person's registration?"
       }
     },
     "validation": {
