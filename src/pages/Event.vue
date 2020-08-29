@@ -358,13 +358,6 @@ export default {
     },
 
     debaterSelected(data) {
-      // assign empty data
-      this.autofillData = {};
-      Object.assign(this.autofillData, data);
-      for (let i in this.autofillData) {
-        this.autofillData[i] = null;
-      }
-
       this.autofillData = data;
     },
 
