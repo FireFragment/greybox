@@ -1,8 +1,23 @@
 <IfModule mod_rewrite.c>
   RewriteEngine On
-  RewriteBase /
+  RewriteBase /greybox/registrace
   RewriteRule ^index\.html$ - [L]
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_URI} ^/greybox/registrace
   RewriteRule . /greybox/registrace/index.html [L]
+
+  RewriteBase /pds/registration
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_URI} ^/pds/registration
+  RewriteRule . /pds/registration/index.html [L]
+
+  RewriteBase /debugbox
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_URI} ^/debugbox
+  RewriteRule . /debugbox/index.html [L]
 </IfModule>
