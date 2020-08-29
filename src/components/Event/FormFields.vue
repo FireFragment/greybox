@@ -53,160 +53,165 @@
       </q-icon>
     </div>
 
+    <!-- details needed for accommodation -->
     <div
-      class="row q-col-gutter-sm"
-      @keydown="selectKeyPress"
+      class="block"
+      :class="{ 'form-conditional-block': accommodationType !== 'required' }"
       v-if="accommodationType !== 'none' && values.accommodation === true"
     >
-      <div class="col-12 q-field" style="color: rgba(0,0,0,0.54);">
-        {{ $tr("fields.birthdate") }} *
+      <div class="row q-col-gutter-sm" @keydown="selectKeyPress">
+        <div class="col-12 q-field" style="color: rgba(0,0,0,0.54);">
+          {{ $tr("fields.birthdate") }} *
+        </div>
+        <q-select
+          outlined
+          v-model="values.birthDay"
+          :options="days"
+          option-value="label"
+          :label="$tr('fields.birthDay')"
+          class="q-pt-sm q-mb-sm col-12 col-md-4"
+          data-select-value="birthDay"
+          data-select-options="days"
+          @focus="selectResetSearch"
+          lazy-rules
+          :rules="[val => val || $tr('general.form.fieldError', null, false)]"
+        >
+          <template v-slot:prepend>
+            <q-icon name="event" />
+          </template>
+        </q-select>
+
+        <q-select
+          outlined
+          v-model="values.birthMonth"
+          :options="months"
+          option-value="label"
+          :option-label="item => $tr(item.label, null, false)"
+          :label="$tr('fields.birthMonth')"
+          class="q-pt-sm q-mb-sm col-12 col-md-4"
+          data-select-value="birthMonth"
+          data-select-options="months"
+          @focus="selectResetSearch"
+          lazy-rules
+          :rules="[val => val || $tr('general.form.fieldError', null, false)]"
+        >
+          <template v-slot:prepend>
+            <q-icon name="event" />
+          </template>
+        </q-select>
+
+        <q-select
+          outlined
+          v-model="values.birthYear"
+          :options="years"
+          :label="$tr('fields.birthYear')"
+          class="q-pt-sm q-mb-sm col-12 col-md-4"
+          data-select-value="birthYear"
+          data-select-options="years"
+          @focus="selectResetSearch"
+          lazy-rules
+          :rules="[val => val || $tr('general.form.fieldError', null, false)]"
+        >
+          <template v-slot:prepend>
+            <q-icon name="event" />
+          </template>
+        </q-select>
       </div>
-      <q-select
-        outlined
-        v-model="values.birthDay"
-        :options="days"
-        option-value="label"
-        :label="$tr('fields.birthDay')"
-        class="q-pt-sm q-mb-sm col-12 col-md-4"
-        data-select-value="birthDay"
-        data-select-options="days"
-        @focus="selectResetSearch"
-        lazy-rules
-        :rules="[val => val || $tr('general.form.fieldError', null, false)]"
-      >
-        <template v-slot:prepend>
-          <q-icon name="event" />
-        </template>
-      </q-select>
 
-      <q-select
+      <q-input
         outlined
-        v-model="values.birthMonth"
-        :options="months"
-        option-value="label"
-        :option-label="item => $tr(item.label, null, false)"
-        :label="$tr('fields.birthMonth')"
-        class="q-pt-sm q-mb-sm col-12 col-md-4"
-        data-select-value="birthMonth"
-        data-select-options="months"
-        @focus="selectResetSearch"
+        v-model="values.id_number"
+        :label="$tr('fields.id_number')"
+        class="q-pt-sm"
+        mask="#########"
+        @focus="moveCaretToFront"
+        fill-mask="_"
+        :hint="$tr('fieldNotes.example') + ' 123456789'"
         lazy-rules
-        :rules="[val => val || $tr('general.form.fieldError', null, false)]"
+        :rules="[
+          val =>
+            !val ||
+            val === '#########' ||
+            val.toString().match(/\d{9}/) ||
+            $tr('general.form.fieldError', null, false)
+        ]"
       >
         <template v-slot:prepend>
-          <q-icon name="event" />
+          <q-icon name="fas fa-id-card" />
         </template>
-      </q-select>
+        <template v-slot:append>
+          <q-icon name="fas fa-info-circle" />
+          <q-tooltip
+            anchor="top middle"
+            self="bottom middle"
+            :offset="[0, -10]"
+          >
+            {{ $tr("fieldNotes.id_number") }}
+          </q-tooltip>
+        </template>
+      </q-input>
 
-      <q-select
+      <q-input
         outlined
-        v-model="values.birthYear"
-        :options="years"
-        :label="$tr('fields.birthYear')"
-        class="q-pt-sm q-mb-sm col-12 col-md-4"
-        data-select-value="birthYear"
-        data-select-options="years"
-        @focus="selectResetSearch"
+        v-model="values.street"
+        :label="$tr('fields.street') + ' *'"
+        class="q-pt-sm"
+        :input-class="
+          'smartform-street-and-number ' + 'smartform-instance-' + _uid
+        "
         lazy-rules
-        :rules="[val => val || $tr('general.form.fieldError', null, false)]"
+        :rules="[
+          val =>
+            (val && val.length > 0) ||
+            $tr('general.form.fieldError', null, false)
+        ]"
       >
         <template v-slot:prepend>
-          <q-icon name="event" />
+          <q-icon name="fas fa-home" />
         </template>
-      </q-select>
+      </q-input>
+
+      <q-input
+        outlined
+        v-model="values.city"
+        :label="$tr('fields.city') + ' *'"
+        class="q-pt-sm"
+        :input-class="'smartform-city ' + 'smartform-instance-' + _uid"
+        lazy-rules
+        :rules="[
+          val =>
+            (val && val.length > 0) ||
+            $tr('general.form.fieldError', null, false)
+        ]"
+      >
+        <template v-slot:prepend>
+          <q-icon name="fas fa-city" />
+        </template>
+      </q-input>
+
+      <q-input
+        outlined
+        v-model="values.zip"
+        :label="$tr('fields.zip') + ' *'"
+        class="q-pt-sm"
+        :input-class="'smartform-zip ' + 'smartform-instance-' + _uid"
+        mask="### ##"
+        fill-mask="_"
+        :hint="$tr('fieldNotes.example') + ' 796 01'"
+        @click="moveCaretToFront"
+        @focus="moveCaretToFront"
+        lazy-rules
+        :rules="[
+          val =>
+            (val && val.toString().match(/\d{3} ?\d{2}/)) ||
+            $tr('general.form.fieldError', null, false)
+        ]"
+      >
+        <template v-slot:prepend>
+          <q-icon name="fas fa-file-archive" />
+        </template>
+      </q-input>
     </div>
-
-    <q-input
-      outlined
-      v-model="values.id_number"
-      v-if="accommodationType !== 'none' && values.accommodation === true"
-      :label="$tr('fields.id_number')"
-      class="q-pt-sm"
-      mask="#########"
-      @focus="moveCaretToFront"
-      fill-mask="_"
-      :hint="$tr('fieldNotes.example') + ' 123456789'"
-      lazy-rules
-      :rules="[
-        val =>
-          !val ||
-          val === '#########' ||
-          val.toString().match(/\d{9}/) ||
-          $tr('general.form.fieldError', null, false)
-      ]"
-    >
-      <template v-slot:prepend>
-        <q-icon name="fas fa-id-card" />
-      </template>
-      <template v-slot:append>
-        <q-icon name="fas fa-info-circle" />
-        <q-tooltip anchor="top middle" self="bottom middle" :offset="[0, -10]">
-          {{ $tr("fieldNotes.id_number") }}
-        </q-tooltip>
-      </template>
-    </q-input>
-
-    <q-input
-      outlined
-      v-model="values.street"
-      v-if="accommodationType !== 'none' && values.accommodation === true"
-      :label="$tr('fields.street') + ' *'"
-      class="q-pt-sm"
-      :input-class="
-        'smartform-street-and-number ' + 'smartform-instance-' + _uid
-      "
-      lazy-rules
-      :rules="[
-        val =>
-          (val && val.length > 0) || $tr('general.form.fieldError', null, false)
-      ]"
-    >
-      <template v-slot:prepend>
-        <q-icon name="fas fa-home" />
-      </template>
-    </q-input>
-
-    <q-input
-      outlined
-      v-model="values.city"
-      v-if="accommodationType !== 'none' && values.accommodation === true"
-      :label="$tr('fields.city') + ' *'"
-      class="q-pt-sm"
-      :input-class="'smartform-city ' + 'smartform-instance-' + _uid"
-      lazy-rules
-      :rules="[
-        val =>
-          (val && val.length > 0) || $tr('general.form.fieldError', null, false)
-      ]"
-    >
-      <template v-slot:prepend>
-        <q-icon name="fas fa-city" />
-      </template>
-    </q-input>
-
-    <q-input
-      outlined
-      v-model="values.zip"
-      v-if="accommodationType !== 'none' && values.accommodation === true"
-      :label="$tr('fields.zip') + ' *'"
-      class="q-pt-sm"
-      :input-class="'smartform-zip ' + 'smartform-instance-' + _uid"
-      mask="### ##"
-      fill-mask="_"
-      :hint="$tr('fieldNotes.example') + ' 796 01'"
-      @click="moveCaretToFront"
-      @focus="moveCaretToFront"
-      lazy-rules
-      :rules="[
-        val =>
-          (val && val.toString().match(/\d{3} ?\d{2}/)) ||
-          $tr('general.form.fieldError', null, false)
-      ]"
-    >
-      <template v-slot:prepend>
-        <q-icon name="fas fa-file-archive" />
-      </template>
-    </q-input>
 
     <!-- -SCHOOL FIELD-
     <q-input
@@ -240,14 +245,60 @@
           </template>
         </q-input>
         -->
+
     <div
-      class="block"
-      v-if="accommodationType !== 'none' && values.accommodation === true"
+      class="block q-mt-sm"
+      v-if="mealType !== 'required' && mealType !== 'none'"
     >
       <q-checkbox
-        v-model="values.vegetarian"
-        :label="$tr('fields.vegetarian')"
+        v-model="values.meals"
+        v-if="mealType !== 'opt-in'"
+        :true-value="false"
+        :false-value="true"
+        :label="$tr('fields.meals')"
       />
+      <q-checkbox
+        v-model="values.meals"
+        v-else
+        :true-value="true"
+        :false-value="false"
+        :label="$tr('fields.mealsOptIn')"
+      />
+      <!--
+      <q-icon name="fas fa-info-circle" class="q-pl-sm">
+        <q-tooltip anchor="top middle" self="bottom middle" :offset="[0, 0]">
+          {{ $tr("fieldNotes.meals") }}
+        </q-tooltip>
+      </q-icon>
+      -->
+    </div>
+
+    <div
+      class="block"
+      :class="{ 'form-conditional-block': mealType !== 'required' }"
+      v-if="mealType !== 'none' && values.meals === true"
+    >
+      <q-select
+        outlined
+        v-model="values.diet"
+        :options="possibleDiets"
+        option-value="label"
+        :label="$tr('fields.diet')"
+        class="q-pt-sm q-mb-sm col-12"
+        data-select-value="diet"
+        data-select-options="possibleDiets"
+        @focus="selectResetSearch"
+        lazy-rules
+        :rules="[
+          val =>
+            (val && val.length > 0) ||
+            $tr('general.form.fieldError', null, false)
+        ]"
+      >
+        <template v-slot:prepend>
+          <q-icon name="fas fa-utensils" />
+        </template>
+      </q-select>
     </div>
 
     <!--
@@ -352,7 +403,9 @@ export default {
   props: {
     autofill: Object,
     isTeam: Boolean,
-    accommodationType: String
+    accommodationType: String,
+    mealType: String,
+    possibleDiets: Array
   },
 
   data() {
@@ -366,7 +419,8 @@ export default {
         city: null,
         zip: null,
         // phone: "+420",
-        vegetarian: false,
+        diet: this.possibleDiets[0],
+        meals: this.mealType !== "opt-in" && this.mealType !== "none",
         accommodation:
           this.accommodationType !== "opt-in" &&
           this.accommodationType !== "none",
@@ -466,7 +520,8 @@ export default {
         for (let index in formData)
           if (
             formData[index] != this.autofill[index] &&
-            index !== "accommodation"
+            index !== "accommodation" &&
+            index !== "meals"
           )
             autofillData.edited = true;
       }
@@ -589,7 +644,8 @@ export default {
           name: this.values.name ? this.values.name.trim() : null,
           surname: this.values.surname ? this.values.surname.trim() : null,
           note: this.values.note,
-          accommodation: false
+          accommodation: false,
+          diet: this.values.diet
         };
       } else {
         return {
@@ -608,9 +664,9 @@ export default {
           street: this.values.street,
           city: this.values.city,
           zip: this.values.zip ? this.values.zip.replace(" ", "") : "",
-          vegetarian: this.values.vegetarian,
           note: this.values.note,
-          accommodation: true
+          accommodation: true,
+          diet: this.values.diet
         };
       }
     }

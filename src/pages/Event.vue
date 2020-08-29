@@ -110,6 +110,8 @@
           @submit="sendForm"
           :autofill="autofillData"
           :accommodationType="accommodationType"
+          :mealType="mealType"
+          :possibleDiets="possibleDiets"
           @goToRolePick="goTo('role')"
         />
         <team-form
@@ -118,6 +120,8 @@
           @goToRolePick="goTo('role')"
           :autofill="autofillData"
           :accommodationType="accommodationType"
+          :mealType="mealType"
+          :possibleDiets="possibleDiets"
         ></team-form>
       </div>
     </div>
@@ -198,6 +202,9 @@ export default {
       showGroupModal: false,
       autofillData: null,
       accommodationType: "opt-out",
+      mealType: "opt-out",
+      possibleDiets: ["Žádné", "Halal", "Jen maso", "Vege"],
+
       dataToSubmit: []
     };
   },
@@ -229,6 +236,12 @@ export default {
     eventPromise.then(([event, isLoading]) => {
       this.event = event;
       this.accommodationType = event.accommodation;
+      console.log(event);
+      this.mealType = event.meals;
+      /*
+      TODO: Load from event:
+       */
+      // this.possibleDiets = event.possibleDiets;
 
       // Can't register to event -> don't even load roles
       if (event.hard_deadline < this.now || !this.$auth.check()) {
@@ -331,6 +344,7 @@ export default {
         event: this.event.id,
         role: this.role === 0 ? 1 : this.role, // if role is team, set as debater
         accommodation: data.accommodation,
+        meals: data.meals,
         team: data.team || null,
         teamName: data.teamName || null,
         note: data.note
@@ -340,6 +354,7 @@ export default {
       delete personData.team;
       delete personData.teamName;
       delete personData.accommodation;
+      delete personData.meals;
       delete personData.note;
 
       this.dataToSubmit.push({

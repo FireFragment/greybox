@@ -54,9 +54,11 @@
     "city": "City",
     "zip": "ZIP code (PSČ)",
     "phone": "Phone number",
-    "vegetarian": "Vegetarian",
+    "diet": "Dietary restrictions",
     "accommodation": "I don't need accommodation",
     "accommodationOptIn": "I need to arrange accommodation",
+    "meals": "I don't need to arrange meals.",
+    "mealsOptIn": "I need to arrange meals",
     "legalGuardian": "Legal guardian",
     "parentName": "Full name",
     "parentPhone":  "Phone number",
@@ -67,6 +69,7 @@
   "fieldNotes": {
     "id_number": "Please fill in your ID number if you have one.",
     "accommodation": "Use the note field below for special accommodation requirements.",
+    "meals": "Use the note field below for special dietary requirements.",
     "example": "Ex.:"
   },
   "registrationFields": {
