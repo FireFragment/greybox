@@ -1,11 +1,18 @@
 <template>
   <!-- Submit on validation error is needed in order to inform user about errors -->
   <q-form class="team-form" @submit="submitForm" @validation-error="submitForm">
-    <q-input
+    <q-select
       outlined
-      v-model="teamName"
+      :value="teamName"
       :label="$tr('fields.teamName')"
-      class="col-12 col-sm-6"
+      use-input
+      hide-selected
+      fill-input
+      input-debounce="0"
+      :options="teamsAutofill"
+      @input="autofillSelected"
+      @filter="filterTeamNames"
+      @input-value="teamName = $event"
       lazy-rules
       :rules="[
         val =>
@@ -70,6 +77,8 @@ export default {
   },
   data() {
     return {
+      pastTeams: [],
+      teamsAutofill: [],
       translationPrefix: "tournament.",
       people: {},
       visibleId: null,
@@ -81,8 +90,40 @@ export default {
   },
   created() {
     this.addPerson();
+
+    let cached = this.$db("autofillTeams");
+
+    if (cached) return (this.pastTeams = this.teamsAutofill = cached);
+
+    this.$api({
+      url: "user/" + this.$auth.user().id + "/team", // "/event/" + this.eventId,
+      method: "get"
+    }).then(d => {
+      this.pastTeams = this.teamsAutofill = d.data;
+      this.$db("autofillTeams", this.pastTeams, true);
+    });
   },
   methods: {
+    filterTeamNames(val, update) {
+      update(() => {
+        const needle = val.toLocaleLowerCase();
+        this.teamsAutofill = this.pastTeams
+          // Filter teams based on name
+          .filter(v => v.name.toLocaleLowerCase().includes(needle))
+          // Parse teams to select compatible objects
+          .map(item => {
+            return {
+              label: item.name,
+              value: item.id
+            };
+          });
+      });
+    },
+    autofillSelected(value) {
+      let teamId = value.value;
+
+      alert("Autofill team members with ID #" + teamId);
+    },
     toggleVisibility(id) {
       if (this.visibleId == id) this.visibleId = null;
       else this.visibleId = id;
