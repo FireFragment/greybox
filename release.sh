@@ -96,7 +96,7 @@ printf "\nRelease created, uploading files...\n"
 
 # Choose which files with which labels to upload
 fileNames=("registrace_debugbox.zip" "registrace.zip" "registration.zip")
-fileLabels=("Development%20build" "Production%20build" "International%20production%20build")
+fileLabels=("Development%20build" "Production%20build" "PDS%20production%20build")
 
 # Loop through files to upload
 for i in ${!fileNames[@]}; do
