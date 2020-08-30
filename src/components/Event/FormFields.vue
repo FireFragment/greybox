@@ -470,16 +470,17 @@ export default {
       years: [],
       possibleDietsOptions: [],
       speakerOptions: [
-        { label: this.$tr("tournament.fields.EFL"), value: "efl" },
+        {
+          label: this.$tr("tournament.fields.EFL"),
+          value: "efl"
+        },
         {
           label: this.$tr("tournament.fields.ESL"),
-          value: "esl",
-          color: "red"
+          value: "esl"
         },
         {
           label: this.$tr("tournament.fields.ENL"),
-          value: "enl",
-          color: "green"
+          value: "enl"
         }
       ]
     };
@@ -699,30 +700,33 @@ export default {
           : null
       };
 
-      // accommodation-only
+      // Include accommodation data if it is requred or user wants it
       if (
-        this.accommodationType !== "none" ||
-        this.values.accommodation === true
+        this.accommodationType === "required" ||
+        (this.accommodationType !== "none" &&
+          this.values.accommodation === (this.accommodationType === "opt-in"))
       ) {
-        (returnObject.accommodation = true),
-          (returnObject.birthdate = this.birthdateFormatter(
-            this.values.birthYear,
-            this.values.birthMonth,
-            this.values.birthDay
-          )),
-          (returnObject.id_number =
-            this.values.id_number === "_________"
-              ? null
-              : this.values.id_number),
-          (returnObject.street = this.values.street),
-          (returnObject.city = this.values.city),
-          (returnObject.zip = this.values.zip
-            ? this.values.zip.replace(" ", "")
-            : "");
+        returnObject.accommodation = true;
+        returnObject.birthdate = this.birthdateFormatter(
+          this.values.birthYear,
+          this.values.birthMonth,
+          this.values.birthDay
+        );
+        returnObject.id_number =
+          this.values.id_number === "_________" ? null : this.values.id_number;
+        returnObject.street = this.values.street;
+        returnObject.city = this.values.city;
+        returnObject.zip = this.values.zip
+          ? this.values.zip.replace(" ", "")
+          : "";
       } else returnObject.accommodation = false;
-      // if is pds
-      if (this.env.APP_IS_PDS === "true")
-        returnObject.speaker_status = this.speaker_status.value;
+
+      // PDS -> include speaker status
+      if (this.env.VUE_APP_IS_PDS === "true")
+        returnObject.speaker_status = this.values.speaker_status
+          ? this.values.speaker_status.value
+          : null;
+
       return returnObject;
     }
   }
