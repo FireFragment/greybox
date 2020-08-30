@@ -227,7 +227,7 @@ export default {
       autofillData: null,
       accommodationType: "opt-out",
       mealType: "opt-out",
-      possibleDiets: ["Žádné", "Halal", "Jen maso", "Vege"],
+      possibleDiets: [],
 
       dataToSubmit: []
     };
@@ -261,10 +261,7 @@ export default {
       this.event = event;
       this.accommodationType = event.accommodation;
       this.mealType = event.meals;
-      /*
-      TODO: Load from event:
-       */
-      // this.possibleDiets = event.possibleDiets;
+      this.possibleDiets = event.dietaryRequirements;
 
       // Can't register to event -> don't even load roles
       if (event.hard_deadline < this.now || !this.$auth.check()) {
