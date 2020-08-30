@@ -297,21 +297,37 @@
 
     <!-- International tournament (PDS) option: -->
     <template v-if="env.VUE_APP_IS_PDS === 'true'">
-      <div class="q-mt-md q-mb-md">
-        <div class="text-bold">{{ $tr("fields.speakerStatus") }} *:</div>
-        <q-option-group
-          :options="speakerOptions"
-          label="Notifications"
-          type="radio"
-          v-model="values.speaker_status"
-          lazy-rules
-          :rules="[
+      <q-select
+        outlined
+        v-model="values.speaker_status"
+        :options="speakerOptions"
+        option-value="label"
+        :label="$tr('fields.speakerStatus') + ' *'"
+        class="q-pt-sm q-mb-sm col-12 col-md-4"
+        lazy-rules
+        :rules="[val => val || $tr('general.form.fieldError', null, false)]"
+      >
+      </q-select>
+      <!--
+              <div class="q-mt-md q-mb-md">
+        <div class="text-bold">{{ $tr("fields.speakerStatus") }} *</div>
+        <q-field
+                v-model="values.speaker_status"
+                :value="values.speaker_status"
+                lazy-rules
+                :rules="[
             val =>
-              (val && val.length > 0) ||
+              (val) ||
               $tr('general.form.fieldError', null, false)
-          ]"
-        />
-      </div>
+          ]">
+          <q-option-group
+                  :label="$tr('fields.speakerStatus')"
+                  :options="speakerOptions"
+                  v-model="values.speaker_status"
+          />
+        </q-field>
+        </div>
+        -->
     </template>
 
     <!--
