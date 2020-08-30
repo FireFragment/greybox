@@ -22,7 +22,7 @@ abstract class AutofillRepository
             $userRegisteredEntity->registered = false;
             foreach ($eventRegisteredEntities as $eventRegisteredEntity)
             {
-                if ($eventRegisteredEntity->id == $userRegisteredEntity->id)
+                if ($eventRegisteredEntity->id === $userRegisteredEntity->id)
                 {
                     $userRegisteredEntity->registered = true;
                     break;
