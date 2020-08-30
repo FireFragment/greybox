@@ -26,7 +26,7 @@ class RemoveVegetarianFromPeopleTable extends Migration
     public function down()
     {
         Schema::table('people', function (Blueprint $table) {
-            $table->boolean('vegetarian');
+            $table->boolean('vegetarian')->default(0);
         });
     }
 }
