@@ -102,6 +102,7 @@ export default {
   },
   methods: {
     sendForm() {
+      console.log(this.formData);
       this.loading = !this.loading;
 
       // Send person and registration requests
