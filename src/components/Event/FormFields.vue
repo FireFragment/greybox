@@ -678,7 +678,9 @@ export default {
         surname: this.values.surname ? this.values.surname.trim() : null,
         note: this.values.note,
         meals: this.values.meals,
-        dietary_requirement: this.values.dietary_requirement.value
+        dietary_requirement: this.values.dietary_requirement
+          ? this.values.dietary_requirement.value
+          : null
       };
 
       // accommodation-only

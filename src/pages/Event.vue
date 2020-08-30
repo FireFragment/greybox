@@ -146,6 +146,7 @@
           :accommodationType="accommodationType"
           :mealType="mealType"
           :possibleDiets="possibleDiets"
+          :eventId="event.id"
         ></team-form>
       </div>
     </div>
@@ -325,6 +326,7 @@ export default {
   beforeDestroy() {
     // Invalidate autofill cache
     this.$db("autofillDebaters-event" + this.event.id, this.DB_DEL);
+    this.$db("autofillTeams-event" + this.event.id, this.DB_DEL);
   },
 
   methods: {
@@ -413,6 +415,7 @@ export default {
 
       // Remove autofill data to include newly added people later
       this.$db("autofillDebaters-event" + this.event.id, this.DB_DEL);
+      this.$db("autofillTeams-event" + this.event.id, this.DB_DEL);
     },
 
     removePerson(index) {

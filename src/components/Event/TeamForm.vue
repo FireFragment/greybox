@@ -76,7 +76,8 @@ export default {
   props: {
     autofill: Object,
     accommodationType: String,
-    possibleDiets: Array
+    possibleDiets: Array,
+    eventId: Number
   },
   data() {
     return {
@@ -96,25 +97,36 @@ export default {
   created() {
     this.addPerson();
 
-    let cached = this.$db("autofillTeams");
+    let cached = this.$db("autofillTeams-event" + this.eventId);
 
     if (cached) return (this.pastTeams = this.teamsAutofill = cached);
 
     this.$api({
-      url: "user/" + this.$auth.user().id + "/team", // "/event/" + this.eventId,
+      url: "user/" + this.$auth.user().id + "/team/event/" + this.eventId,
       method: "get"
     }).then(d => {
       this.pastTeams = this.teamsAutofill = d.data;
-      this.$db("autofillTeams", this.pastTeams, true);
+      this.$db("autofillTeams-event" + this.eventId, this.pastTeams, true);
     });
   },
+
+  computed: {
+    // Teams in autofill already registered for this tournament
+    registeredTeams() {
+      return this.pastTeams.filter(item => item.registered);
+    },
+    notRegisteredTeams() {
+      return this.pastTeams.filter(item => !item.registered);
+    }
+  },
+
   methods: {
     filterTeamNames(val, update) {
       if (val) this.teamId = null;
 
       update(() => {
         const needle = val.toLocaleLowerCase();
-        this.teamsAutofill = this.pastTeams
+        this.teamsAutofill = this.notRegisteredTeams
           // Filter teams based on name
           .filter(v => v.name.toLocaleLowerCase().includes(needle))
           // Parse teams to select compatible objects
