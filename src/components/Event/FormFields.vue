@@ -59,7 +59,7 @@
       :class="{ 'form-conditional-block': accommodationType !== 'required' }"
       v-if="accommodationType !== 'none' && values.accommodation === true"
     >
-      <div class="row q-col-gutter-sm" @keydown="selectKeyPress">
+      <div class="row q-col-gutter-sm">
         <div class="col-12 q-field" style="color: rgba(0,0,0,0.54);">
           {{ $tr("fields.birthdate") }} *
         </div>
@@ -72,7 +72,6 @@
           class="q-pt-sm q-mb-sm col-12 col-md-4"
           data-select-value="birthDay"
           data-select-options="days"
-          @focus="selectResetSearch"
           lazy-rules
           :rules="[val => val || $tr('general.form.fieldError', null, false)]"
         >
@@ -91,7 +90,6 @@
           class="q-pt-sm q-mb-sm col-12 col-md-4"
           data-select-value="birthMonth"
           data-select-options="months"
-          @focus="selectResetSearch"
           lazy-rules
           :rules="[val => val || $tr('general.form.fieldError', null, false)]"
         >
@@ -108,7 +106,6 @@
           class="q-pt-sm q-mb-sm col-12 col-md-4"
           data-select-value="birthYear"
           data-select-options="years"
-          @focus="selectResetSearch"
           lazy-rules
           :rules="[val => val || $tr('general.form.fieldError', null, false)]"
         >
@@ -286,6 +283,8 @@
         option-value="label"
         :label="$tr('fields.diet')"
         class="q-pt-sm q-mb-sm col-12"
+        data-select-value="diet"
+        data-select-options="possibleDiets"
         lazy-rules
         :rules="[val => val || $tr('general.form.fieldError', null, false)]"
       >
@@ -600,7 +599,7 @@ export default {
 
     // Key pressed inside select
     // -> Search for corresponding value
-    selectKeyPress(a) {
+    /*selectKeyPress(a) {
       let selectOptions = a.target.getAttribute("data-select-options");
       let selectValue = a.target.getAttribute("data-select-value");
       let pressedKey = a.key;
@@ -644,7 +643,7 @@ export default {
     },
     selectResetSearch() {
       this.selectSearch = null;
-    },
+    },*/
     birthdateFormatter(year, month, day) {
       if (!year && !month && !day) return null;
       else
