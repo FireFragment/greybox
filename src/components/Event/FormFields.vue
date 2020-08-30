@@ -675,6 +675,18 @@ export default {
           } else
             this.values.birthDay = this.values.birthMonth = this.values.birthYear = null;
         }
+        // Diet -> pick correct value object
+        else if (key === "dietary_requirement") {
+          this.values[key] = this.possibleDietsOptions.filter(
+            item => item.value === data[key]
+          )[0];
+        }
+        // Speaker status -> pick correct value object
+        else if (key === "speaker_status") {
+          this.values[key] = this.speakerOptions.filter(
+            item => item.value === data[key]
+          )[0];
+        }
         // Any other field -> pass raw value
         else this.values[key] = data[key];
       }

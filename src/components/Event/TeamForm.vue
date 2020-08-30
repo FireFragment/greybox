@@ -58,6 +58,7 @@
       @delete="deletePerson"
       :possibleDiets="possibleDiets"
       :accommodationType="accommodationType"
+      :mealType="mealType"
     />
     <g-d-p-r-checkbox v-model="accept" :error="acceptError" />
     <div class="text-center">
@@ -102,6 +103,7 @@ export default {
   props: {
     autofill: Object,
     accommodationType: String,
+    mealType: String,
     possibleDiets: Array,
     eventId: Number
   },
