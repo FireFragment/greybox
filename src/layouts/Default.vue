@@ -17,7 +17,7 @@
         <q-toolbar-title>
           <span>
             <q-avatar size="35px">
-              <img src="../assets/logo.png" />
+              <img src="../assets/logo.svg" />
             </q-avatar>
             greybox 2.0
             <span v-if="env.VUE_APP_MODE !== 'production'" class="mode-flag">

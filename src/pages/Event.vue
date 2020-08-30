@@ -2,12 +2,19 @@
   <q-page padding v-if="event">
     <!-- Header card -->
     <div class="text-center">
-      <q-card class="inline-block event-header">
+      <q-card
+        class="inline-block event-header"
+        :class="{ smaller: role || role === 0 }"
+      >
         <h1 class="text-center text-h4">
           {{ $tr("title") }} {{ $tr(event.name) }}
         </h1>
-        <div class="text-center close-paragraphs q-p-1">
+        <div
+          class="text-center close-paragraphs q-p-1"
+          v-if="!role && role !== 0"
+        >
           <p>
+            <q-icon name="far fa-calendar-alt" class="text-primary" />
             <template
               v-if="event.beginning.substr(0, 4) !== event.end.substr(0, 4)"
             >
@@ -22,16 +29,23 @@
               {{ event.beginning | moment("D. M.") }} - </template
             ><template v-else-if="event.beginning !== event.end">
               <!-- Just day is different-->
-              {{ event.beginning | moment("D.") }}-</template
-            >{{ event.end | moment("D. M. Y") }},
+              {{ event.beginning | moment("D.") }} - </template
+            >{{ event.end | moment("D. M. Y") }}
             <!-- else - One day event -->
+          </p>
+          <p>
+            <q-icon name="fas fa-landmark" class="text-primary" />
             {{ event.place }}
           </p>
           <p>
+            <q-icon name="far fa-bell" class="text-negative" />
             {{ $tr("deadline") }}:
             {{ event.soft_deadline | moment("D. M. Y H:mm") }}
           </p>
-          <p v-if="event.note">{{ $tr(event.note) }}</p>
+          <p v-if="event.note">
+            <q-icon name="fas fa-info" class="text-primary" />
+            {{ $tr(event.note) }}
+          </p>
         </div>
       </q-card>
     </div>
@@ -110,10 +124,10 @@
       </div>
     </template>
     <div class="row q-col-gutter-md reverse" v-else-if="!checkout">
-      <div class="col-12 col-sm-4 col-md-6">
+      <div class="col-12 col-sm-4 col-md-5 autofill-wrapper">
         <autofill-card @person-selected="debaterSelected" :eventId="event.id" />
       </div>
-      <div class="col-12 col-sm-8 col-md-6">
+      <div class="col-12 col-sm-8 col-md-7">
         <form-fields
           v-if="role !== 0"
           @submit="sendForm"
@@ -127,6 +141,7 @@
           v-else
           @submit="submitTeamForm"
           @goToRolePick="goTo('role')"
+          @autofillPerson="debaterSelected"
           :autofill="autofillData"
           :accommodationType="accommodationType"
           :mealType="mealType"
@@ -313,7 +328,23 @@ export default {
   },
 
   methods: {
-    submitTeamForm(people, teamName) {
+    submitTeamForm(people, teamName, teamId) {
+      // Function to call after team ID is known
+      let doneCallback = (id, name) => {
+        for (let index in people) {
+          let person = people[index];
+
+          person.formData.team = id;
+          person.formData.teamName = name;
+
+          this.sendForm(person.formData, person.autofillData);
+        }
+      };
+
+      // Team is autofilled -> call callback right away
+      if (teamId) return doneCallback(teamId, teamName);
+
+      // Team is new -> submit to API first before we can know the ID
       EventBus.$emit("fullLoader", true);
       this.$api({
         url: "team",
@@ -323,14 +354,7 @@ export default {
         }
       })
         .then(data => {
-          for (let index in people) {
-            let person = people[index];
-
-            person.formData.team = data.data.id;
-            person.formData.teamName = teamName;
-
-            this.sendForm(person.formData, person.autofillData);
-          }
+          doneCallback(data.data.id, teamName);
         })
         .finally(() => {
           EventBus.$emit("fullLoader", false);

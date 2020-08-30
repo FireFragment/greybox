@@ -1,4 +1,18 @@
 .page-tournament
+	.event-header
+		&.smaller
+			padding-top: 1rem
+			padding-bottom: 1rem
+			margin-bottom: 15px
+
+			@media (min-width $breakpoint-sm-max)
+				margin-bottom: 3rem
+
+		i.fas, i.far
+			margin-top: -2px
+			margin-right: .25rem
+			font-size: 1.2em
+
 	.picking-buttons
 		.q-btn
 			line-height: 1.2
@@ -52,7 +66,10 @@
 		margin-top: 1.5rem
 
 	.form-conditional-block
-		margin-left: 40px
+		margin-left: 20px
+
+		@media (min-width $breakpoint-sm-max)
+			margin-left: 40px
 
 .smaller-margin-menu
 	.q-item
@@ -70,7 +87,14 @@
 		border: 1px solid rgba(0,0,0,0.12)
 
 // Autofill
+.autofill-wrapper
+	@media (min-width $breakpoint-sm-max)
+		padding-left: 3rem
+
 .debaters-sticky-card
+	.q-scrollarea
+		height: calc(100vh - 130px)
+
 	.q-item__label--header
 		text-align: center
 
