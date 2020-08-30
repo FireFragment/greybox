@@ -15,6 +15,7 @@ class RemoveVegetarianFromPeopleTable extends Migration
     {
         Schema::table('people', function (Blueprint $table) {
             $table->dropColumn('vegetarian');
+            $table->string('speaker_status', 3)->after('dietary_requirement')->nullable();
         });
     }
 
@@ -27,6 +28,7 @@ class RemoveVegetarianFromPeopleTable extends Migration
     {
         Schema::table('people', function (Blueprint $table) {
             $table->boolean('vegetarian')->default(0);
+            $table->dropColumn('speaker_status');
         });
     }
 }
