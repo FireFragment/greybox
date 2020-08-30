@@ -62,17 +62,20 @@
           v-for="(value, fieldName) in person.person"
           v-bind:key="'person-fields-' + fieldName"
         >
-          <template v-if="value && fieldName.substr(-4) !== 'name'">
+          <template
+            v-if="
+              value &&
+                fieldName.substr(-4) !== 'name' &&
+                fieldName !== 'dietary_requirement'
+            "
+          >
             <dt>{{ $tr("fields." + fieldName) }}:</dt>
-            <dd v-if="fieldName === 'vegetarian'">
-              {{
-                value ? $tr("checkout.values.yes") : $tr("checkout.values.yes")
-              }}
-            </dd>
-            <dd v-else-if="fieldName === 'birthdate'">
+            <dd v-if="fieldName === 'birthdate'">
               {{ value | moment("D. M. Y") }}
             </dd>
-            <dd v-else-if="value != null">
+            <dd
+              v-else-if="value != null && fieldName !== 'dietary_requirement'"
+            >
               {{ value }}
             </dd>
           </template>

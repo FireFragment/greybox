@@ -273,24 +273,21 @@
     <div
       class="block"
       :class="{ 'form-conditional-block': mealType !== 'required' }"
-      v-if="mealType !== 'none' && values.meals === true"
+      v-if="
+        mealType !== 'none' &&
+          values.meals === true &&
+          Object.keys(possibleDietsOptions).length !== 0
+      "
     >
       <q-select
         outlined
-        v-model="values.diet"
-        :options="possibleDiets"
+        v-model="values.dietary_requirement"
+        :options="possibleDietsOptions"
         option-value="label"
         :label="$tr('fields.diet')"
         class="q-pt-sm q-mb-sm col-12"
-        data-select-value="diet"
-        data-select-options="possibleDiets"
-        @focus="selectResetSearch"
         lazy-rules
-        :rules="[
-          val =>
-            (val && val.length > 0) ||
-            $tr('general.form.fieldError', null, false)
-        ]"
+        :rules="[val => val || $tr('general.form.fieldError', null, false)]"
       >
         <template v-slot:prepend>
           <q-icon name="fas fa-utensils" />
@@ -301,12 +298,18 @@
     <!-- International tournament (PDS) option: -->
     <template v-if="env.VUE_APP_IS_PDS === 'true'">
       <div class="q-mt-md q-mb-md">
-        <div class="text-bold">{{ $tr("fields.speakerStatus") }}:</div>
+        <div class="text-bold">{{ $tr("fields.speakerStatus") }} *:</div>
         <q-option-group
           :options="speakerOptions"
           label="Notifications"
           type="radio"
-          v-model="values.speakerStatus"
+          v-model="values.speaker_status"
+          lazy-rules
+          :rules="[
+            val =>
+              (val && val.length > 0) ||
+              $tr('general.form.fieldError', null, false)
+          ]"
         />
       </div>
     </template>
@@ -328,7 +331,6 @@
             ]"
           >
             <template v-slot:prepend>
-              <q-icon name="fas fa-signature" />
             </template>
           </q-input>
 
@@ -430,7 +432,7 @@ export default {
         city: null,
         zip: null,
         // phone: "+420",
-        diet: this.possibleDiets[0],
+        dietary_requirement: null,
         meals: this.mealType !== "opt-in" && this.mealType !== "none",
         accommodation:
           this.accommodationType !== "opt-in" &&
@@ -443,7 +445,7 @@ export default {
         birthDay: null,
         birthMonth: null,
         birthYear: null,
-        speakerStatus: null
+        speaker_status: null
         // -SCHOOL FIELD- school: null
       },
       acceptError: false,
@@ -451,6 +453,7 @@ export default {
       days: [],
       months: [],
       years: [],
+      possibleDietsOptions: [],
       speakerOptions: [
         { label: this.$tr("tournament.fields.EFL"), value: "efl" },
         {
@@ -484,6 +487,23 @@ export default {
         value: ("0" + (i + 1)).substr(-2),
         searchable: i + 1
       };
+    }
+
+    for (let i in this.possibleDiets) {
+      this.possibleDietsOptions[i] = {
+        label:
+          this.$tr(this.possibleDiets[i].name)
+            .charAt(0)
+            .toUpperCase() + this.$tr(this.possibleDiets[i].name).slice(1),
+        value: this.possibleDiets[i].id
+      };
+      //if last:
+      if (i == this.possibleDiets.length - 1) {
+        this.values.dietary_requirement = {
+          label: this.possibleDietsOptions[0].label,
+          value: this.possibleDietsOptions[0].value
+        };
+      }
     }
 
     // Smartform autocomplete select
@@ -654,39 +674,39 @@ export default {
 
   computed: {
     submitData() {
+      let returnObject = {
+        name: this.values.name ? this.values.name.trim() : null,
+        surname: this.values.surname ? this.values.surname.trim() : null,
+        note: this.values.note,
+        meals: this.values.meals,
+        dietary_requirement: this.values.dietary_requirement.value
+      };
+
+      // accommodation-only
       if (
-        this.accommodationType === "none" ||
-        this.values.accommodation === false
+        this.accommodationType !== "none" ||
+        this.values.accommodation === true
       ) {
-        return {
-          name: this.values.name ? this.values.name.trim() : null,
-          surname: this.values.surname ? this.values.surname.trim() : null,
-          note: this.values.note,
-          accommodation: false,
-          diet: this.values.diet
-        };
-      } else {
-        return {
-          name: this.values.name ? this.values.name.trim() : null,
-          surname: this.values.surname ? this.values.surname.trim() : null,
-          // -SCHOOL FIELD- school: this.values.school ? this.values.school.trim() : null,
-          birthdate: this.birthdateFormatter(
+        (returnObject.accommodation = true),
+          (returnObject.birthdate = this.birthdateFormatter(
             this.values.birthYear,
             this.values.birthMonth,
             this.values.birthDay
-          ),
-          id_number:
+          )),
+          (returnObject.id_number =
             this.values.id_number === "_________"
               ? null
-              : this.values.id_number,
-          street: this.values.street,
-          city: this.values.city,
-          zip: this.values.zip ? this.values.zip.replace(" ", "") : "",
-          note: this.values.note,
-          accommodation: true,
-          diet: this.values.diet
-        };
-      }
+              : this.values.id_number),
+          (returnObject.street = this.values.street),
+          (returnObject.city = this.values.city),
+          (returnObject.zip = this.values.zip
+            ? this.values.zip.replace(" ", "")
+            : "");
+      } else returnObject.accommodation = false;
+      // if is pds
+      if (this.env.APP_IS_PDS === "true")
+        returnObject.speaker_status = this.speaker_status.value;
+      return returnObject;
     }
   }
 };
