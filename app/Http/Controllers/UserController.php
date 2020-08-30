@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\ResetPassword;
 use App\Repositories\PersonRepository;
+use App\Repositories\TeamRepository;
 use App\User;
 use http\Env\Response;
 use Illuminate\Http\Request;
@@ -300,25 +301,20 @@ class UserController extends Controller
         return response()->json($people, 200);
     }
 
-    public function showClients($id) {
-        $user = User::find($id);
-        $clients = $user->clients()->get();
-        return response()->json($clients, 200);
-    }
-
-    public function showTeams($id)
+    public function showTeams($userId, $eventId = null)
     {
-        $user = User::find($id);
-        $registrations = $user->registrations()->select('team')->whereNotNull('team')->groupBy('team')->get();
+        $user = User::find($userId);
 
-        $teams = array();
-        foreach ($registrations as $registration)
+        $userRegisteredTeams = TeamRepository::getTeamsFromRegistrations($user->registrations()->select('team')->whereNotNull('team')->groupBy('team')->get());
+        $deletedTeams = TeamRepository::getTeamsFromRegistrations($user->deletedAutofills()->get());
+        $eventRegisteredTeams = array();
+        if (null !== $eventId)
         {
-            $team = $registration->team()->first();
-            if (!empty($team)) {
-                $teams[] = $team;
-            }
+            $event = \App\Event::find($eventId);
+            $eventRegisteredTeams = TeamRepository::getTeamsFromRegistrations($event->registrations()->get());
         }
+
+        $teams = TeamRepository::getAutofillTeams($userRegisteredTeams, $deletedTeams, $eventRegisteredTeams);
 
         usort($teams, function ($a, $b) {
             $coll = new \Collator('cs_CZ');
@@ -327,5 +323,11 @@ class UserController extends Controller
 
         return response()->json($teams, 200);
 
+    }
+
+    public function showClients($id) {
+        $user = User::find($id);
+        $clients = $user->clients()->get();
+        return response()->json($clients, 200);
     }
 }

@@ -28,6 +28,7 @@ class TeamController extends Controller
     public function showOne($id)
     {
         $team = Team::find($id);
+        // TODO: take into account the most recent tournaments
         $registrations = $team->registrations()->select(\DB::raw('person, count(*) as attendance'))->whereNotNull('person')->groupBy('person')->orderBy('attendance', 'DESC')->limit(5)->get();
 
         $members = array();

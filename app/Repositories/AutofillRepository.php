@@ -19,9 +19,9 @@ abstract class AutofillRepository
                 }
             }
 
+            $userRegisteredEntity->registered = false;
             foreach ($eventRegisteredEntities as $eventRegisteredEntity)
             {
-                $userRegisteredEntity->registered = false;
                 if ($eventRegisteredEntity->id == $userRegisteredEntity->id)
                 {
                     $userRegisteredEntity->registered = true;
