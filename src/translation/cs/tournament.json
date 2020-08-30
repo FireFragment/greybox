@@ -78,6 +78,7 @@
   },
   "registrationFields": {
     "accommodation": "Ubytování",
+    "meals": "Jídlo",
     "role": "Role",
     "teamName": "Tým"
   },

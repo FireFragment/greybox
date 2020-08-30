@@ -153,6 +153,7 @@
     <checkout
       v-else-if="!confirmData"
       :form-data="dataToSubmit"
+      :possible-diets="possibleDiets"
       @confirm="checkoutConfirmed"
       @goToRolePick="goTo('role')"
       @removePerson="removePerson"

@@ -78,6 +78,7 @@
   },
   "registrationFields": {
     "accommodation": "Accommodation",
+    "meals": "Meals",
     "role": "Role",
     "teamName": "Team"
   },

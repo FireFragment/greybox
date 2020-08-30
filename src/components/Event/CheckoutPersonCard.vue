@@ -53,6 +53,29 @@
             </dd>
           </template>
         </div>
+
+        <div v-if="person.person.speaker_status">
+          <dt>{{ $tr("fields.speakerStatus") }}:</dt>
+          <dd>{{ person.person.speaker_status.toUpperCase() }}</dd>
+        </div>
+
+        <div>
+          <dt>{{ $tr("registrationFields.meals") }}:</dt>
+          <dd>
+            {{
+              person.registration.meals
+                ? $tr("checkout.values.yes")
+                : $tr("checkout.values.no")
+            }}
+          </dd>
+        </div>
+
+        <div
+          v-if="person.registration.meals && person.person.dietary_requirement"
+        >
+          <dt>{{ $tr("fields.diet") }}:</dt>
+          <dd>{{ dietaryRequirement }}</dd>
+        </div>
       </q-card-section>
 
       <q-separator v-if="person.registration.accommodation" inset />
@@ -89,7 +112,8 @@
 export default {
   props: {
     person: Object,
-    personIndex: Number
+    personIndex: Number,
+    possibleDiets: Array
   },
   data() {
     return {
@@ -103,6 +127,17 @@ export default {
         if (item.id === this.person.registration.role) roleObject = item;
       });
       return this.$tr(roleObject.name);
+    },
+    dietaryRequirement() {
+      let id = this.person.person.dietary_requirement;
+
+      // Get dietary requirement name
+      let name = this.$tr(
+        this.possibleDiets.filter(item => item.id === id)[0].name
+      );
+
+      // Capitalize
+      return name.charAt(0).toUpperCase() + name.slice(1);
     }
   },
   name: "CheckoutPersonCard",

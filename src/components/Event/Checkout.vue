@@ -56,6 +56,7 @@
         v-bind:key="JSON.stringify(person)"
         :person="person"
         :person-index="index"
+        :possible-diets="possibleDiets"
         @remove="removePerson"
       />
     </div>
@@ -91,7 +92,8 @@ import billingMenu from "./BillingMenu";
 export default {
   name: "Checkout",
   props: {
-    formData: Array
+    formData: Array,
+    possibleDiets: Array
   },
   data() {
     return {
