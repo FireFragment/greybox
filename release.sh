@@ -40,7 +40,7 @@ rm -f registrace.zip debugbox.zip registration.zip
 # Build production & debug
 npm run build
 npm run build:debug
-npm run build:int
+npm run build:pds
 
 # Create zip files
 if ! command -v tar &> /dev/null
