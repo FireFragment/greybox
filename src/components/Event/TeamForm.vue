@@ -19,7 +19,31 @@
         val =>
           (val && val.length > 0) || $tr('general.form.fieldError', null, false)
       ]"
-    />
+    >
+      <template v-slot:option="scope">
+        <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+          <q-item-section>
+            <q-item-label v-html="scope.opt.label" />
+          </q-item-section>
+          <q-item-section avatar>
+            <q-avatar
+              class="bg-negative text-white deletion-avatar deleting"
+              size="30px"
+              @click.stop="deleteTeam(scope.opt.value)"
+            >
+              <q-tooltip
+                anchor="center left"
+                self="center right"
+                :offset="[10, 10]"
+              >
+                {{ $tr("autofill.removeTooltip") }}
+              </q-tooltip>
+              <q-icon name="fas fa-trash" />
+            </q-avatar>
+          </q-item-section>
+        </q-item>
+      </template>
+    </q-select>
 
     <person-card
       ref="person-card"
@@ -67,6 +91,8 @@
 <script>
 import personCard from "./TeamPersonCard";
 import GDPRCheckbox from "./GDPRCheckbox";
+import { EventBus } from "../../event-bus";
+
 export default {
   name: "TeamForm",
   components: {
@@ -277,6 +303,43 @@ export default {
         .catch(() => {
           this.$flash(this.$tr("general.form.error", null, false), "error");
         });
+    },
+    deleteTeam(id) {
+      this.$confirm({
+        confirm: this.$tr("general.confirmModal.remove", null, false),
+        message: this.$tr("autofill.removeModal.team.title")
+      }).onOk(() => {
+        EventBus.$emit("fullLoader", true);
+
+        this.$api({
+          url: "deletedautofill",
+          method: "post",
+          alerts: false,
+          data: {
+            team: id
+          }
+        })
+          .then(() => {
+            // Remove removed person from cache
+            this.pastTeams = this.pastTeams.filter(item => item.id !== id);
+            this.$db(
+              "autofillTeams-event" + this.eventId,
+              this.pastTeams,
+              true
+            );
+
+            this.$flash(
+              this.$tr("autofill.removeModal.team.success"),
+              "success"
+            );
+          })
+          .catch(() => {
+            this.$flash(this.$tr("autofill.removeModal.team.error"), "error");
+          })
+          .finally(() => {
+            EventBus.$emit("fullLoader", false);
+          });
+      });
     }
   },
 

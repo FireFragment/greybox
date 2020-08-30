@@ -15,6 +15,7 @@
       <q-avatar
         :style="'background-color: ' + $stringToHslColor(person.name)"
         :class="{ deleting: showDeleteButton }"
+        class="deletion-avatar"
         size="30px"
         @click.stop="$emit('deletePerson')"
       >

@@ -87,9 +87,16 @@
     "registered": "Již zaregistrované osoby",
     "removeTooltip": "Odstranit osobu z našeptávače",
     "removeModal": {
-      "title": "Opravdu si přejete odstranit tuto osobu z našeptávače?",
-      "success": "Osoba úspěšně odstraněna",
-      "error": "Osobu se nepodařilo odstranit, opakujte akci"
+      "person": {
+        "title": "Opravdu si přejete odstranit tuto osobu z našeptávače?",
+        "success": "Osoba úspěšně odstraněna",
+        "error": "Osobu se nepodařilo odstranit, opakujte akci"
+      },
+      "team": {
+        "title": "Opravdu si přejete odstranit tento tým z našeptávače?",
+        "success": "Tým úspěšně odstraněn",
+        "error": "Tým se nepodařilo odstranit, opakujte akci"
+      }
     }
   },
   "checkout": {

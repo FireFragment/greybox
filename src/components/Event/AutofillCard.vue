@@ -3,17 +3,13 @@
     class="rounded-borders shadow-2 q-pb-sm bg-white debaters-sticky-card"
   >
     <q-scroll-area>
+      <q-item-label header>{{ $tr("title") }}</q-item-label>
       <div
         class="empty-info"
-        v-if="
-          !registeredPeople.length &&
-            !notRegisteredPeople.length &&
-            !showLoading
-        "
+        v-if="!notRegisteredPeople.length && !showLoading"
       >
         {{ $tr("empty") }}
       </div>
-      <q-item-label header>{{ $tr("title") }}</q-item-label>
 
       <autofill-card-person
         v-for="pastLogin in notRegisteredPeople"
@@ -77,7 +73,7 @@ export default {
 
       this.$confirm({
         confirm: this.$tr("general.confirmModal.remove", null, false),
-        message: this.$tr("removeModal.title")
+        message: this.$tr("removeModal.person.title")
       }).onOk(() => {
         EventBus.$emit("fullLoader", true);
 
@@ -100,10 +96,10 @@ export default {
               true
             );
 
-            this.$flash(this.$tr("removeModal.success"), "success");
+            this.$flash(this.$tr("removeModal.person.success"), "success");
           })
           .catch(() => {
-            this.$flash(this.$tr("removeModal.error"), "error");
+            this.$flash(this.$tr("removeModal.person.error"), "error");
           })
           .finally(() => {
             EventBus.$emit("fullLoader", false);

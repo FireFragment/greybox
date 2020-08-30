@@ -87,9 +87,16 @@
     "registered": "Already registered people",
     "removeTooltip": "Remove person from autofill",
     "removeModal": {
-      "title": "Are you sure you want to remove this person from autofill?",
-      "success": "Person successfully removed",
-      "error": "An error has occured during removal, please try again later"
+      "person": {
+        "title": "Are you sure you want to remove this person from autofill?",
+        "success": "Person successfully removed",
+        "error": "An error has occured during removal, please try again later"
+      },
+      "team": {
+        "title": "Are you sure you want to remove this team from autofill?",
+        "success": "Team successfully removed",
+        "error": "An error has occured during removal, please try again later"
+      }
     }
   },
   "checkout": {

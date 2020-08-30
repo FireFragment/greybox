@@ -34,6 +34,7 @@
 
 	.q-card
 		height: 100%
+
 		dt, dd
 			display: inline-block
 
@@ -44,7 +45,7 @@
 			margin-left: .5rem
 
 	.team-form
-		>.q-field--error
+		> .q-field--error
 			margin-bottom: .5rem
 
 		.q-card
@@ -53,7 +54,7 @@
 					padding-top: 1rem
 
 				&.header
-					background-color: rgba(0,0,0,.1)
+					background-color: rgba(0, 0, 0, .1)
 
 					.col .q-btn
 						margin-right: .5rem
@@ -84,7 +85,7 @@
 		height: 60vh
 		margin-left: -16px
 		margin-bottom: -15px
-		border: 1px solid rgba(0,0,0,0.12)
+		border: 1px solid rgba(0, 0, 0, 0.12)
 
 // Autofill
 .autofill-wrapper
@@ -104,8 +105,6 @@
 			cursor: pointer
 
 			&.deleting
-				background-color: $negative !important
-
 				.fas
 					opacity: 1
 
@@ -113,22 +112,28 @@
 				position: absolute
 				opacity: 0
 				transition: opacity .1s linear
-				background-color: $negative
-				color: white
 
 		// Already registered person
 		&.registered
 			&:hover
 				background-color: #eaeaea
 
-				.q-avatar
-					opacity: 1
-
 			.q-item__section--main, .q-avatar
 				opacity: .6
 
-			.q-avatar
-				transition: opacity .1s linear
+.deletion-avatar
+	&.deleting
+		transition: opacity .1s linear, color .1s linear
+		opacity: 1 !important
+		background-color: $negative !important
+
+		&:hover
+			.fas
+				color: white
+
+		.fas
+			color: rgba(255, 255, 255, .85)
+			background-color: $negative
 
 
 .hidable
