@@ -216,7 +216,9 @@ class Invoice extends Model implements AuthenticatableContract, AuthorizableCont
                     ]);
                     $membershipsCount++;
                 } elseif ($membership->isExpired()) {
-                    $this->updateColumn($membership, 'end', \App\Membership::setEndDate(date('Y'), date('n')));
+                    $membership->update([
+                        'end' => \App\Membership::setEndDate(date('Y'), date('n'))
+                    ]);
                     $membershipsCount++;
                 }
             }
