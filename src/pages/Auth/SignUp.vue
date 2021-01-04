@@ -146,7 +146,8 @@ export default {
             params: {
               loginData: {
                 username: this.email,
-                password: this.password
+                password: this.password,
+                isSignUp: true
               }
             }
           });

@@ -88,11 +88,15 @@ export default {
       )
         requestData = {
           username: this.email,
-          password: this.password
+          password: this.password,
+          isSignUp: false
         };
 
+      // These translations don't work inside auth promises for some odd reason
       let invalidCredentials = this.$tr("login.validation.invalidCredentials");
       let loginLink = this.$path("auth.login");
+      let signupSuccess = this.$tr("signUp.success");
+      let loginSuccess = this.$tr("login.success");
 
       this.$auth
         .login(requestData)
@@ -104,12 +108,16 @@ export default {
           this.$auth
             .fetchUser()
             .then(() => {
-              if (userData) {
+              // User was automatically logged in after sign up
+              if (
+                typeof requestData.isSignUp === "boolean" &&
+                requestData.isSignUp
+              ) {
                 this.$router.replace({ name: "home" });
-                this.$flash(this.$tr("signUp.success"), "done");
+                this.$flash(signupSuccess, "done");
               } else {
                 this.$router.push({ name: "home" });
-                this.$flash(this.$tr("login.success"), "done");
+                this.$flash(loginSuccess, "done");
               }
             })
             .catch(data => {
@@ -120,6 +128,7 @@ export default {
             });
         })
         .catch(() => {
+          // Redirect is necessary because auth plugin automatically redirects to home
           this.$router.replace(loginLink);
           EventBus.$emit("fullLoader", false);
           this.$flash(invalidCredentials, "error");
