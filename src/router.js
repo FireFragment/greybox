@@ -22,7 +22,7 @@ import ENroutes from "./translation/en/paths";
 
 Vue.use(Router);
 
-export default new Router({
+let router = new Router({
   base: process.env.VUE_APP_BASE_ROUTE,
   mode: process.env.VUE_APP_MODE === "development" ? "hash" : "history",
   routes: [
@@ -107,3 +107,22 @@ export default new Router({
     }
   ]
 });
+
+// Catch "Duplicate Navigation" warning
+// Source: https://stackoverflow.com/a/63263736
+function patchRouterMethod(router, methodName) {
+  router["old" + methodName] = router[methodName];
+  router[methodName] = async function(location) {
+    return router["old" + methodName](location).catch(error => {
+      if (error.name === "NavigationDuplicated") {
+        return this.currentRoute;
+      }
+      throw error;
+    });
+  };
+}
+
+patchRouterMethod(router, "push");
+patchRouterMethod(router, "replace");
+
+export default router;
