@@ -92,6 +92,8 @@ export default {
         };
 
       let invalidCredentials = this.$tr("login.validation.invalidCredentials");
+      let loginLink = this.$path("auth.login");
+
       this.$auth
         .login(requestData)
         .then(data => {
@@ -118,7 +120,7 @@ export default {
             });
         })
         .catch(() => {
-          this.$router.replace(this.$path("auth.login"));
+          this.$router.replace(loginLink);
           EventBus.$emit("fullLoader", false);
           this.$flash(invalidCredentials, "error");
         })

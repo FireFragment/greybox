@@ -234,14 +234,13 @@ Vue.use(VueAuth, {
   loginData: {
     url: config.api.baseURL + "login",
     method: "POST",
-    headerToken: "Authorization",
-    rediret: "/prihlaseni"
+    headerToken: "Authorization"
   },
   fetchData: {
     url: config.api.baseURL + "user",
     method: "GET"
   },
-  authRedirect: "/prihlaseni",
+  authRedirect: () => this.$path("auth.login"),
   authMeta: "auth",
   rolesVar: "roles",
   tokenDefaultName: "vue_auth_token",
