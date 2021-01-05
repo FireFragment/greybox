@@ -70,24 +70,36 @@ export default {
       if (this.clients) return true;
 
       // Load clients from API
-      this.loading = true;
+      this.loadClients().then(() => {
+        // Reopen client menu once loaded
+        setTimeout(() => {
+          this.$refs["main-btn"].$el.click();
+        }, 100);
+      });
+    },
 
-      this.$api({
-        //url: "client",
-        url: "user/" + this.$auth.user().id + "/client",
-        method: "get"
-      })
-        .then(data => {
-          this.clients = data.data;
+    loadClients() {
+      if (!this.clients) this.loading = true;
 
-          // Reopen client menu once loaded
-          setTimeout(() => {
-            this.$refs["main-btn"].$el.click();
-          }, 100);
+      return new Promise((resolve, reject) => {
+        if (this.clients) return resolve(this.clients);
+
+        this.$api({
+          url: "user/" + this.$auth.user().id + "/client",
+          method: "get"
         })
-        .finally(() => {
-          this.loading = false;
-        });
+          .then(data => {
+            this.clients = data.data;
+            resolve(this.clients);
+          })
+          .catch(data => {
+            this.$flash(this.$tr("general.error", null, false), "error");
+            reject(data);
+          })
+          .finally(() => {
+            this.loading = false;
+          });
+      });
     },
 
     selectClient(client) {
@@ -122,6 +134,14 @@ export default {
     modalChange(value) {
       this.showEditModal = value;
     }
+  },
+  created() {
+    // Automatically open modal to edit billing details on PDS
+    if (this.$isPDS)
+      this.loadClients().then(() => {
+        if (this.clients && this.clients.length)
+          this.editClient(this.clients[0]);
+      });
   },
   mounted() {
     // Load clients from cache if it exists
