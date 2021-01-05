@@ -55,7 +55,7 @@ export default {
           return resolve(this.$db("countries-select"));
 
         this.$api({
-          url: "country/cs",
+          url: "country",
           method: "get"
         })
           .then(d => {
@@ -65,11 +65,7 @@ export default {
             for (let code of Object.keys(data)) {
               countries.push({
                 value: code,
-                // TODO change after API update
-                label: {
-                  cs: data[code],
-                  en: data[code]
-                }
+                label: data[code]
               });
             }
 
