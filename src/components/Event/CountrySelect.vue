@@ -78,7 +78,10 @@ export default {
 
     getCountryByCode(code) {
       let filtered = this.allOptions.filter(item => item.value === code);
-      return filtered[0];
+
+      if (filtered.length) return filtered[0];
+
+      return null;
     },
 
     filterFn(val, update) {

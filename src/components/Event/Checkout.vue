@@ -34,7 +34,8 @@
                 v-if="
                   billingClient.street ||
                     billingClient.city ||
-                    billingClient.zip
+                    billingClient.zip ||
+                    selectedCountry
                 "
               >
                 {{ billingClient.street }} <br v-if="billingClient.street" />
@@ -43,6 +44,13 @@
                   >,
                 </template>
                 {{ billingClient.zip }}
+                <template v-if="selectedCountry">
+                  <br v-if="billingClient.city || billingClient.zip" />
+                  {{ $tr(selectedCountry) }}
+
+                  <!-- Element has to be mounted in order for API to be loaded -->
+                  <country-select v-show="false" />
+                </template>
               </p>
             </div>
           </q-card-section>
@@ -88,6 +96,7 @@
 <script>
 import personCard from "./CheckoutPersonCard";
 import billingMenu from "./BillingMenu";
+import CountrySelect from "./CountrySelect";
 
 export default {
   name: "Checkout",
@@ -101,6 +110,24 @@ export default {
       loading: false,
       billingClient: null
     };
+  },
+  computed: {
+    selectedCountry() {
+      if (!this.$isPDS || !this.billingClient || !this.billingClient.country)
+        return null;
+
+      let db = this.$db("countries-select");
+
+      if (!db) return null;
+
+      let filtered = db.filter(
+        item => item.value === this.billingClient.country
+      );
+
+      if (filtered.length) return filtered[0].label;
+
+      return null;
+    }
   },
   methods: {
     sendForm() {
@@ -238,6 +265,7 @@ export default {
     }
   },
   components: {
+    CountrySelect,
     personCard,
     billingMenu
   }
