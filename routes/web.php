@@ -109,4 +109,5 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
     $router->get('country/cs', ['uses' => 'CountryController@showCzech']);
     $router->get('country/en', ['uses' => 'CountryController@showEnglish']);
+    $router->get('country', ['uses' => 'CountryController@showBoth']);
 });

@@ -15,4 +15,9 @@ class CountryController extends Controller
     {
         return response()->json(CountryService::listEnglishCountryNames());
     }
+
+    public function showBoth()
+    {
+        return response()->json(CountryService::listCountryNames());
+    }
 }
