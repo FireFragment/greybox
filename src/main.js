@@ -263,6 +263,9 @@ Vue.prototype.$auth.isAdmin = () => {
 Vue.prototype.db = {};
 Vue.prototype.dbPersonal = {};
 
+// $isPDS bool
+Vue.prototype.$isPDS = process.env.VUE_APP_IS_PDS === "true";
+
 new Vue({
   router,
   i18n,

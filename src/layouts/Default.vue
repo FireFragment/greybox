@@ -24,7 +24,7 @@
               <template v-if="env.VUE_APP_MODE === 'debug'">
                 debug
               </template>
-              <template v-else-if="env.VUE_APP_IS_PDS === 'true'">
+              <template v-else-if="$isPDS">
                 pds
               </template>
               <template v-else>

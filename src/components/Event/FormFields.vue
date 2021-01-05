@@ -295,7 +295,7 @@
     </div>
 
     <!-- International tournament (PDS) option: -->
-    <template v-if="env.VUE_APP_IS_PDS === 'true'">
+    <template v-if="$isPDS">
       <q-select
         outlined
         v-model="values.speaker_status"
@@ -734,7 +734,7 @@ export default {
       } else returnObject.accommodation = false;
 
       // PDS -> include speaker status
-      if (this.env.VUE_APP_IS_PDS === "true")
+      if (this.$isPDS)
         returnObject.speaker_status = this.values.speaker_status
           ? this.values.speaker_status.value
           : null;

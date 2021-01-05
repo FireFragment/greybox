@@ -163,14 +163,9 @@ export default {
     })
       .then(d => {
         // PDS has custom events (1 event = accommodation level)
-        if (this.env.VUE_APP_IS_PDS != "true")
-          this.events = d.data.filter(function(event) {
-            return event.pds === false;
-          });
-        else
-          this.events = d.data.filter(function(event) {
-            return event.pds === true;
-          });
+        this.events = d.data.filter(event => {
+          return event.pds === this.$isPDS;
+        });
         this.$db("eventsList", this.$makeIdObject(d.data));
       })
       .finally(() => {
