@@ -84,9 +84,9 @@
               :label="$tr('fields.zip')"
               class="col-5"
               :input-class="'smartform-zip ' + 'smartform-instance-' + _uid"
-              mask="### ##"
+              :mask="validateZip ? '### ##' : ''"
               fill-mask="_"
-              :hint="$tr('fieldNotes.example') + ' 796 01'"
+              :hint="validateZip ? $tr('fieldNotes.example') + ' 796 01' : null"
               lazy-rules
             >
               <template v-slot:prepend>
@@ -152,6 +152,14 @@ export default {
 
     this.stateChange(this.visible);
   },
+  computed: {
+    validateZip() {
+      return (
+        !this.$isPDS ||
+        (this.values.country && this.values.country.value === "CZ")
+      );
+    }
+  },
   methods: {
     stateChange(isVisible) {
       if (isVisible) this.$nextTick(this._dialogMounted);
@@ -213,12 +221,13 @@ export default {
       let data = { ...this.values };
 
       // Remove mask from zip
-      data.zip = data.zip
-        ? data.zip
-            .replace(/_/g, "")
-            .replace(" ", "")
-            .trim()
-        : "";
+      if (this.validateZip)
+        data.zip = data.zip
+          ? data.zip
+              .replace(/_/g, "")
+              .replace(" ", "")
+              .trim()
+          : "";
 
       if (this.$isPDS && data.country) data.country = data.country.value;
 
