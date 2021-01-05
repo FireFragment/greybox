@@ -45,6 +45,10 @@
       @client-change="clientChange"
       :visible="showEditModal"
       :client="editedClient"
+      :key="
+        (editedClient ? editedClient.id : 'new') +
+          (showEditModal ? 'visible' : 'n')
+      "
     />
   </div>
 </template>

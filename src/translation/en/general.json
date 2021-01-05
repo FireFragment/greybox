@@ -17,7 +17,10 @@
   },
   "form": {
     "error": "Please check the form for errors",
-    "fieldError": "This field is required"
+    "fieldError": "This field is required",
+    "fields": {
+      "country": "Country"
+    }
   },
   "404": {
     "title": "404 - page not found",

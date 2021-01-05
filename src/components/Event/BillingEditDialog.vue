@@ -9,7 +9,7 @@
         <q-btn icon="close" flat round dense v-close-popup />
       </q-card-section>
 
-      <q-form ref="q-form" @submit="submitForm">
+      <q-form ref="q-form" @submit="submitForm" v-if="initialized">
         <q-card-section>
           <div class="row q-col-gutter-md q-pb-sm">
             <q-input
@@ -94,6 +94,7 @@
               </template>
             </mask-input>
           </div>
+          <country-select v-if="$isPDS" v-model="values.country" />
         </q-card-section>
         <q-card-actions class="float-actions">
           <q-btn
@@ -117,10 +118,11 @@
 <script>
 import { EventBus } from "../../event-bus";
 import MaskInput from "./MaskInput";
+import CountrySelect from "./CountrySelect";
 
 export default {
   name: "BillingEditDialog",
-  components: { MaskInput },
+  components: { CountrySelect, MaskInput },
   props: {
     visible: Boolean,
     client: Object
@@ -128,13 +130,15 @@ export default {
   data() {
     return {
       translationPrefix: "tournament.checkout.billing.",
+      initialized: false,
       values: {
         name: null,
         email: null,
         registration_no: null,
         street: null,
         city: null,
-        zip: null
+        zip: null,
+        country: null
       }
     };
   },
@@ -145,6 +149,8 @@ export default {
       if (data.instance.substr(-(this._uid + "").length) == this._uid)
         this.values[data.field] = data.value;
     });
+
+    this.stateChange(this.visible);
   },
   methods: {
     stateChange(isVisible) {
@@ -155,11 +161,15 @@ export default {
 
     _dialogMounted() {
       Object.keys(this.values).forEach(key => {
-        this.values[key] =
-          this.client && this.client[key] ? this.client[key] : null;
+        this.$set(
+          this.values,
+          key,
+          this.client && this.client[key] ? this.client[key] : null
+        );
       });
 
       this._initSmartform();
+      this.initialized = true;
     },
 
     _initSmartform() {
@@ -209,6 +219,8 @@ export default {
             .replace(" ", "")
             .trim()
         : "";
+
+      if (this.$isPDS && data.country) data.country = data.country.value;
 
       this.$api({
         url: "client" + (isEdit ? "/" + this.client.id : ""),

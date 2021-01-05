@@ -17,7 +17,10 @@
   },
   "form": {
     "error": "Formulář obsahuje chyby",
-    "fieldError": "Vyplňte prosím toto pole"
+    "fieldError": "Vyplňte prosím toto pole",
+    "fields": {
+      "country": "Země"
+    }
   },
   "404": {
     "title": "404 - stránka nenalezena",
