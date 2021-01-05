@@ -310,12 +310,15 @@ export default {
                 label: "tournament.types.team",
                 icon: "users"
               };
-            // Push role to role list
-            this.roles[role.id] = {
-              value: role.id,
-              label: role.name,
-              icon: role.icon
-            };
+
+            // Individual debater should be hidden on PDS
+            if (role.id !== 1 || !this.$isPDS)
+              // Push role to role list
+              this.roles[role.id] = {
+                value: role.id,
+                label: role.name,
+                icon: role.icon
+              };
           }
         }
 

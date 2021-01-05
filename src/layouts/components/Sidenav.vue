@@ -163,10 +163,8 @@ export default {
     })
       .then(d => {
         // PDS has custom events (1 event = accommodation level)
-        this.events = d.data.filter(event => {
-          return event.pds === this.$isPDS;
-        });
-        this.$db("eventsList", this.$makeIdObject(d.data));
+        this.events = d.data.filter(event => event.pds === this.$isPDS);
+        this.$db("eventsList", this.$makeIdObject(this.events));
       })
       .finally(() => {
         EventBus.$emit("fullLoader", false);
