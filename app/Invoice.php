@@ -144,7 +144,8 @@ class Invoice extends Model implements AuthenticatableContract, AuthorizableCont
             'taxable_fulfillment_due' => $this->taxable_fulfillment_due,
             'due' => $this->due,
             'note' => $this->text,
-            'lines' => $this->lines
+            'lines' => $this->lines,
+            'currency' => $this->currency
         ];
         $fakturoidInvoice = $this->fcs->createInvoice($invoiceData)->getBody();
         $this->setFakturoidData($fakturoidInvoice);
@@ -182,6 +183,7 @@ class Invoice extends Model implements AuthenticatableContract, AuthorizableCont
             $prices = $role->prices()->where('event', $event->id)->get();
             // TODO: solve properly
             foreach ($prices as $price) {
+                $this->currency = $price->getCurrency();
                 $priceDescription = $price->translation()->first();
                 if ('Accommodation' == $priceDescription->en) {
                     if (false == $reg->accommodation) {

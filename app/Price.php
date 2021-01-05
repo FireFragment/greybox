@@ -46,4 +46,9 @@ class Price extends Model implements AuthenticatableContract, AuthorizableContra
         }
         return 0;
     }
+
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
 }
