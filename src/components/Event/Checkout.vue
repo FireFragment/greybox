@@ -131,7 +131,6 @@ export default {
   },
   methods: {
     sendForm() {
-      console.log(this.formData);
       this.loading = !this.loading;
 
       // Send person and registration requests
@@ -179,14 +178,16 @@ export default {
       // All done -> ask for confirmation
       registrationPromise
         .then(data => {
+          let confirmData = {
+            lang: this.$i18n.locale
+          };
+
+          if (this.billingClient) confirmData["client"] = this.billingClient.id;
+
           this.$api({
             url: "registration/" + data.data.id + "/confirm",
             method: "put",
-            data: this.billingClient
-              ? {
-                  client: this.billingClient.id
-                }
-              : {}
+            data: confirmData
           })
             .then(data => {
               this.$flash(this.$tr("success"), "success");
