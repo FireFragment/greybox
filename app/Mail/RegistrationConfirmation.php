@@ -46,7 +46,7 @@ class RegistrationConfirmation extends Mailable
 
         if (null !== $this->invoice) {
             $this->attach(getcwd().'/invoices/'.$this->invoice->pdf_url.'.pdf', [
-                'as' => 'adk-' . substr($this->invoice->pdf_url, 0, 7) . '.pdf',
+                'as' => 'adk-' . substr($this->invoice->pdf_url, 0, 8) . '.pdf',
                 'mime' => 'application/pdf',
             ]);
         }
