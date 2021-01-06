@@ -295,39 +295,18 @@
     </div>
 
     <!-- International tournament (PDS) option: -->
-    <template v-if="$isPDS">
-      <q-select
-        outlined
-        v-model="values.speaker_status"
-        :options="speakerOptions"
-        option-value="label"
-        :label="$tr('fields.speakerStatus') + ' *'"
-        class="q-pt-sm q-mb-sm col-12 col-md-4"
-        lazy-rules
-        :rules="[val => val || $tr('general.form.fieldError', null, false)]"
-      >
-      </q-select>
-      <!--
-              <div class="q-mt-md q-mb-md">
-        <div class="text-bold">{{ $tr("fields.speakerStatus") }} *</div>
-        <q-field
-                v-model="values.speaker_status"
-                :value="values.speaker_status"
-                lazy-rules
-                :rules="[
-            val =>
-              (val) ||
-              $tr('general.form.fieldError', null, false)
-          ]">
-          <q-option-group
-                  :label="$tr('fields.speakerStatus')"
-                  :options="speakerOptions"
-                  v-model="values.speaker_status"
-          />
-        </q-field>
-        </div>
-        -->
-    </template>
+    <q-select
+      v-if="requireSpeakerStatus"
+      outlined
+      v-model="values.speaker_status"
+      :options="speakerOptions"
+      option-value="label"
+      :label="$tr('fields.speakerStatus') + ' *'"
+      class="q-pt-sm q-mb-sm col-12 col-md-4"
+      lazy-rules
+      :rules="[val => val || $tr('general.form.fieldError', null, false)]"
+    >
+    </q-select>
 
     <!--
         <template>
@@ -433,7 +412,8 @@ export default {
     isTeam: Boolean,
     accommodationType: String,
     mealType: String,
-    possibleDiets: Array
+    possibleDiets: Array,
+    role: Number
   },
 
   data() {
@@ -469,6 +449,7 @@ export default {
       months: [],
       years: [],
       possibleDietsOptions: [],
+      requireSpeakerStatus: this.$isPDS && this.role === 1, // only for PDS debaters
       speakerOptions: [
         {
           label: this.$tr("tournament.fields.EFL"),
@@ -734,7 +715,7 @@ export default {
       } else returnObject.accommodation = false;
 
       // PDS -> include speaker status
-      if (this.$isPDS)
+      if (this.requireSpeakerStatus)
         returnObject.speaker_status = this.values.speaker_status
           ? this.values.speaker_status.value
           : null;

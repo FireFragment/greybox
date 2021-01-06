@@ -45,6 +45,7 @@
             :accommodationType="accommodationType"
             :mealType="mealType"
             :possibleDiets="possibleDiets"
+            :role="1"
           />
         </q-card-section>
       </slide-up-down>

@@ -135,6 +135,7 @@
           :accommodationType="accommodationType"
           :mealType="mealType"
           :possibleDiets="possibleDiets"
+          :role="role"
           @goToRolePick="goTo('role')"
         />
         <team-form
