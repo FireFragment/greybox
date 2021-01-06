@@ -13,7 +13,12 @@
       <div class="row justify-center q-mt-lg" v-if="data.totalAmount">
         <div class="col-12 col-md-3">
           <q-card class="my-card">
-            <img :src="data.invoice.qr_full_url" />
+            <!-- Don't show QR code for EUR payments -->
+            <img
+              v-if="data.invoice.qr_full_url && data.invoice.currency !== 'EUR'"
+              :src="data.invoice.qr_full_url"
+              alt="QR"
+            />
 
             <!-- Key is needed to rerender on language change -->
             <q-list v-bind:key="$tr('invoice.item')">
