@@ -123,6 +123,19 @@ class RegistrationController extends FakturoidController
             $invoice = new Invoice();
             $invoice->setDue(strtotime($event->soft_deadline));
             $user = $registration->registeredBy()->first();
+            $language = $user->preferredLocale();
+            if ($request->has('lang'))
+            {
+                $language = $request->input('lang');
+                if ('cs' === $language)
+                {
+                    $invoice->setLanguage('cz');
+                }
+                else
+                {
+                    $invoice->setLanguage($language);
+                }
+            }
 
             if (0 === count($registrationGroup)) {
                 return response()->json(['message' => 'noRegistration'], 404);
@@ -162,8 +175,8 @@ class RegistrationController extends FakturoidController
             }
 
             // TODO: vyřešit jak nastavit locale pouze pro email / případně jak používat locale vůbec
-            app('translator')->setLocale($user->preferredLocale());
-            Mail::to($user->username)->bcc('info@debatovani.cz')->send(new RegistrationConfirmation($user->preferred_locale, $event, $people, $invoice));
+            app('translator')->setLocale($language);
+            Mail::to($user->username)->bcc('info@debatovani.cz')->send(new RegistrationConfirmation($language, $event, $people, $invoice));
 
             $invoiceId = null;
             if (null !== $invoice) {

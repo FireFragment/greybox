@@ -125,6 +125,11 @@ class Invoice extends Model implements AuthenticatableContract, AuthorizableCont
         $this->text = $text;
     }
 
+    public function setLanguage(string $lang): void
+    {
+        $this->language = $lang;
+    }
+
     private function addUpToTotalAmount($addition)
     {
         $this->totalAmount = $this->totalAmount + $addition;
@@ -145,7 +150,8 @@ class Invoice extends Model implements AuthenticatableContract, AuthorizableCont
             'due' => $this->due,
             'note' => $this->text,
             'lines' => $this->lines,
-            'currency' => $this->currency
+            'currency' => $this->currency,
+            'language' => $this->language
         ];
         $fakturoidInvoice = $this->fcs->createInvoice($invoiceData)->getBody();
         $this->setFakturoidData($fakturoidInvoice);
