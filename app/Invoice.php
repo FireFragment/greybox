@@ -153,6 +153,10 @@ class Invoice extends Model implements AuthenticatableContract, AuthorizableCont
             'currency' => $this->currency,
             'language' => $this->language
         ];
+        if ('EUR' === $this->currency)
+        {
+            $invoiceData['bank_account_id'] = 8440;
+        }
         $fakturoidInvoice = $this->fcs->createInvoice($invoiceData)->getBody();
         $this->setFakturoidData($fakturoidInvoice);
         $this->generateQr();
