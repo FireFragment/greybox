@@ -14,7 +14,8 @@
         "fakturoid/fakturoid-php": "^1.0",
         "rikudou/czqrpayment": "^4.0",
         "endroid/qr-code": "^3.6",
-        "loudislav/debatematch": "dev-master"
+        "loudislav/debatematch": "dev-master",
+        "bugsnag/bugsnag-laravel": "^2.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
