@@ -9,8 +9,8 @@ All available WS are described in the [Apiary reference](http://greybox.docs.api
 This application uses [Fakturoid](https://www.fakturoid.cz/) and it's [API](https://fakturoid.docs.apiary.io/) for generating invoices.
 
 ### Logging
-Happy to use [Bugsnack](https://www.bugsnag.com/) for logging.
-![bugsnack logo](https://images.typeform.com/images/QKuaAssrFCq7/image/default)
+Happy to use [Bugsnag](https://www.bugsnag.com/) for logging.
+![bugsnag logo](https://images.typeform.com/images/QKuaAssrFCq7/image/default)
 
 ## Installation
 This project requires [Composer](https://getcomposer.org/) to build the code. Once you have Composer installed on your computer, run `composer install` to install dependencies.
