@@ -1,4 +1,6 @@
 import Vue from "vue";
+import Bugsnag from "@bugsnag/js";
+import BugsnagPluginVue from "@bugsnag/plugin-vue";
 import axios from "axios";
 import VueAxios from "vue-axios";
 import App from "./App.vue";
@@ -16,6 +18,17 @@ smartformModule.load();
 window.smartform.beforeInit = () => {
   window.smartform.setClientId("8ndPcVUJ5B");
 };
+
+// Bugsnag error monitoring
+if (process.env.VUE_APP_BUGSNAG_KEY) {
+  Bugsnag.start({
+    apiKey: process.env.VUE_APP_BUGSNAG_KEY,
+    plugins: [new BugsnagPluginVue()],
+    releaseStage: process.env.VUE_APP_STAGE
+  });
+
+  Bugsnag.getPlugin("vue").installVueErrorHandler(Vue);
+}
 
 // Localization
 import VueI18n from "vue-i18n";
