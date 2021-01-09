@@ -10,7 +10,10 @@
       </q-banner>
     </div>
     <div class="col-12">
-      <div class="row justify-center q-mt-lg" v-if="data.totalAmount">
+      <div
+        class="row justify-center q-mt-lg"
+        v-if="data.totalAmount && typeof data.invoice === 'object'"
+      >
         <div class="col-12 col-md-3">
           <q-card class="my-card">
             <!-- Don't show QR code for EUR payments -->
@@ -121,7 +124,12 @@ export default {
         {
           label: this.$tr("invoice.price"),
           name: "unit_price",
-          field: row => row.unit_price + " " + this.data.invoice.currency
+          field: row =>
+            row.unit_price +
+            " " +
+            (typeof this.data.invoice === "object"
+              ? this.data.invoice.currency
+              : "CZK") // to možná nestačí
         }
       ];
     }
