@@ -242,14 +242,21 @@ class Invoice extends Model implements AuthenticatableContract, AuthorizableCont
         $this->addUpToTotalAmount($membershipsCount * 50);
     }
 
-    public function getPeopleListForEmail(Collection $registrationGroup)
+    public function getPeopleListForEmail(Collection $registrationGroup, string $lang = 'cs')
     {
         $people = array();
         foreach ($registrationGroup as $registration) {
             $person = $registration->person()->first();
             // TODO: to be deleted if person required in registration
             if (null !== $person) {
-                $roleName = $registration->role()->first()->translation()->first()->cs; // TODO: solve for English
+                if ('en' === $lang)
+                {
+                    $roleName = $registration->role()->first()->translation()->first()->en;
+                }
+                else
+                {
+                    $roleName = $registration->role()->first()->translation()->first()->cs;
+                }
                 $team = $registration->team()->first();
                 if (null !== $team) {
                     $people[$roleName][$team->name][] = $person->name . ' ' . $person->surname;

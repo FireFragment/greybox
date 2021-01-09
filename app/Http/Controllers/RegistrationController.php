@@ -144,7 +144,7 @@ class RegistrationController extends FakturoidController
             if ($event->membership_required) {
                 $invoice->setMembershipFeeLines($registrationGroup);
             }
-            $people = $invoice->getPeopleListForEmail($registrationGroup);
+            $people = $invoice->getPeopleListForEmail($registrationGroup, $language);
 
             $data->invoiceLines = $invoice->lines;
             $data->totalAmount = $invoice->getTotalAmount();
