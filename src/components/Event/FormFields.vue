@@ -73,6 +73,9 @@
           data-select-value="birthDay"
           data-select-options="days"
           lazy-rules
+          use-input
+          @filter="filterDaySelect"
+          input-debounce="0"
           :rules="[val => val || $tr('general.form.fieldError', null, false)]"
         >
           <template v-slot:prepend>
@@ -91,6 +94,9 @@
           data-select-value="birthMonth"
           data-select-options="months"
           lazy-rules
+          use-input
+          @filter="filterMonthSelect"
+          input-debounce="0"
           :rules="[val => val || $tr('general.form.fieldError', null, false)]"
         >
           <template v-slot:prepend>
@@ -107,6 +113,9 @@
           data-select-value="birthYear"
           data-select-options="years"
           lazy-rules
+          use-input
+          @filter="filterYearSelect"
+          input-debounce="0"
           :rules="[val => val || $tr('general.form.fieldError', null, false)]"
         >
           <template v-slot:prepend>
@@ -448,8 +457,11 @@ export default {
       acceptError: false,
       selectSearch: null,
       days: [],
+      daysAll: [],
       months: [],
+      monthsAll: [],
       years: [],
+      yearsAll: [],
       possibleDietsOptions: [],
       requireSpeakerStatus: this.$isPDS && this.role === 1, // only for PDS debaters
       requireJudingExperience: this.$isPDS && this.role === 2, // show "Judging experience" instead of note (only for PDS judges)
@@ -473,19 +485,18 @@ export default {
   created() {
     // Load date select options
     for (let i = 1; i <= 31; i++) {
-      this.days.push({
+      this.daysAll.push({
         label: i + ".",
         value: ("0" + i).substr(-2)
       });
     }
     for (let i = new Date().getFullYear() - 10; i >= 1900; i--) {
-      this.years.push(i);
+      this.yearsAll.push(i);
     }
     for (let i = 0; i < 12; i++) {
-      this.months[i] = {
+      this.monthsAll[i] = {
         label: "general.months." + i,
-        value: ("0" + (i + 1)).substr(-2),
-        searchable: i + 1
+        value: ("0" + (i + 1)).substr(-2)
       };
     }
 
@@ -582,53 +593,6 @@ export default {
       this.$emit("goToRolePick");
     },
 
-    // Key pressed inside select
-    // -> Search for corresponding value
-    /*selectKeyPress(a) {
-      let selectOptions = a.target.getAttribute("data-select-options");
-      let selectValue = a.target.getAttribute("data-select-value");
-      let pressedKey = a.key;
-
-      // String to search for
-      this.selectSearch = this.selectSearch
-        ? this.selectSearch + pressedKey.toString()
-        : pressedKey;
-
-      // Search label/whole value
-      let match = false;
-      this[selectOptions].forEach(option => {
-        if (match) return;
-        let value =
-          typeof option === "object" ? option.label : option.toString();
-        if (value.startsWith(this.selectSearch)) match = option;
-      });
-
-      // Search value
-      if (!match && typeof this[selectOptions][0] == "object")
-        this[selectOptions].forEach(option => {
-          if (match) return;
-          let value = option.value.toString();
-          if (value.startsWith(this.selectSearch)) match = option;
-        });
-
-      // Search searchable option
-      if (
-        !match &&
-        typeof this[selectOptions][0] == "object" &&
-        this[selectOptions][0].searchable
-      )
-        this[selectOptions].forEach(option => {
-          if (match) return;
-          let value = option.searchable.toString();
-          if (value.startsWith(this.selectSearch)) match = option;
-        });
-
-      if (match) this.values[selectValue] = match;
-      else this.selectResetSearch();
-    },
-    selectResetSearch() {
-      this.selectSearch = null;
-    },*/
     birthdateFormatter(year, month, day) {
       if (!year && !month && !day) return null;
       else
@@ -639,6 +603,61 @@ export default {
           "-" +
           (day ? day.value : "00")
         );
+    },
+
+    filterDaySelect(val, update) {
+      this.filterSelect(val, this.daysAll, "days", update);
+    },
+
+    filterMonthSelect(val, update) {
+      this.filterSelect(val, this.monthsAll, "months", update);
+    },
+
+    filterYearSelect(val, update) {
+      this.filterSelect(val, this.yearsAll, "years", update);
+    },
+
+    // Filter date select values based on input
+    filterSelect(val, allOptions, propertyName, update) {
+      update(
+        // Filter select options only to those matching with val
+        () => {
+          val = val.trim();
+          if (val === "") return (this[propertyName] = allOptions);
+
+          const needle = val.toLowerCase();
+          this[propertyName] = allOptions.filter(item => {
+            if (typeof item === "object") {
+              // If value matches, good to go
+              if (this.compareOptionStrings(item.value, needle)) return true;
+
+              // Compare if translated label matches
+              if (item.label.includes("general"))
+                return this.compareOptionStrings(
+                  this.$tr(item.label, null, false),
+                  needle
+                );
+              return this.compareOptionStrings(item.label, needle);
+            }
+
+            if (typeof item === "number")
+              return this.compareOptionStrings(item.toString(), needle);
+
+            return false;
+          });
+        },
+        // After filtering, automatically focus first option
+        ref => {
+          if (val !== "" && ref.options.length > 0) {
+            ref.setOptionIndex(-1); // reset optionIndex in case there is something selected
+            ref.moveOptionSelection(1, true); // focus the first selectable option and do not update the input-value
+          }
+        }
+      );
+    },
+
+    compareOptionStrings(str1, str2) {
+      return str1.toLowerCase().includes(str2);
     }
   },
 
@@ -656,8 +675,8 @@ export default {
           if (data[key]) {
             let value = data[key].split("-");
             this.values.birthYear = parseInt(value[0]);
-            this.values.birthMonth = this.months[parseInt(value[1]) - 1];
-            this.values.birthDay = this.days[parseInt(value[2]) - 1];
+            this.values.birthMonth = this.monthsAll[parseInt(value[1]) - 1];
+            this.values.birthDay = this.daysAll[parseInt(value[2]) - 1];
           } else
             this.values.birthDay = this.values.birthMonth = this.values.birthYear = null;
         }
