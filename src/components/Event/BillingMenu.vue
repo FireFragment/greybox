@@ -140,12 +140,13 @@ export default {
     }
   },
   created() {
-    // Automatically open modal to edit billing details on PDS
-    if (this.$isPDS)
-      this.loadClients().then(() => {
-        if (this.clients && this.clients.length)
-          this.editClient(this.clients[0]);
-      });
+    this.loadClients().then(() => {
+      if (this.clients && this.clients.length)
+        // some billing information found -> select first one
+        this.selectClient(this.clients[0]);
+      // no billing info -> open modal to create one
+      else this.editClient();
+    });
   },
   mounted() {
     // Load clients from cache if it exists
