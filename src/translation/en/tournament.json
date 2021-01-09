@@ -64,6 +64,7 @@
     "parentPhone":  "Phone number",
     "parentEmail": "E-mail address",
     "note": "Note",
+    "judgingExp": "Judging experience",
     "school": "School",
     "speakerStatus": "Speaker status",
     "EFL": "EFL (English as a Foreign Language)",

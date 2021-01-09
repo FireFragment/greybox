@@ -370,7 +370,9 @@
       class="q-mt-sm"
       outlined
       autogrow
-      :label="$tr('fields.note')"
+      :label="
+        $tr(requireJudingExperience ? 'fields.judgingExp' : 'fields.note')
+      "
     >
       <template v-slot:prepend>
         <q-icon name="fas fa-sticky-note" />
@@ -450,6 +452,7 @@ export default {
       years: [],
       possibleDietsOptions: [],
       requireSpeakerStatus: this.$isPDS && this.role === 1, // only for PDS debaters
+      requireJudingExperience: this.$isPDS && this.role === 2, // show "Judging experience" instead of note (only for PDS judges)
       speakerOptions: [
         {
           label: this.$tr("tournament.fields.EFL"),
