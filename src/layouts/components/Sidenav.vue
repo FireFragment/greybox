@@ -112,6 +112,7 @@
         tag="a"
         target="_blank"
         href="https://debatovani.cz/greybox/"
+        v-if="!$isPDS"
       >
         <q-item-section avatar>
           <q-icon name="fas fa-chart-bar" />
