@@ -14,6 +14,15 @@
       <q-item
         v-for="event in events"
         v-bind:key="event.id"
+        @mouseup="
+          eventLinkClicked(
+            $path('tournament') +
+              '/' +
+              event.id +
+              '-' +
+              $slug($tr(event.name) + ' ' + event.place)
+          )
+        "
         :to="
           $path('tournament') +
             '/' +
@@ -175,6 +184,15 @@ export default {
     // Pass drawer toggle input up the chain so it can be properly closed
     toggleDrawerMenu(value) {
       this.$emit("input", value);
+    },
+
+    eventLinkClicked(eventUrl) {
+      // Trying to go to same URL again -> go home before that so vue "reloads" page
+      if (this.$route.path === eventUrl) {
+        this.$router.push({
+          path: "/" + this.$tr("paths.home")
+        });
+      }
     }
   }
 };
