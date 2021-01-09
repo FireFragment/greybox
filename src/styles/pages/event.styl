@@ -121,6 +121,21 @@
 			.q-item__section--main, .q-avatar
 				opacity: .6
 
+	// Remove debaters autofill fixed height on mobile devices
+	@media (max-width $breakpoint-xs-max)
+		position: relative
+		top: 0
+
+		.q-scrollarea
+			height: auto
+			min-height: 140px	// heading + 2 people
+
+			.scroll .absolute
+				position: relative
+
+		.q-scrollarea__thumb
+			display: none
+
 .deletion-avatar
 	&.deleting
 		transition: opacity .1s linear, color .1s linear
