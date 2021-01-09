@@ -646,6 +646,8 @@ export default {
     autofill() {
       let data = this.autofill;
 
+      if (!data) return;
+
       // Move values from autofill prop to value variable
       for (let key in data) {
         // Birth date -> split day, month and year
