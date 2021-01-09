@@ -20,15 +20,18 @@
               <img src="../assets/logo.svg" />
             </q-avatar>
             greybox 2.0
-            <span v-if="env.VUE_APP_MODE !== 'production'" class="mode-flag">
-              <template v-if="env.VUE_APP_MODE === 'debug'">
+            <span v-if="env.VUE_APP_STAGE !== 'production'" class="mode-flag">
+              <template v-if="env.VUE_APP_STAGE === 'debug'">
                 debug
               </template>
-              <template v-else-if="$isPDS">
-                pds
+              <template v-else-if="env.VUE_APP_STAGE === 'local'">
+                dev
+              </template>
+              <template v-else-if="env.VUE_APP_STAGE === 'pds'">
+                PDS
               </template>
               <template v-else>
-                dev
+                pds
               </template>
             </span>
           </span>
