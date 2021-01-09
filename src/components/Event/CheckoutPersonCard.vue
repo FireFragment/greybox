@@ -122,11 +122,19 @@ export default {
   },
   computed: {
     roleName() {
-      let roleObject;
+      let roleObject = null;
       this.$db("rolesList").forEach(item => {
         if (item.id === this.person.registration.role) roleObject = item;
       });
-      return this.$tr(roleObject.name);
+      if (roleObject) return this.$tr(roleObject.name);
+
+      // For Bugsnag to catch
+      console.log(this.$db("rolesList"));
+      console.log(this.person);
+      console.error(
+        "Missing role " + this.person.registration.role + ", see logs above"
+      );
+      return "";
     },
     dietaryRequirement() {
       let id = this.person.person.dietary_requirement;
