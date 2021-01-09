@@ -20,6 +20,7 @@
               <img src="../assets/logo.svg" />
             </q-avatar>
             greybox 2.0
+            <template v-if="env.VUE_APP_STAGE === 'pds'">PDS</template>
             <span v-if="env.VUE_APP_STAGE !== 'production'" class="mode-flag">
               <template v-if="env.VUE_APP_STAGE === 'debug'">
                 debug
