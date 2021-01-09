@@ -87,6 +87,31 @@
 		margin-bottom: -15px
 		border: 1px solid rgba(0, 0, 0, 0.12)
 
+
+// Avatar element with icon to delete something
+deleting-avatar()
+	transition: opacity .1s linear, color .1s linear
+	opacity: 1 !important
+	background-color: $negative !important
+
+	&:hover
+		.fas
+			color: white
+
+	.fas
+		color: rgba(255, 255, 255, .85)
+		background-color: $negative
+
+.deletion-avatar
+	&.deleting
+		deleting-avatar()
+
+	// Device doesn't have mouse to hover -> show delete button right away
+	@media (hover: none)
+		deleting-avatar()
+		.fas
+			color: white !important
+
 // Autofill
 .autofill-wrapper
 	@media (min-width $breakpoint-sm-max)
@@ -136,20 +161,12 @@
 		.q-scrollarea__thumb
 			display: none
 
-.deletion-avatar
-	&.deleting
-		transition: opacity .1s linear, color .1s linear
-		opacity: 1 !important
-		background-color: $negative !important
-
-		&:hover
-			.fas
-				color: white
-
-		.fas
-			color: rgba(255, 255, 255, .85)
-			background-color: $negative
-
+	// Device doesn't have mouse to hover -> show delete button right away
+	@media (hover: none)
+		.q-item
+			.q-avatar
+				.fas
+					opacity: 1
 
 .hidable
 	transition: height .5s linear

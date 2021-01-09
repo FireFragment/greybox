@@ -86,7 +86,10 @@
     "title": "Autofill data of previously registered people",
     "empty": "You have no people to autofill.",
     "registered": "Already registered people",
-    "removeTooltip": "Remove person from autofill",
+    "removeTooltip": {
+      "person": "Remove person from autofill",
+      "team": "Remove team from autofill"
+    },
     "removeModal": {
       "person": {
         "title": "Are you sure you want to remove this person from autofill?",

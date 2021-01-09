@@ -17,10 +17,10 @@
         :class="{ deleting: showDeleteButton }"
         class="deletion-avatar"
         size="30px"
-        @click.stop="$emit('deletePerson')"
+        @click.stop="$emit('deletePerson', person)"
       >
         <q-tooltip anchor="center left" self="center right" :offset="[10, 10]">
-          {{ $tr("removeTooltip") }}
+          {{ $tr("removeTooltip.person") }}
         </q-tooltip>
         <img src="https://cdn.quasar.dev/img/avatar.png" v-if="!true" />
         <template>{{ person.name.substr(0, 1).toUpperCase() }}</template>

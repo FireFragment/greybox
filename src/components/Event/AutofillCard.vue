@@ -68,9 +68,7 @@ export default {
       this.$emit("person-selected", person);
     },
 
-    deletePerson() {
-      let person = this.showDeleteButton;
-
+    deletePerson(person) {
       this.$confirm({
         confirm: this.$tr("general.confirmModal.remove", null, false),
         message: this.$tr("removeModal.person.title")

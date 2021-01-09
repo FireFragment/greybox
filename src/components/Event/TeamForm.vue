@@ -36,7 +36,7 @@
                 self="center right"
                 :offset="[10, 10]"
               >
-                {{ $tr("autofill.removeTooltip") }}
+                {{ $tr("autofill.removeTooltip.team") }}
               </q-tooltip>
               <q-icon name="fas fa-trash" />
             </q-avatar>
