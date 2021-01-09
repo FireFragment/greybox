@@ -139,6 +139,9 @@ export default {
           else this.$set(this.clients, index, data);
         }
       });
+
+      // Update cache
+      this.$db("billingDetails", this.clients, true);
     },
 
     // Modal's state change
