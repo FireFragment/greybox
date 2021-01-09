@@ -12,8 +12,8 @@ return [
     'password.reset.not_required' => 'If you haven\'t requested password recovery, you can ignore this email.',
 
     'registration.confirmation' => 'Registration confirmation',
-    'registration.confirmation.before_event_name' => 'we have received your registration for the',
-    'registration.confirmation.after_event_name' => 'We are looking forward to see you soon.', // TODO: add number of days and/or place
+    'registration.confirmation.before_event_name' => 'we have received your registration for', // TODO: return ' the' after PDS
+    'registration.confirmation.after_event_name' => 'We are looking forward to seeing you soon.', // TODO: add number of days and/or place
     'registration.confirmation.before_list' => 'Participants',
     'registration.confirmation.before_price' => 'If you haven\'t done so yet, please send',
     'registration.confirmation.before_date' => 'before',
