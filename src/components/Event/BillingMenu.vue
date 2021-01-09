@@ -9,7 +9,7 @@
       @click="openMenu"
       ref="main-btn"
     >
-      <q-menu cover auto-close loading v-if="clients">
+      <q-menu cover auto-close v-if="clients" v-model="showPopupMenu">
         <q-list class="smaller-margin-menu">
           <q-item clickable @click="editClient()">
             <q-item-section avatar>
@@ -65,6 +65,7 @@ export default {
       loading: false,
       clients: null,
       editedClient: null,
+      showPopupMenu: false,
       showEditModal: false
     };
   },
@@ -122,6 +123,7 @@ export default {
       this.editedClient = client;
 
       this.showEditModal = true;
+      this.showPopupMenu = false;
     },
 
     // Client was changed - update inner DB
