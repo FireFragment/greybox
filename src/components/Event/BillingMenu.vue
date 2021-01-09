@@ -129,16 +129,16 @@ export default {
       this.selectClient(data);
 
       // Add new client
-      if (isNew) return this.clients.push(data);
-
-      this.clients.forEach((client, index) => {
-        if (client.id === id) {
-          // Remove client
-          if (!data) this.$delete(this.clients, index);
-          // Update client
-          else this.$set(this.clients, index, data);
-        }
-      });
+      if (isNew) this.clients.push(data);
+      else
+        this.clients.forEach((client, index) => {
+          if (client.id === id) {
+            // Remove client
+            if (!data) this.$delete(this.clients, index);
+            // Update client
+            else this.$set(this.clients, index, data);
+          }
+        });
 
       // Update cache
       this.$db("billingDetails", this.clients, true);
