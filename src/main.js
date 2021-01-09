@@ -13,6 +13,9 @@ import SlideUpDown from "vue-slide-up-down";
 
 Vue.config.productionTip = false;
 
+// $isPDS bool
+Vue.prototype.$isPDS = process.env.VUE_APP_IS_PDS === "true";
+
 // Initialize SmartForms
 smartformModule.load();
 window.smartform.beforeInit = () => {
@@ -77,6 +80,9 @@ for (let locale in languageData) {
 
   translations[locale] = languageObject;
 }
+
+// EN is default with PDS
+if (Vue.prototype.$isPDS) i18nConfig.default = "en";
 
 const i18n = new VueI18n({
   locale: i18nConfig.default,
@@ -275,9 +281,6 @@ Vue.prototype.$auth.isAdmin = () => {
 // Custom cache DB mechanism
 Vue.prototype.db = {};
 Vue.prototype.dbPersonal = {};
-
-// $isPDS bool
-Vue.prototype.$isPDS = process.env.VUE_APP_IS_PDS === "true";
 
 new Vue({
   router,
