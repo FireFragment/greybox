@@ -83,7 +83,13 @@ export default {
     },
 
     loadClients() {
-      if (!this.clients) this.loading = true;
+      if (!this.clients) {
+        // Try loading billing details from cache
+        let cached = this.$db("billingDetails", null, true);
+
+        if (cached) this.clients = cached;
+        else this.loading = true;
+      }
 
       return new Promise((resolve, reject) => {
         if (this.clients) return resolve(this.clients);
@@ -94,6 +100,7 @@ export default {
         })
           .then(data => {
             this.clients = data.data;
+            this.$db("billingDetails", this.clients, true);
             resolve(this.clients);
           })
           .catch(data => {
