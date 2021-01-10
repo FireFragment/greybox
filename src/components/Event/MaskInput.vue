@@ -17,11 +17,17 @@
 export default {
   methods: {
     moveCaretToFront(event) {
-      let input = event.srcElement;
-      input.setSelectionRange(0, 0);
-      setTimeout(function() {
+      let input = event.target;
+
+      if (input && typeof input.setSelectionRange === "function") {
         input.setSelectionRange(0, 0);
-      }, 50);
+        setTimeout(function() {
+          input.setSelectionRange(0, 0);
+        }, 50);
+      } else {
+        console.log(event);
+        console.error("Missing setSelectionRange function, see logs above");
+      }
     }
   }
 };
