@@ -87,10 +87,9 @@ class Registration extends Model implements AuthenticatableContract, Authorizabl
     {
         $registrationGroupQuery = $this->getRegistrationGroupQuery();
         $teamsCount = $registrationGroupQuery
-            ->select('team', \DB::raw('count(*) as quantity'))
+            ->distinct('team')
             ->whereNotNull('team')
-            ->groupBy('team')
-            ->count();
+            ->count('team');
         return $teamsCount;
     }
 
