@@ -77,6 +77,13 @@
     "meals": "Use the note field below for special dietary requirements.",
     "example": "Ex.:"
   },
+  "speakerStatusModal": {
+    "title": "Speaker status classification",
+    "classification": "Speakers are classified as <strong>{status}</strong> if",
+    "common": "they do not come from a first-language English-speaking family",
+    "efl": "and they attend a school where English is not used as a medium of instruction (except for classes in the teaching of English)",
+    "esl": "and they attend a school where English is used as a medium of instruction"
+  },
   "registrationFields": {
     "accommodation": "Accommodation",
     "meals": "Meals",

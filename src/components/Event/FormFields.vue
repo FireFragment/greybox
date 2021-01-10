@@ -304,18 +304,65 @@
     </div>
 
     <!-- International tournament (PDS) option: -->
-    <q-select
-      v-if="requireSpeakerStatus"
-      outlined
-      v-model="values.speaker_status"
-      :options="speakerOptions"
-      option-value="label"
-      :label="$tr('fields.speakerStatus') + ' *'"
-      class="q-pt-sm q-mb-sm col-12 col-md-4"
-      lazy-rules
-      :rules="[val => val || $tr('general.form.fieldError', null, false)]"
-    >
-    </q-select>
+    <template v-if="requireSpeakerStatus">
+      <q-select
+        outlined
+        v-model="values.speaker_status"
+        :options="speakerOptions"
+        option-value="label"
+        :label="$tr('fields.speakerStatus') + ' *'"
+        class="q-pt-sm q-mb-md col-12 col-md-4"
+        lazy-rules
+        :rules="[val => val || $tr('general.form.fieldError', null, false)]"
+      >
+        <template v-slot:hint>
+          <a class="pointer-cursor" @click="showSpeakerStatusModal = true">
+            {{ $tr("speakerStatusModal.title") }}
+          </a>
+        </template>
+      </q-select>
+      <q-dialog v-model="showSpeakerStatusModal">
+        <q-card class="dialog-medium">
+          <q-card-section class="row items-center">
+            <div class="text-h6">
+              {{ $tr("speakerStatusModal.title") }}
+            </div>
+            <q-space />
+            <q-btn icon="close" flat round dense v-close-popup />
+          </q-card-section>
+
+          <q-card-section>
+            <div>
+              <span
+                v-html="
+                  $tr('speakerStatusModal.classification', {
+                    status: 'EFL'
+                  }) + ':'
+                "
+              ></span>
+
+              <ul>
+                <li>{{ $tr("speakerStatusModal.common") }},</li>
+                <li>{{ $tr("speakerStatusModal.efl") }}.</li>
+              </ul>
+            </div>
+            <div>
+              <span
+                v-html="
+                  $tr('speakerStatusModal.classification', {
+                    status: 'ESL'
+                  })
+                "
+              ></span>
+              <ul>
+                <li>{{ $tr("speakerStatusModal.common") }},</li>
+                <li>{{ $tr("speakerStatusModal.esl") }}.</li>
+              </ul>
+            </div>
+          </q-card-section>
+        </q-card>
+      </q-dialog>
+    </template>
 
     <!--
         <template>
@@ -463,6 +510,7 @@ export default {
       years: [],
       yearsAll: [],
       possibleDietsOptions: [],
+      showSpeakerStatusModal: false,
       requireSpeakerStatus: this.$isPDS && this.role === 1, // only for PDS debaters
       requireJudingExperience: this.$isPDS && this.role === 2, // show "Judging experience" instead of note (only for PDS judges)
       speakerOptions: [

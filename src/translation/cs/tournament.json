@@ -77,6 +77,13 @@
     "meals": "Pro individuální požadavky ke stravě vyplňte prosím poznámku.",
     "example": "Vzor:"
   },
+  "speakerStatusModal": {
+    "title": "Speaker status - podmínky",
+    "classification": "Debatéři jsou klasifikováni jako <strong>{status}</strong>, pokud",
+    "common": "nepochází z anglicky mluvící rodiny",
+    "efl": "a navštěvují školu, kde vyučování neprobíhá v angličtině (s výjimkou hodin anglického jazyka)",
+    "esl": "a navštěvují školu, kde vyučování probíhá v angličtině"
+  },
   "registrationFields": {
     "accommodation": "Ubytování",
     "meals": "Jídlo",
