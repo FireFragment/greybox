@@ -22,9 +22,14 @@
       "title": "Podmínky přihlášení",
       "opening": "Přihlášením na akci pořádanou Asociací debatních klubů, z.s., IČ 69058041, se sídlem U Vinohradské nemocnice 2255/6, 130 00 Praha 3 (dále jen „spolek“) souhlasím:",
       "list": [
-        "se zpracováním níže uvedených osobních údajů pro účely evidence evidence členů spolku a zpracování výsledků debatních soutěží;",
+        "se zpracováním níže uvedených osobních údajů pro účely evidence členů spolku a zpracování výsledků debatních soutěží;",
         "se zveřejněním svého jména a příjmení a svých výsledků v soutěžích pořádaných spolkem na webových stránkách spolku;",
         "s předáváním svého jména, příjmení, data narození, adresy trvalého pobytu a čísla občanského průkazu (cestovního pasu) ubytovatelům na akcích, které spolek pořádá, a partnerským organizacím spolku v případě, že pořádají akci, na niž se přihlásím prostřednictvím spolku;",
+        "s pořizováním obrazových a zvukových záznamů svých projevů na akcích pořádaných spolkem a s jejich použitím pro vzdělávací účely a propagaci spolku."
+      ],
+      "listPDS": [
+        "se zpracováním níže uvedených osobních údajů pro účely zpracování výsledků debatních soutěží;",
+        "se zveřejněním svého jména a příjmení a svých výsledků v soutěžích pořádaných spolkem na webových stránkách spolku;",
         "s pořizováním obrazových a zvukových záznamů svých projevů na akcích pořádaných spolkem a s jejich použitím pro vzdělávací účely a propagaci spolku."
       ],
       "closing": "Beru na vědomí, že souhlas se zpracováním osobních údajů mohu kdykoli odvolat, a to písemně nebo elektronickou poštou k rukám prezidenta spolku. Odvolání souhlasu může mít za následek, že se nebudu moci účastnit některých akcí pořádaných spolkem a nebudou moci být vypočítány mé výsledky v soutěžích pořádaných spolkem."

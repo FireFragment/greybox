@@ -21,7 +21,10 @@
         <q-card-section>
           {{ $tr("modal.opening") }}
           <ul>
-            <li v-for="item in $tr('modal.list')" v-bind:key="item">
+            <li
+              v-for="item in $tr('modal.list' + ($isPDS ? 'PDS' : ''))"
+              v-bind:key="item"
+            >
               {{ item }}
             </li>
           </ul>
