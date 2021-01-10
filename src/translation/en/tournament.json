@@ -150,9 +150,9 @@
         }
       },
       "fields": {
-        "name": "Full name/Company name",
+        "name": "Full name/Institution name",
         "email": "E-mail",
-        "registration_no": "Company registration number",
+        "registration_no": "Institution registration number",
         "street": "Street and number",
         "city": "City",
         "zip": "ZIP code (PSČ)"
