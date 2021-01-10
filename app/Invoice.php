@@ -186,7 +186,7 @@ class Invoice extends Model implements AuthenticatableContract, AuthorizableCont
         }
     }
 
-    public function setRegistrationFeeLines(Collection $registrationQuantifiedRoles, Event $event)
+    public function setRegistrationFeeLines(Collection $registrationQuantifiedRoles, Event $event, string $lang = 'cs')
     {
         foreach ($registrationQuantifiedRoles as $reg) {
             $role = Role::findOrFail($reg->role);
@@ -205,8 +205,16 @@ class Invoice extends Model implements AuthenticatableContract, AuthorizableCont
                     }
                 }
                 $unitPrice = $price->getAmount();
-                // TODO: vyřešit překlad
-                $this->setLine($role->translation()->first()->cs.' - '.$priceDescription->cs, $reg->quantity, 'osob', $unitPrice);
+
+                $description = $role->translation()->first()->cs.' - '.$priceDescription->cs;
+                $unit = 'osob';
+                if ('en' === $lang)
+                {
+                    $description = $role->translation()->first()->en.' - '.$priceDescription->en;
+                    $unit = 'people';
+                }
+
+                $this->setLine($description, $reg->quantity, $unit, $unitPrice);
                 $this->addUpToTotalAmount($reg->quantity * $unitPrice);
             }
         }

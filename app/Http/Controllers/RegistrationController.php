@@ -140,7 +140,7 @@ class RegistrationController extends FakturoidController
             if (0 === count($registrationGroup)) {
                 return response()->json(['message' => 'noRegistration'], 404);
             }
-            $invoice->setRegistrationFeeLines($registration->getQuantifiedRoles(), $event);
+            $invoice->setRegistrationFeeLines($registration->getQuantifiedRoles(), $event, $language);
             if ($event->membership_required) {
                 $invoice->setMembershipFeeLines($registrationGroup);
             }
