@@ -250,6 +250,16 @@ class Invoice extends Model implements AuthenticatableContract, AuthorizableCont
         $this->addUpToTotalAmount($membershipsCount * 50);
     }
 
+    public function setMissingAdjudicatorFeeLine(int $teamsCount, int $adjudicatorsCount)
+    {
+        if ($adjudicatorsCount < $teamsCount)
+        {
+            $missingAdjudicatorsCount = $teamsCount - $adjudicatorsCount;
+            $this->setLine('missing judge fee', $missingAdjudicatorsCount, 'judges', 30);
+            $this->addUpToTotalAmount($missingAdjudicatorsCount * 30);
+        }
+    }
+
     public function getPeopleListForEmail(Collection $registrationGroup, string $lang = 'cs')
     {
         $people = array();

@@ -83,6 +83,26 @@ class Registration extends Model implements AuthenticatableContract, Authorizabl
         return $quantifiedRoles;
     }
 
+    public function countTeams()
+    {
+        $registrationGroupQuery = $this->getRegistrationGroupQuery();
+        $teamsCount = $registrationGroupQuery
+            ->select('team', \DB::raw('count(*) as quantity'))
+            ->whereNotNull('team')
+            ->groupBy('team')
+            ->count();
+        return $teamsCount;
+    }
+
+    public function countAdjudicators()
+    {
+        $registrationGroupQuery = $this->getRegistrationGroupQuery();
+        $adjudicatorsCount = $registrationGroupQuery
+            ->where('role', 2) // adjudicator role ID
+            ->count();
+        return $adjudicatorsCount;
+    }
+
     public function confirmRegistrationGroup($invoiceId = null)
     {
         $registrationGroupQuery = $this->getRegistrationGroupQuery();
