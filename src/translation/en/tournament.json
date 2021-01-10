@@ -161,8 +161,7 @@
         "example": "Ex.:"
       },
       "removeModal": {
-        "title": "Are you sure you want to remove this billing information?",
-        "remove": "Remove"
+        "title": "Are you sure you want to remove this billing information?"
       },
       "success": {
         "add": "Billing information successfully created",
@@ -173,6 +172,9 @@
         "add": "An error has occured during creation, please try again later",
         "edit": "An error has occured during editation, please try again later",
         "delete": "An error has occured during removal, please try again later"
+      },
+      "validation": {
+        "invalidEmail": "The e-mail is not valid"
       }
     }
   }

@@ -124,6 +124,17 @@ Vue.mixin({
       return this.$t(key, options);
     },
 
+    // Check if translation exists
+    $trExists: function(key, usePrefix = true) {
+      // Translate string from JSON
+      let prefix = this.translationPrefix;
+
+      // Use prefix
+      if (prefix && usePrefix) key = prefix + key;
+
+      return this.$te(key);
+    },
+
     // Get path to route
     $path: function(route) {
       return "/" + this.$tr("paths." + route, null, false);

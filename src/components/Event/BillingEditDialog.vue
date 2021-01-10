@@ -249,16 +249,12 @@ export default {
           this.$emit("client-change", client.id, client, !isEdit);
         })
         .catch(data => {
-          console.log(data, data.response);
-          // TODO - translate alerts based on short messages
-          /*
           if (data.response.data) {
             let message = data.response.data.message;
 
-            if (message)
+            if (message && this.$trExists("validation." + message))
               return this.$flash(this.$tr("validation." + message), "error");
           }
-          */
           this.$flash(this.$tr("error." + (isEdit ? "edit" : "add")), "error");
         })
         .finally(() => {
@@ -286,17 +282,7 @@ export default {
 
             this.$emit("client-change", this.client.id, null);
           })
-          .catch(data => {
-            console.log(data, data.response);
-            // TODO - translate alerts based on short messages
-            /*
-            if (data.response.data) {
-              let message = data.response.data.message;
-
-              if (message)
-                return this.$flash(this.$tr("validation." + message), "error");
-            }
-            */
+          .catch(() => {
             this.$flash(this.$tr("error.delete"), "error");
           })
           .finally(() => {

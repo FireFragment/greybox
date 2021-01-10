@@ -172,6 +172,9 @@
         "add": "Fakturační údaje se nepodařilo přidat, opakujte akci",
         "edit": "Fakturační údaje se nepodařilo upravit, opakujte akci",
         "delete": "Fakturační údaje se nepodařilo odstranit, opakujte akci"
+      },
+      "validation": {
+        "invalidEmail": "E-mail nemá správný formát"
       }
     }
   }
