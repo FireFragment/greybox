@@ -54,6 +54,10 @@ class ClientController extends FakturoidController
                 return response()->json(['message' => $e->getMessage()], 500);
             }
         } catch (FakturoidException $e) {
+            if (422 === $e->getCode())
+            {
+                return response()->json(['fm' => $e->getMessage(), 'message' => 'invalidEmail'], 422);
+            }
             return response()->json($e->getMessage(), $e->getCode());
         }
     }
@@ -76,7 +80,11 @@ class ClientController extends FakturoidController
                     return response()->json(['message' => $e->getMessage(), 'code' => $e->getCode()], 500);
                 }
             } catch (FakturoidException $e) {
-                return response()->json(['message' => $e->getMessage(), 'code' => $e->getCode()], 500);
+                if (422 === $e->getCode())
+                {
+                    return response()->json(['fm' => $e->getMessage(), 'message' => 'invalidEmail'], 422);
+                }
+                return response()->json($e->getMessage(), $e->getCode());
             }
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage(), 'code' => $e->getCode()], 404);
