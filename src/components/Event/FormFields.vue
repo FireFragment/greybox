@@ -28,6 +28,25 @@
       />
     </div>
 
+    <q-input
+      v-if="requireEmail"
+      v-model="values.email"
+      class="q-mt-sm"
+      type="email"
+      outlined
+      :label="$tr('auth.fields.email', null, false) + ' *'"
+      lazy-rules
+      :rules="[
+        val =>
+          (val !== null && val !== '') ||
+          $tr(`general.form.fieldError`, null, false)
+      ]"
+    >
+      <template v-slot:prepend>
+        <q-icon name="fas fa-at" />
+      </template>
+    </q-input>
+
     <div
       class="block"
       v-if="accommodationType !== 'required' && accommodationType !== 'none'"
@@ -471,7 +490,8 @@ export default {
     accommodationType: String,
     mealType: String,
     possibleDiets: Array,
-    role: Number
+    role: Number,
+    requireEmail: Boolean
   },
 
   data() {
@@ -494,6 +514,7 @@ export default {
         // parentPhone: "+420",
         // parentEmail: null,
         note: null,
+        email: null,
         accept: false,
         birthDay: null,
         birthMonth: null,
@@ -759,6 +780,7 @@ export default {
         name: this.values.name ? this.values.name.trim() : null,
         surname: this.values.surname ? this.values.surname.trim() : null,
         note: this.values.note,
+        email: this.values.email,
         meals: this.values.meals,
         dietary_requirement: this.values.dietary_requirement
           ? this.values.dietary_requirement.value

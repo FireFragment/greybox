@@ -59,6 +59,7 @@
       :possibleDiets="possibleDiets"
       :accommodationType="accommodationType"
       :mealType="mealType"
+      :requireEmail="requireEmail"
     />
     <g-d-p-r-checkbox v-model="accept" :error="acceptError" />
     <div class="text-center">
@@ -105,7 +106,8 @@ export default {
     accommodationType: String,
     mealType: String,
     possibleDiets: Array,
-    eventId: Number
+    eventId: Number,
+    requireEmail: Boolean
   },
   data() {
     return {

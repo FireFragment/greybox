@@ -76,6 +76,11 @@
           <dt>{{ $tr("fields.diet") }}:</dt>
           <dd>{{ dietaryRequirement }}</dd>
         </div>
+
+        <div v-if="person.person.email && person.person.email">
+          <dt>{{ $tr("auth.fields.email", null, false) }}:</dt>
+          <dd>{{ person.person.email }}</dd>
+        </div>
       </q-card-section>
 
       <q-separator v-if="person.registration.accommodation" inset />
@@ -89,16 +94,15 @@
             v-if="
               value &&
                 fieldName.substr(-4) !== 'name' &&
-                fieldName !== 'dietary_requirement'
+                fieldName !== 'dietary_requirement' &&
+                fieldName !== 'email'
             "
           >
             <dt>{{ $tr("fields." + fieldName) }}:</dt>
             <dd v-if="fieldName === 'birthdate'">
               {{ value | moment("D. M. Y") }}
             </dd>
-            <dd
-              v-else-if="value != null && fieldName !== 'dietary_requirement'"
-            >
+            <dd v-else-if="value != null">
               {{ value }}
             </dd>
           </template>

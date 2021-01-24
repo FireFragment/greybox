@@ -136,6 +136,7 @@
           :mealType="mealType"
           :possibleDiets="possibleDiets"
           :role="role"
+          :requireEmail="event.email_required"
           @goToRolePick="goTo('role')"
         />
         <team-form
@@ -148,6 +149,7 @@
           :mealType="mealType"
           :possibleDiets="possibleDiets"
           :eventId="event.id"
+          :requireEmail="event.email_required"
         ></team-form>
       </div>
     </div>

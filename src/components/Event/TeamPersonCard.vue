@@ -46,6 +46,7 @@
             :mealType="mealType"
             :possibleDiets="possibleDiets"
             :role="1"
+            :requireEmail="requireEmail"
           />
         </q-card-section>
       </slide-up-down>
@@ -68,7 +69,8 @@ export default {
     error: Boolean,
     accommodationType: String,
     mealType: String,
-    possibleDiets: Array
+    possibleDiets: Array,
+    requireEmail: Boolean
   },
   data() {
     return {
