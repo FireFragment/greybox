@@ -34,7 +34,8 @@ class PersonController extends Controller
     {
         $this->validate($request, [
             'name' => 'required',
-            'surname' => 'required'
+            'surname' => 'required',
+            'email' => 'email'
         ]);
 
         // TODO: Solve authorization
@@ -56,6 +57,7 @@ class PersonController extends Controller
 
             if ($request->has('name')) $person->update(['name' => $request->input('name')]);
             if ($request->has('surname')) $person->update(['surname' => $request->input('surname')]);
+            if ($request->has('email')) $person->update(['email' => $request->input('email')]);
             if ($request->has('birthdate')) $person->update(['birthdate' => $request->input('birthdate')]);
             if ($request->has('id_number')) $person->update(['id_number' => $request->input('id_number')]);
             if ($request->has('street')) $person->update(['street' => $request->input('street')]);
