@@ -102,7 +102,7 @@
 
 <script>
 export default {
-  name: "PasswordReset",
+  name: "AccountSettings",
   data() {
     return {
       translationPrefix: "auth.",
