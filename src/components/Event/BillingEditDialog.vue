@@ -116,7 +116,7 @@
 </template>
 
 <script>
-import { EventBus } from '../../event-bus';
+/* eslint-disable */
 import MaskInput from './MaskInput';
 import CountrySelect from './CountrySelect';
 
@@ -144,7 +144,7 @@ export default {
   },
   created() {
     // Smartform autocomplete select
-    EventBus.$on('smartform', (data) => {
+    this.$bus.$on('smartform', (data) => {
       // If instance ID is this form
       if (data.instance.substr(-(`${this._uid}`).length) == this._uid) this.values[data.field] = data.value;
     });
@@ -202,7 +202,7 @@ export default {
             const varName = field !== 'street-and-number' ? field : 'street';
 
             // Emit global event so other form instances can receive it
-            EventBus.$emit('smartform', {
+            this.$bus.$emit('smartform', {
               instance: id,
               field: varName,
               value,
@@ -213,7 +213,7 @@ export default {
     },
 
     submitForm() {
-      EventBus.$emit('fullLoader', true);
+      this.$bus.$emit('fullLoader', true);
 
       const isEdit = !!this.client;
 
@@ -257,7 +257,7 @@ export default {
           this.$flash(this.$tr(`error.${isEdit ? 'edit' : 'add'}`), 'error');
         })
         .finally(() => {
-          EventBus.$emit('fullLoader', false);
+          this.$bus.$emit('fullLoader', false);
         });
     },
 
@@ -268,7 +268,7 @@ export default {
         confirm: this.$tr('general.confirmModal.remove', null, false),
         message: this.$tr('removeModal.title'),
       }).onOk(() => {
-        EventBus.$emit('fullLoader', true);
+        this.$bus.$emit('fullLoader', true);
 
         this.$api({
           url: `client/${this.client.id}`,
@@ -285,7 +285,7 @@ export default {
             this.$flash(this.$tr('error.delete'), 'error');
           })
           .finally(() => {
-            EventBus.$emit('fullLoader', false);
+            this.$bus.$emit('fullLoader', false);
           });
       });
     },

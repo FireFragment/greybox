@@ -44,8 +44,8 @@
   </q-list>
 </template>
 <script>
+/* eslint-disable */
 import AutofillCardPerson from './AutofillCardPerson';
-import { EventBus } from '../../event-bus';
 
 export default {
   data() {
@@ -73,7 +73,7 @@ export default {
         confirm: this.$tr('general.confirmModal.remove', null, false),
         message: this.$tr('removeModal.person.title'),
       }).onOk(() => {
-        EventBus.$emit('fullLoader', true);
+        this.$bus.$emit('fullLoader', true);
 
         this.$api({
           url: 'deletedautofill',
@@ -100,7 +100,7 @@ export default {
             this.$flash(this.$tr('removeModal.person.error'), 'error');
           })
           .finally(() => {
-            EventBus.$emit('fullLoader', false);
+            this.$bus.$emit('fullLoader', false);
           });
       });
     },

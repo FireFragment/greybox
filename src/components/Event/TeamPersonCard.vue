@@ -55,6 +55,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import formFields from './FormFields';
 
 export default {

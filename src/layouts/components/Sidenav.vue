@@ -142,7 +142,7 @@
 </template>
 
 <script>
-import { EventBus } from '../../event-bus';
+/* eslint-disable */
 
 export default {
   name: 'Sidenav',
@@ -160,7 +160,7 @@ export default {
     // Load events from cache if available
     const cached = this.$db('eventsList');
     if (cached) {
-      EventBus.$emit('fullLoader', false);
+      this.$bus.$emit('fullLoader', false);
       return (this.events = cached);
     }
 
@@ -175,7 +175,7 @@ export default {
         this.$db('eventsList', this.$makeIdObject(this.events));
       })
       .finally(() => {
-        EventBus.$emit('fullLoader', false);
+        this.$bus.$emit('fullLoader', false);
       });
   },
   methods: {

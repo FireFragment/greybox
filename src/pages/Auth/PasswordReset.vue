@@ -37,6 +37,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 export default {
   name: 'PasswordReset',
   data() {

@@ -105,7 +105,7 @@
 </template>
 
 <script>
-import { EventBus } from '../../event-bus';
+/* eslint-disable */
 
 export default {
   name: 'PageSignUp',
@@ -140,7 +140,7 @@ export default {
         alerts: false,
       })
         .then(() => {
-          EventBus.$emit('fullLoader', true);
+          this.$bus.$emit('fullLoader', true);
           this.$router.push({
             name: 'login',
             params: {

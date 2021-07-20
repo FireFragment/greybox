@@ -36,6 +36,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 export default {
   name: 'GDPRCheckbox',
   props: {

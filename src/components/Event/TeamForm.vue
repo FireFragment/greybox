@@ -91,9 +91,9 @@
 </template>
 
 <script>
+/* eslint-disable */
 import personCard from './TeamPersonCard';
 import GDPRCheckbox from './GDPRCheckbox';
-import { EventBus } from '../../event-bus';
 
 export default {
   name: 'TeamForm',
@@ -312,7 +312,7 @@ export default {
         confirm: this.$tr('general.confirmModal.remove', null, false),
         message: this.$tr('autofill.removeModal.team.title'),
       }).onOk(() => {
-        EventBus.$emit('fullLoader', true);
+        this.$bus.$emit('fullLoader', true);
 
         this.$api({
           url: 'deletedautofill',
@@ -340,7 +340,7 @@ export default {
             this.$flash(this.$tr('autofill.removeModal.team.error'), 'error');
           })
           .finally(() => {
-            EventBus.$emit('fullLoader', false);
+            this.$bus.$emit('fullLoader', false);
           });
       });
     },

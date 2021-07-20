@@ -54,6 +54,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import editDialog from './BillingEditDialog';
 
 export default {

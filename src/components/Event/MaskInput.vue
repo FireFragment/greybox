@@ -14,6 +14,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 export default {
   methods: {
     moveCaretToFront(event) {

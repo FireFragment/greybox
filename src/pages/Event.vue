@@ -19,18 +19,18 @@
               v-if="event.beginning.substr(0, 4) !== event.end.substr(0, 4)"
             >
               <!-- Year is different -->
-              {{ event.beginning | moment("D. M. Y") }} - </template
+              {{ $moment(event.beginning).format("D. M. Y") }} - </template
             ><template
               v-else-if="
                 event.beginning.substr(0, 7) !== event.end.substr(0, 7)
               "
             >
               <!-- Month is different -->
-              {{ event.beginning | moment("D. M.") }} - </template
+              {{ $moment(event.beginning).format("D. M.") }} - </template
             ><template v-else-if="event.beginning !== event.end">
               <!-- Just day is different-->
-              {{ event.beginning | moment("D.") }} - </template
-            >{{ event.end | moment("D. M. Y") }}
+              {{ $moment(event.beginning).format("D.") }} - </template
+            >{{ $moment(event.end).format("D. M. Y") }}
             <!-- else - One day event -->
           </p>
           <p>
@@ -40,7 +40,7 @@
           <p>
             <q-icon name="far fa-bell" class="text-negative" />
             {{ $tr("deadline") }}:
-            {{ event.soft_deadline | moment("D. M. Y H:mm") }}
+            {{ $moment(event.soft_deadline).format("D. M. Y H:mm") }}
           </p>
           <p v-if="event.note">
             <q-icon name="fas fa-info" class="text-primary" />
@@ -199,6 +199,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import autofillCard from '../components/Event/AutofillCard';
 import formFields from '../components/Event/FormFields';
 import pickType from '../components/Event/PickType';
@@ -249,7 +250,7 @@ export default {
       if (cached) return resolve([cached, false]);
 
       // Not cached -> load from API
-      EventBus.$emit('fullLoader', true);
+      this.$bus.$emit('fullLoader', true);
       this.$api({
         url: `event/${eventId}`,
         method: 'get',
@@ -270,7 +271,7 @@ export default {
 
       // Can't register to event -> don't even load roles
       if (event.hard_deadline < this.now || !this.$auth.check()) {
-        if (isLoading) return EventBus.$emit('fullLoader', false);
+        if (isLoading) return this.$bus.$emit('fullLoader', false);
         return;
       }
 
@@ -280,7 +281,7 @@ export default {
         const cached = this.$db('rolesList');
         if (cached) return resolve([cached, isLoading]);
 
-        if (!isLoading) EventBus.$emit('fullLoader', true);
+        if (!isLoading) this.$bus.$emit('fullLoader', true);
 
         // Not cached -> load from API
         this.$api({
@@ -328,7 +329,7 @@ export default {
           }
         }
 
-        if (isLoading) return EventBus.$emit('fullLoader', false);
+        if (isLoading) return this.$bus.$emit('fullLoader', false);
       });
     });
   },
@@ -357,7 +358,7 @@ export default {
       if (teamId) return doneCallback(teamId, teamName);
 
       // Team is new -> submit to API first before we can know the ID
-      EventBus.$emit('fullLoader', true);
+      this.$bus.$emit('fullLoader', true);
       this.$api({
         url: 'team',
         data: {
@@ -369,7 +370,7 @@ export default {
           doneCallback(data.data.id, teamName);
         })
         .finally(() => {
-          EventBus.$emit('fullLoader', false);
+          this.$bus.$emit('fullLoader', false);
         });
     },
 

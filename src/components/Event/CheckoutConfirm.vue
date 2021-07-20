@@ -55,7 +55,7 @@
                     $tr("invoice.dueOn")
                   }}</q-item-label>
                   <q-item-label>{{
-                    data.invoice.due_on | moment("D. M. Y")
+                    $moment(data.invoice.due_on).format("D. M. Y")
                   }}</q-item-label>
                 </q-item-section>
               </q-item>
@@ -96,6 +96,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 export default {
   name: 'CheckoutConfirm',
   props: {

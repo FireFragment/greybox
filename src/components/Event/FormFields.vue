@@ -477,7 +477,7 @@
 </template>
 
 <script>
-import { EventBus } from '../../event-bus';
+/* eslint-disable */
 import GDPRCheckbox from './GDPRCheckbox';
 import MaskInput from './MaskInput';
 
@@ -587,7 +587,7 @@ export default {
     }
 
     // Smartform autocomplete select
-    EventBus.$on('smartform', (data) => {
+    this.$bus.$on('smartform', (data) => {
       // If instance ID is this form
       if (data.instance.substr(-(`${this._uid}`).length) == this._uid) this.values[data.field] = data.value;
     });
@@ -616,7 +616,7 @@ export default {
           const varName = field !== 'street-and-number' ? field : 'street';
 
           // Emit global event so other form instances can receive it
-          EventBus.$emit('smartform', {
+          this.$bus.$emit('smartform', {
             instance: id,
             field: varName,
             value,

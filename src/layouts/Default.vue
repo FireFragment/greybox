@@ -133,6 +133,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import Sidenav from './components/Sidenav';
 import { EventBus } from '../event-bus';
 
@@ -157,7 +158,7 @@ export default {
     // Show loading until events load
     this.fullLoader = 1;
 
-    EventBus.$on('fullLoader', (value) => {
+    this.$bus.$on('fullLoader', (value) => {
       if (value) this.fullLoader++;
       else this.fullLoader--;
 

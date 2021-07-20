@@ -94,6 +94,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import personCard from './CheckoutPersonCard';
 import billingMenu from './BillingMenu';
 import CountrySelect from './CountrySelect';

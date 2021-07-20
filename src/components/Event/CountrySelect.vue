@@ -18,6 +18,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 export default {
   name: 'CountrySelect',
   props: ['value'],

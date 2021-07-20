@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import { EventBus } from '../../event-bus';
+/* eslint-disable */
 
 export default {
   name: 'PageSignIn',
@@ -102,7 +102,7 @@ export default {
       this.$auth
         .login(requestData)
         .then((data) => {
-          EventBus.$emit('fullLoader', true);
+          this.$bus.$emit('fullLoader', true);
           this.$auth.options.fetchData.url = `${this.apiSettings.baseURL}user/${data.data.id}`;
 
           this.$auth
@@ -124,13 +124,13 @@ export default {
               this.$flash(data.response.statusText, 'error');
             })
             .finally(() => {
-              EventBus.$emit('fullLoader', false);
+              this.$bus.$emit('fullLoader', false);
             });
         })
         .catch(() => {
           // Redirect is necessary because auth plugin automatically redirects to home
           this.$router.replace(loginLink);
-          EventBus.$emit('fullLoader', false);
+          this.$bus.$emit('fullLoader', false);
           this.$flash(invalidCredentials, 'error');
         })
         .finally(() => {
@@ -144,7 +144,7 @@ export default {
 
     // Auto login user with passed data (from registration page)
     if (this.loginData) {
-      EventBus.$emit('fullLoader', false);
+      this.$bus.$emit('fullLoader', false);
       this.login(this.loginData);
     }
   },

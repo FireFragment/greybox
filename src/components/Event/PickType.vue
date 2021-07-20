@@ -16,6 +16,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import pickingButton from './PickingButton';
 
 export default {

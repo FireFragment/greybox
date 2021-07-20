@@ -100,7 +100,7 @@
           >
             <dt>{{ $tr("fields." + fieldName) }}:</dt>
             <dd v-if="fieldName === 'birthdate'">
-              {{ value | moment("D. M. Y") }}
+              {{ $moment(value).format("D. M. Y") }}
             </dd>
             <dd v-else-if="value != null">
               {{ value }}
@@ -113,6 +113,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 export default {
   props: {
     person: Object,
