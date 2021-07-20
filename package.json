@@ -42,8 +42,6 @@
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
     "lint-staged": "^8.1.5",
-    "node-sass": "^4.14.1",
-    "sass-loader": "^7.1.0",
     "stylus": "^0.54.8",
     "stylus-loader": "^3.0.2",
     "vue-cli-plugin-quasar": "^1.0.0-rc.3",
