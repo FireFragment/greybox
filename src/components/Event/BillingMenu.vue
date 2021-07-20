@@ -4,7 +4,7 @@
       color="white"
       round
       flat
-      icon="edit"
+      icon="fas fa-pen"
       :loading="loading"
       @click="openMenu"
       ref="main-btn"
@@ -32,7 +32,7 @@
                 color="black"
                 round
                 flat
-                icon="edit"
+                icon="fas fa-pen"
                 @click.stop="editClient(client)"
               />
             </q-item-section>

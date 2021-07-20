@@ -98,7 +98,7 @@
           :rules="[val => val || $tr('general.form.fieldError', null, false)]"
         >
           <template v-slot:prepend>
-            <q-icon name="event" />
+            <q-icon name="fas fa-calendar-alt" />
           </template>
         </q-select>
 
@@ -119,7 +119,7 @@
           :rules="[val => val || $tr('general.form.fieldError', null, false)]"
         >
           <template v-slot:prepend>
-            <q-icon name="event" />
+            <q-icon name="fas fa-calendar-alt" />
           </template>
         </q-select>
 
@@ -138,7 +138,7 @@
           :rules="[val => val || $tr('general.form.fieldError', null, false)]"
         >
           <template v-slot:prepend>
-            <q-icon name="event" />
+            <q-icon name="fas fa-calendar-alt" />
           </template>
         </q-select>
       </div>
@@ -347,7 +347,7 @@
               {{ $tr("speakerStatusModal.title") }}
             </div>
             <q-space />
-            <q-btn icon="close" flat round dense v-close-popup />
+            <q-btn icon="fas fa-times" flat round dense v-close-popup />
           </q-card-section>
 
           <q-card-section>

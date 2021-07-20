@@ -23,7 +23,11 @@
           </div>
 
           <div class="col-auto">
-            <q-icon name="error" class="text-negative" v-if="error" />
+            <q-icon
+              name="fas fa-exclamation-circle"
+              class="text-negative"
+              v-if="error"
+            />
             <q-btn
               color="grey-7"
               round

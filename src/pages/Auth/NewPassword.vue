@@ -21,7 +21,7 @@
           </template>
           <template v-slot:append>
             <q-icon
-              :name="isPwd ? 'visibility_off' : 'visibility'"
+              :name="isPwd ? 'fas fa-eye-slash' : 'fas fa-eye'"
               class="cursor-pointer"
               @click="isPwd = !isPwd"
             />
@@ -44,7 +44,7 @@
           </template>
           <template v-slot:append>
             <q-icon
-              :name="isPwd2 ? 'visibility_off' : 'visibility'"
+              :name="isPwd2 ? 'fas fa-eye-slash' : 'fas fa-eye'"
               class="cursor-pointer"
               @click="isPwd2 = !isPwd2"
             />

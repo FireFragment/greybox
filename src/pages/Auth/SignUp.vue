@@ -14,7 +14,7 @@
                 {{ $tr("signUp.modal.title") }}
               </div>
               <q-space />
-              <q-btn icon="close" flat round dense v-close-popup />
+              <q-btn icon="fas fa-times" flat round dense v-close-popup />
             </q-card-section>
 
             <q-card-section>
@@ -60,7 +60,7 @@
           </template>
           <template v-slot:append>
             <q-icon
-              :name="isPwd ? 'visibility_off' : 'visibility'"
+              :name="isPwd ? 'fas fa-eye-slash' : 'fas fa-eye'"
               class="cursor-pointer"
               @click="isPwd = !isPwd"
             />
@@ -83,7 +83,7 @@
           </template>
           <template v-slot:append>
             <q-icon
-              :name="isPwd2 ? 'visibility_off' : 'visibility'"
+              :name="isPwd2 ? 'fas fa-eye-slash' : 'fas fa-eye'"
               class="cursor-pointer"
               @click="isPwd2 = !isPwd2"
             />

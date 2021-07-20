@@ -10,7 +10,7 @@
           </div>
 
           <div class="col-auto">
-            <q-btn color="white" round flat icon="more_vert">
+            <q-btn color="white" round flat icon="fas fa-ellipsis-v">
               <q-menu cover auto-close>
                 <q-list class="smaller-margin-menu">
                   <q-item clickable @click="removePerson">

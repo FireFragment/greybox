@@ -3,7 +3,7 @@
     <q-list>
       <q-item :to="$path('home')" exact>
         <q-item-section avatar>
-          <q-icon name="home" />
+          <q-icon name="fas fa-home" />
         </q-item-section>
         <q-item-section>
           <q-item-label>{{ $tr("general.homepage") }}</q-item-label>
@@ -133,7 +133,7 @@
       </q-item>
       <q-item :to="$path('about')" exact>
         <q-item-section avatar>
-          <q-icon name="info" />
+          <q-icon name="fas fa-info-circle" />
         </q-item-section>
         <q-item-section>
           <q-item-label>{{ $tr("general.aboutUs") }}</q-item-label>

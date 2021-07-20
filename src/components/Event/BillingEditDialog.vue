@@ -6,7 +6,7 @@
           {{ $tr("modal.title." + (this.client ? "edit" : "add")) }}
         </div>
         <q-space />
-        <q-btn icon="close" flat round dense v-close-popup />
+        <q-btn icon="fas fa-times" flat round dense v-close-popup />
       </q-card-section>
 
       <q-form ref="q-form" @submit="submitForm" v-if="initialized">

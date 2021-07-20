@@ -11,7 +11,7 @@
           round
           @click="toggleDrawerMenu"
           aria-label="Menu"
-          icon="menu"
+          icon="fas fa-bars"
         />
 
         <q-toolbar-title>
