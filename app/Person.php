@@ -18,7 +18,7 @@ class Person extends Model implements AuthenticatableContract, AuthorizableContr
      * @var array
      */
     protected $fillable = [
-        'name', 'surname', 'email', 'school_year', 'birthdate', 'id_number', 'street', 'city', 'zip', 'vegetarian', 'dietary_requirement', 'speaker_status', 'school', 'note'
+        'name', 'surname', 'email', 'institution', 'school_year', 'birthdate', 'id_number', 'street', 'city', 'zip', 'vegetarian', 'dietary_requirement', 'speaker_status', 'school', 'note'
     ];
 
     /**
@@ -38,5 +38,10 @@ class Person extends Model implements AuthenticatableContract, AuthorizableContr
     {
         // TODO: to be changed to hasMany maybe - in case of repeated membership
         return $this->hasOne('App\Membership', 'person', 'id');
+    }
+
+    public function institution()
+    {
+        return $this->belongsTo(Institution::class, 'institution', 'id');
     }
 }

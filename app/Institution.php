@@ -28,4 +28,14 @@ class Institution extends Model implements AuthenticatableContract, Authorizable
      */
     protected $hidden = [
     ];
+
+    public function head()
+    {
+        return $this->belongsTo(Person::class, 'head', 'id');
+    }
+
+    public function people()
+    {
+        return $this->hasMany(Person::class, 'institution', 'id');
+    }
 }

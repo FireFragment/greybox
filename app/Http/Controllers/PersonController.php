@@ -42,8 +42,19 @@ class PersonController extends Controller
         // TODO: Solve authorization
         // $this->authorize('create', null, \Auth::user());
 
+        $requestData = $request->all();
+
+        // If institution isn't set, use the creating user's institution
+        if (!$request->has('institution'))
+        {
+            // Check if the creating User has Person
+            if (!empty($userPerson = \Auth::user()->person()->first())) {
+                @$requestData['institution'] = $userPerson->institution()->first()->id;
+            }
+        }
+
         try {
-            $person = Person::create($request->all());
+            $person = Person::create($requestData);
 
             return response()->json($person, 201);
         } catch (\Illuminate\Database\QueryException $e) {

@@ -26,7 +26,12 @@ class InstitutionController extends Controller
 
     public function showOne($id)
     {
-        return response()->json(Institution::find($id));
+        $institution = Institution::find($id);
+
+        $institution->head = $institution->head()->get();
+        $institution->people = $institution->people()->get();
+
+        return response()->json($institution);
     }
 
     public function create(Request $request)
