@@ -1,7 +1,7 @@
 <template>
   <q-layout
     view="lHh Lpr lFf"
-    :class="'bg-grey-2 page-' + $router.currentRoute.name"
+    :class="'bg-grey-2 page-' + $route.name"
   >
     <q-header elevated>
       <q-toolbar>
@@ -175,14 +175,14 @@ export default {
       if (this.$i18n.locale !== locale) {
         // current URL
         const originalPath = this.$tr(
-          `paths.${this.$router.resolve({}).route.name}`,
+          `paths.${this.$route.name}`,
         );
 
         // change locale
         this.$i18n.locale = locale;
 
         // new URL
-        const newPath = this.$tr(`paths.${this.$router.resolve({}).route.name}`);
+        const newPath = this.$tr(`paths.${this.$route.name}`);
 
         // get URL from router
         let url = this.$router.resolve({});

@@ -49,7 +49,7 @@ export default boot(({ app }) => {
 
     // Translate string from JSON
     // @ts-ignore
-    let prefix = this ? this.translationPrefix : null;
+    let prefix = this ? this.$.data.translationPrefix : null;
 
     // Use prefix
     if (prefix && usePrefix && options !== {}) key = prefix + key;
@@ -81,7 +81,7 @@ export default boot(({ app }) => {
       // Check if translation exists
       $trExists: function (key: string, usePrefix: boolean = true) {
         // Translate string from JSON
-        let prefix = this ? this.translationPrefix : null;
+        let prefix = this ? this.$.data.translationPrefix : null;
 
         // Use prefix
         if (prefix && usePrefix) key = prefix + key;
