@@ -1,0 +1,29 @@
+.q-header
+	background-color: black
+	.q-toolbar
+		.lang-switch
+			margin: 0 5px
+			cursor: pointer
+
+		.q-btn-dropdown
+			.q-avatar
+				margin-right: .5rem
+
+		.q-toolbar__title span
+			.q-avatar
+				margin-right: .5rem
+			img
+				transition: transform .8s ease-in-out
+
+			&:hover img
+				transform: rotate(720deg)
+
+		.q-btn-dropdown
+			@media (max-width $breakpoint-xs-max)
+				.q-btn-dropdown__arrow
+					margin-left: 0
+				.username
+					display: none
+
+.q-menu.no-maxwidth-menu
+	max-width: 95vw !important

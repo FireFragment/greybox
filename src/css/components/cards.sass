@@ -1,0 +1,37 @@
+.debaters-sticky-card
+	position: sticky
+	top: 80px
+
+.normal-margin-card
+	.q-card__section + .q-card__section
+		padding-top: 16px
+
+.thin-header-card
+	.card-header
+			padding: 8px 16px
+
+.q-card__actions.float-actions
+	display: block
+
+	&::after
+		content: ""
+		display: block
+		float: none
+		clear: both
+
+	.q-btn
+		display: block
+
+		&:first-child
+			float: left
+
+		&:last-child
+			float: right
+
+.q-card.event-header
+	padding: 4rem
+	margin-bottom: 6rem
+
+	@media (max-width: $breakpoint-sm-max)
+		padding: 2rem 1rem
+		margin-bottom: 3rem
