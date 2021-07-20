@@ -6,7 +6,7 @@ import config from '../config';
 const smartformModule = require('@smartform.cz/smartform');
 const SlideUpDown = require('vue-slide-up-down');
 import { boot } from 'quasar/wrappers';
-import { useI18n } from 'vue-i18n';
+import { i18n } from 'boot/i18n';
 import i18nConfig from '../translation/config.json';
 
 export default boot(({ app }) => {
@@ -37,7 +37,7 @@ export default boot(({ app }) => {
 
   const $tr = function (key: string, options: Record<string, unknown> = {}, usePrefix = true) {
     // Translate object received from API
-    const { locale, t } = useI18n();
+    const { locale, t } = i18n.global;
     if (typeof key === 'object') {
       // @ts-ignore
       let activeLocale: string = locale || i18nConfig.default;
