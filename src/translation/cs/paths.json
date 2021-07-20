@@ -6,7 +6,8 @@
     "login": "prihlaseni",
     "signUp": "registrace",
     "logout": "odhlaseni",
-    "passwordReset": "obnovit-heslo"
+    "passwordReset": "obnovit-heslo",
+    "accountSettings": "nastaveni-uctu"
   },
   "admin": {
     "eventRegistrations": "prihlaseni-na-turnaje"

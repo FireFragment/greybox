@@ -6,7 +6,8 @@
     "login": "login",
     "signUp": "sign-up",
     "logout": "logout",
-    "passwordReset": "password-reset"
+    "passwordReset": "password-reset",
+    "accountSettings": "account-settings"
   },
   "admin": {
     "eventRegistrations": "tournaments-registrations"

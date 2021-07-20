@@ -83,29 +83,27 @@
             </span>
           </template>
           <q-list>
-            <!--
-            TODO - implement form to edit account details (password, language, username maybe?)
-            <q-item clickable>
+            <q-item :to="$path('auth.accountSettings')" clickable>
               <q-item-section avatar>
                 <q-icon name="fas fa-cog" />
               </q-item-section>
 
               <q-item-section>{{
-                $tr("general.accountSettings")
+                $tr("auth.accountSettings.link")
               }}</q-item-section>
             </q-item>
+            <!--
+              TODO - implement link to server to download personal data
+              <q-item clickable>
+                <q-item-section avatar>
+                  <q-icon name="fas fa-download" />
+                </q-item-section>
 
-            TODO - implement link to server to download personal data
-            <q-item clickable>
-              <q-item-section avatar>
-                <q-icon name="fas fa-download" />
-              </q-item-section>
-
-              <q-item-section>{{
-                $tr("general.downloadPersonalData")
-              }}</q-item-section>
-            </q-item>
-            -->
+                <q-item-section>{{
+                  $tr("general.downloadPersonalData")
+                }}</q-item-section>
+              </q-item>
+              -->
 
             <q-item :to="$path('auth.logout')" clickable>
               <q-item-section avatar>

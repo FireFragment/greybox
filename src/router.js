@@ -19,6 +19,7 @@ import EventRegistrations from "./pages/Admin/EventRegistrations";
 // Translations
 import CZroutes from "./translation/cs/paths";
 import ENroutes from "./translation/en/paths";
+import AccountSettings from "./pages/Auth/AccountSettings";
 
 Vue.use(Router);
 
@@ -89,6 +90,12 @@ let router = new Router({
           alias: ENroutes.auth.passwordReset + "/:token",
           name: "new-password",
           component: NewPassword
+        },
+        {
+          path: CZroutes.auth.accountSettings,
+          alias: ENroutes.auth.accountSettings,
+          name: "account-settings",
+          component: AccountSettings
         }
       ]
     },
