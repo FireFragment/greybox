@@ -17,8 +17,8 @@ export default {
   props: {
     label: [String, Object],
     icon: String,
-    color: String
+    color: String,
   },
-  name: "PickingButton"
+  name: 'PickingButton',
 };
 </script>

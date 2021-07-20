@@ -94,82 +94,80 @@
 </template>
 
 <script>
-import personCard from "./CheckoutPersonCard";
-import billingMenu from "./BillingMenu";
-import CountrySelect from "./CountrySelect";
+import personCard from './CheckoutPersonCard';
+import billingMenu from './BillingMenu';
+import CountrySelect from './CountrySelect';
 
 export default {
-  name: "Checkout",
+  name: 'Checkout',
   props: {
     formData: Array,
-    possibleDiets: Array
+    possibleDiets: Array,
   },
   data() {
     return {
-      translationPrefix: "tournament.checkout.",
+      translationPrefix: 'tournament.checkout.',
       loading: false,
-      billingClient: null
+      billingClient: null,
     };
   },
   computed: {
     selectedCountry() {
-      if (!this.$isPDS || !this.billingClient || !this.billingClient.country)
-        return null;
+      if (!this.$isPDS || !this.billingClient || !this.billingClient.country) return null;
 
-      let db = this.$db("countries-select");
+      const db = this.$db('countries-select');
 
       if (!db) return null;
 
-      let filtered = db.filter(
-        item => item.value === this.billingClient.country
+      const filtered = db.filter(
+        (item) => item.value === this.billingClient.country,
       );
 
       if (filtered.length) return filtered[0].label;
 
       return null;
-    }
+    },
   },
   methods: {
     sendForm() {
       this.loading = !this.loading;
 
       // Send person and registration requests
-      let registrationPromise = new Promise((resolve, reject) => {
-        let registerCount = this.formData.length;
+      const registrationPromise = new Promise((resolve, reject) => {
+        const registerCount = this.formData.length;
         let registered = 0;
 
-        for (let index in this.formData) {
-          let person = this.formData[index];
+        for (const index in this.formData) {
+          const person = this.formData[index];
 
-          let createPerson = this._createPerson(person);
+          const createPerson = this._createPerson(person);
 
           createPerson
-            .then(person_id => {
+            .then((person_id) => {
               person.registration.person = person_id;
               this.formData[index].registration.person = person_id;
 
               if (person.registered_data) {
                 registered++;
-                if (registerCount <= registered)
-                  return resolve(person.registered_data);
+                if (registerCount <= registered) return resolve(person.registered_data);
               }
 
               this.$api({
-                url: "registration",
+                url: 'registration',
                 data: person.registration,
-                method: "post",
-                alerts: false
+                method: 'post',
+                alerts: false,
               })
-                .then(data => {
+                .then((data) => {
                   registered++;
                   this.formData[index].registered_data = data;
                   if (registerCount <= registered) return resolve(data);
                 })
-                .catch(data => {
+                .catch((data) => {
                   reject([data, person]);
                 });
             })
-            .catch(data => {
+            .catch((data) => {
               reject([data, person]);
             });
         }
@@ -177,34 +175,35 @@ export default {
 
       // All done -> ask for confirmation
       registrationPromise
-        .then(data => {
-          let confirmData = {
-            lang: this.$i18n.locale
+        .then((data) => {
+          const confirmData = {
+            lang: this.$i18n.locale,
           };
 
-          if (this.billingClient) confirmData["client"] = this.billingClient.id;
+          if (this.billingClient) confirmData.client = this.billingClient.id;
 
           this.$api({
-            url: "registration/" + data.data.id + "/confirm",
-            method: "put",
-            data: confirmData
+            url: `registration/${data.data.id}/confirm`,
+            method: 'put',
+            data: confirmData,
           })
-            .then(data => {
-              this.$flash(this.$tr("success"), "success");
-              this.$emit("confirm", data.data);
+            .then((data) => {
+              this.$flash(this.$tr('success'), 'success');
+              this.$emit('confirm', data.data);
             })
-            .catch(data => {
+            .catch((data) => {
               if (data.response.data) {
-                let message = data.response.data.message;
+                const { message } = data.response.data;
 
-                if (message)
+                if (message) {
                   return this.$flash(
-                    this.$tr("validation." + message),
-                    "error"
+                    this.$tr(`validation.${message}`),
+                    'error',
                   );
+                }
               }
 
-              this.$flash(this.$tr("error"), "error");
+              this.$flash(this.$tr('error'), 'error');
             })
             .finally(() => {
               this.loading = false;
@@ -214,61 +213,61 @@ export default {
           this.loading = false;
 
           if (data.response.data) {
-            let message = data.response.data.message;
+            const { message } = data.response.data;
 
-            if (message)
+            if (message) {
               return this.$flash(
-                this.$tr("validation." + message, {
-                  person: person.person.name + " " + person.person.surname
+                this.$tr(`validation.${message}`, {
+                  person: `${person.person.name} ${person.person.surname}`,
                 }),
-                "error"
+                'error',
               );
+            }
           }
 
-          this.$flash(this.$tr("error"), "error");
+          this.$flash(this.$tr('error'), 'error');
         });
     },
 
     // Create or update person
     _createPerson(person) {
       return new Promise((resolve, reject) => {
-        let autofill = person.autofill;
+        const { autofill } = person;
 
         // Person is just autofilled and not edited -> return ID
         if (autofill && !autofill.edited) return resolve(autofill.id);
 
         // Person already created -> don't recreate
-        if (person.registration.person)
-          return resolve(person.registration.person);
+        if (person.registration.person) return resolve(person.registration.person);
 
         // Person is autofilled and edited / newly created
         this.$api({
-          url: "person" + (autofill ? "/" + autofill.id : ""),
+          url: `person${autofill ? `/${autofill.id}` : ''}`,
           data: person.person,
-          method: autofill ? "put" : "post",
-          alerts: false
+          method: autofill ? 'put' : 'post',
+          alerts: false,
         })
-          .then(data => {
+          .then((data) => {
             resolve(data.data.id);
           })
-          .catch(data => {
+          .catch((data) => {
             reject(data);
           });
       });
     },
 
     removePerson(index) {
-      this.$emit("removePerson", index);
+      this.$emit('removePerson', index);
     },
 
     changeBilling(client) {
       this.billingClient = client;
-    }
+    },
   },
   components: {
     CountrySelect,
     personCard,
-    billingMenu
-  }
+    billingMenu,
+  },
 };
 </script>

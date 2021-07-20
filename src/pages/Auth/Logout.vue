@@ -7,16 +7,16 @@
 </template>
 
 <script>
-import Vue from "vue";
+import Vue from 'vue';
 
 export default {
-  name: "PageSignOut",
+  name: 'PageSignOut',
   mounted() {
     this.$auth.logout();
-    this.$flash(this.$tr("auth.logout.success"));
+    this.$flash(this.$tr('auth.logout.success'));
 
     // Remove cached personal data on logout
     Vue.prototype.dbPersonal = {};
-  }
+  },
 };
 </script>

@@ -16,24 +16,22 @@
 </template>
 
 <script>
-import pickingButton from "./PickingButton";
+import pickingButton from './PickingButton';
 
 export default {
   props: {
     values: [Array, Object],
     name: String,
-    hideFirst: Boolean
+    hideFirst: Boolean,
   },
   components: {
-    pickingButton
+    pickingButton,
   },
   computed: {
     options() {
-      return Object.values(this.values).filter(item => {
-        return !this.hideFirst || item.value !== 0;
-      });
-    }
+      return Object.values(this.values).filter((item) => !this.hideFirst || item.value !== 0);
+    },
   },
-  name: "PickType"
+  name: 'PickType',
 };
 </script>

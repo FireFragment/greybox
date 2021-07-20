@@ -117,51 +117,51 @@ export default {
   props: {
     person: Object,
     personIndex: Number,
-    possibleDiets: Array
+    possibleDiets: Array,
   },
   data() {
     return {
-      translationPrefix: "tournament."
+      translationPrefix: 'tournament.',
     };
   },
   computed: {
     roleName() {
       let roleObject = null;
-      this.$db("rolesList").forEach(item => {
+      this.$db('rolesList').forEach((item) => {
         if (item.id === this.person.registration.role) roleObject = item;
       });
       if (roleObject) return this.$tr(roleObject.name);
 
       // For Bugsnag to catch
-      console.log(this.$db("rolesList"));
+      console.log(this.$db('rolesList'));
       console.log(this.person);
       console.error(
-        "Missing role " + this.person.registration.role + ", see logs above"
+        `Missing role ${this.person.registration.role}, see logs above`,
       );
-      return "";
+      return '';
     },
     dietaryRequirement() {
-      let id = this.person.person.dietary_requirement;
+      const id = this.person.person.dietary_requirement;
 
       // Get dietary requirement name
-      let name = this.$tr(
-        this.possibleDiets.filter(item => item.id === id)[0].name
+      const name = this.$tr(
+        this.possibleDiets.filter((item) => item.id === id)[0].name,
       );
 
       // Capitalize
       return name.charAt(0).toUpperCase() + name.slice(1);
-    }
+    },
   },
-  name: "CheckoutPersonCard",
+  name: 'CheckoutPersonCard',
   methods: {
     removePerson() {
       this.$confirm({
-        confirm: this.$tr("general.confirmModal.remove", null, false),
-        message: this.$tr("checkout.actions.removeModal.title")
+        confirm: this.$tr('general.confirmModal.remove', null, false),
+        message: this.$tr('checkout.actions.removeModal.title'),
       }).onOk(() => {
-        this.$emit("remove", this.personIndex);
+        this.$emit('remove', this.personIndex);
       });
-    }
-  }
+    },
+  },
 };
 </script>

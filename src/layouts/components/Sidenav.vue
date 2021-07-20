@@ -142,56 +142,56 @@
 </template>
 
 <script>
-import { EventBus } from "../../event-bus";
+import { EventBus } from '../../event-bus';
 
 export default {
-  name: "Sidenav",
+  name: 'Sidenav',
   data() {
     return {
-      events: []
+      events: [],
     };
   },
   props: {
-    value: Boolean
+    value: Boolean,
   },
   created() {
     if (this.events.length) return;
 
     // Load events from cache if available
-    let cached = this.$db("eventsList");
+    const cached = this.$db('eventsList');
     if (cached) {
-      EventBus.$emit("fullLoader", false);
+      EventBus.$emit('fullLoader', false);
       return (this.events = cached);
     }
 
     this.$api({
-      url: "event",
+      url: 'event',
       sendToken: false,
-      method: "get"
+      method: 'get',
     })
-      .then(d => {
+      .then((d) => {
         // PDS has custom events (1 event = accommodation level)
-        this.events = d.data.filter(event => event.pds === this.$isPDS);
-        this.$db("eventsList", this.$makeIdObject(this.events));
+        this.events = d.data.filter((event) => event.pds === this.$isPDS);
+        this.$db('eventsList', this.$makeIdObject(this.events));
       })
       .finally(() => {
-        EventBus.$emit("fullLoader", false);
+        EventBus.$emit('fullLoader', false);
       });
   },
   methods: {
     // Pass drawer toggle input up the chain so it can be properly closed
     toggleDrawerMenu(value) {
-      this.$emit("input", value);
+      this.$emit('input', value);
     },
 
     eventLinkClicked(eventUrl) {
       // Trying to go to same URL again -> go home before that so vue "reloads" page
       if (this.$route.path === eventUrl) {
         this.$router.push({
-          path: "/" + this.$tr("paths.home")
+          path: `/${this.$tr('paths.home')}`,
         });
       }
-    }
-  }
+    },
+  },
 };
 </script>

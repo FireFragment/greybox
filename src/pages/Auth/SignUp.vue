@@ -105,24 +105,24 @@
 </template>
 
 <script>
-import { EventBus } from "../../event-bus";
+import { EventBus } from '../../event-bus';
 
 export default {
-  name: "PageSignUp",
+  name: 'PageSignUp',
   data() {
     return {
-      translationPrefix: "auth.",
+      translationPrefix: 'auth.',
       email: null,
       password: null,
       passwordConfirmation: null,
       isPwd: true,
       isPwd2: true,
       loading: false,
-      whySignUpModal: false
+      whySignUpModal: false,
     };
   },
   created() {
-    if (this.$auth.check()) this.$router.replace({ name: "home" });
+    if (this.$auth.check()) this.$router.replace({ name: 'home' });
   },
   methods: {
     signUp() {
@@ -130,50 +130,51 @@ export default {
 
       this.loading = true;
       this.$api({
-        url: "user",
+        url: 'user',
         sendToken: false,
         data: {
           username: this.email,
           password: this.password,
-          password_confirmation: this.passwordConfirmation
+          password_confirmation: this.passwordConfirmation,
         },
-        alerts: false
+        alerts: false,
       })
         .then(() => {
-          EventBus.$emit("fullLoader", true);
+          EventBus.$emit('fullLoader', true);
           this.$router.push({
-            name: "login",
+            name: 'login',
             params: {
               loginData: {
                 username: this.email,
                 password: this.password,
-                isSignUp: true
-              }
-            }
+                isSignUp: true,
+              },
+            },
           });
         })
-        .catch(data => {
-          if (data.response.data)
-            for (let index in data.response.data)
-              data.response.data[index].forEach(message => {
+        .catch((data) => {
+          if (data.response.data) {
+            for (const index in data.response.data) {
+              data.response.data[index].forEach((message) => {
                 this.$flash(
                   this.$tr(
-                    "signUp.validation." +
-                      index +
-                      "." +
-                      message.substr(11).replace(".", "-")
+                    `signUp.validation.${
+                      index
+                    }.${
+                      message.substr(11).replace('.', '-')}`,
                   ),
-                  "error",
+                  'error',
                   false,
-                  9000
+                  9000,
                 );
               });
-          else this.$flash(this.$tr("general.error", null, false), "error");
+            }
+          } else this.$flash(this.$tr('general.error', null, false), 'error');
         })
         .finally(() => {
           this.loading = false;
         });
-    }
-  }
+    },
+  },
 };
 </script>

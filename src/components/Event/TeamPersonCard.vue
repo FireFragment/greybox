@@ -55,11 +55,12 @@
 </template>
 
 <script>
-import formFields from "./FormFields";
+import formFields from './FormFields';
+
 export default {
-  name: "TeamPersonCard",
+  name: 'TeamPersonCard',
   components: {
-    formFields
+    formFields,
   },
   props: {
     autofill: Object,
@@ -70,19 +71,19 @@ export default {
     accommodationType: String,
     mealType: String,
     possibleDiets: Array,
-    requireEmail: Boolean
+    requireEmail: Boolean,
   },
   data() {
     return {
-      translationPrefix: "tournament.",
-      formData: {}
+      translationPrefix: 'tournament.',
+      formData: {},
     };
   },
   methods: {
     catchInput(data) {
       this.formData = data;
-      this.$emit("input", data, this.id);
-    }
-  }
+      this.$emit('input', data, this.id);
+    },
+  },
 };
 </script>

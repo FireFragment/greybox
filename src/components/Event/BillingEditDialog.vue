@@ -116,20 +116,20 @@
 </template>
 
 <script>
-import { EventBus } from "../../event-bus";
-import MaskInput from "./MaskInput";
-import CountrySelect from "./CountrySelect";
+import { EventBus } from '../../event-bus';
+import MaskInput from './MaskInput';
+import CountrySelect from './CountrySelect';
 
 export default {
-  name: "BillingEditDialog",
+  name: 'BillingEditDialog',
   components: { CountrySelect, MaskInput },
   props: {
     visible: Boolean,
-    client: Object
+    client: Object,
   },
   data() {
     return {
-      translationPrefix: "tournament.checkout.billing.",
+      translationPrefix: 'tournament.checkout.billing.',
       initialized: false,
       values: {
         name: null,
@@ -138,16 +138,15 @@ export default {
         street: null,
         city: null,
         zip: null,
-        country: null
-      }
+        country: null,
+      },
     };
   },
   created() {
     // Smartform autocomplete select
-    EventBus.$on("smartform", data => {
+    EventBus.$on('smartform', (data) => {
       // If instance ID is this form
-      if (data.instance.substr(-(this._uid + "").length) == this._uid)
-        this.values[data.field] = data.value;
+      if (data.instance.substr(-(`${this._uid}`).length) == this._uid) this.values[data.field] = data.value;
     });
 
     this.stateChange(this.visible);
@@ -155,24 +154,24 @@ export default {
   computed: {
     validateZip() {
       return (
-        !this.$isPDS ||
-        (this.values.country && this.values.country.value === "CZ")
+        !this.$isPDS
+        || (this.values.country && this.values.country.value === 'CZ')
       );
-    }
+    },
   },
   methods: {
     stateChange(isVisible) {
       if (isVisible) this.$nextTick(this._dialogMounted);
 
-      return this.$emit("state-change", isVisible);
+      return this.$emit('state-change', isVisible);
     },
 
     _dialogMounted() {
-      Object.keys(this.values).forEach(key => {
+      Object.keys(this.values).forEach((key) => {
         this.$set(
           this.values,
           key,
-          this.client && this.client[key] ? this.client[key] : null
+          this.client && this.client[key] ? this.client[key] : null,
         );
       });
 
@@ -184,29 +183,29 @@ export default {
       // Renitialize smartform
       window.smartform.rebindAllForms(true, () => {
         // Loop through instances
-        window.smartform.getInstanceIds().forEach(id => {
-          let instance = window.smartform.getInstance(id);
+        window.smartform.getInstanceIds().forEach((id) => {
+          const instance = window.smartform.getInstance(id);
 
           // Set limit to 3 results for every field
           [
-            "smartform-street-and-number",
-            "smartform-city",
-            "smartform-zip"
-          ].forEach(input => {
+            'smartform-street-and-number',
+            'smartform-city',
+            'smartform-zip',
+          ].forEach((input) => {
             instance.getBox(input).setLimit(3);
           });
 
           // Run this callback on selection
           instance.setSelectionCallback((element, value, fieldType) => {
-            let field = fieldType.substr("10");
+            const field = fieldType.substr('10');
 
-            let varName = field !== "street-and-number" ? field : "street";
+            const varName = field !== 'street-and-number' ? field : 'street';
 
             // Emit global event so other form instances can receive it
-            EventBus.$emit("smartform", {
+            EventBus.$emit('smartform', {
               instance: id,
               field: varName,
-              value: value
+              value,
             });
           });
         });
@@ -214,51 +213,51 @@ export default {
     },
 
     submitForm() {
-      EventBus.$emit("fullLoader", true);
+      EventBus.$emit('fullLoader', true);
 
-      let isEdit = !!this.client;
+      const isEdit = !!this.client;
 
-      let data = { ...this.values };
+      const data = { ...this.values };
 
       // Remove mask from zip
-      if (this.validateZip)
+      if (this.validateZip) {
         data.zip = data.zip
           ? data.zip
-              .replace(/_/g, "")
-              .replace(" ", "")
-              .trim()
-          : "";
+            .replace(/_/g, '')
+            .replace(' ', '')
+            .trim()
+          : '';
+      }
 
       if (this.$isPDS && data.country) data.country = data.country.value;
 
       this.$api({
-        url: "client" + (isEdit ? "/" + this.client.id : ""),
-        method: isEdit ? "put" : "post",
-        data: data,
-        alerts: false
+        url: `client${isEdit ? `/${this.client.id}` : ''}`,
+        method: isEdit ? 'put' : 'post',
+        data,
+        alerts: false,
       })
-        .then(data => {
+        .then((data) => {
           this.stateChange(false);
           this.$flash(
-            this.$tr("success." + (isEdit ? "edit" : "add")),
-            "success"
+            this.$tr(`success.${isEdit ? 'edit' : 'add'}`),
+            'success',
           );
 
-          let client = data.data;
+          const client = data.data;
 
-          this.$emit("client-change", client.id, client, !isEdit);
+          this.$emit('client-change', client.id, client, !isEdit);
         })
-        .catch(data => {
+        .catch((data) => {
           if (data.response.data) {
-            let message = data.response.data.message;
+            const { message } = data.response.data;
 
-            if (message && this.$trExists("validation." + message))
-              return this.$flash(this.$tr("validation." + message), "error");
+            if (message && this.$trExists(`validation.${message}`)) return this.$flash(this.$tr(`validation.${message}`), 'error');
           }
-          this.$flash(this.$tr("error." + (isEdit ? "edit" : "add")), "error");
+          this.$flash(this.$tr(`error.${isEdit ? 'edit' : 'add'}`), 'error');
         })
         .finally(() => {
-          EventBus.$emit("fullLoader", false);
+          EventBus.$emit('fullLoader', false);
         });
     },
 
@@ -266,30 +265,30 @@ export default {
       if (!this.client) return false;
 
       this.$confirm({
-        confirm: this.$tr("general.confirmModal.remove", null, false),
-        message: this.$tr("removeModal.title")
+        confirm: this.$tr('general.confirmModal.remove', null, false),
+        message: this.$tr('removeModal.title'),
       }).onOk(() => {
-        EventBus.$emit("fullLoader", true);
+        EventBus.$emit('fullLoader', true);
 
         this.$api({
-          url: "client/" + this.client.id,
-          method: "delete",
-          alerts: false
+          url: `client/${this.client.id}`,
+          method: 'delete',
+          alerts: false,
         })
           .then(() => {
             this.stateChange(false);
-            this.$flash(this.$tr("success.delete"), "success");
+            this.$flash(this.$tr('success.delete'), 'success');
 
-            this.$emit("client-change", this.client.id, null);
+            this.$emit('client-change', this.client.id, null);
           })
           .catch(() => {
-            this.$flash(this.$tr("error.delete"), "error");
+            this.$flash(this.$tr('error.delete'), 'error');
           })
           .finally(() => {
-            EventBus.$emit("fullLoader", false);
+            EventBus.$emit('fullLoader', false);
           });
       });
-    }
-  }
+    },
+  },
 };
 </script>

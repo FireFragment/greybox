@@ -54,19 +54,19 @@
 </template>
 
 <script>
-import editDialog from "./BillingEditDialog";
+import editDialog from './BillingEditDialog';
 
 export default {
-  name: "BillingMenu",
+  name: 'BillingMenu',
   components: { editDialog },
   data() {
     return {
-      translationPrefix: "tournament.checkout.billing.",
+      translationPrefix: 'tournament.checkout.billing.',
       loading: false,
       clients: null,
       editedClient: null,
       showPopupMenu: false,
-      showEditModal: false
+      showEditModal: false,
     };
   },
   methods: {
@@ -78,7 +78,7 @@ export default {
       this.loadClients().then(() => {
         // Reopen client menu once loaded
         setTimeout(() => {
-          this.$refs["main-btn"].$el.click();
+          this.$refs['main-btn'].$el.click();
         }, 100);
       });
     },
@@ -86,7 +86,7 @@ export default {
     loadClients() {
       if (!this.clients) {
         // Try loading billing details from cache
-        let cached = this.$db("billingDetails", null, true);
+        const cached = this.$db('billingDetails', null, true);
 
         if (cached) this.clients = cached;
         else this.loading = true;
@@ -96,16 +96,16 @@ export default {
         if (this.clients) return resolve(this.clients);
 
         this.$api({
-          url: "user/" + this.$auth.user().id + "/client",
-          method: "get"
+          url: `user/${this.$auth.user().id}/client`,
+          method: 'get',
         })
-          .then(data => {
+          .then((data) => {
             this.clients = data.data;
-            this.$db("billingDetails", this.clients, true);
+            this.$db('billingDetails', this.clients, true);
             resolve(this.clients);
           })
-          .catch(data => {
-            this.$flash(this.$tr("general.error", null, false), "error");
+          .catch((data) => {
+            this.$flash(this.$tr('general.error', null, false), 'error');
             reject(data);
           })
           .finally(() => {
@@ -115,7 +115,7 @@ export default {
     },
 
     selectClient(client) {
-      this.$emit("selected", client);
+      this.$emit('selected', client);
     },
 
     // Trigger client editing
@@ -132,37 +132,38 @@ export default {
 
       // Add new client
       if (isNew) this.clients.push(data);
-      else
+      else {
         this.clients.forEach((client, index) => {
           if (client.id === id) {
-            // Remove client
+          // Remove client
             if (!data) this.$delete(this.clients, index);
             // Update client
             else this.$set(this.clients, index, data);
           }
         });
+      }
 
       // Update cache
-      this.$db("billingDetails", this.clients, true);
+      this.$db('billingDetails', this.clients, true);
     },
 
     // Modal's state change
     modalChange(value) {
       this.showEditModal = value;
-    }
+    },
   },
   created() {
     this.loadClients().then(() => {
       if (this.clients && this.clients.length)
-        // some billing information found -> select first one
-        this.selectClient(this.clients[0]);
+      // some billing information found -> select first one
+      { this.selectClient(this.clients[0]); }
       // no billing info -> open modal to create one
       else this.editClient();
     });
   },
   mounted() {
     // Load clients from cache if it exists
-    let cached = this.$db("billingClients");
+    const cached = this.$db('billingClients');
 
     if (cached) this.clients = cached;
   },
@@ -170,8 +171,8 @@ export default {
   watch: {
     // Update cache on clients change
     clients(value) {
-      this.$db("billingClients", value, true);
-    }
-  }
+      this.$db('billingClients', value, true);
+    },
+  },
 };
 </script>

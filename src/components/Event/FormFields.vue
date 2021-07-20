@@ -477,12 +477,12 @@
 </template>
 
 <script>
-import { EventBus } from "../../event-bus";
-import GDPRCheckbox from "./GDPRCheckbox";
-import MaskInput from "./MaskInput";
+import { EventBus } from '../../event-bus';
+import GDPRCheckbox from './GDPRCheckbox';
+import MaskInput from './MaskInput';
 
 export default {
-  name: "FormFields",
+  name: 'FormFields',
   components: { GDPRCheckbox, MaskInput },
   props: {
     autofill: Object,
@@ -491,12 +491,12 @@ export default {
     mealType: String,
     possibleDiets: Array,
     role: Number,
-    requireEmail: Boolean
+    requireEmail: Boolean,
   },
 
   data() {
     return {
-      translationPrefix: "tournament.",
+      translationPrefix: 'tournament.',
       values: {
         name: null,
         surname: null,
@@ -506,10 +506,10 @@ export default {
         zip: null,
         // phone: "+420",
         dietary_requirement: null,
-        meals: this.mealType !== "opt-in" && this.mealType !== "none",
+        meals: this.mealType !== 'opt-in' && this.mealType !== 'none',
         accommodation:
-          this.accommodationType !== "opt-in" &&
-          this.accommodationType !== "none",
+          this.accommodationType !== 'opt-in'
+          && this.accommodationType !== 'none',
         // parentName: null,
         // parentPhone: "+420",
         // parentEmail: null,
@@ -519,7 +519,7 @@ export default {
         birthDay: null,
         birthMonth: null,
         birthYear: null,
-        speaker_status: null
+        speaker_status: null,
         // -SCHOOL FIELD- school: null
       },
       acceptError: false,
@@ -536,18 +536,18 @@ export default {
       requireJudingExperience: this.$isPDS && this.role === 2, // show "Judging experience" instead of note (only for PDS judges)
       speakerOptions: [
         {
-          label: this.$tr("tournament.fields.EFL"),
-          value: "efl"
+          label: this.$tr('tournament.fields.EFL'),
+          value: 'efl',
         },
         {
-          label: this.$tr("tournament.fields.ESL"),
-          value: "esl"
+          label: this.$tr('tournament.fields.ESL'),
+          value: 'esl',
         },
         {
-          label: this.$tr("tournament.fields.ENL"),
-          value: "enl"
-        }
-      ]
+          label: this.$tr('tournament.fields.ENL'),
+          value: 'enl',
+        },
+      ],
     };
   },
 
@@ -555,8 +555,8 @@ export default {
     // Load date select options
     for (let i = 1; i <= 31; i++) {
       this.daysAll.push({
-        label: i + ".",
-        value: ("0" + i).substr(-2)
+        label: `${i}.`,
+        value: (`0${i}`).substr(-2),
       });
     }
     for (let i = new Date().getFullYear() - 10; i >= 1900; i--) {
@@ -564,33 +564,32 @@ export default {
     }
     for (let i = 0; i < 12; i++) {
       this.monthsAll[i] = {
-        label: "general.months." + i,
-        value: ("0" + (i + 1)).substr(-2)
+        label: `general.months.${i}`,
+        value: (`0${i + 1}`).substr(-2),
       };
     }
 
-    for (let i in this.possibleDiets) {
+    for (const i in this.possibleDiets) {
       this.possibleDietsOptions[i] = {
         label:
           this.$tr(this.possibleDiets[i].name)
             .charAt(0)
             .toUpperCase() + this.$tr(this.possibleDiets[i].name).slice(1),
-        value: this.possibleDiets[i].id
+        value: this.possibleDiets[i].id,
       };
-      //if last:
+      // if last:
       if (i == this.possibleDiets.length - 1) {
         this.values.dietary_requirement = {
           label: this.possibleDietsOptions[0].label,
-          value: this.possibleDietsOptions[0].value
+          value: this.possibleDietsOptions[0].value,
         };
       }
     }
 
     // Smartform autocomplete select
-    EventBus.$on("smartform", data => {
+    EventBus.$on('smartform', (data) => {
       // If instance ID is this form
-      if (data.instance.substr(-(this._uid + "").length) == this._uid)
-        this.values[data.field] = data.value;
+      if (data.instance.substr(-(`${this._uid}`).length) == this._uid) this.values[data.field] = data.value;
     });
   },
 
@@ -598,29 +597,29 @@ export default {
     // Renitialize smartform
     window.smartform.rebindAllForms(true, () => {
       // Loop through instances
-      window.smartform.getInstanceIds().forEach(id => {
-        let instance = window.smartform.getInstance(id);
+      window.smartform.getInstanceIds().forEach((id) => {
+        const instance = window.smartform.getInstance(id);
 
         // Set limit to 3 results for every field
         [
-          "smartform-street-and-number",
-          "smartform-city",
-          "smartform-zip"
-        ].forEach(input => {
+          'smartform-street-and-number',
+          'smartform-city',
+          'smartform-zip',
+        ].forEach((input) => {
           instance.getBox(input).setLimit(3);
         });
 
         // Run this callback on selection
         instance.setSelectionCallback((element, value, fieldType) => {
-          let field = fieldType.substr("10");
+          const field = fieldType.substr('10');
 
-          let varName = field !== "street-and-number" ? field : "street";
+          const varName = field !== 'street-and-number' ? field : 'street';
 
           // Emit global event so other form instances can receive it
-          EventBus.$emit("smartform", {
+          EventBus.$emit('smartform', {
             instance: id,
             field: varName,
-            value: value
+            value,
           });
         });
       });
@@ -629,61 +628,59 @@ export default {
 
   methods: {
     sendForm() {
-      if (!this.isTeam && !this.values.accept)
-        return !(this.acceptError = true);
+      if (!this.isTeam && !this.values.accept) return !(this.acceptError = true);
 
-      let formData = this.submitData;
+      const formData = this.submitData;
 
       // Check if autofill data have changed or not
       let autofillData = false;
       if (this.autofill) {
         autofillData = {
           id: this.autofill.id,
-          edited: false
+          edited: false,
         };
 
-        for (let index in formData)
+        for (const index in formData) {
           if (
-            formData[index] != this.autofill[index] &&
-            index !== "accommodation" &&
-            index !== "meals"
-          )
-            autofillData.edited = true;
+            formData[index] != this.autofill[index]
+            && index !== 'accommodation'
+            && index !== 'meals'
+          ) autofillData.edited = true;
+        }
       }
 
-      this.$emit("submit", formData, autofillData);
+      this.$emit('submit', formData, autofillData);
       return {
-        formData: formData,
-        autofillData: autofillData
+        formData,
+        autofillData,
       };
     },
 
     resetForm() {
-      this.$emit("goToRolePick");
+      this.$emit('goToRolePick');
     },
 
     birthdateFormatter(year, month, day) {
       if (!year && !month && !day) return null;
-      else
-        return (
-          (year ? year : "0000") +
-          "-" +
-          (month ? month.value : "00") +
-          "-" +
-          (day ? day.value : "00")
-        );
+      return (
+        `${year || '0000'
+        }-${
+          month ? month.value : '00'
+        }-${
+          day ? day.value : '00'}`
+      );
     },
 
     filterDaySelect(val, update) {
-      this.filterSelect(val, this.daysAll, "days", update);
+      this.filterSelect(val, this.daysAll, 'days', update);
     },
 
     filterMonthSelect(val, update) {
-      this.filterSelect(val, this.monthsAll, "months", update);
+      this.filterSelect(val, this.monthsAll, 'months', update);
     },
 
     filterYearSelect(val, update) {
-      this.filterSelect(val, this.yearsAll, "years", update);
+      this.filterSelect(val, this.yearsAll, 'years', update);
     },
 
     // Filter date select values based on input
@@ -692,73 +689,72 @@ export default {
         // Filter select options only to those matching with val
         () => {
           val = val.trim();
-          if (val === "") return (this[propertyName] = allOptions);
+          if (val === '') return (this[propertyName] = allOptions);
 
           const needle = val.toLowerCase();
-          this[propertyName] = allOptions.filter(item => {
-            if (typeof item === "object") {
+          this[propertyName] = allOptions.filter((item) => {
+            if (typeof item === 'object') {
               // If value matches, good to go
               if (this.compareOptionStrings(item.value, needle)) return true;
 
               // Compare if translated label matches
-              if (item.label.includes("general"))
+              if (item.label.includes('general')) {
                 return this.compareOptionStrings(
                   this.$tr(item.label, null, false),
-                  needle
+                  needle,
                 );
+              }
               return this.compareOptionStrings(item.label, needle);
             }
 
-            if (typeof item === "number")
-              return this.compareOptionStrings(item.toString(), needle);
+            if (typeof item === 'number') return this.compareOptionStrings(item.toString(), needle);
 
             return false;
           });
         },
         // After filtering, automatically focus first option
-        ref => {
-          if (val !== "" && ref.options.length > 0) {
+        (ref) => {
+          if (val !== '' && ref.options.length > 0) {
             ref.setOptionIndex(-1); // reset optionIndex in case there is something selected
             ref.moveOptionSelection(1, true); // focus the first selectable option and do not update the input-value
           }
-        }
+        },
       );
     },
 
     compareOptionStrings(str1, str2) {
       return str1.toLowerCase().includes(str2);
-    }
+    },
   },
 
   watch: {
     autofill() {
-      let data = this.autofill;
+      const data = this.autofill;
 
       if (!data) return;
 
       // Move values from autofill prop to value variable
-      for (let key in data) {
+      for (const key in data) {
         // Birth date -> split day, month and year
-        if (key === "birthdate") {
+        if (key === 'birthdate') {
           // Birthday is not null
           if (data[key]) {
-            let value = data[key].split("-");
+            const value = data[key].split('-');
             this.values.birthYear = parseInt(value[0]);
             this.values.birthMonth = this.monthsAll[parseInt(value[1]) - 1];
             this.values.birthDay = this.daysAll[parseInt(value[2]) - 1];
-          } else
-            this.values.birthDay = this.values.birthMonth = this.values.birthYear = null;
+          } else this.values.birthDay = this.values.birthMonth = this.values.birthYear = null;
         }
         // Diet -> pick correct value object
-        else if (key === "dietary_requirement") {
+        else if (key === 'dietary_requirement') {
           this.values[key] = this.possibleDietsOptions.filter(
-            item => item.value === data[key]
+            (item) => item.value === data[key],
           )[0];
         }
         // Speaker status -> pick correct value object
-        else if (key === "speaker_status") {
+        else if (key === 'speaker_status') {
           this.values[key] = this.speakerOptions.filter(
-            item => item.value === data[key]
+            (item) => item.value === data[key],
           )[0];
         }
         // Any other field -> pass raw value
@@ -768,15 +764,15 @@ export default {
 
     values: {
       handler() {
-        this.$emit("input", this.submitData);
+        this.$emit('input', this.submitData);
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
 
   computed: {
     submitData() {
-      let returnObject = {
+      const returnObject = {
         name: this.values.name ? this.values.name.trim() : null,
         surname: this.values.surname ? this.values.surname.trim() : null,
         note: this.values.note,
@@ -784,39 +780,39 @@ export default {
         meals: this.values.meals,
         dietary_requirement: this.values.dietary_requirement
           ? this.values.dietary_requirement.value
-          : null
+          : null,
       };
 
       // Include accommodation data if it is requred or user wants it
       if (
-        this.accommodationType === "required" ||
-        (this.accommodationType !== "none" &&
-          this.values.accommodation === (this.accommodationType === "opt-in"))
+        this.accommodationType === 'required'
+        || (this.accommodationType !== 'none'
+          && this.values.accommodation === (this.accommodationType === 'opt-in'))
       ) {
         returnObject.accommodation = true;
         returnObject.birthdate = this.birthdateFormatter(
           this.values.birthYear,
           this.values.birthMonth,
-          this.values.birthDay
+          this.values.birthDay,
         );
-        returnObject.id_number =
-          this.values.id_number === "_________" ? null : this.values.id_number;
+        returnObject.id_number = this.values.id_number === '_________' ? null : this.values.id_number;
         returnObject.street = this.values.street;
         returnObject.city = this.values.city;
         returnObject.zip = this.values.zip
-          ? this.values.zip.replace(" ", "")
-          : "";
+          ? this.values.zip.replace(' ', '')
+          : '';
       } else returnObject.accommodation = false;
 
       // PDS -> include speaker status
-      if (this.requireSpeakerStatus)
+      if (this.requireSpeakerStatus) {
         returnObject.speaker_status = this.values.speaker_status
           ? this.values.speaker_status.value
           : null;
+      }
 
       return returnObject;
-    }
-  }
+    },
+  },
 };
 </script>
 

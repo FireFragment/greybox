@@ -21,11 +21,11 @@
 
 <script>
 export default {
-  name: "Homepage",
+  name: 'Homepage',
   data() {
     return {
-      translationPrefix: "general.404."
+      translationPrefix: 'general.404.',
     };
-  }
+  },
 };
 </script>

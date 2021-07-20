@@ -37,34 +37,34 @@
 
 <script>
 export default {
-  name: "GDPRCheckbox",
+  name: 'GDPRCheckbox',
   props: {
     value: Boolean,
-    error: Boolean
+    error: Boolean,
   },
   data() {
     return {
-      translationPrefix: "tournament.gdpr.",
-      showModal: false
+      translationPrefix: 'tournament.gdpr.',
+      showModal: false,
     };
   },
   methods: {
     emitChange(a) {
-      this.$emit("input", a);
-    }
+      this.$emit('input', a);
+    },
   },
   mounted() {
     // Remove label toggling on inner link click
-    this.$refs.labelLink.addEventListener("click", e => {
+    this.$refs.labelLink.addEventListener('click', (e) => {
       e.stopPropagation();
       e.preventDefault();
     });
   },
-  beforeDestroy() {
-    this.$refs.labelLink.removeEventListener("click", e => {
+  beforeUnmount() {
+    this.$refs.labelLink.removeEventListener('click', (e) => {
       e.stopPropagation();
       e.preventDefault();
     });
-  }
+  },
 };
 </script>

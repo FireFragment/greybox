@@ -6,6 +6,6 @@
 
 <script>
 export default {
-  name: "EventRegistrations"
+  name: 'EventRegistrations',
 };
 </script>

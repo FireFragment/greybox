@@ -44,80 +44,80 @@
   </q-list>
 </template>
 <script>
-import AutofillCardPerson from "./AutofillCardPerson";
-import { EventBus } from "../../event-bus";
+import AutofillCardPerson from './AutofillCardPerson';
+import { EventBus } from '../../event-bus';
 
 export default {
   data() {
     return {
       pastLogins: [],
       showLoading: true,
-      translationPrefix: "tournament.autofill.",
-      showDeleteButton: null
+      translationPrefix: 'tournament.autofill.',
+      showDeleteButton: null,
     };
   },
 
   components: {
-    AutofillCardPerson
+    AutofillCardPerson,
   },
 
-  props: ["eventId"],
+  props: ['eventId'],
 
   methods: {
     selectPerson(person) {
-      this.$emit("person-selected", person);
+      this.$emit('person-selected', person);
     },
 
     deletePerson(person) {
       this.$confirm({
-        confirm: this.$tr("general.confirmModal.remove", null, false),
-        message: this.$tr("removeModal.person.title")
+        confirm: this.$tr('general.confirmModal.remove', null, false),
+        message: this.$tr('removeModal.person.title'),
       }).onOk(() => {
-        EventBus.$emit("fullLoader", true);
+        EventBus.$emit('fullLoader', true);
 
         this.$api({
-          url: "deletedautofill",
-          method: "post",
+          url: 'deletedautofill',
+          method: 'post',
           alerts: false,
           data: {
-            person: person.id
-          }
+            person: person.id,
+          },
         })
           .then(() => {
             // Remove removed person from cache
             this.pastLogins = this.pastLogins.filter(
-              item => item.id !== person.id
+              (item) => item.id !== person.id,
             );
             this.$db(
-              "autofillDebaters-event" + this.eventId,
+              `autofillDebaters-event${this.eventId}`,
               this.pastLogins,
-              true
+              true,
             );
 
-            this.$flash(this.$tr("removeModal.person.success"), "success");
+            this.$flash(this.$tr('removeModal.person.success'), 'success');
           })
           .catch(() => {
-            this.$flash(this.$tr("removeModal.person.error"), "error");
+            this.$flash(this.$tr('removeModal.person.error'), 'error');
           })
           .finally(() => {
-            EventBus.$emit("fullLoader", false);
+            EventBus.$emit('fullLoader', false);
           });
       });
-    }
+    },
   },
 
   computed: {
     // Peopla in autofill already registered for this tournament
     registeredPeople() {
-      return this.pastLogins.filter(item => item.registered);
+      return this.pastLogins.filter((item) => item.registered);
     },
     notRegisteredPeople() {
-      return this.pastLogins.filter(item => !item.registered);
-    }
+      return this.pastLogins.filter((item) => !item.registered);
+    },
   },
 
   created() {
-    let cached = this.$db("autofillDebaters-event" + this.eventId);
+    const cached = this.$db(`autofillDebaters-event${this.eventId}`);
 
     if (cached) {
       this.showLoading = false;
@@ -125,20 +125,20 @@ export default {
     }
 
     this.$api({
-      url: "user/" + this.$auth.user().id + "/person/event/" + this.eventId,
-      method: "get"
+      url: `user/${this.$auth.user().id}/person/event/${this.eventId}`,
+      method: 'get',
     })
-      .then(d => {
+      .then((d) => {
         this.pastLogins = d.data;
         this.$db(
-          "autofillDebaters-event" + this.eventId,
+          `autofillDebaters-event${this.eventId}`,
           this.pastLogins,
-          true
+          true,
         );
       })
       .finally(() => {
         this.showLoading = false;
       });
-  }
+  },
 };
 </script>

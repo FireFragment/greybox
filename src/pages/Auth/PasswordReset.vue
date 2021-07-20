@@ -38,56 +38,57 @@
 
 <script>
 export default {
-  name: "PasswordReset",
+  name: 'PasswordReset',
   data() {
     return {
-      translationPrefix: "auth.",
+      translationPrefix: 'auth.',
       email: null,
-      loading: false
+      loading: false,
     };
   },
   created() {
-    if (this.$auth.check()) this.$router.replace({ name: "home" });
+    if (this.$auth.check()) this.$router.replace({ name: 'home' });
   },
   methods: {
     submit() {
       this.loading = true;
       this.$api({
-        url: "reset",
+        url: 'reset',
         sendToken: false,
         data: {
-          username: this.email
+          username: this.email,
         },
         alerts: false,
-        method: "post"
+        method: 'post',
       })
         .then(() => {
-          this.$flash(this.$tr("passwordReset.successEmail"), "success");
-          this.$router.replace({ name: "home" });
+          this.$flash(this.$tr('passwordReset.successEmail'), 'success');
+          this.$router.replace({ name: 'home' });
         })
-        .catch(data => {
+        .catch((data) => {
           this.email = null;
-          if (data.response.data)
-            for (let index in data.response.data) {
-              let msg = data.response.data[index];
+          if (data.response.data) {
+            for (const index in data.response.data) {
+              const msg = data.response.data[index];
 
-              if (typeof msg === "object")
-                msg.forEach(message => {
-                  this.$flash(this.$tr("passwordReset." + message), "error");
+              if (typeof msg === 'object') {
+                msg.forEach((message) => {
+                  this.$flash(this.$tr(`passwordReset.${message}`), 'error');
                 });
-              else
+              } else {
                 this.$flash(
-                  this.$tr("passwordReset.validation." + msg),
-                  "error"
+                  this.$tr(`passwordReset.validation.${msg}`),
+                  'error',
                 );
+              }
             }
-          else this.$flash(this.$tr("general.error", null, false), "error");
+          } else this.$flash(this.$tr('general.error', null, false), 'error');
         })
         .finally(() => {
           this.loading = false;
         });
-    }
-  }
+    },
+  },
 };
 </script>
 

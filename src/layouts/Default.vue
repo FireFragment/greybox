@@ -133,23 +133,23 @@
 </template>
 
 <script>
-import Sidenav from "./components/Sidenav";
-import { EventBus } from "../event-bus";
+import Sidenav from './components/Sidenav';
+import { EventBus } from '../event-bus';
 
 export default {
-  name: "LayoutDefault",
+  name: 'LayoutDefault',
 
   components: {
-    Sidenav
+    Sidenav,
   },
 
   data() {
     return {
       leftDrawerOpen:
-        this.$q.platform.is.desktop &&
-        localStorage.getItem("leftDrawerOpen") !== "false",
+        this.$q.platform.is.desktop
+        && localStorage.getItem('leftDrawerOpen') !== 'false',
       user: null,
-      fullLoader: 0 // number of active loadings
+      fullLoader: 0, // number of active loadings
     };
   },
 
@@ -157,7 +157,7 @@ export default {
     // Show loading until events load
     this.fullLoader = 1;
 
-    EventBus.$on("fullLoader", value => {
+    EventBus.$on('fullLoader', (value) => {
       if (value) this.fullLoader++;
       else this.fullLoader--;
 
@@ -168,35 +168,35 @@ export default {
   methods: {
     toggleDrawerMenu() {
       this.leftDrawerOpen = !this.leftDrawerOpen;
-      localStorage.setItem("leftDrawerOpen", this.leftDrawerOpen);
+      localStorage.setItem('leftDrawerOpen', this.leftDrawerOpen);
     },
     switchLocale(locale) {
       if (this.$i18n.locale !== locale) {
-        //current URL
-        let originalPath = this.$tr(
-          "paths." + this.$router.resolve({}).route.name
+        // current URL
+        const originalPath = this.$tr(
+          `paths.${this.$router.resolve({}).route.name}`,
         );
 
-        //change locale
+        // change locale
         this.$i18n.locale = locale;
 
-        //new URL
-        let newPath = this.$tr("paths." + this.$router.resolve({}).route.name);
+        // new URL
+        const newPath = this.$tr(`paths.${this.$router.resolve({}).route.name}`);
 
-        //get URL from router
+        // get URL from router
         let url = this.$router.resolve({});
         url = url.location;
 
         // Homepage cases
-        if (originalPath == "") url.path = "/en/";
-        else if (newPath == "") url.path = "/";
+        if (originalPath == '') url.path = '/en/';
+        else if (newPath == '') url.path = '/';
         // replace url in router with localized one
         else url.path = url.path.replace(originalPath, newPath);
 
         // go to new url
         this.$router.push(url);
       }
-    }
-  }
+    },
+  },
 };
 </script>
