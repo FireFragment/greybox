@@ -99,9 +99,9 @@
             "
           >
             <dt>{{ $tr("fields." + fieldName) }}:</dt>
-            <dd v-if="fieldName === 'birthdate'">
-              {{ $moment(value).format("D. M. Y") }}
-            </dd>
+            <dd v-if="fieldName === 'birthdate'"><!--
+              {{ /*(value).format("D. M. Y")*/ }}
+            --></dd>
             <dd v-else-if="value != null">
               {{ value }}
             </dd>

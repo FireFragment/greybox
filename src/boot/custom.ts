@@ -3,7 +3,6 @@ const Bugsnag = require('@bugsnag/js');
 const BugsnagPluginVue = require('@bugsnag/plugin-vue');
 import apiCall from '../api';
 import config from '../config';
-const VueAuth = require('@d0whc3r/vue-auth-plugin');
 const smartformModule = require('@smartform.cz/smartform');
 const SlideUpDown = require('vue-slide-up-down');
 import { boot } from 'quasar/wrappers';
@@ -23,7 +22,7 @@ export default boot(({ app }) => {
   };
 
   // Bugsnag error monitoring
-  if (process.env.BUGSNAG_KEY) {
+  if (typeof process.env.BUGSNAG_KEY === 'string') {
     Bugsnag.start({
       apiKey: process.env.BUGSNAG_KEY,
       plugins: [new BugsnagPluginVue()],
@@ -34,7 +33,6 @@ export default boot(({ app }) => {
     app.use(bugsnagVue);
   }
 
-  app.use(require('vue-moment'));
   app.component('slide-up-down', SlideUpDown);
 
   const $tr = function (key: string, options: Record<string, unknown> = {}, usePrefix = true) {
@@ -51,7 +49,7 @@ export default boot(({ app }) => {
 
     // Translate string from JSON
     // @ts-ignore
-    let prefix = this.translationPrefix;
+    let prefix = this ? this.translationPrefix : null;
 
     // Use prefix
     if (prefix && usePrefix && options !== {}) key = prefix + key;
@@ -67,10 +65,12 @@ export default boot(({ app }) => {
   const DB_DELETION_CONSTANT = 'DELETE-THIS-DATABASE-ITEM'; // when DB item is set to this value, it will be deleted
   app.mixin({
     data() {
-      return {
+      return typeof process !== 'undefined' ? {
         apiSettings: config.api,
         env: process.env,
         DB_DEL: DB_DELETION_CONSTANT,
+      } : {
+        env: {}
       };
     },
     methods: {
@@ -81,7 +81,7 @@ export default boot(({ app }) => {
       // Check if translation exists
       $trExists: function (key: string, usePrefix: boolean = true) {
         // Translate string from JSON
-        let prefix = this.translationPrefix;
+        let prefix = this ? this.translationPrefix : null;
 
         // Use prefix
         if (prefix && usePrefix) key = prefix + key;
@@ -205,13 +205,21 @@ export default boot(({ app }) => {
         settings = { ...defaults, ...settings };
 
         if (settings.confirm) settings.ok.label = settings.confirm;
-        app;
         return this.$q.dialog(settings);
       },
     },
   });
 
+  app.config.globalProperties.$auth = {
+    check: () => true,
+    user: () => ({
+      id: 5,
+      username: 'kuxik009@gmail.com',
+    }),
+    token: () => {},
+  };
   // Auth
+  /*
   app.use(VueAuth, {
     tokenStore: 'localStorage',
     loginData: {
@@ -235,11 +243,13 @@ export default boot(({ app }) => {
       redirect: '/',
     },
   });
+  */
 
   // Custom auth facade
-  app.config.globalProperties.$auth.isAdmin = () => {
-    let $auth = app.config.globalProperties.$auth;
-    return $auth.check() && $auth.user() && $auth.user().role === 'admin';
+  app.config.globalProperties.isAdmin = () => {
+    /*let $auth = app.config.globalProperties.$auth;
+    return $auth.check() && $auth.user() && $auth.user().role === 'admin';*/
+    return true;
   };
 
   // Custom cache DB mechanism

@@ -5,4 +5,5 @@ module.exports = {
   API_URL: 'https://debate-greybox-stage.herokuapp.com/',
   BUILD_DIR: 'registrace_dev',
   STAGE: 'local',
+  BUGSNAG_KEY: null,
 };

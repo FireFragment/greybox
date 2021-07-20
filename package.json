@@ -24,13 +24,12 @@
     "@bugsnag/js": "^7.10.5",
     "@bugsnag/plugin-vue": "^7.10.0",
     "@quasar/extras": "^1.0.0",
+    "@smartform.cz/smartform": "0.0.1",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "quasar": "^2.0.0",
     "vue-i18n": "^9.0.0-beta.0",
-    "vue-slide-up-down": "^2.0.1",
-    "@smartform.cz/smartform": "0.0.1",
-    "@d0whc3r/vue-auth-plugin": "^1.9.1"
+    "vue-slide-up-down": "^2.0.1"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.13.14",

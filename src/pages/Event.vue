@@ -19,18 +19,18 @@
               v-if="event.beginning.substr(0, 4) !== event.end.substr(0, 4)"
             >
               <!-- Year is different -->
-              {{ $moment(event.beginning).format("D. M. Y") }} - </template
+              <!--{{ /*(event.beginning).format("D. M. Y")*/ }} -->- </template
             ><template
               v-else-if="
                 event.beginning.substr(0, 7) !== event.end.substr(0, 7)
               "
             >
               <!-- Month is different -->
-              {{ $moment(event.beginning).format("D. M.") }} - </template
+              <!--{{ /*(event.beginning).format("D. M.")*/ }} -->- </template
             ><template v-else-if="event.beginning !== event.end">
               <!-- Just day is different-->
-              {{ $moment(event.beginning).format("D.") }} - </template
-            >{{ $moment(event.end).format("D. M. Y") }}
+              <!--{{ /*(event.beginning).format("D.")*/ }}--> - </template
+            ><!--{{ /*(event.end).format("D. M. Y")*/ }}-->
             <!-- else - One day event -->
           </p>
           <p>
@@ -40,7 +40,7 @@
           <p>
             <q-icon name="far fa-bell" class="text-negative" />
             {{ $tr("deadline") }}:
-            {{ $moment(event.soft_deadline).format("D. M. Y H:mm") }}
+            <!--{{ /*(event.soft_deadline).format("D. M. Y H:mm")*/ }}-->
           </p>
           <p v-if="event.note">
             <q-icon name="fas fa-info" class="text-primary" />

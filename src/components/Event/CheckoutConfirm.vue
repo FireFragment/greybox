@@ -54,9 +54,9 @@
                   <q-item-label caption>{{
                     $tr("invoice.dueOn")
                   }}</q-item-label>
-                  <q-item-label>{{
-                    $moment(data.invoice.due_on).format("D. M. Y")
-                  }}</q-item-label>
+                  <q-item-label><!--{{
+                      /*(data.invoice.due_on).format("D. M. Y")*/
+                  }}--></q-item-label>
                 </q-item-section>
               </q-item>
 

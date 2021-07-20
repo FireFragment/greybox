@@ -37,6 +37,7 @@ module.exports = configure(() => {
       'i18n',
       'axios',
       'eventBus',
+      'custom',
     ],
 
     // https://v2.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
