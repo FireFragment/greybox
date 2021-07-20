@@ -148,7 +148,6 @@ Vue.mixin({
 
       let h = hash % 360;
       l = Math.abs((h * 100) % 40) + 20;
-      console.log(h + ", " + l);
 
       return "hsl(" + h + ", " + s + "%, " + l + "%)";
     },
