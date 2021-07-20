@@ -3,7 +3,7 @@
     <q-card class="dialog-small">
       <q-card-section class="row items-center">
         <div class="text-h6">
-          {{ $tr("modal.title." + (this.client ? "edit" : "add")) }}
+          {{ $tr('modal.title.' + (this.client ? 'edit' : 'add')) }}
         </div>
         <q-space />
         <q-btn icon="close" flat round dense v-close-popup />
@@ -122,7 +122,10 @@ import CountrySelect from './CountrySelect';
 
 export default {
   name: 'BillingEditDialog',
-  components: { CountrySelect, MaskInput },
+  components: {
+    CountrySelect,
+    MaskInput
+  },
   props: {
     visible: Boolean,
     client: Object,
@@ -167,13 +170,10 @@ export default {
     },
 
     _dialogMounted() {
-      Object.keys(this.values).forEach((key) => {
-        this.$set(
-          this.values,
-          key,
-          this.client && this.client[key] ? this.client[key] : null,
-        );
-      });
+      Object.keys(this.values)
+        .forEach((key) => {
+          this.values[key] = this.client && this.client[key] ? this.client[key] : null;
+        });
 
       this._initSmartform();
       this.initialized = true;
@@ -183,32 +183,34 @@ export default {
       // Renitialize smartform
       window.smartform.rebindAllForms(true, () => {
         // Loop through instances
-        window.smartform.getInstanceIds().forEach((id) => {
-          const instance = window.smartform.getInstance(id);
+        window.smartform.getInstanceIds()
+          .forEach((id) => {
+            const instance = window.smartform.getInstance(id);
 
-          // Set limit to 3 results for every field
-          [
-            'smartform-street-and-number',
-            'smartform-city',
-            'smartform-zip',
-          ].forEach((input) => {
-            instance.getBox(input).setLimit(3);
-          });
+            // Set limit to 3 results for every field
+            [
+              'smartform-street-and-number',
+              'smartform-city',
+              'smartform-zip',
+            ].forEach((input) => {
+              instance.getBox(input)
+                .setLimit(3);
+            });
 
-          // Run this callback on selection
-          instance.setSelectionCallback((element, value, fieldType) => {
-            const field = fieldType.substr('10');
+            // Run this callback on selection
+            instance.setSelectionCallback((element, value, fieldType) => {
+              const field = fieldType.substr('10');
 
-            const varName = field !== 'street-and-number' ? field : 'street';
+              const varName = field !== 'street-and-number' ? field : 'street';
 
-            // Emit global event so other form instances can receive it
-            this.$bus.$emit('smartform', {
-              instance: id,
-              field: varName,
-              value,
+              // Emit global event so other form instances can receive it
+              this.$bus.$emit('smartform', {
+                instance: id,
+                field: varName,
+                value,
+              });
             });
           });
-        });
       });
     },
 
@@ -267,27 +269,28 @@ export default {
       this.$confirm({
         confirm: this.$tr('general.confirmModal.remove', null, false),
         message: this.$tr('removeModal.title'),
-      }).onOk(() => {
-        this.$bus.$emit('fullLoader', true);
+      })
+        .onOk(() => {
+          this.$bus.$emit('fullLoader', true);
 
-        this.$api({
-          url: `client/${this.client.id}`,
-          method: 'delete',
-          alerts: false,
-        })
-          .then(() => {
-            this.stateChange(false);
-            this.$flash(this.$tr('success.delete'), 'success');
+          this.$api({
+            url: `client/${this.client.id}`,
+            method: 'delete',
+            alerts: false,
+          })
+            .then(() => {
+              this.stateChange(false);
+              this.$flash(this.$tr('success.delete'), 'success');
 
-            this.$emit('client-change', this.client.id, null);
-          })
-          .catch(() => {
-            this.$flash(this.$tr('error.delete'), 'error');
-          })
-          .finally(() => {
-            this.$bus.$emit('fullLoader', false);
-          });
-      });
+              this.$emit('client-change', this.client.id, null);
+            })
+            .catch(() => {
+              this.$flash(this.$tr('error.delete'), 'error');
+            })
+            .finally(() => {
+              this.$bus.$emit('fullLoader', false);
+            });
+        });
     },
   },
 };

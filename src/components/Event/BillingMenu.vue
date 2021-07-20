@@ -137,9 +137,9 @@ export default {
         this.clients.forEach((client, index) => {
           if (client.id === id) {
           // Remove client
-            if (!data) this.$delete(this.clients, index);
+            if (!data) delete this.clients[index];
             // Update client
-            else this.$set(this.clients, index, data);
+            else this.clients[index] = data;
           }
         });
       }

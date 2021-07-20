@@ -217,7 +217,7 @@ export default {
       else this.visibleId = id;
     },
     deletePerson(id) {
-      this.$delete(this.people, id);
+      delete this.people[id];
     },
     addPerson() {
       if (Object.keys(this.people).length >= this.maxMembers) {
@@ -232,12 +232,12 @@ export default {
         id = this.generateId();
       } while (this.people[id]);
 
-      this.$set(this.people, id, {
+      this.people[id] = {
         formData: null,
         autofillData: null,
         error: false,
         autofill: null,
-      });
+      };
       this.toggleVisibility(id);
     },
 
@@ -278,9 +278,9 @@ export default {
               const values = formFields.sendForm();
 
               if (values) {
-                this.$set(this.people[id], 'formData', values.formData);
-                this.$set(this.people[id], 'autofillData', values.autofillData);
-                this.$set(this.people[id], 'error', false);
+                this.people[id]['formData'] = values.formData;
+                this.people[id]['autofillData'] = values.autofillData;
+                this.people[id]['error'] = false;
 
                 if (validated >= cards.length) {
                   if (hasError) reject();
@@ -291,7 +291,7 @@ export default {
               }
             }
 
-            this.$set(this.people[id], 'error', true);
+            this.people[id]['error'] = true;
             hasError = true;
 
             if (validated >= cards.length) reject();
@@ -348,7 +348,7 @@ export default {
 
   watch: {
     autofill(data) {
-      if (this.visibleId) this.$set(this.people[this.visibleId], 'autofill', data);
+      if (this.visibleId) this.people[this.visibleId].autofill = data;
     },
   },
 };
