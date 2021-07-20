@@ -17,7 +17,7 @@
         <q-toolbar-title>
           <span>
             <q-avatar size="35px">
-              <img src="../assets/logo.svg" />
+              <img src="../assets/logo.svg" alt="logo" />
             </q-avatar>
             greybox 2.0
             <template v-if="env.VUE_APP_STAGE === 'pds'">PDS</template>
@@ -38,6 +38,8 @@
         <q-avatar size="25px" class="lang-switch">
           <img
             src="../assets/en_flag.png"
+            alt="English"
+            title="English"
             :class="{ 'flag-dimmed': $i18n.locale === 'cs' }"
             @click="switchLocale('en')"
           />
@@ -45,6 +47,8 @@
         <q-avatar size="25px" class="lang-switch">
           <img
             src="../assets/cs_flag.png"
+            alt="Čeština"
+            title="Čeština"
             :class="{ 'flag-dimmed': $i18n.locale === 'en' }"
             @click="switchLocale('cs')"
           />
@@ -62,7 +66,11 @@
                 'background-color: ' + $stringToHslColor($auth.user().username)
               "
             >
-              <img src="https://cdn.quasar.dev/img/avatar.png" v-if="!true" />
+              <img
+                src="https://cdn.quasar.dev/img/avatar.png"
+                v-if="!true"
+                alt="Avatar"
+              />
               <template v-else>{{
                 $auth
                   .user()
@@ -108,7 +116,7 @@
             </q-item>
           </q-list>
         </q-btn-dropdown>
-        <q-btn stretch flat v-else :to="$path('auth.login')">
+        <q-btn stretch flat v-else :to="$path('auth.login')" title="Login">
           <q-icon name="fas fa-user" />
         </q-btn>
       </q-toolbar>
