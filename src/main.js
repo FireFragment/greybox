@@ -140,13 +140,15 @@ Vue.mixin({
       return "/" + this.$tr("paths." + route, null, false);
     },
 
-    $stringToHslColor: function(str, s = 50, l = 60) {
+    $stringToHslColor: function(str, s = 100, l = 40) {
       let hash = 0;
       for (let i = 0; i < str.length; i++) {
         hash = str.charCodeAt(i) + ((hash << 5) - hash);
       }
 
       let h = hash % 360;
+      l = Math.abs((h * 100) % 40) + 20;
+      console.log(h + ", " + l);
 
       return "hsl(" + h + ", " + s + "%, " + l + "%)";
     },
