@@ -6,8 +6,18 @@
   "author": "Jakub Szymsza <jakub@szymsza.cz>",
   "private": true,
   "scripts": {
+    "serve": "GREYBOX_ENV=development npx quasar dev",
+    "serve:debug": "GREYBOX_ENV=debug npx quasar dev",
+    "serve:prod": "GREYBOX_ENV=production npx quasar dev",
+    "serve:pds": "GREYBOX_ENV=pds-dev npx quasar dev",
+    "build": "GREYBOX_ENV=production npx quasar build",
+    "build:debug": "GREYBOX_ENV=debug npx quasar build",
+    "build:dev": "GREYBOX_ENV=dev npx quasar build",
+    "build:pds": "GREYBOX_ENV=pds-prod npx quasar build",
+    "start": "npm run serve",
     "lint": "eslint --ext .js,.ts,.vue ./",
-    "test": "echo \"No test specified\" && exit 0"
+    "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
@@ -25,7 +35,9 @@
     "eslint": "^7.14.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.20.1",
-    "eslint-plugin-vue": "^7.0.0"
+    "eslint-plugin-vue": "^7.0.0",
+    "husky": "^7.0.1",
+    "lint-staged": "^11.0.1"
   },
   "browserslist": [
     "last 10 Chrome versions",
@@ -42,5 +54,14 @@
     "node": ">= 12.22.1",
     "npm": ">= 6.13.4",
     "yarn": ">= 1.21.1"
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,vue}": [
+      "eslint --fix"
+    ],
+    "*.{js,ts,vue}": "eslint --cache --fix"
   }
 }
