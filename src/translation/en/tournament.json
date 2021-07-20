@@ -1,0 +1,193 @@
+{
+  "link": "Tournaments",
+  "title": "Register for",
+  "empty": "No events are available at the moment",
+  "deadline": "Registration deadline",
+  "note": "Note",
+  "types": {
+    "individual": "Individual",
+    "group": "Group",
+    "team": "Team",
+    "debater": "Debater"
+  },
+  "errors": {
+    "deadline": "This tournament is already past deadline, registrations are not accepted.",
+    "auth": "Plese login or sign up before registering for a tournament.",
+    "teamLenght": "Maximal number of team members is {len}"
+  },
+  "gdpr": {
+    "label": "I agree with",
+    "link": "sign up conditions",
+    "modal": {
+      "title": "Sign up conditions",
+      "opening": "By signing up to an event organized by Asociace debatních klubů, z.s. (Czech Debate Association), IN 69058041, based at U Vinohradské nemocnice 2255/6, 130 00 Prague 3 (hereinafter referred to as “the Association”), I give my consent to the:",
+      "list": [
+        "processing of the following personal data for the purpose of member evidence of the Association and evidence of debate competitions results;",
+        "display of my name, surname, and my results in the Association’s competitions on the Association’s webpage;",
+        "transfer of my name, surname, date of birth, permanent residence address, and ID card (passport) number to the accommodation provider at events that the Association holds and to the Association’s partner organizations in case they hold an event that I sign up to through the Association;",
+        "taking pictures or audio-video recordings of my speeches made at the Association’s events and to the use of such recordings for educational purposes or Association’s promotion."
+      ],
+      "listPDS": [
+        "processing of the following personal data for the purpose of evidence of debate competitions results;",
+        "display of my name, surname, and my results in the Association’s competitions on the Association’s webpage;",
+        "taking pictures or audio-video recordings of my speeches made at the Association’s events and to the use of such recordings for educational purposes or Association’s promotion."
+      ],
+      "closing": "I take into consideration the fact that I can withdraw this personal data processing consent via a letter or email addressed to the Association’s president whenever I would deem it necessary. The withdrawal of the consent can mean that I shall not be allowed to participate in certain Association’s events and my results in the Association’s competitions shall not be calculated.\n"
+    }
+  },
+  "groupModal": {
+    "title": "Registration successfully saved!",
+    "anotherPerson": "Add another person",
+    "submit": "Submit registration"
+  },
+  "buttons": {
+    "continue": "Continue",
+    "clear": "Clear form",
+    "addDebater": "Add a debater",
+    "goToCheckout": "Submit registration"
+  },
+  "fields": {
+    "teamName": "Team name",
+    "name": "Name",
+    "surname": "Surname",
+    "birthdate": "Date of birth",
+    "birthDay": "Day",
+    "birthMonth": "Month",
+    "birthYear": "Year",
+    "id_number": "ID number",
+    "street": "Street and number",
+    "city": "City",
+    "zip": "ZIP code (PSČ)",
+    "phone": "Phone number",
+    "diet": "Dietary restrictions",
+    "accommodation": "I don't need accommodation",
+    "accommodationOptIn": "I need to arrange accommodation",
+    "meals": "I don't need to arrange meals.",
+    "mealsOptIn": "I need to arrange meals",
+    "legalGuardian": "Legal guardian",
+    "parentName": "Full name",
+    "parentPhone":  "Phone number",
+    "parentEmail": "E-mail address",
+    "note": "Note",
+    "judgingExp": "Judging experience",
+    "school": "School",
+    "speakerStatus": "Speaker status",
+    "EFL": "EFL (English as a Foreign Language)",
+    "ESL": "ESL (English as a Second Language)",
+    "ENL": "ENL (English as a Native Language)"
+  },
+  "fieldNotes": {
+    "id_number": "Please fill in your ID number if you have one.",
+    "accommodation": "Use the note field below for special accommodation requirements.",
+    "meals": "Use the note field below for special dietary requirements.",
+    "example": "Ex.:"
+  },
+  "speakerStatusModal": {
+    "title": "Speaker status classification",
+    "classification": "Speakers are classified as <strong>{status}</strong> if",
+    "common": "they do not come from a first-language English-speaking family",
+    "efl": "and they attend a school where English is not used as a medium of instruction (except for classes in the teaching of English)",
+    "esl": "and they attend a school where English is used as a medium of instruction"
+  },
+  "registrationFields": {
+    "accommodation": "Accommodation",
+    "meals": "Meals",
+    "role": "Role",
+    "teamName": "Team"
+  },
+  "autofill": {
+    "title": "Autofill data of previously registered people",
+    "empty": "You have no people to autofill.",
+    "registered": "Already registered people",
+    "removeTooltip": {
+      "person": "Remove person from autofill",
+      "team": "Remove team from autofill"
+    },
+    "removeModal": {
+      "person": {
+        "title": "Are you sure you want to remove this person from autofill?",
+        "success": "Person successfully removed",
+        "error": "An error has occured during removal, please try again later"
+      },
+      "team": {
+        "title": "Are you sure you want to remove this team from autofill?",
+        "success": "Team successfully removed",
+        "error": "An error has occured during removal, please try again later"
+      }
+    }
+  },
+  "checkout": {
+    "submit": "Confirm registration",
+    "loading": "Confirming",
+    "back": "Add another person",
+    "success": "Registration successfully confirmed",
+    "error": "An error has occured during registration, please try again later",
+    "values": {
+      "yes": "Yes",
+      "no": "No"
+    },
+    "actions": {
+      "remove": "Remove person",
+      "removeModal": {
+        "title": "Are you sure you want to remove this person's registration?"
+      }
+    },
+    "validation": {
+      "duplicateRegistration": "{person} has already registered for this tournament",
+      "missedDeadline": "This tournament is already past deadline, registrations are not accepted",
+      "eventNotFound": "Tournament not found",
+      "clientNotFound": "There has been an error generating an invoice, please try again later",
+      "fakturoidFull": "There has been an error generating an invoice, please try again later"
+    },
+    "confirm": {
+      "title": "Thank you for your registration!",
+      "invoiceTitle": "Please find payment details below",
+      "invoice": {
+        "total": "Total",
+        "dueOn": "Due date",
+        "download": "Download invoice",
+        "item": "Item",
+        "quantity": "Quantity",
+        "price": "Price"
+      }
+    },
+    "billing": {
+      "title": "Billing information",
+      "addButton": "Add new information",
+      "removeButton": "Remove information",
+      "modal": {
+        "title": {
+          "add": "Add new billing information",
+          "edit": "Billing information editation"
+        }
+      },
+      "fields": {
+        "name": "Full name/Institution name",
+        "email": "E-mail",
+        "registration_no": "Institution registration number",
+        "street": "Street and number",
+        "city": "City",
+        "zip": "ZIP code (PSČ)"
+      },
+      "fieldNotes": {
+        "example": "Ex.:"
+      },
+      "removeModal": {
+        "title": "Are you sure you want to remove this billing information?"
+      },
+      "success": {
+        "add": "Billing information successfully created",
+        "edit": "Billing information successfully updated",
+        "delete": "Billing information successfully removed"
+      },
+      "error": {
+        "add": "An error has occured during creation, please try again later",
+        "edit": "An error has occured during editation, please try again later",
+        "delete": "An error has occured during removal, please try again later"
+      },
+      "validation": {
+        "invalidEmail": "The e-mail is not valid"
+      }
+    }
+  }
+}

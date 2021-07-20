@@ -1,0 +1,193 @@
+{
+  "link": "Turnaje",
+  "title": "Registrace na",
+  "empty": "Momentálně se nelze registrovat na žádné akce",
+  "deadline": "Konec přihlášek",
+  "note": "Poznámka",
+  "types": {
+    "individual": "Jednotlivec",
+    "group": "Skupina",
+    "team": "Tým",
+    "debater": "Debatér"
+  },
+  "errors": {
+    "deadline": "Na tento turnaj již není možné se registrovat.",
+    "auth": "Před registrací na turnaj se musíte nejprve přihlásit do systému.",
+    "teamLength": "Maximální počet členů týmu je {len}"
+  },
+  "gdpr": {
+    "label": "Souhlasím s",
+    "link": "podmínkami přihlášení",
+    "modal": {
+      "title": "Podmínky přihlášení",
+      "opening": "Přihlášením na akci pořádanou Asociací debatních klubů, z.s., IČ 69058041, se sídlem U Vinohradské nemocnice 2255/6, 130 00 Praha 3 (dále jen „spolek“) souhlasím:",
+      "list": [
+        "se zpracováním níže uvedených osobních údajů pro účely evidence členů spolku a zpracování výsledků debatních soutěží;",
+        "se zveřejněním svého jména a příjmení a svých výsledků v soutěžích pořádaných spolkem na webových stránkách spolku;",
+        "s předáváním svého jména, příjmení, data narození, adresy trvalého pobytu a čísla občanského průkazu (cestovního pasu) ubytovatelům na akcích, které spolek pořádá, a partnerským organizacím spolku v případě, že pořádají akci, na niž se přihlásím prostřednictvím spolku;",
+        "s pořizováním obrazových a zvukových záznamů svých projevů na akcích pořádaných spolkem a s jejich použitím pro vzdělávací účely a propagaci spolku."
+      ],
+      "listPDS": [
+        "se zpracováním níže uvedených osobních údajů pro účely zpracování výsledků debatních soutěží;",
+        "se zveřejněním svého jména a příjmení a svých výsledků v soutěžích pořádaných spolkem na webových stránkách spolku;",
+        "s pořizováním obrazových a zvukových záznamů svých projevů na akcích pořádaných spolkem a s jejich použitím pro vzdělávací účely a propagaci spolku."
+      ],
+      "closing": "Beru na vědomí, že souhlas se zpracováním osobních údajů mohu kdykoli odvolat, a to písemně nebo elektronickou poštou k rukám prezidenta spolku. Odvolání souhlasu může mít za následek, že se nebudu moci účastnit některých akcí pořádaných spolkem a nebudou moci být vypočítány mé výsledky v soutěžích pořádaných spolkem."
+    }
+  },
+  "groupModal": {
+    "title": "Přihláška úspěšně uložena!",
+    "anotherPerson": "Přidat další přihlášku",
+    "submit": "Odeslat přihlášky"
+  },
+  "buttons": {
+    "continue": "Pokračovat",
+    "clear": "Vymazat",
+    "addDebater": "Přidat debatéra",
+    "goToCheckout": "Odeslat přihlášky"
+  },
+  "fields": {
+    "teamName": "Název týmu",
+    "name": "Jméno",
+    "surname": "Příjmení",
+    "birthdate": "Datum narození",
+    "birthDay": "Den",
+    "birthMonth": "Měsíc",
+    "birthYear": "Rok",
+    "id_number": "Číslo občanského průkazu",
+    "street": "Ulice a číslo",
+    "city": "Město",
+    "zip": "PSČ",
+    "phone": "Telefonní číslo",
+    "diet": "Stravovací požadavky",
+    "accommodation": "Nechci zařídit ubytování",
+    "accommodationOptIn": "Potřebuji zařídit ubytování",
+    "meals": "Nepotřebuji zařídit stravu",
+    "mealsOptIn": "Chci zařídit stravu",
+    "legalGuardian": "Zákonný zástupce",
+    "parentName": "Celé jméno",
+    "parentPhone": "Telefonní číslo",
+    "parentEmail": "E-mailová adresa",
+    "note": "Poznámka",
+    "judgingExp": "Zkušenost s rozhodováním",
+    "school": "Škola",
+    "speakerStatus": "Speaker status",
+    "EFL": "EFL (English as a Foreign Language)",
+    "ESL": "ESF (English as a Second Language)",
+    "ENL": "ENL (English as a Native Language)"
+  },
+  "fieldNotes": {
+    "id_number": "Vyplňte prosím, pokud již občanský průkaz máte.",
+    "accommodation": "Pro individuální požadavky k ubytování vyplňte prosím poznámku.",
+    "meals": "Pro individuální požadavky ke stravě vyplňte prosím poznámku.",
+    "example": "Vzor:"
+  },
+  "speakerStatusModal": {
+    "title": "Speaker status - podmínky",
+    "classification": "Debatéři jsou klasifikováni jako <strong>{status}</strong>, pokud",
+    "common": "nepochází z anglicky mluvící rodiny",
+    "efl": "a navštěvují školu, kde vyučování neprobíhá v angličtině (s výjimkou hodin anglického jazyka)",
+    "esl": "a navštěvují školu, kde vyučování probíhá v angličtině"
+  },
+  "registrationFields": {
+    "accommodation": "Ubytování",
+    "meals": "Jídlo",
+    "role": "Role",
+    "teamName": "Tým"
+  },
+  "autofill": {
+    "title": "Předvyplnit údaje dříve zadaných osob",
+    "empty": "Nemáte žádné osoby k předvyplnění.",
+    "registered": "Již zaregistrované osoby",
+    "removeTooltip": {
+      "person": "Odstranit osobu z našeptávače",
+      "team": "Odstranit tým z našeptávače"
+    },
+    "removeModal": {
+      "person": {
+        "title": "Opravdu si přejete odstranit tuto osobu z našeptávače?",
+        "success": "Osoba úspěšně odstraněna",
+        "error": "Osobu se nepodařilo odstranit, opakujte akci"
+      },
+      "team": {
+        "title": "Opravdu si přejete odstranit tento tým z našeptávače?",
+        "success": "Tým úspěšně odstraněn",
+        "error": "Tým se nepodařilo odstranit, opakujte akci"
+      }
+    }
+  },
+  "checkout": {
+    "submit": "Potvrdit přihlásku",
+    "loading": "Odesílám",
+    "back": "Přidat dalšího člověka",
+    "success": "Registrace úšpěšně odeslána",
+    "error": "V průběhu registrace nastala chyba, opakujte akci",
+    "values": {
+      "yes": "Ano",
+      "no": "Ne"
+    },
+    "actions": {
+      "remove": "Odstranit přihlášku",
+      "removeModal": {
+        "title": "Opravdu si přejete odstranit tuto přihlášku?"
+      }
+    },
+    "validation": {
+      "duplicateRegistration": "{person} je na tento turnaj již zaregistrován/a",
+      "missedDeadline": "Na tento turnaj již není možné se registrovat",
+      "eventNotFound": "Turnaj nebyl nalezen",
+      "clientNotFound": "Při generování faktury nastal problém, opakujte prosím akci později",
+      "fakturoidFull": "Při generování faktury nastal problém, opakujte prosím akci později"
+    },
+    "confirm": {
+      "title": "Registrace úspěšně odeslána, děkujeme!",
+      "invoiceTitle": "Níže najdete podrobnosti k platbě",
+      "invoice": {
+        "total": "Celková cena",
+        "dueOn": "Datum splatnosti",
+        "download": "Stáhnout fakturu",
+        "item": "Položka",
+        "quantity": "Počet",
+        "price": "Cena"
+      }
+    },
+    "billing": {
+      "title": "Fakturační údaje",
+      "addButton": "Přidat nové údaje",
+      "removeButton": "Odstranit údaje",
+      "modal": {
+        "title": {
+          "add": "Přidání nových fakturačních údajů",
+          "edit": "Úprava fakturačních údajů"
+        }
+      },
+      "fields": {
+        "name": "Jméno/Název firmy",
+        "email": "E-mail",
+        "registration_no": "IČO",
+        "street": "Ulice a číslo",
+        "city": "Město",
+        "zip": "PSČ"
+      },
+      "fieldNotes": {
+        "example": "Vzor:"
+      },
+      "removeModal": {
+        "title": "Opravdu si přejete odstranit tyto fakturační údaje?"
+      },
+      "success": {
+        "add": "Fakturační údaje úspěšně přidány",
+        "edit": "Fakturační údaje úspěšně upraveny",
+        "delete": "Fakturační údaje úspěšně odstraněny"
+      },
+      "error": {
+        "add": "Fakturační údaje se nepodařilo přidat, opakujte akci",
+        "edit": "Fakturační údaje se nepodařilo upravit, opakujte akci",
+        "delete": "Fakturační údaje se nepodařilo odstranit, opakujte akci"
+      },
+      "validation": {
+        "invalidEmail": "E-mail nemá správný formát"
+      }
+    }
+  }
+}

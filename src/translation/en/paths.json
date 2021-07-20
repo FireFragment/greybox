@@ -1,0 +1,14 @@
+{
+  "home": "en",
+  "about": "about",
+  "tournament": "tournaments",
+  "auth": {
+    "login": "login",
+    "signUp": "sign-up",
+    "logout": "logout",
+    "passwordReset": "password-reset"
+  },
+  "admin": {
+    "eventRegistrations": "tournaments-registrations"
+  }
+}
