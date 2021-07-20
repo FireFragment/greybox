@@ -5,6 +5,7 @@ namespace App\Console;
 use App\Jobs\FakturoidClientUpdateJob;
 use App\Jobs\FakturoidInvoiceUpdateJob;
 use App\Jobs\PasswordResetsDeleteJob;
+use App\Jobs\PersonSchoolYearUpdateJob;
 use App\Services\FakturoidClientService;
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
@@ -48,6 +49,13 @@ class Kernel extends ConsoleKernel
             ->everyMinute() // hack for Heroku
             ->when(function() {
                 return Cron::shouldRun('PasswordResetsDeleteJob', 24);
+            });
+
+        $schedule->job(new PersonSchoolYearUpdateJob())
+            ->description('Increment school years of all pupils.')
+            ->everyMinute() // hack for Heroku
+            ->when(function() {
+                return Cron::shouldRun('PersonSchoolYearUpdateJob', 8760);
             });
     }
 }
