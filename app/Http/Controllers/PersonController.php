@@ -35,7 +35,8 @@ class PersonController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'surname' => 'required',
-            'email' => 'email'
+            'email' => 'email',
+            'school_year' => 'integer|between:1,13'
         ]);
 
         // TODO: Solve authorization
@@ -52,12 +53,18 @@ class PersonController extends Controller
 
     public function update($id, Request $request)
     {
+        $this->validate($request, [
+            'email' => 'email',
+            'school_year' => 'integer|between:1,13'
+        ]);
+
         try {
             $person = Person::findOrFail($id);
 
             if ($request->has('name')) $person->update(['name' => $request->input('name')]);
             if ($request->has('surname')) $person->update(['surname' => $request->input('surname')]);
             if ($request->has('email')) $person->update(['email' => $request->input('email')]);
+            if ($request->has('school_year')) $person->update(['school_year' => $request->input('school_year')]);
             if ($request->has('birthdate')) $person->update(['birthdate' => $request->input('birthdate')]);
             if ($request->has('id_number')) $person->update(['id_number' => $request->input('id_number')]);
             if ($request->has('street')) $person->update(['street' => $request->input('street')]);
