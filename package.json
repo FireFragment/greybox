@@ -1,59 +1,46 @@
 {
   "name": "greybox",
-  "version": "0.1.0",
+  "version": "0.0.1",
+  "description": "Greybox 2.0",
+  "productName": "Greybox 2.0",
+  "author": "Jakub Szymsza <jakub@szymsza.cz>",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve --open --mode development",
-    "serve:debug": "vue-cli-service serve --open --mode debug",
-    "serve:prod": "vue-cli-service serve --open --mode production",
-    "serve:pds": "vue-cli-service serve --open --mode pds-dev",
-    "build": "vue-cli-service build --mode production",
-    "build:debug": "vue-cli-service build --mode debug",
-    "build:dev": "vue-cli-service build --mode development",
-    "build:pds": "vue-cli-service build --mode pds-prod",
-    "lint": "vue-cli-service lint",
-    "dev": "npm run serve",
-    "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm run dev"
+    "lint": "eslint --ext .js,.ts,.vue ./",
+    "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
-    "@bugsnag/js": "^7.5.4",
-    "@bugsnag/plugin-vue": "^7.5.4",
-    "@d0whc3r/vue-auth-plugin": "^1.9.1",
-    "@quasar/extras": "^1.9.13",
-    "@smartform.cz/smartform": "0.0.1",
+    "@quasar/extras": "^1.0.0",
     "axios": "^0.21.1",
-    "core-js": "^2.6.12",
-    "quasar": "^1.15.0",
-    "vue": "^2.6.12",
-    "vue-axios": "^2.1.4",
-    "vue-i18n": "^8.22.3",
-    "vue-moment": "^4.0.0",
-    "vue-router": "^3.4.9",
-    "vue-slide-up-down": "^2.0.0"
+    "core-js": "^3.6.5",
+    "quasar": "^2.0.0",
+    "vue-i18n": "^9.0.0-beta.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.8.0",
-    "@vue/cli-plugin-eslint": "^3.8.0",
-    "@vue/cli-service": "^3.8.0",
-    "@vue/eslint-config-prettier": "^4.0.1",
-    "babel-core": "7.0.0-bridge.0",
-    "babel-eslint": "^10.0.1",
-    "babel-plugin-transform-imports": "1.5.0",
-    "eslint": "^5.16.0",
-    "eslint-plugin-vue": "^5.0.0",
-    "lint-staged": "^8.1.5",
-    "stylus": "^0.54.8",
-    "stylus-loader": "^3.0.2",
-    "vue-cli-plugin-quasar": "^1.0.0-rc.3",
-    "vue-template-compiler": "^2.6.12"
+    "@babel/eslint-parser": "^7.13.14",
+    "@quasar/app": "^3.0.0",
+    "@types/node": "^10.17.15",
+    "@typescript-eslint/eslint-plugin": "^4.16.1",
+    "@typescript-eslint/parser": "^4.16.1",
+    "eslint": "^7.14.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-vue": "^7.0.0"
   },
-  "gitHooks": {
-    "pre-commit": "lint-staged"
-  },
-  "lint-staged": {
-    "*.{js,vue}": [
-      "vue-cli-service lint",
-      "git add"
-    ]
+  "browserslist": [
+    "last 10 Chrome versions",
+    "last 10 Firefox versions",
+    "last 4 Edge versions",
+    "last 7 Safari versions",
+    "last 8 Android versions",
+    "last 8 ChromeAndroid versions",
+    "last 8 FirefoxAndroid versions",
+    "last 10 iOS versions",
+    "last 5 Opera versions"
+  ],
+  "engines": {
+    "node": ">= 12.22.1",
+    "npm": ">= 6.13.4",
+    "yarn": ">= 1.21.1"
   }
 }
