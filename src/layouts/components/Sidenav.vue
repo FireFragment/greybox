@@ -1,7 +1,7 @@
 <template>
   <q-drawer :value="value" @input="toggleDrawerMenu" bordered>
     <q-list>
-      <q-item :to="$path('home')">
+      <q-item :to="$path('home')" exact>
         <q-item-section avatar>
           <q-icon name="fas fa-home" />
         </q-item-section>
