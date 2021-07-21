@@ -55,6 +55,7 @@
       </q-card>
     </div>
 
+    <!-- After deadline -->
     <div v-if="event.hard_deadline < now" class="row justify-center">
       <div class="col-12 col-md-4">
         <q-banner class="bg-primary text-white q-mt-xl">
@@ -65,6 +66,8 @@
         </q-banner>
       </div>
     </div>
+
+    <!-- User not logged in -->
     <div v-else-if="!$auth.isLoggedIn()" class="row justify-center">
       <div class="col-12 col-md-6">
         <q-banner class="bg-primary text-white q-mt-xl">
@@ -91,6 +94,8 @@
         </q-banner>
       </div>
     </div>
+
+    <!-- Individual or group -->
     <pick-type
       v-else-if="!type"
       name="type"
@@ -110,6 +115,8 @@
       ]"
       @selected="typePicked"
     />
+
+    <!-- Role -->
     <template v-else-if="role === null">
       <div class="picking-role">
         <pick-type
@@ -128,6 +135,8 @@
         />
       </div>
     </template>
+
+    <!-- Event form -->
     <div class="row q-col-gutter-md reverse" v-else-if="!checkout">
       <div class="col-12 col-sm-4 col-md-5 autofill-wrapper">
         <autofill-card @person-selected="debaterSelected" :eventId="event.id" />
@@ -158,6 +167,8 @@
         ></team-form>
       </div>
     </div>
+
+    <!-- Checkout -->
     <checkout
       v-else-if="!confirmData"
       :form-data="dataToSubmit"
@@ -168,6 +179,7 @@
     />
     <checkout-confirm v-else :data="confirmData"></checkout-confirm>
 
+    <!-- Success -->
     <q-dialog v-model="showGroupModal" persistent>
       <q-card>
         <q-card-section class="row items-center">

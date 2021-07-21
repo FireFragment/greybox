@@ -28,6 +28,54 @@ const routes: RouteRecordRaw[] = [
         name: 'tournament',
         component: () => import('pages/Event.vue'),
       },
+      {
+        path: `${CZroutes.tournament}/:id-:slug/jednotlivec`,
+        alias: `${ENroutes.tournament}/:id-:slug/individual`,
+        name: 'tournament-individual',
+        component: () => import('pages/Event/Individual.vue'),
+      },
+      {
+        path: `${CZroutes.tournament}/:id-:slug/skupina`,
+        alias: `${ENroutes.tournament}/:id-:slug/group`,
+        name: 'tournament-group',
+        component: () => import('pages/Event/Group.vue'),
+      },
+      {
+        path: `${CZroutes.tournament}/:id-:slug/:type/debater`,
+        alias: `${ENroutes.tournament}/:id-:slug/:type/debater`,
+        name: 'tournament-debater',
+        component: () => import('pages/Event/Debater.vue'),
+      },
+      {
+        path: `${CZroutes.tournament}/:id-:slug/:type/tym`,
+        alias: `${ENroutes.tournament}/:id-:slug/:type/team`,
+        name: 'tournament-team',
+        component: () => import('pages/Event/Team.vue'),
+      },
+      {
+        path: `${CZroutes.tournament}/:id-:slug/:type/rozhodci`,
+        alias: `${ENroutes.tournament}/:id-:slug/:type/judge`,
+        name: 'tournament-judge',
+        component: () => import('pages/Event/Judge.vue'),
+      },
+      {
+        path: `${CZroutes.tournament}/:id-:slug/:type/dobrovolnik`,
+        alias: `${ENroutes.tournament}/:id-:slug/:type/volunteer`,
+        name: 'tournament-volunteer',
+        component: () => import('pages/Event/Volunteer.vue'),
+      },
+      {
+        path: `${CZroutes.tournament}/:id-:slug/:type/:role/prihlaseni`,
+        alias: `${ENroutes.tournament}/:id-:slug/:type/:role/signup`,
+        name: 'tournament-signup',
+        component: () => import('pages/Event/Signup.vue'),
+      },
+      {
+        path: `${CZroutes.tournament}/:id-:slug/:type/:role/potvrzeni`,
+        alias: `${ENroutes.tournament}/:id-:slug/:type/:role/checkout`,
+        name: 'tournament-checkout',
+        component: () => import('pages/Event/Checkout.vue'),
+      },
 
       // Admin
       {
