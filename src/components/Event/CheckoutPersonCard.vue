@@ -167,9 +167,7 @@ export default {
         this.$emit('remove', this.personIndex);
       });
     },
-    getDate(from, format) {
-      return date.formatDate(from, format);
-    },
+    getDate: date.formatDate,
   },
 };
 </script>

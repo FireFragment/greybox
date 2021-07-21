@@ -159,19 +159,6 @@ export default {
       fullLoader: 0, // number of active loadings
     };
   },
-
-  created() {
-    // Show loading until events load
-    this.fullLoader = 1;
-
-    this.$bus.$on('fullLoader', (value) => {
-      if (value) this.fullLoader++;
-      else this.fullLoader--;
-
-      if (this.fullLoader < 0) this.fullLoader = 0;
-    });
-  },
-
   methods: {
     toggleDrawerMenu() {
       this.leftDrawerOpen = !this.leftDrawerOpen;
@@ -181,7 +168,7 @@ export default {
       if (this.$i18n.locale !== locale) {
         // current URL
         const originalPath = this.$tr(
-          `paths.${this.$route.name}`,
+            `paths.${this.$route.name}`,
         );
 
         // change locale
@@ -204,5 +191,24 @@ export default {
       }
     },
   },
+
+  created() {
+    // Show loading until events load
+    this.fullLoader = 1;
+    let self=this;
+
+    window.addEventListener('keydown', function(e) {
+      if (document.activeElement === document.body && e.code === "KeyM"){
+        self.toggleDrawerMenu();
+      }
+    });
+
+    this.$bus.$on('fullLoader', (value) => {
+      if (value) this.fullLoader++;
+      else this.fullLoader--;
+
+      if (this.fullLoader < 0) this.fullLoader = 0;
+    });
+  }
 };
 </script>

@@ -110,9 +110,7 @@ export default {
     };
   },
   methods: {
-    getDate(from, format) {
-      return date.formatDate(from, format);
-    },
+    getDate: date.formatDate,
   },
   computed: {
     columns() {
