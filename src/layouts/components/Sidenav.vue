@@ -41,7 +41,7 @@
         {{ $tr("tournament.empty") }}
       </div>
 
-      <template v-if="isAdmin()">
+      <template v-if="$auth.isAdmin()">
         <q-item-label header>{{ $tr("admin.title") }}</q-item-label>
         <q-item :to="$path('admin.eventRegistrations')">
           <q-item-section avatar>
