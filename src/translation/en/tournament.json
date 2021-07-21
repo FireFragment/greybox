@@ -74,7 +74,17 @@
     "speakerStatus": "Speaker status",
     "EFL": "EFL (English as a Foreign Language)",
     "ESL": "ESL (English as a Second Language)",
-    "ENL": "ENL (English as a Native Language)"
+    "ENL": "ENL (English as a Native Language)",
+    "schoolYear": "School year",
+    "schoolYears": [ "6th grade",
+      "7th grade",
+      "8th grade",
+      "9th grade",
+      "10th grade",
+      "11th grade",
+      "12th grade",
+      "13th grade"
+    ]
   },
   "fieldNotes": {
     "id_number": "Please fill in your ID number if you have one.",

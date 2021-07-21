@@ -31,8 +31,8 @@
     <q-input
       v-if="requireEmail"
       v-model="values.email"
-      class="q-mt-sm"
-      type="email"
+      class="q-mt-xs"
+       type="email"
       outlined
       :label="$tr('auth.fields.email', null, false) + ' *'"
       lazy-rules
@@ -46,6 +46,25 @@
         <q-icon name="fas fa-at" />
       </template>
     </q-input>
+
+    <q-select
+        outlined
+        v-model="values.schoolYear"
+        :options="schoolYearsNames"
+        option-value="label"
+        :label="$tr('fields.schoolYear')"
+        class="q-pt-sm q-mb-sm col-12 col-md-4"
+        data-select-value="schoolYears"
+        data-select-options="schoolYearsNames"
+        lazy-rules
+        use-input
+        input-debounce="0"
+        :rules="[val => val || $tr('general.form.fieldError', null, false)]"
+    >
+      <template v-slot:prepend>
+        <q-icon name="fas fa-graduation-cap" />
+      </template>
+    </q-select>
 
     <div
       class="block"
@@ -516,6 +535,7 @@ export default {
         note: null,
         email: null,
         accept: false,
+        schoolYear: null,
         birthDay: null,
         birthMonth: null,
         birthYear: null,
@@ -530,6 +550,8 @@ export default {
       monthsAll: [],
       years: [],
       yearsAll: [],
+      schoolYears: [],
+      schoolYearsNames: [],
       possibleDietsOptions: [],
       showSpeakerStatusModal: false,
       requireSpeakerStatus: this.$isPDS && this.role === 1, // only for PDS debaters
@@ -568,6 +590,13 @@ export default {
         value: (`0${i + 1}`).substr(-2),
       };
     }
+    
+    this.$tr('tournament.fields.schoolYears').map(
+      function (key, name) {
+        this.schoolYearsNames.push(name);
+        this.schoolYears.push(key);
+      }
+    );
 
     for (const i in this.possibleDiets) {
       this.possibleDietsOptions[i] = {
