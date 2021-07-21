@@ -101,34 +101,22 @@ export default {
 
       this.$auth
         .login(requestData)
-        .then((data) => {
+        .then(() => {
           this.$bus.$emit('fullLoader', true);
-          // this.$auth.options.fetchData.url = `${this.apiSettings.baseURL}user/${data.data.id}`;
 
-          this.$auth
-            .fetchUser()
-            .then(() => {
-              // User was automatically logged in after sign up
-              if (
-                typeof requestData.isSignUp === 'boolean'
-                && requestData.isSignUp
-              ) {
-                this.$router.replace({ name: 'home' });
-                this.$flash(signupSuccess, 'done');
-              } else {
-                this.$router.push({ name: 'home' });
-                this.$flash(loginSuccess, 'done');
-              }
-            })
-            .catch((data) => {
-              this.$flash(data.response.statusText, 'error');
-            })
-            .finally(() => {
-              this.$bus.$emit('fullLoader', false);
-            });
+          // User was automatically logged in after sign up
+          if (
+            typeof requestData.isSignUp === 'boolean'
+            && requestData.isSignUp
+          ) {
+            this.$router.replace({ name: 'home' });
+            this.$flash(signupSuccess, 'done');
+          } else {
+            this.$router.push({ name: 'home' });
+            this.$flash(loginSuccess, 'done');
+          }
         })
-        .catch((a, b) => {
-          console.log(a, b);
+        .catch(() => {
           // Redirect is necessary because auth plugin automatically redirects to home
           this.$router.replace(loginLink);
           this.$bus.$emit('fullLoader', false);

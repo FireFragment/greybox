@@ -1,11 +1,12 @@
 /* eslint-disable */
 import config from './config';
 import axios from 'axios';
+import { $tr } from 'boot/custom';
 
-let apiSettings = config.api;
+const apiSettings = config.api;
 
 function apiCall(options) {
-  let defaults = {
+  const defaults = {
     url: '',
     baseURL: apiSettings.baseURL,
     data: {},
@@ -14,7 +15,7 @@ function apiCall(options) {
     headers: {},
     alerts: {
       success: null,
-      error: this.$tr('general.error', null, false)
+      error: $tr('general.error', null, false)
     }
   };
 
@@ -23,10 +24,10 @@ function apiCall(options) {
   requestOptions.url = apiSettings.baseURL + requestOptions.url;
 
   if (requestOptions.sendToken && this.$auth.check()) {
-    requestOptions.headers['Authorization'] = this.$auth.token;
+    requestOptions.headers['Authorization'] = this.$auth.getToken();
   }
 
-  let request = axios(requestOptions);
+  const request = axios(requestOptions);
 
   // Request alerts
   if (requestOptions.alerts) {

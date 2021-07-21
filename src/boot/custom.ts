@@ -8,6 +8,32 @@ import { boot } from 'quasar/wrappers';
 import { i18n } from 'boot/i18n';
 import i18nConfig from '../translation/config.json';
 
+export const $tr = function (key: string, options: Record<string, unknown> = {}, usePrefix = true) {
+  // Translate object received from API
+  const { locale, t } = i18n.global;
+  if (typeof key === 'object') {
+    // @ts-ignore
+    let activeLocale: string = locale || i18nConfig.default;
+
+    if (!key || !key[activeLocale]) return '';
+
+    return key[activeLocale];
+  }
+
+  // Translate string from JSON
+  // @ts-ignore
+  let prefix = this ? this.$.data.translationPrefix : null;
+
+  // Use prefix
+  if (prefix && usePrefix && options !== {}) key = prefix + key;
+
+  return t(key, options);
+};
+
+export const $path = function (route: string) {
+  return '/' + $tr('paths.' + route, {}, false);
+};
+
 export default boot(({ app }) => {
   // $isPDS bool
   app.config.globalProperties.$isPDS = process.env.IS_PDS === 'true';
@@ -31,32 +57,6 @@ export default boot(({ app }) => {
     const bugsnagVue = Bugsnag.getPlugin('vue');
     app.use(bugsnagVue);
   }
-
-  const $tr = function (key: string, options: Record<string, unknown> = {}, usePrefix = true) {
-    // Translate object received from API
-    const { locale, t } = i18n.global;
-    if (typeof key === 'object') {
-      // @ts-ignore
-      let activeLocale: string = locale || i18nConfig.default;
-
-      if (!key || !key[activeLocale]) return '';
-
-      return key[activeLocale];
-    }
-
-    // Translate string from JSON
-    // @ts-ignore
-    let prefix = this ? this.$.data.translationPrefix : null;
-
-    // Use prefix
-    if (prefix && usePrefix && options !== {}) key = prefix + key;
-
-    return t(key, options);
-  };
-
-  const $path = function (route: string) {
-    return '/' + $tr('paths.' + route, {}, false);
-  };
 
   // Mixins
   const DB_DELETION_CONSTANT = 'DELETE-THIS-DATABASE-ITEM'; // when DB item is set to this value, it will be deleted
@@ -218,10 +218,7 @@ export default boot(({ app }) => {
   // Auth
   /*
   app.use(VueAuth, {
-    tokenStore: 'localStorage',
     loginData: {
-      url: config.api.baseURL + 'login',
-      method: 'POST',
       headerToken: 'Authorization',
     },
     fetchData: {
@@ -229,25 +226,8 @@ export default boot(({ app }) => {
       method: 'GET',
     },
     authRedirect: () => $path('auth.login'),
-    authMeta: 'auth',
-    rolesVar: 'roles',
-    tokenDefaultName: 'vue_auth_token',
-    userDefaultName: 'vue_auth_user',
-    headerTokenReplace: '{auth_token}',
-    tokenType: '',
-
-    logoutData: {
-      redirect: '/',
-    },
   });
   */
-
-  // Custom auth facade
-  app.config.globalProperties.isAdmin = () => {
-    /*let $auth = app.config.globalProperties.$auth;
-    return $auth.check() && $auth.user() && $auth.user().role === 'admin';*/
-    return true;
-  };
 
   // Custom cache DB mechanism
   app.config.globalProperties.db = {};
