@@ -110,4 +110,16 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->get('country/cs', ['uses' => 'CountryController@showCzech']);
     $router->get('country/en', ['uses' => 'CountryController@showEnglish']);
     $router->get('country', ['uses' => 'CountryController@showBoth']);
+
+    $router->get('motion',  ['uses' => 'MotionController@showAll']);
+    $router->get('motion/{id}', ['uses' => 'MotionController@showOne']);
+    $router->post('motion', ['uses' => 'MotionController@create']);
+    $router->delete('motion/{id}', ['uses' => 'MotionController@delete']);
+    $router->put('motion/{id}', ['uses' => 'MotionController@update']);
+
+    $router->get('motioncategory',  ['uses' => 'MotionCategoryController@showAll']);
+    $router->get('motioncategory/{id}', ['uses' => 'MotionCategoryController@showOne']);
+    $router->post('motioncategory', ['uses' => 'MotionCategoryController@create']);
+    $router->delete('motioncategory/{id}', ['uses' => 'MotionCategoryController@delete']);
+    $router->put('motioncategory/{id}', ['uses' => 'MotionCategoryController@update']);
 });
