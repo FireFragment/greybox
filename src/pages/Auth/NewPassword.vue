@@ -141,8 +141,6 @@ export default {
   },
   created() {
     this.token = this.$route.params.token;
-
-    if (this.$auth.check()) this.$router.replace({ name: 'home' });
   },
 };
 </script>

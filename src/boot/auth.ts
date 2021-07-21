@@ -56,32 +56,15 @@ export interface LoginData {
 }
 
 interface Auth {
-  check: () => boolean
-  getToken: () => string | null
-  user: () => User | null,
-  logout: () => void
   login: (data: LoginData) => Promise<User | null>
+  logout: () => void
+  user: () => User | null,
+  getToken: () => string | null
+  isLoggedIn: () => boolean
   isAdmin: () => boolean
 }
 
 const localStorageKey = 'greyboxAuthData';
-
-const user = (): User | null => {
-  const data = localStorage.getItem(localStorageKey);
-  if (!data) return null;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-  return JSON.parse(data);
-};
-
-const getToken = (): string | null => user()?.api_token ?? null;
-
-const check = (): boolean => getToken() !== null;
-
-const logout = async () => {
-  localStorage.removeItem(localStorageKey);
-  const router = useRouter();
-  await router.replace({ name: 'home' });
-};
 
 const login = (credentials: LoginData): Promise<User | null> => new Promise(
   (resolve, reject) => {
@@ -106,14 +89,30 @@ const login = (credentials: LoginData): Promise<User | null> => new Promise(
   },
 );
 
-export const isAdmin = (): boolean => check() && user()?.role === 'admin';
+const logout = async () => {
+  localStorage.removeItem(localStorageKey);
+  const router = useRouter();
+  await router.replace({ name: 'home' });
+};
+
+const user = (): User | null => {
+  const data = localStorage.getItem(localStorageKey);
+  if (!data) return null;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+  return JSON.parse(data);
+};
+
+const getToken = (): string | null => user()?.api_token ?? null;
+
+export const isLoggedIn = (): boolean => getToken() !== null;
+export const isAdmin = (): boolean => isLoggedIn() && user()?.role === 'admin';
 
 const auth: Auth = {
-  check,
-  getToken,
-  user,
-  logout,
   login,
+  logout,
+  user,
+  getToken,
+  isLoggedIn,
   isAdmin,
 };
 

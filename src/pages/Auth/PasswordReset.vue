@@ -47,9 +47,6 @@ export default {
       loading: false,
     };
   },
-  created() {
-    if (this.$auth.check()) this.$router.replace({ name: 'home' });
-  },
   methods: {
     submit() {
       this.loading = true;

@@ -1,5 +1,5 @@
 import { RouteRecordRaw } from 'vue-router';
-import { adminMiddleware } from './middlewares';
+import { adminMiddleware, loggedInMiddleware, notLoggedInMiddleware } from './middlewares';
 
 // Translations
 import CZroutes from '../translation/cs/paths.json';
@@ -45,36 +45,42 @@ const routes: RouteRecordRaw[] = [
         name: 'login',
         component: () => import('pages/Auth/Login.vue'),
         props: true,
+        beforeEnter: notLoggedInMiddleware,
       },
       {
         path: CZroutes.auth.signUp,
         alias: ENroutes.auth.signUp,
         name: 'sign-up',
         component: () => import('pages/Auth/SignUp.vue'),
+        beforeEnter: notLoggedInMiddleware,
       },
       {
         path: CZroutes.auth.logout,
         alias: ENroutes.auth.logout,
         name: 'logout',
         component: () => import('pages/Auth/Logout.vue'),
+        beforeEnter: loggedInMiddleware,
       },
       {
         path: CZroutes.auth.passwordReset,
         alias: ENroutes.auth.passwordReset,
         name: 'password-reset',
         component: () => import('pages/Auth/PasswordReset.vue'),
+        beforeEnter: notLoggedInMiddleware,
       },
       {
         path: `${CZroutes.auth.passwordReset}/:token`,
         alias: `${ENroutes.auth.passwordReset}/:token`,
         name: 'new-password',
         component: () => import('pages/Auth/NewPassword.vue'),
+        beforeEnter: notLoggedInMiddleware,
       },
       {
         path: CZroutes.auth.accountSettings,
         alias: ENroutes.auth.accountSettings,
         name: 'account-settings',
         component: () => import('pages/Auth/AccountSettings.vue'),
+        beforeEnter: loggedInMiddleware,
       },
     ],
   },

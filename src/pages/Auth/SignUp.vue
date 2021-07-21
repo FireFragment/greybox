@@ -121,9 +121,6 @@ export default {
       whySignUpModal: false,
     };
   },
-  created() {
-    if (this.$auth.check()) this.$router.replace({ name: 'home' });
-  },
   methods: {
     signUp() {
       if (this.loading) return;

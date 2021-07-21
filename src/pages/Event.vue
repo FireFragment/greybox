@@ -65,7 +65,7 @@
         </q-banner>
       </div>
     </div>
-    <div v-else-if="!$auth.check()" class="row justify-center">
+    <div v-else-if="!$auth.isLoggedIn()" class="row justify-center">
       <div class="col-12 col-md-6">
         <q-banner class="bg-primary text-white q-mt-xl">
           <template v-slot:avatar>
@@ -277,7 +277,7 @@ export default {
       this.possibleDiets = event.dietaryRequirements;
 
       // Can't register to event -> don't even load roles
-      if (event.hard_deadline < this.now || !this.$auth.check()) {
+      if (event.hard_deadline < this.now || !this.$auth.isLoggedIn()) {
         if (isLoading) return this.$bus.$emit('fullLoader', false);
         return;
       }
