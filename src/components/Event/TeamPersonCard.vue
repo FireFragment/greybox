@@ -1,6 +1,6 @@
 <template>
   <div>
-    <q-card flat bordered class="my-card bg-grey-1 q-mb-md">
+    <q-card flat bordered class="team-person-card bg-grey-1 q-mb-md">
       <q-card-section class="header" @click="$emit('toggleVisibility', id)">
         <div class="row items-center no-wrap">
           <div class="col">
