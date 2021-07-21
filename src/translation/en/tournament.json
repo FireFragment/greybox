@@ -76,15 +76,16 @@
     "ESL": "ESL (English as a Second Language)",
     "ENL": "ENL (English as a Native Language)",
     "schoolYear": "School year",
-    "schoolYears": [ "6th grade",
-      "7th grade",
-      "8th grade",
-      "9th grade",
-      "10th grade",
-      "11th grade",
-      "12th grade",
-      "13th grade"
-    ]
+    "schoolYears": {
+      "6": "6th grade",
+      "7": "7th grade",
+      "8": "8th grade",
+      "9": "9th grade",
+      "10":"10th grade",
+      "11":"11th grade",
+      "12":"12th grade",
+      "13":"13th grade"
+    }
   },
   "fieldNotes": {
     "id_number": "Please fill in your ID number if you have one.",
