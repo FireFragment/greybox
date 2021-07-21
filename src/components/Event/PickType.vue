@@ -25,6 +25,7 @@ export default {
     name: String,
     hideFirst: Boolean,
   },
+  emits: ['selected'],
   components: {
     pickingButton,
   },

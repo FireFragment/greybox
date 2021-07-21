@@ -109,6 +109,11 @@ export default {
     eventId: Number,
     requireEmail: Boolean,
   },
+  emits: [
+    'goToRolePick',
+    'submit',
+    'autofillPerson',
+  ],
   data() {
     return {
       pastTeams: [],
@@ -149,12 +154,6 @@ export default {
       return this.pastTeams.filter((item) => !item.registered);
     },
   },
-
-  emits: [
-      'goToRolePick',
-      'submit',
-      'autofillPerson',
-  ],
 
   methods: {
     filterTeamNames(val, update) {

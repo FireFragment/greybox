@@ -16,6 +16,7 @@
 <script>
 /* eslint-disable */
 export default {
+  emits: ['update:model-value'],
   methods: {
     moveCaretToFront(event) {
       const input = event.target;

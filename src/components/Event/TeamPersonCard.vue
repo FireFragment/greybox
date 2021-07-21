@@ -82,6 +82,11 @@ export default {
     possibleDiets: Array,
     requireEmail: Boolean,
   },
+  emits: [
+    'toggleVisibility',
+    'update:model-value',
+    'delete',
+  ],
   data() {
     return {
       showCard: true,

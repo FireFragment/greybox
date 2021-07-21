@@ -130,6 +130,10 @@ export default {
     visible: Boolean,
     client: Object,
   },
+  emits: [
+    'state-change',
+    'client-change',
+  ],
   data() {
     return {
       translationPrefix: 'tournament.checkout.billing.',
