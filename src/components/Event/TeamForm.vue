@@ -21,7 +21,7 @@
       ]"
     >
       <template v-slot:option="scope">
-        <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+        <q-item v-bind="scope.itemProps" v-on="scope.itemProps">
           <q-item-section>
             <q-item-label v-html="scope.opt.label" />
           </q-item-section>
@@ -46,7 +46,7 @@
     </q-select>
 
     <person-card
-      :ref="setPersonCardRef"
+      :ref="`person_card_${id}`"
       v-for="(person, id, index) in people"
       v-bind:key="id"
       :visible="id == visibleId"
@@ -118,7 +118,6 @@ export default {
     return {
       pastTeams: [],
       teamsAutofill: [],
-      personCardRefs: [],
       translationPrefix: 'tournament.',
       people: {},
       visibleId: null,
@@ -265,7 +264,9 @@ export default {
 
         if (!this.accept || !this.teamName || !this.teamName.trim().length) reject();
 
-        const cards = this.personCardRefs;
+        const cards = Object.keys(this.$refs)
+          .filter((key) => key.includes('person_card_') && this.$refs[key] !== null)
+          .map((key) => this.$refs[key]);
         let validated = 0;
         let hasError = false;
 
@@ -350,11 +351,6 @@ export default {
           });
       });
     },
-
-    setPersonCardRef(el) {
-      if (!el) return;
-      this.personCardRefs.push(el);
-    }
   },
 
   watch: {

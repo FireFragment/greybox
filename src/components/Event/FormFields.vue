@@ -40,7 +40,7 @@
           val => (
               val !== null && val !== '') ||
               $tr(`general.form.fieldError`, null, false),
-          val => $validators.validateEmail(val) || $tr('errors.emailFormat')]"
+          val => $validators.validateEmail(val) || $tr('auth.errors.emailFormat', null, false)]"
     >
       <template v-slot:prepend>
         <q-icon name="fas fa-at" />

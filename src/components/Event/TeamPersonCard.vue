@@ -39,25 +39,19 @@
           </div>
         </div>
       </q-card-section>
-      <transition-group
-          appear
-          enter-active-class="animated slideInDown"
-          leave-active-class="animated slideOutUp"
-      >
-        <q-card-section v-if="visible">
-          <form-fields
-              ref="form-fields"
-              @update:model-value="catchInput"
-              :autofill="autofill"
-              :is-team="true"
-              :accommodationType="accommodationType"
-              :mealType="mealType"
-              :possibleDiets="possibleDiets"
-              :role="1"
-              :requireEmail="requireEmail"
-          />
-        </q-card-section>
-      </transition-group>
+      <q-card-section v-show="visible">
+        <form-fields
+          ref="form-fields"
+          @update:model-value="catchInput"
+          :autofill="autofill"
+          :is-team="true"
+          :accommodationType="accommodationType"
+          :mealType="mealType"
+          :possibleDiets="possibleDiets"
+          :role="1"
+          :requireEmail="requireEmail"
+        />
+      </q-card-section>
     </q-card>
   </div>
 </template>
