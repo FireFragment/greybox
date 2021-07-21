@@ -23,6 +23,11 @@
               $slug($tr(event.name) + ' ' + event.place)
           )
         "
+        :class="`${
+          $route.name === 'tournament' && parseInt($route.params.id) === event.id
+            ? 'q-router-link--active'
+            : ''
+        }`"
         :to="
           $path('tournament') +
             '/' +
