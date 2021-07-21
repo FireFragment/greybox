@@ -62,12 +62,10 @@ export default boot(({ app }) => {
   const DB_DELETION_CONSTANT = 'DELETE-THIS-DATABASE-ITEM'; // when DB item is set to this value, it will be deleted
   app.mixin({
     data() {
-      return typeof process !== 'undefined' ? {
+      return {
         apiSettings: config.api,
-        env: process.env,
+        env: process.env.FULL_ENV,
         DB_DEL: DB_DELETION_CONSTANT,
-      } : {
-        env: {}
       };
     },
     methods: {
