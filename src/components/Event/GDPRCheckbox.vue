@@ -1,7 +1,7 @@
 <template>
   <div>
     <q-checkbox
-      :model-value="value"
+      :model-value="modelValue"
       @update:model-value="emitChange"
       :class="{ 'q-field--error': error && !value }"
     >
@@ -40,7 +40,7 @@
 export default {
   name: 'GDPRCheckbox',
   props: {
-    value: Boolean,
+    modelValue: Boolean,
     error: Boolean,
   },
   data() {
@@ -54,6 +54,9 @@ export default {
       this.$emit('update:model-value', a);
     },
   },
+  emits: [
+    'update:model-value'
+  ],
   mounted() {
     // Remove label toggling on inner link click
     this.$refs.labelLink.addEventListener('click', (e) => {

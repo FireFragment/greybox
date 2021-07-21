@@ -626,6 +626,12 @@ export default {
     });
   },
 
+  emits: [
+    'submit',
+    'goToRolePick',
+    'update:model-value',
+  ],
+
   methods: {
     sendForm() {
       if (!this.isTeam && !this.values.accept) return !(this.acceptError = true);

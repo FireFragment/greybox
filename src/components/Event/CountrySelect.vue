@@ -1,7 +1,7 @@
 <template>
   <q-select
     outlined
-    :model-value="value"
+    :model-value="modelValue"
     @update:model-value="$emit('update:model-value', $event)"
     :options="options"
     :option-label="item => (typeof item === 'object' ? $tr(item.label) : item)"
@@ -21,7 +21,7 @@
 /* eslint-disable */
 export default {
   name: 'CountrySelect',
-  props: ['value'],
+  props: ['modelValue'],
   data() {
     return {
       options: [],
@@ -37,12 +37,12 @@ export default {
     this.loadCountries().then((data) => {
       this.allOptions = data;
 
-      let { value } = this;
+      let { modelValue } = this;
 
       // Pick default option based on selected locale
-      if (this.defaultCountries[this.$i18n.locale] && !value) value = this.defaultCountries[this.$i18n.locale];
+      if (this.defaultCountries[this.$i18n.locale] && !modelValue) modelValue = this.defaultCountries[this.$i18n.locale];
 
-      if (value && typeof value === 'string') this.$emit('update:model-value', this.getCountryByCode(value));
+      if (modelValue && typeof modelValue === 'string') this.$emit('update:model-value', this.getCountryByCode(modelValue));
 
       this.options = data;
     });
