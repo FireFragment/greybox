@@ -19,15 +19,15 @@
               v-if="event.beginning.substr(0, 4) !== event.end.substr(0, 4)"
             >
               <!-- Year is different -->
-              {{ getDate(event.beginning, 'D. M. YYYY') }} - {{ getDate(event.end, 'D. M. YYYY') }} </template
-            ><template
+              {{ getDate(event.beginning, 'D. M. YYYY') }} - {{ getDate(event.end, 'D. M. YYYY') }}
+            </template><template
               v-else-if="
                 event.beginning.substr(0, 7) !== event.end.substr(0, 7)
               "
             >
               <!-- Month is different -->
-            {{ getDate(event.beginning, 'D. M.') }} - {{ getDate(event.end, 'D. M. YYYY') }} </template
-            ><template v-else-if="event.beginning !== event.end">
+            {{ getDate(event.beginning, 'D. M.') }} - {{ getDate(event.end, 'D. M. YYYY') }}
+          </template><template v-else-if="event.beginning !== event.end">
               <!-- Just day is different-->
  {{ getDate(event.beginning, 'D. M. YYYY') }}
               - </template

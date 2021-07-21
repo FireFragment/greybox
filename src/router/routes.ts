@@ -70,6 +70,12 @@ const routes: RouteRecordRaw[] = [
         name: 'new-password',
         component: () => import('pages/Auth/NewPassword.vue'),
       },
+      {
+        path: CZroutes.auth.accountSettings,
+        alias: ENroutes.auth.accountSettings,
+        name: 'account-settings',
+        component: () => import('pages/Auth/AccountSettings.vue'),
+      },
     ],
   },
 

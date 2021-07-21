@@ -87,13 +87,14 @@ export default boot(({ app }) => {
       // Get path to route
       $path,
 
-      $stringToHslColor: function (str: string, s: number = 50, l: number = 60) {
+      $stringToHslColor: function(str: string, s: number = 100) {
         let hash = 0;
         for (let i = 0; i < str.length; i++) {
           hash = str.charCodeAt(i) + ((hash << 5) - hash);
         }
 
-        let h = hash % 360;
+        const h = hash % 360;
+        const l = Math.abs((h * 100) % 40) + 20;
 
         return 'hsl(' + h + ', ' + s + '%, ' + l + '%)';
       },

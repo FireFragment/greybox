@@ -1,7 +1,7 @@
 {
   "name": "greybox",
   "version": "0.0.1",
-  "description": "Greybox 2.0",
+  "description": "Systém pro přihlašování na turnaje Asociace Debatních Klubů. Evidence debatních soutěží a členů.",
   "productName": "Greybox 2.0",
   "author": "Jakub Szymsza <jakub@szymsza.cz>",
   "private": true,

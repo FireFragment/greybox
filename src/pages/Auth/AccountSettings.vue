@@ -1,6 +1,6 @@
 <template>
   <q-page padding>
-    <h1 class="text-center text-h4">{{ $tr("accountSettings.title") }}</h1>
+    <h1 class="text-center text-h4">{{ $tr('accountSettings.title') }}</h1>
 
     <div class="row q-col-gutter-md">
       <q-form @submit="submit" class="col-12 col-sm-6 q-mt-lg offset-sm-3">
@@ -88,10 +88,10 @@
 
         <div class="text-center q-mt-sm">
           <q-btn type="submit" color="primary" :loading="loading">
-            {{ $tr("accountSettings.submit") }}
+            {{ $tr('accountSettings.submit') }}
             <template v-slot:loading>
               <q-spinner-hourglass class="on-left" />
-              {{ $tr("accountSettings.loading") }}
+              {{ $tr('accountSettings.loading') }}
             </template>
           </q-btn>
         </div>
@@ -102,22 +102,22 @@
 
 <script>
 export default {
-  name: "AccountSettings",
+  name: 'AccountSettings',
   data() {
     return {
-      translationPrefix: "auth.",
+      translationPrefix: 'auth.',
       email: null,
       newPassword: null,
       oldPassword: null,
       passwordConfirmation: null,
-      loading: false
+      loading: false,
     };
   },
   methods: {
     submit() {
       this.loading = true;
-    }
-  }
+    },
+  },
 };
 </script>
 
