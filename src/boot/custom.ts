@@ -205,6 +205,7 @@ export default boot(({ app }) => {
     },
   });
 
+  /*
   app.config.globalProperties.$auth = {
     check: () => true,
     user: () => ({
@@ -213,6 +214,7 @@ export default boot(({ app }) => {
     }),
     token: () => {},
   };
+  */
   // Auth
   /*
   app.use(VueAuth, {

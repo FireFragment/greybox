@@ -103,7 +103,7 @@ export default {
         .login(requestData)
         .then((data) => {
           this.$bus.$emit('fullLoader', true);
-          this.$auth.options.fetchData.url = `${this.apiSettings.baseURL}user/${data.data.id}`;
+          // this.$auth.options.fetchData.url = `${this.apiSettings.baseURL}user/${data.data.id}`;
 
           this.$auth
             .fetchUser()
@@ -127,7 +127,8 @@ export default {
               this.$bus.$emit('fullLoader', false);
             });
         })
-        .catch(() => {
+        .catch((a, b) => {
+          console.log(a, b);
           // Redirect is necessary because auth plugin automatically redirects to home
           this.$router.replace(loginLink);
           this.$bus.$emit('fullLoader', false);

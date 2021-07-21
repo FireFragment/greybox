@@ -1,4 +1,6 @@
+/* eslint-disable no-use-before-define */
 import { boot } from 'quasar/wrappers';
+import { useRouter } from 'vue-router';
 
 interface Auth {
   check: () => boolean
@@ -12,25 +14,24 @@ interface Auth {
   fetchUser: () => Promise<string>
 }
 
-const check = (): boolean => {
-  // TODO - check user
-  // eslint-disable-next-line no-use-before-define
-  console.log(auth);
-  return true;
-};
+const check = (): boolean => auth.token !== null;
 
-const logout = () => {
-  // TODO - logout
+const logout = async () => {
+  auth.token = null;
+  const router = useRouter();
+  await router.replace({ name: 'home' });
 };
 
 const login = (): Promise<string> => new Promise<string>((resolve, reject) => {
   // TODO - send login
-  reject('string');
+  console.log('logging in');
+  auth.token = 'test';
+  resolve('string');
 });
 
 const fetchUser = (): Promise<string> => new Promise<string>((resolve, reject) => {
   // TODO - fetch user
-  reject('string');
+  resolve('string');
 });
 
 const auth: Auth = {
@@ -46,7 +47,7 @@ const auth: Auth = {
 };
 
 export default boot(({ app }) => {
-  // app.config.globalProperties.$auth = auth;
+  app.config.globalProperties.$auth = auth;
 });
 
 export { auth };
