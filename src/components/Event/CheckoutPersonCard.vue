@@ -99,7 +99,9 @@
             "
           >
             <dt>{{ $tr("fields." + fieldName) }}:</dt>
-            <dd v-if="fieldName === 'birthdate'"><!--
+            <dd v-if="fieldName === 'birthdate'">
+              {{ getDate(value, "D. M. YYYY") }}
+              <!--
               {{ /*(value).format("D. M. Y")*/ }}
             --></dd>
             <dd v-else-if="value != null">
@@ -113,6 +115,8 @@
 </template>
 
 <script>
+import { date } from 'quasar';
+
 /* eslint-disable */
 export default {
   props: {
@@ -162,6 +166,9 @@ export default {
       }).onOk(() => {
         this.$emit('remove', this.personIndex);
       });
+    },
+    getDate(from, format) {
+      return date.formatDate(from, format);
     },
   },
 };

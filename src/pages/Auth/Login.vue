@@ -119,6 +119,7 @@ export default {
           // Redirect is necessary because auth plugin automatically redirects to home
           this.$router.replace(loginLink);
           this.$bus.$emit('fullLoader', false);
+          this.password = null;
           this.$flash(invalidCredentials, 'error');
         })
         .finally(() => {

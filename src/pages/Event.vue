@@ -19,18 +19,19 @@
               v-if="event.beginning.substr(0, 4) !== event.end.substr(0, 4)"
             >
               <!-- Year is different -->
-              <!--{{ /*(event.beginning).format("D. M. Y")*/ }} -->- </template
+              {{ getDate(event.beginning, 'D. M. YYYY') }} - {{ getDate(event.end, 'D. M. YYYY') }} </template
             ><template
               v-else-if="
                 event.beginning.substr(0, 7) !== event.end.substr(0, 7)
               "
             >
               <!-- Month is different -->
-              <!--{{ /*(event.beginning).format("D. M.")*/ }} -->- </template
+            {{ getDate(event.beginning, 'D. M.') }} - {{ getDate(event.end, 'D. M. YYYY') }} </template
             ><template v-else-if="event.beginning !== event.end">
               <!-- Just day is different-->
-              <!--{{ /*(event.beginning).format("D.")*/ }}--> - </template
-            ><!--{{ /*(event.end).format("D. M. Y")*/ }}-->
+ {{ getDate(event.beginning, 'D. M. YYYY') }}
+              - </template
+            >{{ getDate(event.end, 'D. M. YYYY') }}
             <!-- else - One day event -->
           </p>
           <p>
@@ -40,7 +41,7 @@
           <p>
             <q-icon name="far fa-bell" class="text-negative" />
             {{ $tr("deadline") }}:
-            <!--{{ /*(event.soft_deadline).format("D. M. Y H:mm")*/ }}-->
+            {{ getDate(event.soft_deadline, 'D. M. YYYY H:mm') }}
           </p>
           <p v-if="event.note">
             <q-icon name="fas fa-info" class="text-primary" />
@@ -207,6 +208,7 @@ import checkout from '../components/Event/Checkout';
 import teamForm from '../components/Event/TeamForm';
 import checkoutConfirm from '../components/Event/CheckoutConfirm';
 import { EventBus } from '../event-bus';
+import { date } from 'quasar';
 
 export default {
   name: 'Event',
@@ -218,6 +220,7 @@ export default {
     checkout,
     teamForm,
     checkoutConfirm,
+    date
   },
 
   data() {
@@ -372,6 +375,10 @@ export default {
         .finally(() => {
           this.$bus.$emit('fullLoader', false);
         });
+    },
+
+    getDate(from, format) {
+      return date.formatDate(from, format);
     },
 
     sendForm(data, autofill) {
