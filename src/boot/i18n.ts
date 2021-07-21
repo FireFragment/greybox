@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { boot } from 'quasar/wrappers';
 import { createI18n } from 'vue-i18n';
+import { setLocaleToRoute } from 'src/router';
 import config from '../config';
 
 // Import localization data from JSONs
@@ -64,12 +65,7 @@ export default boot(async ({
 
   router.isReady()
     .then(() => {
-      const isAlias = router.currentRoute.value.matched.find(
-        (item) => item.aliasOf,
-      );
-
-      // Alias was accessed -> switch language
-      if (isAlias) i18n.global.locale = 'en';
+      setLocaleToRoute(router.currentRoute.value);
     });
 });
 
