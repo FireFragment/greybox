@@ -34,7 +34,7 @@
           <template v-slot:append>
             <q-icon
               :name="isPwd ? 'fas fa-eye-slash' : 'fas fa-eye'"
-              class="cursor-pointer"
+              class="cursor-pointer q-pr-sm"
               @click="isPwd = !isPwd"
             />
           </template>
@@ -43,7 +43,7 @@
         <q-input
           v-model="newPassword"
           outlined
-          :type="isPwd ? 'password' : 'text'"
+          :type="isPwd2 ? 'password' : 'text'"
           :label="$tr('accountSettings.newPswd')"
           class="q-mt-sm"
           lazy-rules
@@ -56,9 +56,9 @@
           </template>
           <template v-slot:append>
             <q-icon
-              :name="isPwd ? 'fas fa-eye-slash' : 'fas fa-eye'"
-              class="cursor-pointer"
-              @click="isPwd = !isPwd"
+              :name="isPwd2 ? 'fas fa-eye-slash' : 'fas fa-eye'"
+              class="cursor-pointer q-pr-sm"
+              @click="isPwd2 = !isPwd2"
             />
           </template>
         </q-input>
@@ -66,7 +66,7 @@
         <q-input
           v-model="passwordConfirmation"
           outlined
-          :type="isPwd2 ? 'password' : 'text'"
+          :type="isPwd3 ? 'password' : 'text'"
           :label="$tr('accountSettings.newPswd')"
           class="q-mt-sm"
           lazy-rules
@@ -79,9 +79,9 @@
           </template>
           <template v-slot:append>
             <q-icon
-              :name="isPwd2 ? 'fas fa-eye-slash' : 'fas fa-eye'"
-              class="cursor-pointer"
-              @click="isPwd2 = !isPwd2"
+              :name="isPwd3 ? 'fas fa-eye-slash' : 'fas fa-eye'"
+              class="cursor-pointer q-pr-sm"
+              @click="isPwd3 = !isPwd3"
             />
           </template>
         </q-input>
@@ -109,6 +109,9 @@ export default {
       email: null,
       newPassword: null,
       oldPassword: null,
+      isPwd: true,
+      isPwd2: true,
+      isPwd3: true,
       passwordConfirmation: null,
       loading: false,
     };
