@@ -63,6 +63,7 @@ module.exports = configure(() => {
     build: {
       env: {
         ...env,
+        FULL_ENV: env // workaround - Quasar doesn't allow object spreading on process.env
       },
       vueRouterMode: env.MODE === 'development' ? 'hash' : 'history',
       publicPath: env.BASE_ROUTE,
