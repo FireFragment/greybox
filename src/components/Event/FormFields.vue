@@ -49,6 +49,7 @@
 
     <q-select
         outlined
+        v-if="role === 1"
         v-model="values.schoolYear"
         :options="schoolYearsNames"
         option-value="label"
@@ -59,7 +60,7 @@
         lazy-rules
         use-input
         input-debounce="0"
-        :rules="[val => val || $tr('general.form.fieldError', null, false)]"
+        :rules="[val != '' || $tr('general.form.fieldError', null, false)]"
     >
       <template v-slot:prepend>
         <q-icon name="fas fa-graduation-cap" />
@@ -551,7 +552,7 @@ export default {
       years: [],
       yearsAll: [],
       schoolYears: [],
-      schoolYearsNames: [],
+      schoolYearsNames: this.$tr('tournament.fields.schoolYears'),
       possibleDietsOptions: [],
       showSpeakerStatusModal: false,
       requireSpeakerStatus: this.$isPDS && this.role === 1, // only for PDS debaters
@@ -574,6 +575,7 @@ export default {
   },
 
   created() {
+
     // Load date select options
     for (let i = 1; i <= 31; i++) {
       this.daysAll.push({
@@ -590,13 +592,9 @@ export default {
         value: (`0${i + 1}`).substr(-2),
       };
     }
-    
-    this.$tr('tournament.fields.schoolYears').map(
-      function (key, name) {
-        this.schoolYearsNames.push(name);
-        this.schoolYears.push(key);
-      }
-    );
+
+    let curr = 6
+    this.$tr('fields.schoolYears').map( key => this.schoolYears.push(curr) && curr++ );
 
     for (const i in this.possibleDiets) {
       this.possibleDietsOptions[i] = {

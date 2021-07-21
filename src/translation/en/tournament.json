@@ -76,7 +76,8 @@
     "ESL": "ESL (English as a Second Language)",
     "ENL": "ENL (English as a Native Language)",
     "schoolYear": "School year",
-    "schoolYears": [ "6th grade",
+    "schoolYears": [
+      "6th grade",
       "7th grade",
       "8th grade",
       "9th grade",
