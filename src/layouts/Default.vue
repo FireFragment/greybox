@@ -185,12 +185,11 @@ export default {
         const newPath = this.$tr(`paths.${this.$route.name}`);
 
         // get URL from router
-        let url = this.$router.resolve({});
-        url = url.location;
+        let url = this.$route;
 
         // Homepage cases
-        if (originalPath == '') url.path = '/en/';
-        else if (newPath == '') url.path = '/';
+        if (originalPath === '') url.path = '/en/';
+        else if (newPath === '') url.path = '/';
         // replace url in router with localized one
         else url.path = url.path.replace(originalPath, newPath);
 
