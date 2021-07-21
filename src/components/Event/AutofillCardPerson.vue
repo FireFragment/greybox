@@ -22,16 +22,16 @@
         <q-tooltip anchor="center left" self="center right" :offset="[10, 10]">
           {{ $tr('removeTooltip.person') }}
         </q-tooltip>
+        <!--
         <img
           src="https://cdn.quasar.dev/img/avatar.png"
-          v-if="!true"
           alt="Avatar"
         />
-        <template>{{
-            person.name.substr(0, 1)
-              .toUpperCase()
-          }}
-        </template>
+        -->
+        {{
+          person.name.substr(0, 1)
+            .toUpperCase()
+        }}
         <q-icon name="fas fa-trash" />
       </q-avatar>
     </q-item-section>
