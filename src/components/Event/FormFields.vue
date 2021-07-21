@@ -37,10 +37,10 @@
       :label="$tr('auth.fields.email', null, false) + ' *'"
       lazy-rules
       :rules="[
-        val =>
-          (val !== null && val !== '') ||
-          $tr(`general.form.fieldError`, null, false)
-      ]"
+          val => (
+              val !== null && val !== '') ||
+              $tr(`general.form.fieldError`, null, false),
+          val => $validators.validateEmail(val) || $tr('errors.emailFormat')]"
     >
       <template v-slot:prepend>
         <q-icon name="fas fa-at" />
