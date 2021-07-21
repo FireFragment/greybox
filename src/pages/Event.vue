@@ -377,9 +377,7 @@ export default {
         });
     },
 
-    getDate(from, format) {
-      return date.formatDate(from, format);
-    },
+    getDate: date.formatDate,
 
     sendForm(data, autofill) {
       const personData = data;
