@@ -265,7 +265,7 @@ export default {
         if (!this.accept || !this.teamName || !this.teamName.trim().length) reject();
 
         const cards = Object.keys(this.$refs)
-          .filter((key) => key.includes('person_card_'))
+          .filter((key) => key.includes('person_card_') && this.$refs[key] !== null)
           .map((key) => this.$refs[key]);
         let validated = 0;
         let hasError = false;
