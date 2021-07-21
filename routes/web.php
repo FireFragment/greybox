@@ -122,4 +122,10 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->post('motioncategory', ['uses' => 'MotionCategoryController@create']);
     $router->delete('motioncategory/{id}', ['uses' => 'MotionCategoryController@delete']);
     $router->put('motioncategory/{id}', ['uses' => 'MotionCategoryController@update']);
+
+    $router->get('debate',  ['uses' => 'DebateController@showAll']);
+    $router->get('debate/{id}', ['uses' => 'DebateController@showOne']);
+    $router->post('debate', ['uses' => 'DebateController@create']);
+    $router->delete('debate/{id}', ['uses' => 'DebateController@delete']);
+    $router->put('debate/{id}', ['uses' => 'DebateController@update']);
 });
