@@ -50,12 +50,9 @@
     <q-select
       outlined
       v-model="values.schoolYear"
-      :options="schoolYearsNames"
-      option-value="label"
+      :options="schoolYears"
       :label="$tr('fields.schoolYear')"
       class="q-pt-sm q-mb-sm col-12 col-md-4"
-      data-select-value="schoolYears"
-      data-select-options="schoolYearsNames"
       lazy-rules
       use-input
       input-debounce="0"
@@ -554,7 +551,6 @@ export default {
       years: [],
       yearsAll: [],
       schoolYears: [],
-      schoolYearsNames: [],
       possibleDietsOptions: [],
       showSpeakerStatusModal: false,
       requireSpeakerStatus: this.$isPDS && this.role === 1, // only for PDS debaters
@@ -595,8 +591,10 @@ export default {
     }
 
     const schoolYearsObject = this.$tr('fields.schoolYears');
-    this.schoolYears = Object.keys(schoolYearsObject);
-    this.schoolYearsNames = Object.values(schoolYearsObject);
+    this.schoolYears = Object.keys(schoolYearsObject).map((year) => ({
+      value: year,
+      label: schoolYearsObject[year]
+    }));
 
     for (const i in this.possibleDiets) {
       this.possibleDietsOptions[i] = {
