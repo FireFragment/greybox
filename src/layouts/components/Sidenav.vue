@@ -1,5 +1,5 @@
 <template>
-  <q-drawer :value="value" @input="toggleDrawerMenu" bordered>
+  <q-drawer :model-value="value" @update:model-value="toggleDrawerMenu" bordered>
     <q-list>
       <q-item :to="$path('home')" exact>
         <q-item-section avatar>
@@ -182,7 +182,7 @@ export default {
   methods: {
     // Pass drawer toggle input up the chain so it can be properly closed
     toggleDrawerMenu(value) {
-      this.$emit('input', value);
+      this.$emit('update:model-value', value);
     },
 
     eventLinkClicked(eventUrl) {

@@ -2,7 +2,7 @@
   <q-select
     outlined
     :model-value="value"
-    @update:model-value="$emit('input', $event)"
+    @update:model-value="$emit('update:model-value', $event)"
     :options="options"
     :option-label="item => (typeof item === 'object' ? $tr(item.label) : item)"
     :label="$tr('general.form.fields.country')"
@@ -42,7 +42,7 @@ export default {
       // Pick default option based on selected locale
       if (this.defaultCountries[this.$i18n.locale] && !value) value = this.defaultCountries[this.$i18n.locale];
 
-      if (value && typeof value === 'string') this.$emit('input', this.getCountryByCode(value));
+      if (value && typeof value === 'string') this.$emit('update:model-value', this.getCountryByCode(value));
 
       this.options = data;
     });

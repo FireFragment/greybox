@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     emitChange(a) {
-      this.$emit('input', a);
+      this.$emit('update:model-value', a);
     },
   },
   mounted() {

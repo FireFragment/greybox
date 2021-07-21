@@ -2,7 +2,7 @@
   <q-input
     v-bind="$attrs"
     @focus="moveCaretToFront"
-    @input="$emit('input', $event)"
+    @update:model-value="$emit('update:model-value', $event)"
   >
     <template v-slot:prepend>
       <slot name="prepend"></slot>

@@ -764,7 +764,7 @@ export default {
 
     values: {
       handler() {
-        this.$emit('input', this.submitData);
+        this.$emit('update:model-value', this.submitData);
       },
       deep: true,
     },
