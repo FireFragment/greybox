@@ -3,7 +3,7 @@
     <q-checkbox
       :model-value="modelValue"
       @update:model-value="emitChange"
-      :class="{ 'q-field--error': error && !value }"
+      :class="{ 'q-field--error': error && !modelValue }"
     >
       {{ $tr("label") }}
       <a @click="showModal = true" ref="labelLink">{{ $tr("link") }}</a>

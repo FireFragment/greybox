@@ -122,6 +122,7 @@ module.exports = configure(() => {
       plugins: [
         'Notify',
         'LoadingBar',
+        'Dialog',
       ],
     },
 
