@@ -81,11 +81,10 @@ export default {
       if (this.loading) return;
 
       this.loading = true;
-      let requestData = userData;
-      if (
-        typeof requestData !== 'object'
-        || typeof requestData.username === 'undefined'
-      ) {
+      let requestData;
+      if (typeof userData === 'string') {
+        requestData = JSON.parse(userData);
+      } else {
         requestData = {
           username: this.email,
           password: this.password,

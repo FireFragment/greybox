@@ -144,11 +144,11 @@ export default {
           this.$router.push({
             name: 'login',
             params: {
-              loginData: {
+              loginData: JSON.stringify({
                 username: this.email,
                 password: this.password,
                 isSignUp: true,
-              },
+              }),
             },
           });
         })
