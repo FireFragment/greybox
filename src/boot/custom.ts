@@ -8,9 +8,9 @@ import { boot } from 'quasar/wrappers';
 import { i18n } from 'boot/i18n';
 import i18nConfig from '../translation/config.json';
 
-export const $tr = function (key: string, options: Record<string, unknown> = {}, usePrefix = true) {
+export const $tr = function (key: string, options: Record<string, unknown> | null = null, usePrefix = true) {
   // Translate object received from API
-  const { locale, t } = i18n.global;
+  const { locale, t, tm } = i18n.global;
   if (typeof key === 'object') {
     // @ts-ignore
     let activeLocale: string = locale || i18nConfig.default;
@@ -25,13 +25,16 @@ export const $tr = function (key: string, options: Record<string, unknown> = {},
   let prefix = this ? this.$.data.translationPrefix : null;
 
   // Use prefix
-  if (prefix && usePrefix && options !== {}) key = prefix + key;
+  if (prefix && usePrefix) key = prefix + key;
 
-  return t(key, options);
+  if (options !== null) {
+    return t(key, options);
+  }
+  return tm(key);
 };
 
 export const $path = function (route: string) {
-  return '/' + $tr('paths.' + route, {}, false);
+  return '/' + $tr('paths.' + route, null, false);
 };
 
 export default boot(({ app }) => {
