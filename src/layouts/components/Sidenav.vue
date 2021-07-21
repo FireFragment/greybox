@@ -117,6 +117,7 @@
       <q-item
         clickable
         tag="a"
+        rel="noopener"
         target="_blank"
         href="https://debatovani.cz/greybox/"
         v-if="!$isPDS"
