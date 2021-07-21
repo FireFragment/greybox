@@ -167,7 +167,7 @@ export default {
       this.leftDrawerOpen = !this.leftDrawerOpen;
       localStorage.setItem('leftDrawerOpen', this.leftDrawerOpen);
     },
-    switchLocale(locale) {
+    async switchLocale(locale) {
       if (this.$i18n.locale === locale) return;
 
       // current URL
@@ -182,8 +182,10 @@ export default {
       const newPath = this.$tr(`paths.${this.$route.name}`);
 
       // get URL from router
-      let url = this.$route;
+      let url = { ...this.$route };
 
+      // Redirect here before route switch to avoid redundant redirect error
+      let midRedirect = 'about';
       // Homepage cases
       if (originalPath === '') {
         url.path = '/en/';
@@ -192,10 +194,17 @@ export default {
       }// replace url in router with localized one
       else {
         url.path = url.path.replace(originalPath, newPath);
+        midRedirect = 'home';
       }
 
+      await this.$router.push({
+        name: midRedirect
+      });
+
       // go to new url
-      this.$router.push(url);
+      await this.$router.replace({
+        path: url.path
+      });
     },
   },
 
