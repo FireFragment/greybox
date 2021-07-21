@@ -49,6 +49,7 @@
 
     <q-select
       outlined
+      v-if="role === 1"
       v-model="values.schoolYear"
       :options="schoolYears"
       :label="$tr('fields.schoolYear')"
@@ -573,6 +574,7 @@ export default {
   },
 
   created() {
+
     // Load date select options
     for (let i = 1; i <= 31; i++) {
       this.daysAll.push({
