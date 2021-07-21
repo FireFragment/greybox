@@ -1,7 +1,7 @@
 <template>
   <div>
     <q-card flat bordered class="my-card bg-grey-1 q-mb-md">
-      <q-card-section class="header" @click="$emit('toggleVisibility', id)">
+      <q-card-section class="header" @click="toggleCard">
         <div class="row items-center no-wrap">
           <div class="col">
             <q-btn
@@ -35,21 +35,25 @@
           </div>
         </div>
       </q-card-section>
-      <!--<slide-up-down :active="visible" :duration="500">-->
-      <q-card-section>
-        <form-fields
-          ref="form-fields"
-          @input="catchInput"
-          :autofill="autofill"
-          :is-team="true"
-          :accommodationType="accommodationType"
-          :mealType="mealType"
-          :possibleDiets="possibleDiets"
-          :role="1"
-          :requireEmail="requireEmail"
-        />
-      </q-card-section>
-      <!--</slide-up-down>-->
+      <transition-group
+          appear
+          enter-active-class="animated slideInDown"
+          leave-active-class="animated slideOutUp"
+      >
+        <q-card-section v-if="showCard">
+          <form-fields
+              ref="form-fields"
+              @input="catchInput"
+              :autofill="autofill"
+              :is-team="true"
+              :accommodationType="accommodationType"
+              :mealType="mealType"
+              :possibleDiets="possibleDiets"
+              :role="1"
+              :requireEmail="requireEmail"
+          />
+        </q-card-section>
+      </transition-group>
     </q-card>
   </div>
 </template>
@@ -76,6 +80,7 @@ export default {
   },
   data() {
     return {
+      showCard: true,
       translationPrefix: 'tournament.',
       formData: {},
     };
@@ -85,6 +90,10 @@ export default {
       this.formData = data;
       this.$emit('input', data, this.id);
     },
+    toggleCard() {
+      this.showCard = ! this.showCard;
+      this.$emit('toggleVisibility', this.id);
+    }
   },
 };
 </script>

@@ -34,6 +34,7 @@
 
 	.q-card
 		height: 100%
+		overflow: hidden
 
 		dt, dd
 			display: inline-block
@@ -52,9 +53,13 @@
 			.q-card__section
 				&:not(.header)
 					padding-top: 1rem
+					position: relative
+					z-index: 1
 
 				&.header
-					background-color: rgba(0, 0, 0, .1)
+					position: relative
+					z-index: 9
+					background-color: #e6e6e6
 
 					.col .q-btn
 						margin-right: .5rem
