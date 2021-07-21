@@ -4,7 +4,6 @@ const BugsnagPluginVue = require('@bugsnag/plugin-vue');
 import apiCall from '../api';
 import config from '../config';
 const smartformModule = require('@smartform.cz/smartform');
-const SlideUpDown = require('vue-slide-up-down');
 import { boot } from 'quasar/wrappers';
 import { i18n } from 'boot/i18n';
 import i18nConfig from '../translation/config.json';
@@ -32,8 +31,6 @@ export default boot(({ app }) => {
     const bugsnagVue = Bugsnag.getPlugin('vue');
     app.use(bugsnagVue);
   }
-
-  app.component('slide-up-down', SlideUpDown);
 
   const $tr = function (key: string, options: Record<string, unknown> = {}, usePrefix = true) {
     // Translate object received from API

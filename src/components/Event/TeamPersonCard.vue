@@ -35,21 +35,21 @@
           </div>
         </div>
       </q-card-section>
-      <slide-up-down :active="visible" :duration="500">
-        <q-card-section>
-          <form-fields
-            ref="form-fields"
-            @input="catchInput"
-            :autofill="autofill"
-            :is-team="true"
-            :accommodationType="accommodationType"
-            :mealType="mealType"
-            :possibleDiets="possibleDiets"
-            :role="1"
-            :requireEmail="requireEmail"
-          />
-        </q-card-section>
-      </slide-up-down>
+      <!--<slide-up-down :active="visible" :duration="500">-->
+      <q-card-section>
+        <form-fields
+          ref="form-fields"
+          @input="catchInput"
+          :autofill="autofill"
+          :is-team="true"
+          :accommodationType="accommodationType"
+          :mealType="mealType"
+          :possibleDiets="possibleDiets"
+          :role="1"
+          :requireEmail="requireEmail"
+        />
+      </q-card-section>
+      <!--</slide-up-down>-->
     </q-card>
   </div>
 </template>
