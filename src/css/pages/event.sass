@@ -1,0 +1,179 @@
+.page-tournament
+	.event-header
+		&.smaller
+			padding-top: 1rem
+			padding-bottom: 1rem
+			margin-bottom: 15px
+
+			@media (min-width: $breakpoint-sm-max)
+				margin-bottom: 3rem
+
+		i.fas, i.far
+			margin-top: -2px
+			margin-right: .25rem
+			font-size: 1.2em
+
+	.picking-buttons
+		.q-btn
+			line-height: 1.2
+			width: 80%
+			padding: 2rem
+			font-size: 1.8rem !important
+			height: 100%
+
+			@media (min-width: $breakpoint-sm-max)
+				font-size: 2vw !important
+				padding: 2rem 0
+
+			@media (min-width: $breakpoint-lg-min)
+				font-size: 1.8rem !important
+
+			.q-icon
+				font-size: 2.5em
+				margin-bottom: .5rem
+
+	.q-card
+		height: 100%
+		overflow: hidden
+
+		dt, dd
+			display: inline-block
+
+		dt
+			font-weight: bold
+
+		dd
+			margin-left: .5rem
+
+	.team-form
+		> .q-field--error
+			margin-bottom: .5rem
+
+		.q-card
+			.q-card__section
+				&:not(.header)
+					padding-top: 1rem
+					position: relative
+					z-index: 1
+
+				&.header
+					position: relative
+					z-index: 9
+					background-color: #e6e6e6
+
+					.col .q-btn
+						margin-right: .5rem
+
+	.checkout-heading
+		margin-bottom: .5rem
+		margin-top: 1.5rem
+
+	.form-conditional-block
+		margin-left: 20px
+
+		@media (min-width: $breakpoint-sm-max)
+			margin-left: 40px
+
+.smaller-margin-menu
+	.q-item
+		.q-item__section--avatar
+			min-width: initial
+
+		.q-item__section--main + .q-item__section--avatar
+			margin-right: -10px
+
+.billing-modal
+	.q-scrollarea
+		height: 60vh
+		margin-left: -16px
+		margin-bottom: -15px
+		border: 1px solid rgba(0, 0, 0, 0.12)
+
+
+// Avatar element with icon to delete something
+@mixin deleting-avatar()
+	transition: opacity .1s linear, color .1s linear
+	opacity: 1 !important
+	background-color: $negative !important
+
+	&:hover
+		.fas
+			color: white
+
+	.fas
+		color: rgba(255, 255, 255, .85)
+		background-color: $negative
+
+.deletion-avatar
+	&.deleting
+		@include deleting-avatar
+
+	// Device doesn't have mouse to hover -> show delete button right away
+	@media (hover: none)
+		@include deleting-avatar
+		.fas
+			color: white !important
+
+// Autofill
+.autofill-wrapper
+	@media (min-width: $breakpoint-sm-max)
+		padding-left: 3rem
+
+.debaters-sticky-card
+	.q-scrollarea
+		height: calc(100vh - 130px)
+
+	.q-item__label--header
+		text-align: center
+
+	.q-item
+		.q-avatar
+			transition: background-color .1s linear
+			cursor: pointer
+
+			&.deleting
+				.fas
+					opacity: 1
+
+			.fas
+				position: absolute
+				opacity: 0
+				transition: opacity .1s linear
+
+		// Already registered person
+		&.registered
+			&:hover
+				background-color: #eaeaea
+
+			.q-item__section--main, .q-avatar
+				opacity: .6
+
+	// Remove debaters autofill fixed height on mobile devices
+	@media (max-width: $breakpoint-xs-max)
+		position: relative
+		top: 0
+
+		.q-scrollarea
+			height: auto
+			min-height: 140px	// heading + 2 people
+
+			.scroll .absolute
+				position: relative
+
+		.q-scrollarea__thumb
+			display: none
+
+	// Device doesn't have mouse to hover -> show delete button right away
+	@media (hover: none)
+		.q-item
+			.q-avatar
+				.fas
+					opacity: 1
+
+.hidable
+	transition: height .5s linear
+	height: 0
+	overflow: hidden
+
+	&.visible
+		height: 100%

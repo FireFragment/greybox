@@ -3,14 +3,14 @@
   <q-form class="team-form" @submit="submitForm" @validation-error="submitForm">
     <q-select
       outlined
-      :value="teamName"
+      :model-value="teamName"
       :label="$tr('fields.teamName')"
       use-input
       hide-selected
       fill-input
       input-debounce="0"
       :options="teamsAutofill"
-      @input="autofillSelected"
+      @update:model-value="autofillSelected"
       @filter="filterTeamNames"
       @input-value="teamName = $event"
       lazy-rules
@@ -91,15 +91,15 @@
 </template>
 
 <script>
-import personCard from "./TeamPersonCard";
-import GDPRCheckbox from "./GDPRCheckbox";
-import { EventBus } from "../../event-bus";
+/* eslint-disable */
+import personCard from './TeamPersonCard';
+import GDPRCheckbox from './GDPRCheckbox';
 
 export default {
-  name: "TeamForm",
+  name: 'TeamForm',
   components: {
     GDPRCheckbox,
-    personCard
+    personCard,
   },
   props: {
     autofill: Object,
@@ -107,13 +107,13 @@ export default {
     mealType: String,
     possibleDiets: Array,
     eventId: Number,
-    requireEmail: Boolean
+    requireEmail: Boolean,
   },
   data() {
     return {
       pastTeams: [],
       teamsAutofill: [],
-      translationPrefix: "tournament.",
+      translationPrefix: 'tournament.',
       people: {},
       visibleId: null,
       teamName: null,
@@ -121,33 +121,33 @@ export default {
       accept: false,
       acceptError: false,
       maxMembers: 5,
-      loadingTeamFill: false
+      loadingTeamFill: false,
     };
   },
   created() {
     this.addPerson();
 
-    let cached = this.$db("autofillTeams-event" + this.eventId);
+    const cached = this.$db(`autofillTeams-event${this.eventId}`);
 
     if (cached) return (this.pastTeams = this.teamsAutofill = cached);
 
     this.$api({
-      url: "user/" + this.$auth.user().id + "/team/event/" + this.eventId,
-      method: "get"
-    }).then(d => {
+      url: `user/${this.$auth.user().id}/team/event/${this.eventId}`,
+      method: 'get',
+    }).then((d) => {
       this.pastTeams = this.teamsAutofill = d.data;
-      this.$db("autofillTeams-event" + this.eventId, this.pastTeams, true);
+      this.$db(`autofillTeams-event${this.eventId}`, this.pastTeams, true);
     });
   },
 
   computed: {
     // Teams in autofill already registered for this tournament
     registeredTeams() {
-      return this.pastTeams.filter(item => item.registered);
+      return this.pastTeams.filter((item) => item.registered);
     },
     notRegisteredTeams() {
-      return this.pastTeams.filter(item => !item.registered);
-    }
+      return this.pastTeams.filter((item) => !item.registered);
+    },
   },
 
   methods: {
@@ -158,14 +158,12 @@ export default {
         const needle = val.toLocaleLowerCase();
         this.teamsAutofill = this.notRegisteredTeams
           // Filter teams based on name
-          .filter(v => v.name.toLocaleLowerCase().includes(needle))
+          .filter((v) => v.name.toLocaleLowerCase().includes(needle))
           // Parse teams to select compatible objects
-          .map(item => {
-            return {
-              label: item.name,
-              value: item.id
-            };
-          });
+          .map((item) => ({
+            label: item.name,
+            value: item.id,
+          }));
       });
     },
     autofillSelected(value) {
@@ -175,26 +173,27 @@ export default {
 
       // Team selected -> get its members
       this.$api({
-        url: "team/" + this.teamId,
-        method: "get"
+        url: `team/${this.teamId}`,
+        method: 'get',
       })
-        .then(d => {
+        .then((d) => {
           // Empty people
           this.people = {};
           this.addPerson();
 
-          let data = d.data.members;
+          const data = d.data.members;
 
           // Autofill all members
-          let autofillMember = index => {
-            let member = data[index];
+          const autofillMember = (index) => {
+            const member = data[index];
 
-            this.$emit("autofillPerson", member);
+            this.$emit('autofillPerson', member);
 
-            if (!data[index + 1])
+            if (!data[index + 1]) {
               return this.$nextTick(() => {
                 this.visibleId = null;
               });
+            }
 
             this.$nextTick(() => {
               this.addPerson();
@@ -218,33 +217,34 @@ export default {
       else this.visibleId = id;
     },
     deletePerson(id) {
-      this.$delete(this.people, id);
+      delete this.people[id];
     },
     addPerson() {
-      if (Object.keys(this.people).length >= this.maxMembers)
+      if (Object.keys(this.people).length >= this.maxMembers) {
         return this.$flash(
-          this.$tr("errors.teamLength", { len: this.maxMembers }),
-          "error"
+          this.$tr('errors.teamLength', { len: this.maxMembers }),
+          'error',
         );
+      }
 
       let id;
       do {
         id = this.generateId();
       } while (this.people[id]);
 
-      this.$set(this.people, id, {
+      this.people[id] = {
         formData: null,
         autofillData: null,
         error: false,
-        autofill: null
-      });
+        autofill: null,
+      };
       this.toggleVisibility(id);
     },
 
     // Source: https://jsfiddle.net/yo39a9cw/
     generateId(len = 5) {
-      let text = "";
-      let chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+      let text = '';
+      const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
 
       for (let i = 0; i < len; i++) {
         text += chars.charAt(Math.floor(Math.random() * chars.length));
@@ -254,34 +254,33 @@ export default {
     },
 
     submitForm() {
-      let validationPromise = new Promise((resolve, reject) => {
+      const validationPromise = new Promise((resolve, reject) => {
         this.acceptError = !this.accept;
 
-        if (!this.accept || !this.teamName || !this.teamName.trim().length)
-          reject();
+        if (!this.accept || !this.teamName || !this.teamName.trim().length) reject();
 
-        let cards = this.$refs["person-card"];
+        const cards = this.$refs['person-card'];
         let validated = 0;
         let hasError = false;
 
         if (!cards.length) return reject();
 
         // Validate and submit all people
-        cards.forEach(item => {
-          let formFields = item.$refs["form-fields"];
-          let form = formFields.$refs["q-form"];
-          let id = item.id;
+        cards.forEach((item) => {
+          const formFields = item.$refs['form-fields'];
+          const form = formFields.$refs['q-form'];
+          const { id } = item;
 
           // Trigger qForm validation
-          form.validate().then(isValid => {
+          form.validate().then((isValid) => {
             validated++;
             if (isValid) {
-              let values = formFields.sendForm();
+              const values = formFields.sendForm();
 
               if (values) {
-                this.$set(this.people[id], "formData", values.formData);
-                this.$set(this.people[id], "autofillData", values.autofillData);
-                this.$set(this.people[id], "error", false);
+                this.people[id]['formData'] = values.formData;
+                this.people[id]['autofillData'] = values.autofillData;
+                this.people[id]['error'] = false;
 
                 if (validated >= cards.length) {
                   if (hasError) reject();
@@ -292,7 +291,7 @@ export default {
               }
             }
 
-            this.$set(this.people[id], "error", true);
+            this.people[id]['error'] = true;
             hasError = true;
 
             if (validated >= cards.length) reject();
@@ -302,56 +301,55 @@ export default {
 
       validationPromise
         .then(() => {
-          this.$emit("submit", this.people, this.teamName, this.teamId);
+          this.$emit('submit', this.people, this.teamName, this.teamId);
         })
         .catch(() => {
-          this.$flash(this.$tr("general.form.error", null, false), "error");
+          this.$flash(this.$tr('general.form.error', null, false), 'error');
         });
     },
     deleteTeam(id) {
       this.$confirm({
-        confirm: this.$tr("general.confirmModal.remove", null, false),
-        message: this.$tr("autofill.removeModal.team.title")
+        confirm: this.$tr('general.confirmModal.remove', null, false),
+        message: this.$tr('autofill.removeModal.team.title'),
       }).onOk(() => {
-        EventBus.$emit("fullLoader", true);
+        this.$bus.$emit('fullLoader', true);
 
         this.$api({
-          url: "deletedautofill",
-          method: "post",
+          url: 'deletedautofill',
+          method: 'post',
           alerts: false,
           data: {
-            team: id
-          }
+            team: id,
+          },
         })
           .then(() => {
             // Remove removed person from cache
-            this.pastTeams = this.pastTeams.filter(item => item.id !== id);
+            this.pastTeams = this.pastTeams.filter((item) => item.id !== id);
             this.$db(
-              "autofillTeams-event" + this.eventId,
+              `autofillTeams-event${this.eventId}`,
               this.pastTeams,
-              true
+              true,
             );
 
             this.$flash(
-              this.$tr("autofill.removeModal.team.success"),
-              "success"
+              this.$tr('autofill.removeModal.team.success'),
+              'success',
             );
           })
           .catch(() => {
-            this.$flash(this.$tr("autofill.removeModal.team.error"), "error");
+            this.$flash(this.$tr('autofill.removeModal.team.error'), 'error');
           })
           .finally(() => {
-            EventBus.$emit("fullLoader", false);
+            this.$bus.$emit('fullLoader', false);
           });
       });
-    }
+    },
   },
 
   watch: {
     autofill(data) {
-      if (this.visibleId)
-        this.$set(this.people[this.visibleId], "autofill", data);
-    }
-  }
+      if (this.visibleId) this.people[this.visibleId].autofill = data;
+    },
+  },
 };
 </script>

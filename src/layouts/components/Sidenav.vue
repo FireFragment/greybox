@@ -1,7 +1,7 @@
 <template>
   <q-drawer :value="value" @input="toggleDrawerMenu" bordered>
     <q-list>
-      <q-item :to="$path('home')" exact>
+      <q-item :to="$path('home')">
         <q-item-section avatar>
           <q-icon name="fas fa-home" />
         </q-item-section>
@@ -29,9 +29,7 @@
             event.id +
             '-' +
             $slug($tr(event.name) + ' ' + event.place)
-        "
-        exact
-      >
+        ">
         <q-item-section avatar>
           <q-icon name="fas fa-trophy" />
         </q-item-section>
@@ -45,7 +43,7 @@
 
       <template v-if="$auth.isAdmin()">
         <q-item-label header>{{ $tr("admin.title") }}</q-item-label>
-        <q-item :to="$path('admin.eventRegistrations')" exact>
+        <q-item :to="$path('admin.eventRegistrations')">
           <q-item-section avatar>
             <q-icon name="fas fa-trophy" />
           </q-item-section>
@@ -131,7 +129,7 @@
           <q-item-label caption>greybox v1.0</q-item-label>
         </q-item-section>
       </q-item>
-      <q-item :to="$path('about')" exact>
+      <q-item :to="$path('about')">
         <q-item-section avatar>
           <q-icon name="fas fa-info-circle" />
         </q-item-section>
@@ -144,56 +142,56 @@
 </template>
 
 <script>
-import { EventBus } from "../../event-bus";
+/* eslint-disable */
 
 export default {
-  name: "Sidenav",
+  name: 'Sidenav',
   data() {
     return {
-      events: []
+      events: [],
     };
   },
   props: {
-    value: Boolean
+    value: Boolean,
   },
   created() {
     if (this.events.length) return;
 
     // Load events from cache if available
-    let cached = this.$db("eventsList");
+    const cached = this.$db('eventsList');
     if (cached) {
-      EventBus.$emit("fullLoader", false);
+      this.$bus.$emit('fullLoader', false);
       return (this.events = cached);
     }
 
     this.$api({
-      url: "event",
+      url: 'event',
       sendToken: false,
-      method: "get"
+      method: 'get',
     })
-      .then(d => {
+      .then((d) => {
         // PDS has custom events (1 event = accommodation level)
-        this.events = d.data.filter(event => event.pds === this.$isPDS);
-        this.$db("eventsList", this.$makeIdObject(this.events));
+        this.events = d.data.filter((event) => event.pds === this.$isPDS);
+        this.$db('eventsList', this.$makeIdObject(this.events));
       })
       .finally(() => {
-        EventBus.$emit("fullLoader", false);
+        this.$bus.$emit('fullLoader', false);
       });
   },
   methods: {
     // Pass drawer toggle input up the chain so it can be properly closed
     toggleDrawerMenu(value) {
-      this.$emit("input", value);
+      this.$emit('input', value);
     },
 
     eventLinkClicked(eventUrl) {
       // Trying to go to same URL again -> go home before that so vue "reloads" page
       if (this.$route.path === eventUrl) {
         this.$router.push({
-          path: "/" + this.$tr("paths.home")
+          path: `/${this.$tr('paths.home')}`,
         });
       }
-    }
-  }
+    },
+  },
 };
 </script>

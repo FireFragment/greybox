@@ -60,20 +60,20 @@
 </template>
 
 <script>
-import { EventBus } from "../../event-bus";
+/* eslint-disable */
 
 export default {
-  name: "PageSignIn",
+  name: 'PageSignIn',
   props: {
-    loginData: Object
+    loginData: Object,
   },
   data() {
     return {
-      translationPrefix: "auth.",
+      translationPrefix: 'auth.',
       email: null,
       password: null,
       isPwd: true,
-      loading: false
+      loading: false,
     };
   },
   methods: {
@@ -81,72 +81,61 @@ export default {
       if (this.loading) return;
 
       this.loading = true;
-      let requestData = userData;
-      if (
-        typeof requestData !== "object" ||
-        typeof requestData.username === "undefined"
-      )
+      let requestData;
+      if (typeof userData === 'string') {
+        requestData = JSON.parse(userData);
+      } else {
         requestData = {
           username: this.email,
           password: this.password,
-          isSignUp: false
+          isSignUp: false,
         };
+      }
 
       // These translations don't work inside auth promises for some odd reason
-      let invalidCredentials = this.$tr("login.validation.invalidCredentials");
-      let loginLink = this.$path("auth.login");
-      let signupSuccess = this.$tr("signUp.success");
-      let loginSuccess = this.$tr("login.success");
+      const invalidCredentials = this.$tr('login.validation.invalidCredentials');
+      const loginLink = this.$path('auth.login');
+      const signupSuccess = this.$tr('signUp.success');
+      const loginSuccess = this.$tr('login.success');
 
       this.$auth
         .login(requestData)
-        .then(data => {
-          EventBus.$emit("fullLoader", true);
-          this.$auth.options.fetchData.url =
-            this.apiSettings.baseURL + "user/" + data.data.id;
+        .then(() => {
+          this.$bus.$emit('fullLoader', true);
 
-          this.$auth
-            .fetchUser()
-            .then(() => {
-              // User was automatically logged in after sign up
-              if (
-                typeof requestData.isSignUp === "boolean" &&
-                requestData.isSignUp
-              ) {
-                this.$router.replace({ name: "home" });
-                this.$flash(signupSuccess, "done");
-              } else {
-                this.$router.push({ name: "home" });
-                this.$flash(loginSuccess, "done");
-              }
-            })
-            .catch(data => {
-              this.$flash(data.response.statusText, "error");
-            })
-            .finally(() => {
-              EventBus.$emit("fullLoader", false);
-            });
+          // User was automatically logged in after sign up
+          if (
+            typeof requestData.isSignUp === 'boolean'
+            && requestData.isSignUp
+          ) {
+            this.$router.replace({ name: 'home' });
+            this.$flash(signupSuccess, 'done');
+          } else {
+            this.$router.push({ name: 'home' });
+            this.$flash(loginSuccess, 'done');
+          }
         })
         .catch(() => {
           // Redirect is necessary because auth plugin automatically redirects to home
           this.$router.replace(loginLink);
-          EventBus.$emit("fullLoader", false);
-          this.$flash(invalidCredentials, "error");
+          this.$bus.$emit('fullLoader', false);
+          this.password = null;
+          this.$flash(invalidCredentials, 'error');
         })
         .finally(() => {
           this.loading = false;
         });
-    }
+    },
   },
   created() {
     // User already logged -> redirect to homepage
-    if (this.$auth.check()) this.$router.replace({ name: "home" });
+    if (this.$auth.check()) this.$router.replace({ name: 'home' });
 
     // Auto login user with passed data (from registration page)
     if (this.loginData) {
-      EventBus.$emit("fullLoader", false);
+      this.$bus.$emit('fullLoader', false);
       this.login(this.loginData);
     }
-  }
+  },
 };
 </script>

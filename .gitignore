@@ -1,5 +1,8 @@
 .DS_Store
+.thumbs.db
 node_modules
+.quasar
+.eslintcache
 /registrace
 registrace.zip
 /debugbox

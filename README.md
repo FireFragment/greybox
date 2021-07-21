@@ -11,14 +11,14 @@ This project runs in 3 environments - development, debug and production.
 
 Main difference is that only **production** has Vue devtools turned off and uses live API and only **development** uses history hash mode.
 
-Configuration can be changed in `.env.{environment name}` files in root folder. Current mode will be visible next to logo in navbar (except for production).
+Configuration can be changed in `env.{environment name}.ts` files in root folder. Current mode will be visible next to logo in navbar (except for production).
 
-Current environment can be detected in code by global process constant `this.env.VUE_APP_MODE` in `.vue` files or `process.env.VUE_APP_MODE` in `.js` files.
+Current environment can be detected in code by global process constant `this.env.MODE` in `.vue` files or `process.env.MODE` in `.js` files.
 
 #### Modes
-Furthermore, this project uses two modes - `normal` and `PDS` with tiny differences amongst each other (filtering events etc.). 
+Furthermore, this project uses two modes - `normal` and `PDS` with tiny differences amongst each other (filtering events etc.).
 
-Default mode is normal. Configurations for PDS `development` and `production` can be edited through `.env.pds-dev` or `.env.pds-prod` respectively. Debug version is not available for PDS.
+Default mode is normal. Configurations for PDS `development` and `production` can be edited through `env.pds-dev.ts` or `env.pds-prod.ts` respectively. Debug version is not available for PDS.
 
 Current mode can be detected in code by global boolean constant `this.$isPDS` in `.vue` files or `Vue.prototype.$isPDS` in `.js` files.
 
@@ -74,6 +74,6 @@ After every merge into `vue-frontend-prod` branch, a new release should be made 
 ## Deployment
 The folder containing project build is ready to be deployed on Apache webserver with history router mode. Neither `Node.js` nor any other web language have to be present on the server since the build contains just static HTML files and assets.
 
-More information about deploying a Vue application can be find in [Vue documentation](https://cli.vuejs.org/guide/deployment.html). 
+More information about deploying a Vue application can be find in [Vue documentation](https://cli.vuejs.org/guide/deployment.html).
 
-To change the directory of the app, you need to edit line `3` of desired `.env`, add a new rewrite block to `public/.htaccess` and rebuild.
+To change the directory of the app, you need to edit line `4` of desired `env.ts`, add a new rewrite block to `public/.htaccess` and rebuild.

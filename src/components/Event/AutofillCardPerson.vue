@@ -36,14 +36,14 @@
 
 <script>
 export default {
-  name: "AutofillCardPerson",
+  name: 'AutofillCardPerson',
 
-  props: ["person", "showDeleteButton", "registered"],
+  props: ['person', 'showDeleteButton', 'registered'],
 
   data() {
     return {
-      translationPrefix: "tournament.autofill."
+      translationPrefix: 'tournament.autofill.',
     };
-  }
+  },
 };
 </script>

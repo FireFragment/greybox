@@ -19,18 +19,19 @@
               v-if="event.beginning.substr(0, 4) !== event.end.substr(0, 4)"
             >
               <!-- Year is different -->
-              {{ event.beginning | moment("D. M. Y") }} - </template
+              {{ getDate(event.beginning, 'D. M. YYYY') }} - {{ getDate(event.end, 'D. M. YYYY') }} </template
             ><template
               v-else-if="
                 event.beginning.substr(0, 7) !== event.end.substr(0, 7)
               "
             >
               <!-- Month is different -->
-              {{ event.beginning | moment("D. M.") }} - </template
+            {{ getDate(event.beginning, 'D. M.') }} - {{ getDate(event.end, 'D. M. YYYY') }} </template
             ><template v-else-if="event.beginning !== event.end">
               <!-- Just day is different-->
-              {{ event.beginning | moment("D.") }} - </template
-            >{{ event.end | moment("D. M. Y") }}
+ {{ getDate(event.beginning, 'D. M. YYYY') }}
+              - </template
+            >{{ getDate(event.end, 'D. M. YYYY') }}
             <!-- else - One day event -->
           </p>
           <p>
@@ -40,7 +41,7 @@
           <p>
             <q-icon name="far fa-bell" class="text-negative" />
             {{ $tr("deadline") }}:
-            {{ event.soft_deadline | moment("D. M. Y H:mm") }}
+            {{ getDate(event.soft_deadline, 'D. M. YYYY H:mm') }}
           </p>
           <p v-if="event.note">
             <q-icon name="fas fa-info" class="text-primary" />
@@ -199,16 +200,18 @@
 </template>
 
 <script>
-import autofillCard from "../components/Event/AutofillCard";
-import formFields from "../components/Event/FormFields";
-import pickType from "../components/Event/PickType";
-import checkout from "../components/Event/Checkout";
-import teamForm from "../components/Event/TeamForm";
-import checkoutConfirm from "../components/Event/CheckoutConfirm";
-import { EventBus } from "../event-bus";
+/* eslint-disable */
+import autofillCard from '../components/Event/AutofillCard';
+import formFields from '../components/Event/FormFields';
+import pickType from '../components/Event/PickType';
+import checkout from '../components/Event/Checkout';
+import teamForm from '../components/Event/TeamForm';
+import checkoutConfirm from '../components/Event/CheckoutConfirm';
+import { EventBus } from '../event-bus';
+import { date } from 'quasar';
 
 export default {
-  name: "Event",
+  name: 'Event',
 
   components: {
     autofillCard,
@@ -216,12 +219,13 @@ export default {
     pickType,
     checkout,
     teamForm,
-    checkoutConfirm
+    checkoutConfirm,
+    date
   },
 
   data() {
     return {
-      translationPrefix: "tournament.",
+      translationPrefix: 'tournament.',
       event: null,
       type: null, // single/group
       role: null,
@@ -230,33 +234,33 @@ export default {
       confirmData: null,
       showGroupModal: false,
       autofillData: null,
-      accommodationType: "opt-out",
-      mealType: "opt-out",
+      accommodationType: 'opt-out',
+      mealType: 'opt-out',
       possibleDiets: [],
 
-      dataToSubmit: []
+      dataToSubmit: [],
     };
   },
 
   created() {
     // Promise to return object with event details
-    let eventPromise = new Promise((resolve, reject) => {
-      let eventId = this.$route.params.id;
+    const eventPromise = new Promise((resolve, reject) => {
+      const eventId = this.$route.params.id;
 
       // Try to load event from cache
-      let cached = this.$db("event-" + eventId);
+      const cached = this.$db(`event-${eventId}`);
 
       if (cached) return resolve([cached, false]);
 
       // Not cached -> load from API
-      EventBus.$emit("fullLoader", true);
+      this.$bus.$emit('fullLoader', true);
       this.$api({
-        url: "event/" + eventId,
-        method: "get"
+        url: `event/${eventId}`,
+        method: 'get',
       })
-        .then(d => {
-          let event = d.data;
-          this.$db("event-" + eventId, event);
+        .then((d) => {
+          const event = d.data;
+          this.$db(`event-${eventId}`, event);
           resolve([event, true]);
         })
         .catch(reject);
@@ -270,25 +274,25 @@ export default {
 
       // Can't register to event -> don't even load roles
       if (event.hard_deadline < this.now || !this.$auth.check()) {
-        if (isLoading) return EventBus.$emit("fullLoader", false);
+        if (isLoading) return this.$bus.$emit('fullLoader', false);
         return;
       }
 
       // Promise to return all roles
-      let rolesPromise = new Promise((resolve, reject) => {
+      const rolesPromise = new Promise((resolve, reject) => {
         // Load roles from cache if available
-        let cached = this.$db("rolesList");
+        const cached = this.$db('rolesList');
         if (cached) return resolve([cached, isLoading]);
 
-        if (!isLoading) EventBus.$emit("fullLoader", true);
+        if (!isLoading) this.$bus.$emit('fullLoader', true);
 
         // Not cached -> load from API
         this.$api({
-          url: "role",
-          method: "get"
+          url: 'role',
+          method: 'get',
         })
-          .then(d => {
-            this.$db("rolesList", d.data);
+          .then((d) => {
+            this.$db('rolesList', d.data);
             resolve([d.data, true]);
           })
           .catch(reject);
@@ -296,9 +300,9 @@ export default {
 
       rolesPromise.then(([roles, isLoading]) => {
         // Check if roles are present in event's prices
-        for (let role of roles) {
+        for (const role of roles) {
           let isPresent = false;
-          for (let price of event.prices) {
+          for (const price of event.prices) {
             if (price.role.id === role.id) {
               isPresent = true;
               break;
@@ -307,41 +311,44 @@ export default {
 
           if (isPresent) {
             // Debater role is present -> push team role
-            if (role.id === 1)
+            if (role.id === 1) {
               this.roles[0] = {
                 value: 0,
-                label: "tournament.types.team",
-                icon: "users"
+                label: 'tournament.types.team',
+                icon: 'users',
               };
+            }
 
             // Individual debater should be hidden on PDS
             if (role.id !== 1 || !this.$isPDS)
-              // Push role to role list
+            // Push role to role list
+            {
               this.roles[role.id] = {
                 value: role.id,
                 label: role.name,
-                icon: role.icon
+                icon: role.icon,
               };
+            }
           }
         }
 
-        if (isLoading) return EventBus.$emit("fullLoader", false);
+        if (isLoading) return this.$bus.$emit('fullLoader', false);
       });
     });
   },
 
-  beforeDestroy() {
+  beforeUnmount() {
     // Invalidate autofill cache
-    this.$db("autofillDebaters-event" + this.event.id, this.DB_DEL);
-    this.$db("autofillTeams-event" + this.event.id, this.DB_DEL);
+    this.$db(`autofillDebaters-event${this.event.id}`, this.DB_DEL);
+    this.$db(`autofillTeams-event${this.event.id}`, this.DB_DEL);
   },
 
   methods: {
     submitTeamForm(people, teamName, teamId) {
       // Function to call after team ID is known
-      let doneCallback = (id, name) => {
-        for (let index in people) {
-          let person = people[index];
+      const doneCallback = (id, name) => {
+        for (const index in people) {
+          const person = people[index];
 
           person.formData.team = id;
           person.formData.teamName = name;
@@ -354,26 +361,30 @@ export default {
       if (teamId) return doneCallback(teamId, teamName);
 
       // Team is new -> submit to API first before we can know the ID
-      EventBus.$emit("fullLoader", true);
+      this.$bus.$emit('fullLoader', true);
       this.$api({
-        url: "team",
+        url: 'team',
         data: {
           name: teamName,
-          event: this.event.id
-        }
+          event: this.event.id,
+        },
       })
-        .then(data => {
+        .then((data) => {
           doneCallback(data.data.id, teamName);
         })
         .finally(() => {
-          EventBus.$emit("fullLoader", false);
+          this.$bus.$emit('fullLoader', false);
         });
     },
 
-    sendForm(data, autofill) {
-      let personData = data;
+    getDate(from, format) {
+      return date.formatDate(from, format);
+    },
 
-      let registrationData = {
+    sendForm(data, autofill) {
+      const personData = data;
+
+      const registrationData = {
         person: null,
         event: this.event.id,
         role: this.role === 0 ? 1 : this.role, // if role is team, set as debater
@@ -381,7 +392,7 @@ export default {
         meals: data.meals,
         team: data.team || null,
         teamName: data.teamName || null,
-        note: data.note
+        note: data.note,
       };
 
       // Move data from person to registration
@@ -394,10 +405,10 @@ export default {
       this.dataToSubmit.push({
         person: personData,
         registration: registrationData,
-        autofill: autofill
+        autofill,
       });
 
-      if (this.type === "single") this.goTo("checkout");
+      if (this.type === 'single') this.goTo('checkout');
       else this.showGroupModal = true;
     },
 
@@ -411,9 +422,8 @@ export default {
     },
 
     goTo(phase) {
-      if (phase === "role")
-        this.role = this.autofillData = this.checkout = null;
-      else if (phase === "checkout") this.role = this.checkout = true;
+      if (phase === 'role') this.role = this.autofillData = this.checkout = null;
+      else if (phase === 'checkout') this.role = this.checkout = true;
     },
 
     // Registration sent
@@ -421,35 +431,35 @@ export default {
       this.confirmData = data;
 
       // Remove autofill data to include newly added people later
-      this.$db("autofillDebaters-event" + this.event.id, this.DB_DEL);
-      this.$db("autofillTeams-event" + this.event.id, this.DB_DEL);
+      this.$db(`autofillDebaters-event${this.event.id}`, this.DB_DEL);
+      this.$db(`autofillTeams-event${this.event.id}`, this.DB_DEL);
     },
 
     removePerson(index) {
       this.dataToSubmit.splice(index, 1);
 
-      if (!this.dataToSubmit.length) this.goTo("role");
-    }
+      if (!this.dataToSubmit.length) this.goTo('role');
+    },
   },
 
   computed: {
     now() {
-      let d = new Date();
+      const d = new Date();
 
       return (
-        [
+        `${[
           d.getFullYear(),
-          ("0" + (d.getMonth() + 1)).substr(-2),
-          ("0" + d.getDate()).substr(-2)
-        ].join("-") +
-        " " +
-        [
-          ("0" + d.getHours()).substr(-2),
-          ("0" + d.getMinutes()).substr(-2),
-          ("0" + d.getSeconds()).substr(-2)
-        ].join(":")
+          (`0${d.getMonth() + 1}`).substr(-2),
+          (`0${d.getDate()}`).substr(-2),
+        ].join('-')
+        } ${
+          [
+            (`0${d.getHours()}`).substr(-2),
+            (`0${d.getMinutes()}`).substr(-2),
+            (`0${d.getSeconds()}`).substr(-2),
+          ].join(':')}`
       );
-    }
-  }
+    },
+  },
 };
 </script>

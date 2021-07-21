@@ -1,9 +1,9 @@
 <template>
-  <q-dialog :value="visible" @input="stateChange">
+  <q-dialog :model-value="visible" @update:model-value="stateChange">
     <q-card class="dialog-small">
       <q-card-section class="row items-center">
         <div class="text-h6">
-          {{ $tr("modal.title." + (this.client ? "edit" : "add")) }}
+          {{ $tr('modal.title.' + (this.client ? 'edit' : 'add')) }}
         </div>
         <q-space />
         <q-btn icon="fas fa-times" flat round dense v-close-popup />
@@ -116,20 +116,23 @@
 </template>
 
 <script>
-import { EventBus } from "../../event-bus";
-import MaskInput from "./MaskInput";
-import CountrySelect from "./CountrySelect";
+/* eslint-disable */
+import MaskInput from './MaskInput';
+import CountrySelect from './CountrySelect';
 
 export default {
-  name: "BillingEditDialog",
-  components: { CountrySelect, MaskInput },
+  name: 'BillingEditDialog',
+  components: {
+    CountrySelect,
+    MaskInput
+  },
   props: {
     visible: Boolean,
-    client: Object
+    client: Object,
   },
   data() {
     return {
-      translationPrefix: "tournament.checkout.billing.",
+      translationPrefix: 'tournament.checkout.billing.',
       initialized: false,
       values: {
         name: null,
@@ -138,16 +141,15 @@ export default {
         street: null,
         city: null,
         zip: null,
-        country: null
-      }
+        country: null,
+      },
     };
   },
   created() {
     // Smartform autocomplete select
-    EventBus.$on("smartform", data => {
+    this.$bus.$on('smartform', (data) => {
       // If instance ID is this form
-      if (data.instance.substr(-(this._uid + "").length) == this._uid)
-        this.values[data.field] = data.value;
+      if (data.instance.substr(-(`${this._uid}`).length) == this._uid) this.values[data.field] = data.value;
     });
 
     this.stateChange(this.visible);
@@ -155,26 +157,23 @@ export default {
   computed: {
     validateZip() {
       return (
-        !this.$isPDS ||
-        (this.values.country && this.values.country.value === "CZ")
+        !this.$isPDS
+        || (this.values.country && this.values.country.value === 'CZ')
       );
-    }
+    },
   },
   methods: {
     stateChange(isVisible) {
       if (isVisible) this.$nextTick(this._dialogMounted);
 
-      return this.$emit("state-change", isVisible);
+      return this.$emit('state-change', isVisible);
     },
 
     _dialogMounted() {
-      Object.keys(this.values).forEach(key => {
-        this.$set(
-          this.values,
-          key,
-          this.client && this.client[key] ? this.client[key] : null
-        );
-      });
+      Object.keys(this.values)
+        .forEach((key) => {
+          this.values[key] = this.client && this.client[key] ? this.client[key] : null;
+        });
 
       this._initSmartform();
       this.initialized = true;
@@ -184,81 +183,83 @@ export default {
       // Renitialize smartform
       window.smartform.rebindAllForms(true, () => {
         // Loop through instances
-        window.smartform.getInstanceIds().forEach(id => {
-          let instance = window.smartform.getInstance(id);
+        window.smartform.getInstanceIds()
+          .forEach((id) => {
+            const instance = window.smartform.getInstance(id);
 
-          // Set limit to 3 results for every field
-          [
-            "smartform-street-and-number",
-            "smartform-city",
-            "smartform-zip"
-          ].forEach(input => {
-            instance.getBox(input).setLimit(3);
-          });
+            // Set limit to 3 results for every field
+            [
+              'smartform-street-and-number',
+              'smartform-city',
+              'smartform-zip',
+            ].forEach((input) => {
+              instance.getBox(input)
+                .setLimit(3);
+            });
 
-          // Run this callback on selection
-          instance.setSelectionCallback((element, value, fieldType) => {
-            let field = fieldType.substr("10");
+            // Run this callback on selection
+            instance.setSelectionCallback((element, value, fieldType) => {
+              const field = fieldType.substr('10');
 
-            let varName = field !== "street-and-number" ? field : "street";
+              const varName = field !== 'street-and-number' ? field : 'street';
 
-            // Emit global event so other form instances can receive it
-            EventBus.$emit("smartform", {
-              instance: id,
-              field: varName,
-              value: value
+              // Emit global event so other form instances can receive it
+              this.$bus.$emit('smartform', {
+                instance: id,
+                field: varName,
+                value,
+              });
             });
           });
-        });
       });
     },
 
     submitForm() {
-      EventBus.$emit("fullLoader", true);
+      this.$bus.$emit('fullLoader', true);
 
-      let isEdit = !!this.client;
+      const isEdit = !!this.client;
 
-      let data = { ...this.values };
+      const data = { ...this.values };
 
       // Remove mask from zip
-      if (this.validateZip)
+      if (this.validateZip) {
         data.zip = data.zip
           ? data.zip
-              .replace(/_/g, "")
-              .replace(" ", "")
-              .trim()
-          : "";
+            .replace(/_/g, '')
+            .replace(' ', '')
+            .trim()
+          : '';
+      }
 
       if (this.$isPDS && data.country) data.country = data.country.value;
 
       this.$api({
-        url: "client" + (isEdit ? "/" + this.client.id : ""),
-        method: isEdit ? "put" : "post",
-        data: data,
-        alerts: false
+        url: `client${isEdit ? `/${this.client.id}` : ''}`,
+        method: isEdit ? 'put' : 'post',
+        data,
+        alerts: false,
       })
-        .then(data => {
+        .then((data) => {
           this.stateChange(false);
           this.$flash(
-            this.$tr("success." + (isEdit ? "edit" : "add")),
-            "success"
+            this.$tr(`success.${isEdit ? 'edit' : 'add'}`),
+            'success',
           );
 
-          let client = data.data;
+          const client = data.data;
 
-          this.$emit("client-change", client.id, client, !isEdit);
+          this.$emit('client-change', client.id, client, !isEdit);
         })
-        .catch(data => {
+        .catch((data) => {
           if (data.response.data) {
-            let message = data.response.data.message;
+            const { message } = data.response.data;
 
-            if (message && this.$trExists("validation." + message))
-              return this.$flash(this.$tr("validation." + message), "error");
+            if (message && this.$trExists(`validation.${message}`)) return this.$flash(this.$tr(`validation.${message}`), 'error');
           }
-          this.$flash(this.$tr("error." + (isEdit ? "edit" : "add")), "error");
+          this.$flash(this.$tr(`error.${isEdit ? 'edit' : 'add'}`), 'error');
         })
         .finally(() => {
-          EventBus.$emit("fullLoader", false);
+          this.$bus.$emit('fullLoader', false);
         });
     },
 
@@ -266,30 +267,31 @@ export default {
       if (!this.client) return false;
 
       this.$confirm({
-        confirm: this.$tr("general.confirmModal.remove", null, false),
-        message: this.$tr("removeModal.title")
-      }).onOk(() => {
-        EventBus.$emit("fullLoader", true);
+        confirm: this.$tr('general.confirmModal.remove', null, false),
+        message: this.$tr('removeModal.title'),
+      })
+        .onOk(() => {
+          this.$bus.$emit('fullLoader', true);
 
-        this.$api({
-          url: "client/" + this.client.id,
-          method: "delete",
-          alerts: false
-        })
-          .then(() => {
-            this.stateChange(false);
-            this.$flash(this.$tr("success.delete"), "success");
+          this.$api({
+            url: `client/${this.client.id}`,
+            method: 'delete',
+            alerts: false,
+          })
+            .then(() => {
+              this.stateChange(false);
+              this.$flash(this.$tr('success.delete'), 'success');
 
-            this.$emit("client-change", this.client.id, null);
-          })
-          .catch(() => {
-            this.$flash(this.$tr("error.delete"), "error");
-          })
-          .finally(() => {
-            EventBus.$emit("fullLoader", false);
-          });
-      });
-    }
-  }
+              this.$emit('client-change', this.client.id, null);
+            })
+            .catch(() => {
+              this.$flash(this.$tr('error.delete'), 'error');
+            })
+            .finally(() => {
+              this.$bus.$emit('fullLoader', false);
+            });
+        });
+    },
+  },
 };
 </script>

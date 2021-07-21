@@ -1,19 +1,21 @@
-import config from "./config";
-import axios from "axios";
+/* eslint-disable */
+import config from './config';
+import axios from 'axios';
+import { $tr } from 'boot/custom';
 
-let apiSettings = config.api;
+const apiSettings = config.api;
 
 function apiCall(options) {
-  let defaults = {
-    url: "",
+  const defaults = {
+    url: '',
     baseURL: apiSettings.baseURL,
     data: {},
     sendToken: true,
-    method: "post",
+    method: 'post',
     headers: {},
     alerts: {
       success: null,
-      error: this.$tr("general.error", null, false)
+      error: $tr('general.error', null, false)
     }
   };
 
@@ -21,46 +23,50 @@ function apiCall(options) {
 
   requestOptions.url = apiSettings.baseURL + requestOptions.url;
 
-  if (requestOptions.sendToken && this.$auth.check())
-    requestOptions.headers["Authorization"] = this.$auth.token();
+  if (requestOptions.sendToken && this.$auth.check()) {
+    requestOptions.headers['Authorization'] = this.$auth.getToken();
+  }
 
-  let request = axios(requestOptions);
+  const request = axios(requestOptions);
 
   // Request alerts
   if (requestOptions.alerts) {
-    if (requestOptions.alerts.success)
+    if (requestOptions.alerts.success) {
       request.then(data => {
         let message = requestOptions.alerts.success;
 
         if (message === true) {
           message = false;
-          if (data.response && data.response.data && data.response.data.message)
+          if (data.response && data.response.data && data.response.data.message) {
             message = data.response.data.message;
-          else if (data.message) message = data.message;
+          } else if (data.message) message = data.message;
         }
 
-        if (message) this.$flash(message, "done");
+        if (message) this.$flash(message, 'done');
       });
+    }
 
-    if (requestOptions.alerts.error)
+    if (requestOptions.alerts.error) {
       request.catch(data => {
         let message = requestOptions.alerts.error;
 
         if (message === true) {
           message = false;
-          if (data.response && data.response.data && data.response.data.message)
+          if (data.response && data.response.data && data.response.data.message) {
             message = data.response.data.message;
-          else if (data.message) message = data.message;
+          } else if (data.message) message = data.message;
         }
 
-        if (message) this.$flash(message, "error");
+        if (message) this.$flash(message, 'error');
       });
+    }
   }
 
-  if (config.debug)
+  if (config.debug) {
     request.catch(data => {
       console.error(data);
     });
+  }
 
   return request;
 }

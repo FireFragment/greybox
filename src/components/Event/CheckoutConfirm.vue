@@ -54,9 +54,9 @@
                   <q-item-label caption>{{
                     $tr("invoice.dueOn")
                   }}</q-item-label>
-                  <q-item-label>{{
-                    data.invoice.due_on | moment("D. M. Y")
-                  }}</q-item-label>
+                  <q-item-label>
+                    {{ getDate(data.invoice.due_on, "D. M. YYYY") }}
+                  </q-item-label>
                 </q-item-section>
               </q-item>
 
@@ -96,43 +96,50 @@
 </template>
 
 <script>
+/* eslint-disable */
+import { date } from "quasar";
+
 export default {
-  name: "CheckoutConfirm",
+  name: 'CheckoutConfirm',
   props: {
-    data: Object
+    data: Object,
   },
   data() {
     return {
-      translationPrefix: "tournament.checkout.confirm."
+      translationPrefix: 'tournament.checkout.confirm.',
     };
+  },
+  methods: {
+    getDate(from, format) {
+      return date.formatDate(from, format);
+    },
   },
   computed: {
     columns() {
       return [
         {
-          label: this.$tr("invoice.item"),
-          name: "name",
-          align: "left",
-          field: "name"
+          label: this.$tr('invoice.item'),
+          name: 'name',
+          align: 'left',
+          field: 'name',
         },
         {
-          label: this.$tr("invoice.quantity"),
-          name: "quantity",
-          align: "center",
-          field: row => row.quantity + " " + row.unit_name
+          label: this.$tr('invoice.quantity'),
+          name: 'quantity',
+          align: 'center',
+          field: (row) => `${row.quantity} ${row.unit_name}`,
         },
         {
-          label: this.$tr("invoice.price"),
-          name: "unit_price",
-          field: row =>
-            row.unit_price +
-            " " +
-            (typeof this.data.invoice === "object"
+          label: this.$tr('invoice.price'),
+          name: 'unit_price',
+          field: (row) => `${row.unit_price
+          } ${
+            typeof this.data.invoice === 'object'
               ? this.data.invoice.currency
-              : "CZK") // to možná nestačí
-        }
+              : 'CZK'}`, // to možná nestačí
+        },
       ];
-    }
-  }
+    },
+  },
 };
 </script>

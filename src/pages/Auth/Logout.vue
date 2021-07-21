@@ -7,16 +7,15 @@
 </template>
 
 <script>
-import Vue from "vue";
-
+/* eslint-disable */
 export default {
-  name: "PageSignOut",
-  mounted() {
-    this.$auth.logout();
-    this.$flash(this.$tr("auth.logout.success"));
+  name: 'PageSignOut',
+  async mounted() {
+    await this.$auth.logout();
+    this.$flash(this.$tr('auth.logout.success'));
 
     // Remove cached personal data on logout
-    Vue.prototype.dbPersonal = {};
-  }
+    this.dbPersonal = {};
+  },
 };
 </script>
