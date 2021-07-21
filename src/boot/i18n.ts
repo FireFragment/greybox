@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { boot } from 'quasar/wrappers';
 import { createI18n } from 'vue-i18n';
-import config from "../config";
+import config from '../config';
 
 // Import localization data from JSONs
 import i18nConfig from '../translation/config.json';
@@ -55,9 +55,22 @@ const i18n = createI18n({
   silentTranslationWarn: !config.debug,
 });
 
-export default boot(({ app }) => {
+export default boot(async ({
+  app,
+  router,
+}) => {
   // Set i18n instance on app
   app.use(i18n);
+
+  router.isReady()
+    .then(() => {
+      const isAlias = router.currentRoute.value.matched.find(
+        (item) => item.aliasOf,
+      );
+
+      // Alias was accessed -> switch language
+      if (isAlias) i18n.global.locale = 'en';
+    });
 });
 
 export { i18n };
