@@ -72,11 +72,13 @@
                 alt="Avatar"
               />
               <template v-else>{{
-                $auth
-                  .user()
-                  .username.substr(0, 1)
-                  .toUpperCase()
-              }}</template>
+                  $auth
+                    .user()
+                    .username
+                    .substr(0, 1)
+                    .toUpperCase()
+                }}
+              </template>
             </q-avatar>
             <span class="username">
               {{ $auth.user().username }}
@@ -89,8 +91,9 @@
               </q-item-section>
 
               <q-item-section>{{
-                $tr("auth.accountSettings.link")
-              }}</q-item-section>
+                  $tr('auth.accountSettings.link')
+                }}
+              </q-item-section>
             </q-item>
             <!--
               TODO - implement link to server to download personal data
@@ -110,7 +113,7 @@
                 <q-icon name="fas fa-sign-out-alt" />
               </q-item-section>
 
-              <q-item-section>{{ $tr("auth.logout.link") }}</q-item-section>
+              <q-item-section>{{ $tr('auth.logout.link') }}</q-item-section>
             </q-item>
           </q-list>
         </q-btn-dropdown>
@@ -165,47 +168,54 @@ export default {
       localStorage.setItem('leftDrawerOpen', this.leftDrawerOpen);
     },
     switchLocale(locale) {
-      if (this.$i18n.locale !== locale) {
-        // current URL
-        const originalPath = this.$tr(
-            `paths.${this.$route.name}`,
-        );
+      if (this.$i18n.locale === locale) return;
 
-        // change locale
-        this.$i18n.locale = locale;
+      // current URL
+      const originalPath = this.$tr(
+        `paths.${this.$route.name}`,
+      );
 
-        // new URL
-        const newPath = this.$tr(`paths.${this.$route.name}`);
+      // change locale
+      this.$i18n.locale = locale;
 
-        // get URL from router
-        let url = this.$route;
+      // new URL
+      const newPath = this.$tr(`paths.${this.$route.name}`);
 
-        // Homepage cases
-        if (originalPath === '') url.path = '/en/';
-        else if (newPath === '') url.path = '/';
-        // replace url in router with localized one
-        else url.path = url.path.replace(originalPath, newPath);
+      // get URL from router
+      let url = this.$route;
 
-        // go to new url
-        this.$router.push(url);
+      // Homepage cases
+      if (originalPath === '') {
+        url.path = '/en/';
+      } else if (newPath === '') {
+        url.path = '/';
+      }// replace url in router with localized one
+      else {
+        url.path = url.path.replace(originalPath, newPath);
       }
+
+      // go to new url
+      this.$router.push(url);
     },
   },
 
   created() {
     // Show loading until events load
     this.fullLoader = 1;
-    let self=this;
+    let self = this;
 
-    window.addEventListener('keydown', function(e) {
-      if (document.activeElement === document.body && e.code === "KeyM"){
+    window.addEventListener('keydown', function (e) {
+      if (document.activeElement === document.body && e.code === 'KeyM') {
         self.toggleDrawerMenu();
       }
     });
 
     this.$bus.$on('fullLoader', (value) => {
-      if (value) this.fullLoader++;
-      else this.fullLoader--;
+      if (value) {
+        this.fullLoader++;
+      } else {
+        this.fullLoader--;
+      }
 
       if (this.fullLoader < 0) this.fullLoader = 0;
     });
