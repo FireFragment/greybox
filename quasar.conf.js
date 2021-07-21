@@ -102,7 +102,11 @@ module.exports = configure(() => {
 
     // https://v2.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework
     framework: {
-      config: {},
+      config: {
+        loadingBar: {
+          color: 'primary',
+        }
+      },
 
       iconSet: 'fontawesome-v5', // Quasar icon set
       // lang: 'en-US', // Quasar language pack
@@ -116,15 +120,16 @@ module.exports = configure(() => {
 
       // Quasar plugins
       plugins: [
-        'Notify'
+        'Notify',
+        'LoadingBar',
       ],
     },
 
     // animations: 'all', // --- includes all animations
     // https://v2.quasar.dev/options/animations
     animations: [
-        'slideInDown',
-        'slideOutUp',
+      'slideInDown',
+      'slideOutUp',
     ],
   };
 });
