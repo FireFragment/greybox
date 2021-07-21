@@ -54,9 +54,9 @@
                   <q-item-label caption>{{
                     $tr("invoice.dueOn")
                   }}</q-item-label>
-                  <q-item-label><!--{{
-                      /*(data.invoice.due_on).format("D. M. Y")*/
-                  }}--></q-item-label>
+                  <q-item-label>
+                    {{ getDate(data.invoice.due_on, "D. M. YYYY") }}
+                  </q-item-label>
                 </q-item-section>
               </q-item>
 
@@ -97,6 +97,8 @@
 
 <script>
 /* eslint-disable */
+import { date } from "quasar";
+
 export default {
   name: 'CheckoutConfirm',
   props: {
@@ -106,6 +108,11 @@ export default {
     return {
       translationPrefix: 'tournament.checkout.confirm.',
     };
+  },
+  methods: {
+    getDate(from, format) {
+      return date.formatDate(from, format);
+    },
   },
   computed: {
     columns() {
