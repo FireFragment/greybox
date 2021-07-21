@@ -9,7 +9,8 @@
           v-model="email"
           :label="$tr('fields.email')"
           lazy-rules
-          :rules="[val => (val !== null && val !== '') || $tr(`errors.email`)]"
+          :rules="[val => (val !== null && val !== '') || $tr(`errors.email`),
+                  val => $validators.validateEmail(val) || $tr('errors.emailFormat')]"
         >
           <template v-slot:prepend>
             <q-icon name="fas fa-at" />

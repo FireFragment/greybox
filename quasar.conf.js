@@ -39,6 +39,7 @@ module.exports = configure(() => {
       'eventBus',
       'custom',
       'auth',
+      'validators',
     ],
 
     // https://v2.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
