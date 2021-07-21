@@ -84,7 +84,7 @@
       <div class="row justify-center q-mt-lg">
         <div class="col-12 col-md-7">
           <q-table
-            :data="data.invoiceLines"
+            :rows="data.invoiceLines"
             :columns="columns"
             row-key="name"
             :hide-bottom="true"
