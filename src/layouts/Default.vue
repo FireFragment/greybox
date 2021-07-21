@@ -198,7 +198,7 @@ export default {
     let self=this;
 
     window.addEventListener('keydown', function(e) {
-      if (e.code === "KeyM"){
+      if (document.activeElement === document.body && e.code === "KeyM"){
         self.toggleDrawerMenu();
       }
     });
