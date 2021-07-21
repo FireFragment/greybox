@@ -39,8 +39,30 @@ export const $tr = function (key: string, options: Record<string, unknown> | nul
 };
 
 export const $path = function (route: string) {
-  return '/' + $tr('paths.' + route, null, false);
+  return '/' + $tr(`paths.${route}`, null, false);
 };
+
+export const $flash = function (message: string, type: string = 'info', icon: string | null = null, timeout: number = 3500) {
+  let color: string | undefined = undefined;
+  if (type === 'success' || type === 'done') {
+    color = 'green';
+    if (!icon) icon = 'check';
+  } else if (type === 'error' || type === 'fail') {
+    color = 'red';
+    if (!icon) icon = 'times';
+  }
+
+  // @ts-ignore
+  return this.$q.notify({
+    color,
+    icon: icon ? 'fas fa-' + icon : null,
+    message: message,
+    html: true,
+    position: 'top-right',
+    timeout,
+    closeBtn: '-',
+  });
+}
 
 export default boot(({ app }) => {
   // $isPDS bool
@@ -111,26 +133,7 @@ export default boot(({ app }) => {
       $api: apiCall,
 
       // Flash
-      $flash: function (message: string, type: string = 'info', icon: string | null = null, timeout: number = 3500) {
-        let color = null;
-        if (type === 'success' || type === 'done') {
-          color = 'green';
-          if (!icon) icon = 'check';
-        } else if (type === 'error' || type === 'fail') {
-          color = 'red';
-          if (!icon) icon = 'times';
-        }
-
-        return this.$q.notify({
-          color,
-          icon: icon ? 'fas fa-' + icon : null,
-          message: message,
-          html: true,
-          position: 'top-right',
-          timeout,
-          closeBtn: '-',
-        });
-      },
+      $flash,
 
       // Create slug from string
       // Source: https://codepen.io/tatthien/pen/xVBxZQ

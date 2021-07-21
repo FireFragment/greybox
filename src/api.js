@@ -1,7 +1,7 @@
 /* eslint-disable */
 import config from './config';
 import axios from 'axios';
-import { $tr } from 'boot/custom';
+import { $flash, $tr } from 'boot/custom';
 
 const apiSettings = config.api;
 
@@ -42,7 +42,7 @@ function apiCall(options) {
           } else if (data.message) message = data.message;
         }
 
-        if (message) this.$flash(message, 'done');
+        if (message) $flash(message, 'done');
       });
     }
 
@@ -57,7 +57,7 @@ function apiCall(options) {
           } else if (data.message) message = data.message;
         }
 
-        if (message) this.$flash(message, 'error');
+        if (message) $flash(message, 'error');
       });
     }
   }
