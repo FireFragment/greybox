@@ -56,7 +56,7 @@
       </template>
 
       <q-item-label header>{{ $tr("general.user") }}</q-item-label>
-      <template v-if="$auth.check() && $auth.user()">
+      <template v-if="$auth.isLoggedIn() && $auth.user()">
         <q-item :to="$path('auth.accountSettings')" clickable>
           <q-item-section avatar>
             <q-icon name="fas fa-cog" />

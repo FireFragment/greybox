@@ -63,6 +63,8 @@ export default {
 
   props: ['eventId'],
 
+  emits: ['person-selected'],
+
   methods: {
     selectPerson(person) {
       this.$emit('person-selected', person);

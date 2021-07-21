@@ -1,7 +1,7 @@
 <template>
   <div>
-    <q-card flat bordered class="my-card bg-grey-1 q-mb-md">
-      <q-card-section class="header" @click="toggleCard">
+    <q-card flat bordered class="team-person-card bg-grey-1 q-mb-md">
+      <q-card-section class="header" @click="$emit('toggleVisibility', id)">
         <div class="row items-center no-wrap">
           <div class="col">
             <q-btn
@@ -44,7 +44,7 @@
           enter-active-class="animated slideInDown"
           leave-active-class="animated slideOutUp"
       >
-        <q-card-section v-if="showCard">
+        <q-card-section v-if="visible">
           <form-fields
               ref="form-fields"
               @update:model-value="catchInput"
@@ -82,9 +82,13 @@ export default {
     possibleDiets: Array,
     requireEmail: Boolean,
   },
+  emits: [
+    'toggleVisibility',
+    'update:model-value',
+    'delete',
+  ],
   data() {
     return {
-      showCard: true,
       translationPrefix: 'tournament.',
       formData: {},
     };
@@ -94,10 +98,6 @@ export default {
       this.formData = data;
       this.$emit('update:model-value', data, this.id);
     },
-    toggleCard() {
-      this.showCard = ! this.showCard;
-      this.$emit('toggleVisibility', this.id);
-    }
   },
 };
 </script>

@@ -23,7 +23,7 @@ function apiCall(options) {
 
   requestOptions.url = apiSettings.baseURL + requestOptions.url;
 
-  if (requestOptions.sendToken && this.$auth.check()) {
+  if (requestOptions.sendToken && this.$auth.isLoggedIn()) {
     requestOptions.headers['Authorization'] = this.$auth.getToken();
   }
 

@@ -6,7 +6,7 @@
           <q-card-section class="bg-blue-9 text-white card-header">
             <div class="row items-center no-wrap">
               <div class="col">
-                <div class="text-h6">{{ $tr("billing.title") }}</div>
+                <div class="text-h6">{{ $tr('billing.title') }}</div>
               </div>
               <div class="col-auto">
                 <billing-menu @selected="changeBilling" />
@@ -26,7 +26,7 @@
                 </template>
               </p>
               <p class="q-mb-sm" v-if="billingClient.registration_no">
-                {{ $tr("billing.fields.registration_no") }}:
+                {{ $tr('billing.fields.registration_no') }}:
                 {{ billingClient.registration_no }}
               </p>
               <p
@@ -39,9 +39,11 @@
                 "
               >
                 {{ billingClient.street }} <br v-if="billingClient.street" />
-                {{ billingClient.city
-                }}<template v-if="billingClient.zip && billingClient.city"
-                  >,
+                {{
+                  billingClient.city
+                }}
+                <template v-if="billingClient.zip && billingClient.city"
+                >,
                 </template>
                 {{ billingClient.zip }}
                 <template v-if="selectedCountry">
@@ -83,10 +85,10 @@
         color="primary"
         @click="sendForm"
       >
-        {{ $tr("submit") }}
+        {{ $tr('submit') }}
         <template v-slot:loading>
           <q-spinner-hourglass class="on-left" />
-          {{ $tr("loading") }}
+          {{ $tr('loading') }}
         </template>
       </q-btn>
     </div>
@@ -105,6 +107,11 @@ export default {
     formData: Array,
     possibleDiets: Array,
   },
+  emits: [
+    'goToRolePick',
+    'confirm',
+    'removePerson',
+  ],
   data() {
     return {
       translationPrefix: 'tournament.checkout.',

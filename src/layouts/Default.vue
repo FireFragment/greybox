@@ -58,7 +58,7 @@
           stretch
           flat
           content-class="no-maxwidth-menu"
-          v-if="$auth.check() && $auth.user()"
+          v-if="$auth.isLoggedIn() && $auth.user()"
         >
           <template v-slot:label>
             <q-avatar
@@ -123,7 +123,7 @@
     <sidenav
       v-model="leftDrawerOpen"
       :key="
-        $auth.check() && $auth.user() ? $auth.user().id + '-sidenav' : 'sidenav'
+        $auth.isLoggedIn() && $auth.user() ? $auth.user().id + '-sidenav' : 'sidenav'
       "
     ></sidenav>
 

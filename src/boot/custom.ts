@@ -3,14 +3,19 @@ const Bugsnag = require('@bugsnag/js');
 const BugsnagPluginVue = require('@bugsnag/plugin-vue');
 import apiCall from '../api';
 import config from '../config';
+
 const smartformModule = require('@smartform.cz/smartform');
 import { boot } from 'quasar/wrappers';
 import { i18n } from 'boot/i18n';
 import i18nConfig from '../translation/config.json';
 
-export const $tr = function (key: string, options: Record<string, unknown> = {}, usePrefix = true) {
+export const $tr = function (key: string, options: Record<string, unknown> | null = null, usePrefix = true) {
   // Translate object received from API
-  const { locale, t } = i18n.global;
+  const {
+    locale,
+    t,
+    tm,
+  } = i18n.global;
   if (typeof key === 'object') {
     // @ts-ignore
     let activeLocale: string = locale || i18nConfig.default;
@@ -25,13 +30,16 @@ export const $tr = function (key: string, options: Record<string, unknown> = {},
   let prefix = this ? this.$.data.translationPrefix : null;
 
   // Use prefix
-  if (prefix && usePrefix && options !== {}) key = prefix + key;
+  if (prefix && usePrefix) key = prefix + key;
 
-  return t(key, options);
+  if (options !== null) {
+    return t(key, options);
+  }
+  return tm(key);
 };
 
 export const $path = function (route: string) {
-  return '/' + $tr('paths.' + route, {}, false);
+  return '/' + $tr('paths.' + route, null, false);
 };
 
 export default boot(({ app }) => {
@@ -87,7 +95,7 @@ export default boot(({ app }) => {
       // Get path to route
       $path,
 
-      $stringToHslColor: function(str: string, s: number = 100) {
+      $stringToHslColor: function (str: string, s: number = 100) {
         let hash = 0;
         for (let i = 0; i < str.length; i++) {
           hash = str.charCodeAt(i) + ((hash << 5) - hash);

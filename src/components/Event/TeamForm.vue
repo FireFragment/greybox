@@ -46,7 +46,7 @@
     </q-select>
 
     <person-card
-      ref="person-card"
+      :ref="setPersonCardRef"
       v-for="(person, id, index) in people"
       v-bind:key="id"
       :visible="id == visibleId"
@@ -109,10 +109,16 @@ export default {
     eventId: Number,
     requireEmail: Boolean,
   },
+  emits: [
+    'goToRolePick',
+    'submit',
+    'autofillPerson',
+  ],
   data() {
     return {
       pastTeams: [],
       teamsAutofill: [],
+      personCardRefs: [],
       translationPrefix: 'tournament.',
       people: {},
       visibleId: null,
@@ -149,12 +155,6 @@ export default {
       return this.pastTeams.filter((item) => !item.registered);
     },
   },
-
-  emits: [
-      'goToRolePick',
-      'submit',
-      'autofillPerson',
-  ],
 
   methods: {
     filterTeamNames(val, update) {
@@ -265,7 +265,7 @@ export default {
 
         if (!this.accept || !this.teamName || !this.teamName.trim().length) reject();
 
-        const cards = this.$refs['person-card'];
+        const cards = this.personCardRefs;
         let validated = 0;
         let hasError = false;
 
@@ -350,6 +350,11 @@ export default {
           });
       });
     },
+
+    setPersonCardRef(el) {
+      if (!el) return;
+      this.personCardRefs.push(el);
+    }
   },
 
   watch: {

@@ -19,6 +19,7 @@ export default {
     icon: String,
     color: String,
   },
+  emits: ['click'],
   name: 'PickingButton',
 };
 </script>

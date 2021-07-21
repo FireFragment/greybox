@@ -128,9 +128,6 @@ export default {
     },
   },
   created() {
-    // User already logged -> redirect to homepage
-    if (this.$auth.check()) this.$router.replace({ name: 'home' });
-
     // Auto login user with passed data (from registration page)
     if (this.loginData) {
       this.$bus.$emit('fullLoader', false);

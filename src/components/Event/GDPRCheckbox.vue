@@ -3,7 +3,7 @@
     <q-checkbox
       :model-value="modelValue"
       @update:model-value="emitChange"
-      :class="{ 'q-field--error': error && !value }"
+      :class="{ 'q-field--error': error && !modelValue }"
     >
       {{ $tr("label") }}
       <a @click="showModal = true" ref="labelLink">{{ $tr("link") }}</a>
@@ -43,6 +43,9 @@ export default {
     modelValue: Boolean,
     error: Boolean,
   },
+  emits: [
+    'update:model-value'
+  ],
   data() {
     return {
       translationPrefix: 'tournament.gdpr.',
@@ -54,9 +57,6 @@ export default {
       this.$emit('update:model-value', a);
     },
   },
-  emits: [
-    'update:model-value'
-  ],
   mounted() {
     // Remove label toggling on inner link click
     this.$refs.labelLink.addEventListener('click', (e) => {

@@ -22,6 +22,7 @@
 export default {
   name: 'CountrySelect',
   props: ['modelValue'],
+  emits: ['update:model-value'],
   data() {
     return {
       options: [],
@@ -34,18 +35,19 @@ export default {
     };
   },
   created() {
-    this.loadCountries().then((data) => {
-      this.allOptions = data;
+    this.loadCountries()
+      .then((data) => {
+        this.allOptions = data;
 
-      let { modelValue } = this;
+        let { modelValue } = this;
 
-      // Pick default option based on selected locale
-      if (this.defaultCountries[this.$i18n.locale] && !modelValue) modelValue = this.defaultCountries[this.$i18n.locale];
+        // Pick default option based on selected locale
+        if (this.defaultCountries[this.$i18n.locale] && !modelValue) modelValue = this.defaultCountries[this.$i18n.locale];
 
-      if (modelValue && typeof modelValue === 'string') this.$emit('update:model-value', this.getCountryByCode(modelValue));
+        if (modelValue && typeof modelValue === 'string') this.$emit('update:model-value', this.getCountryByCode(modelValue));
 
-      this.options = data;
-    });
+        this.options = data;
+      });
   },
   methods: {
     loadCountries() {
@@ -98,7 +100,8 @@ export default {
             return (
               this.$tr(item.label)
                 .toLowerCase()
-                .includes(needle) || item.value.toLowerCase().includes(needle)
+                .includes(needle) || item.value.toLowerCase()
+                .includes(needle)
             );
           }
           return false;

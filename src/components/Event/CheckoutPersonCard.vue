@@ -124,6 +124,7 @@ export default {
     personIndex: Number,
     possibleDiets: Array,
   },
+  emits: ['remove'],
   data() {
     return {
       translationPrefix: 'tournament.',

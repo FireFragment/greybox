@@ -1,15 +1,32 @@
-import { isAdmin } from 'src/boot/auth';
+import { isAdmin, isLoggedIn } from 'src/boot/auth';
 import { NavigationGuardWithThis } from 'vue-router';
 
 export const adminMiddleware: NavigationGuardWithThis<undefined> = (
   to, from, next,
 ) => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   if (!isAdmin()) {
-    // Not admin -> send to homepage
     next({ name: 'home' });
   } else {
-    // Admin -> continue
+    next();
+  }
+};
+
+export const loggedInMiddleware: NavigationGuardWithThis<undefined> = (
+  to, from, next,
+) => {
+  if (!isLoggedIn()) {
+    next({ name: 'home' });
+  } else {
+    next();
+  }
+};
+
+export const notLoggedInMiddleware: NavigationGuardWithThis<undefined> = (
+  to, from, next,
+) => {
+  if (isLoggedIn()) {
+    next({ name: 'home' });
+  } else {
     next();
   }
 };

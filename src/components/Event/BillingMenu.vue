@@ -60,6 +60,7 @@ import editDialog from './BillingEditDialog';
 export default {
   name: 'BillingMenu',
   components: { editDialog },
+  emits: ['selected'],
   data() {
     return {
       translationPrefix: 'tournament.checkout.billing.',

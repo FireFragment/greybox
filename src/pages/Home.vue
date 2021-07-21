@@ -3,7 +3,7 @@
     <div class="row full-width text-center">
       <img class="q-mx-auto" alt="Logo ADK" src="../assets/logo_napis.png" />
     </div>
-    <div class="row q-mt-xl flex-center" v-if="!$auth.check()">
+    <div class="row q-mt-xl flex-center" v-if="!$auth.isLoggedIn()">
       <q-btn
         class="q-mx-md q-mb-md hidden-link"
         :to="$path('auth.login')"
