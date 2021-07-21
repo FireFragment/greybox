@@ -32,7 +32,7 @@
       v-if="requireEmail"
       v-model="values.email"
       class="q-mt-xs"
-       type="email"
+      type="email"
       outlined
       :label="$tr('auth.fields.email', null, false) + ' *'"
       lazy-rules
@@ -48,18 +48,18 @@
     </q-input>
 
     <q-select
-        outlined
-        v-model="values.schoolYear"
-        :options="schoolYearsNames"
-        option-value="label"
-        :label="$tr('fields.schoolYear')"
-        class="q-pt-sm q-mb-sm col-12 col-md-4"
-        data-select-value="schoolYears"
-        data-select-options="schoolYearsNames"
-        lazy-rules
-        use-input
-        input-debounce="0"
-        :rules="[val => val || $tr('general.form.fieldError', null, false)]"
+      outlined
+      v-model="values.schoolYear"
+      :options="schoolYearsNames"
+      option-value="label"
+      :label="$tr('fields.schoolYear')"
+      class="q-pt-sm q-mb-sm col-12 col-md-4"
+      data-select-value="schoolYears"
+      data-select-options="schoolYearsNames"
+      lazy-rules
+      use-input
+      input-debounce="0"
+      :rules="[val => val || $tr('general.form.fieldError', null, false)]"
     >
       <template v-slot:prepend>
         <q-icon name="fas fa-graduation-cap" />
@@ -86,7 +86,7 @@
       />
       <q-icon name="fas fa-info-circle" class="q-pl-sm">
         <q-tooltip anchor="top middle" self="bottom middle" :offset="[0, 0]">
-          {{ $tr("fieldNotes.accommodation") }}
+          {{ $tr('fieldNotes.accommodation') }}
         </q-tooltip>
       </q-icon>
     </div>
@@ -99,7 +99,7 @@
     >
       <div class="row q-col-gutter-sm">
         <div class="col-12 q-field" style="color: rgba(0,0,0,0.54);">
-          {{ $tr("fields.birthdate") }} *
+          {{ $tr('fields.birthdate') }} *
         </div>
         <q-select
           outlined
@@ -189,7 +189,7 @@
             self="bottom middle"
             :offset="[0, -10]"
           >
-            {{ $tr("fieldNotes.id_number") }}
+            {{ $tr('fieldNotes.id_number') }}
           </q-tooltip>
         </template>
       </mask-input>
@@ -355,7 +355,7 @@
       >
         <template v-slot:hint>
           <a class="pointer-cursor" @click="showSpeakerStatusModal = true">
-            {{ $tr("speakerStatusModal.title") }}
+            {{ $tr('speakerStatusModal.title') }}
           </a>
         </template>
       </q-select>
@@ -363,7 +363,7 @@
         <q-card class="dialog-medium">
           <q-card-section class="row items-center">
             <div class="text-h6">
-              {{ $tr("speakerStatusModal.title") }}
+              {{ $tr('speakerStatusModal.title') }}
             </div>
             <q-space />
             <q-btn icon="fas fa-times" flat round dense v-close-popup />
@@ -380,8 +380,8 @@
               ></span>
 
               <ul>
-                <li>{{ $tr("speakerStatusModal.common") }},</li>
-                <li>{{ $tr("speakerStatusModal.efl") }}.</li>
+                <li>{{ $tr('speakerStatusModal.common') }},</li>
+                <li>{{ $tr('speakerStatusModal.efl') }}.</li>
               </ul>
             </div>
             <div>
@@ -393,8 +393,8 @@
                 "
               ></span>
               <ul>
-                <li>{{ $tr("speakerStatusModal.common") }},</li>
-                <li>{{ $tr("speakerStatusModal.esl") }}.</li>
+                <li>{{ $tr('speakerStatusModal.common') }},</li>
+                <li>{{ $tr('speakerStatusModal.esl') }}.</li>
               </ul>
             </div>
           </q-card-section>
@@ -502,7 +502,10 @@ import MaskInput from './MaskInput';
 
 export default {
   name: 'FormFields',
-  components: { GDPRCheckbox, MaskInput },
+  components: {
+    GDPRCheckbox,
+    MaskInput
+  },
   props: {
     autofill: Object,
     isTeam: Boolean,
@@ -590,20 +593,18 @@ export default {
         value: (`0${i + 1}`).substr(-2),
       };
     }
-    
-    this.$tr('tournament.fields.schoolYears').map(
-      function (key, name) {
-        this.schoolYearsNames.push(name);
-        this.schoolYears.push(key);
-      }
-    );
+
+    const schoolYearsObject = this.$tr('fields.schoolYears');
+    this.schoolYears = Object.keys(schoolYearsObject);
+    this.schoolYearsNames = Object.values(schoolYearsObject);
 
     for (const i in this.possibleDiets) {
       this.possibleDietsOptions[i] = {
         label:
           this.$tr(this.possibleDiets[i].name)
             .charAt(0)
-            .toUpperCase() + this.$tr(this.possibleDiets[i].name).slice(1),
+            .toUpperCase() + this.$tr(this.possibleDiets[i].name)
+            .slice(1),
         value: this.possibleDiets[i].id,
       };
       // if last:
@@ -626,32 +627,34 @@ export default {
     // Renitialize smartform
     window.smartform.rebindAllForms(true, () => {
       // Loop through instances
-      window.smartform.getInstanceIds().forEach((id) => {
-        const instance = window.smartform.getInstance(id);
+      window.smartform.getInstanceIds()
+        .forEach((id) => {
+          const instance = window.smartform.getInstance(id);
 
-        // Set limit to 3 results for every field
-        [
-          'smartform-street-and-number',
-          'smartform-city',
-          'smartform-zip',
-        ].forEach((input) => {
-          instance.getBox(input).setLimit(3);
-        });
+          // Set limit to 3 results for every field
+          [
+            'smartform-street-and-number',
+            'smartform-city',
+            'smartform-zip',
+          ].forEach((input) => {
+            instance.getBox(input)
+              .setLimit(3);
+          });
 
-        // Run this callback on selection
-        instance.setSelectionCallback((element, value, fieldType) => {
-          const field = fieldType.substr('10');
+          // Run this callback on selection
+          instance.setSelectionCallback((element, value, fieldType) => {
+            const field = fieldType.substr('10');
 
-          const varName = field !== 'street-and-number' ? field : 'street';
+            const varName = field !== 'street-and-number' ? field : 'street';
 
-          // Emit global event so other form instances can receive it
-          this.$bus.$emit('smartform', {
-            instance: id,
-            field: varName,
-            value,
+            // Emit global event so other form instances can receive it
+            this.$bus.$emit('smartform', {
+              instance: id,
+              field: varName,
+              value,
+            });
           });
         });
-      });
     });
   },
 
@@ -680,7 +683,9 @@ export default {
             formData[index] != this.autofill[index]
             && index !== 'accommodation'
             && index !== 'meals'
-          ) autofillData.edited = true;
+          ) {
+            autofillData.edited = true;
+          }
         }
       }
 
@@ -758,7 +763,8 @@ export default {
     },
 
     compareOptionStrings(str1, str2) {
-      return str1.toLowerCase().includes(str2);
+      return str1.toLowerCase()
+        .includes(str2);
     },
   },
 
@@ -778,7 +784,9 @@ export default {
             this.values.birthYear = parseInt(value[0]);
             this.values.birthMonth = this.monthsAll[parseInt(value[1]) - 1];
             this.values.birthDay = this.daysAll[parseInt(value[2]) - 1];
-          } else this.values.birthDay = this.values.birthMonth = this.values.birthYear = null;
+          } else {
+            this.values.birthDay = this.values.birthMonth = this.values.birthYear = null;
+          }
         }
         // Diet -> pick correct value object
         else if (key === 'dietary_requirement') {
@@ -793,7 +801,9 @@ export default {
           )[0];
         }
         // Any other field -> pass raw value
-        else this.values[key] = data[key];
+        else {
+          this.values[key] = data[key];
+        }
       }
     },
 
@@ -822,7 +832,7 @@ export default {
       if (
         this.accommodationType === 'required'
         || (this.accommodationType !== 'none'
-          && this.values.accommodation === (this.accommodationType === 'opt-in'))
+        && this.values.accommodation === (this.accommodationType === 'opt-in'))
       ) {
         returnObject.accommodation = true;
         returnObject.birthdate = this.birthdateFormatter(
@@ -836,7 +846,9 @@ export default {
         returnObject.zip = this.values.zip
           ? this.values.zip.replace(' ', '')
           : '';
-      } else returnObject.accommodation = false;
+      } else {
+        returnObject.accommodation = false;
+      }
 
       // PDS -> include speaker status
       if (this.requireSpeakerStatus) {
