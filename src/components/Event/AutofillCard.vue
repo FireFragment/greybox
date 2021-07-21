@@ -52,7 +52,7 @@ export default {
     return {
       pastLogins: [],
       showLoading: true,
-      translationPrefix: 'tournament.autofill.',
+      translationPrefix: 'event.autofill.',
       showDeleteButton: null,
     };
   },
@@ -109,7 +109,7 @@ export default {
   },
 
   computed: {
-    // Peopla in autofill already registered for this tournament
+    // Peopla in autofill already registered for this event
     registeredPeople() {
       return this.pastLogins.filter((item) => item.registered);
     },

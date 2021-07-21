@@ -106,7 +106,7 @@ export default {
   },
   data() {
     return {
-      translationPrefix: 'tournament.checkout.confirm.',
+      translationPrefix: 'event.checkout.confirm.',
     };
   },
   methods: {

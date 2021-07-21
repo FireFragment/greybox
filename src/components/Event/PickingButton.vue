@@ -7,7 +7,6 @@
       stack
       :color="color"
       :no-caps="true"
-      @click="$emit('click')"
     />
   </div>
 </template>
@@ -19,7 +18,6 @@ export default {
     icon: String,
     color: String,
   },
-  emits: ['click'],
   name: 'PickingButton',
 };
 </script>

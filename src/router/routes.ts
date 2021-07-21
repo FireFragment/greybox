@@ -1,9 +1,14 @@
-import { RouteRecordRaw } from 'vue-router';
+import { RouteRecordRaw, RouterView } from 'vue-router';
 import { adminMiddleware, loggedInMiddleware, notLoggedInMiddleware } from './middlewares';
 
 // Translations
 import CZroutes from '../translation/cs/paths.json';
 import ENroutes from '../translation/en/paths.json';
+
+// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+const eventTypes = (routes: any) => Object.values(routes.eventParams.type).join('|');
+// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+const eventRoles = (routes: any) => Object.values(routes.eventParams.role).join('|');
 
 const routes: RouteRecordRaw[] = [
   {
@@ -23,58 +28,46 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/About.vue'),
       },
       {
-        path: `${CZroutes.tournament}/:id-:slug`,
-        alias: `${ENroutes.tournament}/:id-:slug`,
-        name: 'tournament',
-        component: () => import('pages/Event.vue'),
-      },
-      {
-        path: `${CZroutes.tournament}/:id-:slug/jednotlivec`,
-        alias: `${ENroutes.tournament}/:id-:slug/individual`,
-        name: 'tournament-individual',
-        component: () => import('pages/Event/Individual.vue'),
-      },
-      {
-        path: `${CZroutes.tournament}/:id-:slug/skupina`,
-        alias: `${ENroutes.tournament}/:id-:slug/group`,
-        name: 'tournament-group',
-        component: () => import('pages/Event/Group.vue'),
-      },
-      {
-        path: `${CZroutes.tournament}/:id-:slug/:type/debater`,
-        alias: `${ENroutes.tournament}/:id-:slug/:type/debater`,
-        name: 'tournament-debater',
-        component: () => import('pages/Event/Debater.vue'),
-      },
-      {
-        path: `${CZroutes.tournament}/:id-:slug/:type/tym`,
-        alias: `${ENroutes.tournament}/:id-:slug/:type/team`,
-        name: 'tournament-team',
-        component: () => import('pages/Event/Team.vue'),
-      },
-      {
-        path: `${CZroutes.tournament}/:id-:slug/:type/rozhodci`,
-        alias: `${ENroutes.tournament}/:id-:slug/:type/judge`,
-        name: 'tournament-judge',
-        component: () => import('pages/Event/Judge.vue'),
-      },
-      {
-        path: `${CZroutes.tournament}/:id-:slug/:type/dobrovolnik`,
-        alias: `${ENroutes.tournament}/:id-:slug/:type/volunteer`,
-        name: 'tournament-volunteer',
-        component: () => import('pages/Event/Volunteer.vue'),
-      },
-      {
-        path: `${CZroutes.tournament}/:id-:slug/:type/:role/prihlaseni`,
-        alias: `${ENroutes.tournament}/:id-:slug/:type/:role/signup`,
-        name: 'tournament-signup',
-        component: () => import('pages/Event/Signup.vue'),
-      },
-      {
-        path: `${CZroutes.tournament}/:id-:slug/:type/:role/potvrzeni`,
-        alias: `${ENroutes.tournament}/:id-:slug/:type/:role/checkout`,
-        name: 'tournament-checkout',
-        component: () => import('pages/Event/Checkout.vue'),
+        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+        path: `${CZroutes.event}/:id-:slug`,
+        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+        alias: `${ENroutes.event}/:id-:slug`,
+        name: 'event',
+        component: RouterView,
+        children: [{
+          path: '',
+          alias: '',
+          name: 'event-pick-type',
+          component: () => import('pages/Event/PickType.vue'),
+        }, {
+          path: `:type(${eventTypes(CZroutes)})`,
+          alias: `:type(${eventTypes(ENroutes)})`,
+          name: 'event-pick-role',
+          component: () => import('pages/Event/Debater.vue'),
+        }, {
+          path: `:type(${eventTypes(CZroutes)})/:role(${eventRoles(CZroutes)})`,
+          alias: `:type(${eventTypes(ENroutes)})/:role(${eventRoles(ENroutes)})`,
+          name: 'event-register-form',
+          component: () => import('pages/Event/Debater.vue'),
+        }, {
+          // eslint-disable-next-line max-len
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/restrict-template-expressions
+          path: `:type(${eventTypes(CZroutes)})/${CZroutes.eventParams.checkout}`,
+          // eslint-disable-next-line max-len
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/restrict-template-expressions
+          alias: `:type(${eventTypes(ENroutes)})/${ENroutes.eventParams.checkout}`,
+          name: 'event-checkout',
+          component: () => import('pages/Event/Debater.vue'),
+        }, {
+          // eslint-disable-next-line max-len
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/restrict-template-expressions
+          path: `:type(${eventTypes(CZroutes)})/${CZroutes.eventParams.registered}`,
+          // eslint-disable-next-line max-len
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/restrict-template-expressions
+          alias: `:type(${eventTypes(ENroutes)})/${ENroutes.eventParams.registered}`,
+          name: 'event-registered',
+          component: () => import('pages/Event/Debater.vue'),
+        }],
       },
 
       // Admin

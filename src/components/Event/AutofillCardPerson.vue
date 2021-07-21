@@ -50,7 +50,7 @@ export default {
   ],
   data() {
     return {
-      translationPrefix: 'tournament.autofill.',
+      translationPrefix: 'event.autofill.',
     };
   },
 };

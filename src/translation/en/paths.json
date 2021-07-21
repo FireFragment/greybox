@@ -1,7 +1,21 @@
 {
   "home": "en",
   "about": "about",
-  "tournament": "tournaments",
+  "event": "events",
+  "eventParams": {
+    "type": {
+      "group": "group",
+      "individual": "individual"
+    },
+    "role": {
+      "team": "team",
+      "debater": "debater",
+      "judge": "judge",
+      "volunteer": "volunteer"
+    },
+    "checkout": "checkout",
+    "registered": "registered"
+  },
   "auth": {
     "login": "login",
     "signUp": "sign-up",
@@ -10,6 +24,6 @@
     "accountSettings": "account-settings"
   },
   "admin": {
-    "eventRegistrations": "tournaments-registrations"
+    "eventRegistrations": "events-registrations"
   }
 }

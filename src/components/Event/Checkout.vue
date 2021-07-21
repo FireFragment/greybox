@@ -114,7 +114,7 @@ export default {
   ],
   data() {
     return {
-      translationPrefix: 'tournament.checkout.',
+      translationPrefix: 'event.checkout.',
       loading: false,
       billingClient: null,
     };

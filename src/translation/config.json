@@ -12,6 +12,6 @@
     }
   },
   "files": [
-    "general", "auth", "paths", "tournament", "admin"
+    "general", "auth", "paths", "event", "admin"
   ]
 }

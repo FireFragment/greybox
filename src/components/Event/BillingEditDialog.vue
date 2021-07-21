@@ -136,7 +136,7 @@ export default {
   ],
   data() {
     return {
-      translationPrefix: 'tournament.checkout.billing.',
+      translationPrefix: 'event.checkout.billing.',
       initialized: false,
       values: {
         name: null,

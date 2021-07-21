@@ -127,7 +127,7 @@ export default {
   emits: ['remove'],
   data() {
     return {
-      translationPrefix: 'tournament.',
+      translationPrefix: 'event.',
     };
   },
   computed: {

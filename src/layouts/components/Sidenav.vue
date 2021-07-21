@@ -10,13 +10,13 @@
         </q-item-section>
       </q-item>
 
-      <q-item-label header>{{ $tr("tournament.link") }}</q-item-label>
+      <q-item-label header>{{ $tr("event.link") }}</q-item-label>
       <q-item
         v-for="event in events"
         v-bind:key="event.id"
         @mouseup="
           eventLinkClicked(
-            $path('tournament') +
+            $path('event') +
               '/' +
               event.id +
               '-' +
@@ -24,12 +24,12 @@
           )
         "
         :class="`${
-          $route.name === 'tournament' && parseInt($route.params.id) === event.id
+          $route.name === 'event' && parseInt($route.params.id) === event.id
             ? 'q-router-link--active'
             : ''
         }`"
         :to="
-          $path('tournament') +
+          $path('event') +
             '/' +
             event.id +
             '-' +
@@ -43,7 +43,7 @@
         </q-item-section>
       </q-item>
       <div v-if="!Object.keys(events).length" class="empty-info">
-        {{ $tr("tournament.empty") }}
+        {{ $tr("event.empty") }}
       </div>
 
       <template v-if="$auth.isAdmin()">

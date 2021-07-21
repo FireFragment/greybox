@@ -83,7 +83,7 @@ export default {
   ],
   data() {
     return {
-      translationPrefix: 'tournament.',
+      translationPrefix: 'event.',
       formData: {},
     };
   },

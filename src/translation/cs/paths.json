@@ -1,7 +1,21 @@
 {
   "home": "",
   "about": "o-webu",
-  "tournament": "turnaje",
+  "event": "turnaje",
+  "eventParams": {
+    "type": {
+      "group": "skupina",
+      "individual": "jednotlivec"
+    },
+    "role": {
+      "team": "tym",
+      "debater": "debater",
+      "judge": "rozhodci",
+      "volunteer": "dobrovolnik"
+    },
+    "checkout": "prehled",
+    "registered": "odeslano"
+  },
   "auth": {
     "login": "prihlaseni",
     "signUp": "registrace",

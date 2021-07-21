@@ -8,7 +8,6 @@
         :label="btn.label"
         :icon="btn.icon"
         :color="btn.color"
-        @click="$emit('selected', name, btn.value)"
       />
       <div class="col" v-if="values.length < 4"></div>
     </div>
@@ -25,7 +24,6 @@ export default {
     name: String,
     hideFirst: Boolean,
   },
-  emits: ['selected'],
   components: {
     pickingButton,
   },
