@@ -1,5 +1,5 @@
 <template>
-  <q-drawer :value="value" @input="toggleDrawerMenu" bordered>
+  <q-drawer :model-value="modelValue" bordered>
     <q-list>
       <q-item :to="$path('home')" exact>
         <q-item-section avatar>
@@ -153,7 +153,7 @@ export default {
     };
   },
   props: {
-    value: Boolean,
+    modelValue: Boolean,
   },
   created() {
     if (this.events.length) return;
@@ -179,12 +179,10 @@ export default {
         this.$bus.$emit('fullLoader', false);
       });
   },
+  emits: [
+    'update:model-value'
+  ],
   methods: {
-    // Pass drawer toggle input up the chain so it can be properly closed
-    toggleDrawerMenu(value) {
-      this.$emit('input', value);
-    },
-
     eventLinkClicked(eventUrl) {
       // Trying to go to same URL again -> go home before that so vue "reloads" page
       if (this.$route.path === eventUrl) {

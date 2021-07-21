@@ -150,6 +150,12 @@ export default {
     },
   },
 
+  emits: [
+      'goToRolePick',
+      'submit',
+      'autofillPerson',
+  ],
+
   methods: {
     filterTeamNames(val, update) {
       if (val) this.teamId = null;

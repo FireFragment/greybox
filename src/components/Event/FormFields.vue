@@ -626,6 +626,12 @@ export default {
     });
   },
 
+  emits: [
+    'submit',
+    'goToRolePick',
+    'update:model-value',
+  ],
+
   methods: {
     sendForm() {
       if (!this.isTeam && !this.values.accept) return !(this.acceptError = true);
@@ -764,7 +770,7 @@ export default {
 
     values: {
       handler() {
-        this.$emit('input', this.submitData);
+        this.$emit('update:model-value', this.submitData);
       },
       deep: true,
     },

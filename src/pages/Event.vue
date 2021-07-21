@@ -7,7 +7,7 @@
         :class="{ smaller: role || role === 0 }"
       >
         <h1 class="text-center text-h4">
-          {{ $tr("title") }} {{ $tr(event.name) }}
+          {{ $tr('title') }} {{ $tr(event.name) }}
         </h1>
         <div
           class="text-center close-paragraphs q-p-1"
@@ -20,18 +20,22 @@
             >
               <!-- Year is different -->
               {{ getDate(event.beginning, 'D. M. YYYY') }} - {{ getDate(event.end, 'D. M. YYYY') }}
-            </template><template
+            </template>
+            <template
               v-else-if="
                 event.beginning.substr(0, 7) !== event.end.substr(0, 7)
               "
             >
               <!-- Month is different -->
-            {{ getDate(event.beginning, 'D. M.') }} - {{ getDate(event.end, 'D. M. YYYY') }}
-          </template><template v-else-if="event.beginning !== event.end">
+              {{ getDate(event.beginning, 'D. M.') }} - {{ getDate(event.end, 'D. M. YYYY') }}
+            </template>
+            <template v-else-if="event.beginning !== event.end">
               <!-- Just day is different-->
- {{ getDate(event.beginning, 'D. M. YYYY') }}
-              - </template
-            >{{ getDate(event.end, 'D. M. YYYY') }}
+              {{ getDate(event.beginning, 'D. M. YYYY') }}
+              -
+            </template
+            >
+            {{ getDate(event.end, 'D. M. YYYY') }}
             <!-- else - One day event -->
           </p>
           <p>
@@ -40,7 +44,7 @@
           </p>
           <p>
             <q-icon name="far fa-bell" class="text-negative" />
-            {{ $tr("deadline") }}:
+            {{ $tr('deadline') }}:
             {{ getDate(event.soft_deadline, 'D. M. YYYY H:mm') }}
           </p>
           <p v-if="event.note">
@@ -57,7 +61,7 @@
           <template v-slot:avatar>
             <q-icon name="far fa-calendar-times" color="white" />
           </template>
-          {{ $tr("errors.deadline") }}
+          {{ $tr('errors.deadline') }}
         </q-banner>
       </div>
     </div>
@@ -67,7 +71,7 @@
           <template v-slot:avatar>
             <q-icon name="fas fa-info" color="white" />
           </template>
-          {{ $tr("errors.auth") }}
+          {{ $tr('errors.auth') }}
           <template v-slot:action>
             <q-btn
               flat
@@ -167,7 +171,7 @@
     <q-dialog v-model="showGroupModal" persistent>
       <q-card>
         <q-card-section class="row items-center">
-          <div class="text-h6">{{ $tr("groupModal.title") }}</div>
+          <div class="text-h6">{{ $tr('groupModal.title') }}</div>
         </q-card-section>
         <q-card-section class="row items-center text-center">
           <q-avatar
@@ -321,7 +325,7 @@ export default {
 
             // Individual debater should be hidden on PDS
             if (role.id !== 1 || !this.$isPDS)
-            // Push role to role list
+              // Push role to role list
             {
               this.roles[role.id] = {
                 value: role.id,
@@ -406,8 +410,11 @@ export default {
         autofill,
       });
 
-      if (this.type === 'single') this.goTo('checkout');
-      else this.showGroupModal = true;
+      if (this.type === 'single') {
+        this.goTo('checkout');
+      } else {
+        this.showGroupModal = true;
+      }
     },
 
     typePicked(key, value) {
@@ -420,8 +427,9 @@ export default {
     },
 
     goTo(phase) {
-      if (phase === 'role') this.role = this.autofillData = this.checkout = null;
-      else if (phase === 'checkout') this.role = this.checkout = true;
+      if (phase === 'role') {
+        this.role = this.autofillData = this.checkout = null;
+      } else if (phase === 'checkout') this.role = this.checkout = true;
     },
 
     // Registration sent

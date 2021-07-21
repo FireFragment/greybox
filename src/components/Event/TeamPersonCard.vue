@@ -47,7 +47,7 @@
         <q-card-section v-if="showCard">
           <form-fields
               ref="form-fields"
-              @input="catchInput"
+              @update:model-value="catchInput"
               :autofill="autofill"
               :is-team="true"
               :accommodationType="accommodationType"
@@ -92,7 +92,7 @@ export default {
   methods: {
     catchInput(data) {
       this.formData = data;
-      this.$emit('input', data, this.id);
+      this.$emit('update:model-value', data, this.id);
     },
     toggleCard() {
       this.showCard = ! this.showCard;
