@@ -107,6 +107,38 @@
 
 <script>
 /* eslint-disable */
+import { $tr, $flash } from '../../boot/custom';
+export const outputValidationErrors = (data) => {
+  if (!data) {
+    $flash($tr('general.error', null, false), 'error');
+    return;
+  }
+
+  for (const index in data) {
+    let messages = data[index];
+    if (typeof messages === 'string') {
+      messages = [messages];
+    }
+
+    messages.forEach((message) => {
+      $flash(
+        $tr(
+          `auth.signUp.validation.${
+            index
+          }.${
+            message.includes('validation.')
+              ? message.substr(11).replace('.', '-')
+              : message
+          }`,
+          null, false,
+        ),
+        'error',
+        false,
+        9000,
+      );
+    });
+  }
+};
 
 export default {
   name: 'PageSignUp',
@@ -150,25 +182,7 @@ export default {
             },
           });
         })
-        .catch((data) => {
-          if (data.response.data) {
-            for (const index in data.response.data) {
-              data.response.data[index].forEach((message) => {
-                this.$flash(
-                  this.$tr(
-                    `signUp.validation.${
-                      index
-                    }.${
-                      message.substr(11).replace('.', '-')}`,
-                  ),
-                  'error',
-                  false,
-                  9000,
-                );
-              });
-            }
-          } else this.$flash(this.$tr('general.error', null, false), 'error');
-        })
+        .catch((data) => outputValidationErrors(data.response.data))
         .finally(() => {
           this.loading = false;
         });

@@ -3,6 +3,7 @@ const Bugsnag = require('@bugsnag/js');
 const BugsnagPluginVue = require('@bugsnag/plugin-vue');
 import apiCall from '../api';
 import config from '../config';
+import { Notify } from 'quasar';
 
 const smartformModule = require('@smartform.cz/smartform');
 import { boot } from 'quasar/wrappers';
@@ -42,7 +43,7 @@ export const $path = function (route: string) {
   return '/' + $tr(`paths.${route}`, null, false);
 };
 
-export const $flash = function (message: string, type: string = 'info', icon: string | null = null, timeout: number = 3500) {
+export const $flash = function (message: string, type: string = 'info', icon: string | undefined = undefined, timeout: number = 3500) {
   let color: string | undefined = undefined;
   if (type === 'success' || type === 'done') {
     color = 'green';
@@ -52,10 +53,9 @@ export const $flash = function (message: string, type: string = 'info', icon: st
     if (!icon) icon = 'times';
   }
 
-  // @ts-ignore
-  return this.$q.notify({
+  return Notify.create({
     color,
-    icon: icon ? 'fas fa-' + icon : null,
+    icon: icon ? 'fas fa-' + icon : undefined,
     message: message,
     html: true,
     position: 'top-right',

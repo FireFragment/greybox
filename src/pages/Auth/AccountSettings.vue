@@ -102,6 +102,9 @@
 </template>
 
 <script>
+/* eslint-disable */
+import { outputValidationErrors } from './SignUp';
+
 export default {
   name: 'AccountSettings',
   data() {
@@ -119,10 +122,31 @@ export default {
   },
   methods: {
     submit() {
+      if (this.loading) return;
+
       this.loading = true;
+      this.$api({
+        url: `user/${this.$auth.user.id}/password`,
+        method: 'put',
+        data: {
+          username: this.email,
+          password_old: this.oldPassword,
+          password: this.newPassword,
+          password_confirmation: this.passwordConfirmation,
+        },
+        alerts: false,
+      })
+        .then(() => {
+          this.$flash(this.$tr('auth.accountSettings.success'), 'done');
+          this.$auth.logout();
+        })
+        .catch((data) => {
+          outputValidationErrors(data.response.data);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
   },
 };
 </script>
-
-<style scoped></style>
