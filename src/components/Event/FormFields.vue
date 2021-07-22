@@ -52,7 +52,7 @@
       v-if="role === 1"
       v-model="values.schoolYear"
       :options="schoolYears"
-      :label="$tr('fields.schoolYear')"
+      :label="`${$tr('fields.schoolYear')} *`"
       class="q-pt-sm q-mb-sm col-12 col-md-4"
       lazy-rules
       use-input
@@ -91,7 +91,6 @@
 
     <!-- details needed for accommodation -->
     <div
-      class="block"
       :class="{ 'form-conditional-block': accommodationType !== 'required' }"
       v-show="accommodationType !== 'none' && values.accommodation === true"
     >
