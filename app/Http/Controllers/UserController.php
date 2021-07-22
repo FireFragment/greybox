@@ -185,7 +185,13 @@ class UserController extends Controller
                     }
                     return response()->json($user, 200);
                 } catch (\Illuminate\Database\QueryException $e) {
-                    return response()->json(['message' => $e->getMessage()], 500);
+                    if (23000 === $e->getCode() || 23505 === $e->getCode()) {
+                        return response()->json(['username' => ['validation.unique']], 409);
+                    } else {
+                        $code = 500;
+                        $message = $e->getMessage();
+                    }
+                    return response()->json(['message' => $message], $code);
                 }
             } else {
                 return response()->json(['message' => 'invalidCredentials'], 401);
