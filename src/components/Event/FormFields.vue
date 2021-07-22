@@ -93,7 +93,7 @@
     <div
       class="block"
       :class="{ 'form-conditional-block': accommodationType !== 'required' }"
-      v-if="accommodationType !== 'none' && values.accommodation === true"
+      v-show="accommodationType !== 'none' && values.accommodation === true"
     >
       <div class="row q-col-gutter-sm">
         <div class="col-12 q-field" style="color: rgba(0,0,0,0.54);">
@@ -198,7 +198,7 @@
         :label="$tr('fields.street') + ' *'"
         class="q-pt-sm"
         :input-class="
-          'smartform-street-and-number ' + 'smartform-instance-' + _uid
+          'smartform-street-and-number ' + 'smartform-instance-' + uuid
         "
         lazy-rules
         :rules="[
@@ -217,7 +217,7 @@
         v-model="values.city"
         :label="$tr('fields.city') + ' *'"
         class="q-pt-sm"
-        :input-class="'smartform-city ' + 'smartform-instance-' + _uid"
+        :input-class="'smartform-city ' + 'smartform-instance-' + uuid"
         lazy-rules
         :rules="[
           val =>
@@ -235,7 +235,7 @@
         v-model="values.zip"
         :label="$tr('fields.zip') + ' *'"
         class="q-pt-sm"
-        :input-class="'smartform-zip ' + 'smartform-instance-' + _uid"
+        :input-class="'smartform-zip ' + 'smartform-instance-' + uuid"
         mask="### ##"
         fill-mask="_"
         :hint="$tr('fieldNotes.example') + ' 796 01'"
@@ -619,7 +619,7 @@ export default {
     // Smartform autocomplete select
     this.$bus.$on('smartform', (data) => {
       // If instance ID is this form
-      if (data.instance.substr(-(`${this._uid}`).length) == this._uid) this.values[data.field] = data.value;
+      if (data.instance.substr(-(this.uuid.length)) == this.uuid) this.values[data.field] = data.value;
     });
   },
 

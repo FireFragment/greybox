@@ -89,13 +89,18 @@ export default boot(({ app }) => {
 
   // Mixins
   const DB_DELETION_CONSTANT = 'DELETE-THIS-DATABASE-ITEM'; // when DB item is set to this value, it will be deleted
+  let uuid = 0;
   app.mixin({
     data() {
       return {
         apiSettings: config.api,
         env: process.env.FULL_ENV,
-        DB_DEL: DB_DELETION_CONSTANT,
+        DB_DEL: DB_DELETION_CONSTANT, // TODO - generovat uid všem komponentám kvůli formům
       };
+    },
+    beforeCreate: function() {
+      this.uuid = uuid.toString();
+      uuid += 1;
     },
     methods: {
       // Translation simplification

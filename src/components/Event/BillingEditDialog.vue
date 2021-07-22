@@ -55,7 +55,7 @@
               :label="$tr('fields.street')"
               class="col-12"
               :input-class="
-                'smartform-street-and-number ' + 'smartform-instance-' + _uid
+                'smartform-street-and-number ' + 'smartform-instance-' + uuid
               "
               lazy-rules
             >
@@ -69,7 +69,7 @@
               outlined
               :label="$tr('fields.city')"
               class="col-7"
-              :input-class="'smartform-city ' + 'smartform-instance-' + _uid"
+              :input-class="'smartform-city ' + 'smartform-instance-' + uuid"
               lazy-rules
               hint=""
             >
@@ -83,7 +83,7 @@
               outlined
               :label="$tr('fields.zip')"
               class="col-5"
-              :input-class="'smartform-zip ' + 'smartform-instance-' + _uid"
+              :input-class="'smartform-zip ' + 'smartform-instance-' + uuid"
               :mask="validateZip ? '### ##' : ''"
               fill-mask="_"
               :hint="validateZip ? $tr('fieldNotes.example') + ' 796 01' : null"
@@ -153,7 +153,7 @@ export default {
     // Smartform autocomplete select
     this.$bus.$on('smartform', (data) => {
       // If instance ID is this form
-      if (data.instance.substr(-(`${this._uid}`).length) == this._uid) this.values[data.field] = data.value;
+      if (data.instance.substr(-(this.uuid.length)) == this.uuid) this.values[data.field] = data.value;
     });
 
     this.stateChange(this.visible);
