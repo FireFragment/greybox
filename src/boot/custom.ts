@@ -7,7 +7,7 @@ import { Notify } from 'quasar';
 const smartformModule = require('@smartform.cz/smartform');
 import { boot } from 'quasar/wrappers';
 import { i18n } from 'boot/i18n';
-import i18nConfig from '../translation/config.json';
+import i18nConfig from '../translation/config';
 
 export const $tr = function (key: string, options: Record<string, unknown> | null = null, usePrefix = true) {
   // Translate object received from API
