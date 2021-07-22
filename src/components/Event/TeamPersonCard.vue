@@ -86,8 +86,7 @@ export default {
   data() {
     return {
       translationPrefix: 'tournament.',
-      formData: {},
-      showCard: false,
+      formData: {}
     };
   },
   methods: {
@@ -95,19 +94,25 @@ export default {
       this.formData = data;
       this.$emit('update:model-value', data, this.id);
     },
-    sectionClicked() {
-      this.showCard = !this.showCard;
+    updateHeight() {
+      /* TODO
+      console.log("cs");
+      //console.log(elem);
+      //let el = document.querySelectorAll('.q-card-section-wrapper');
+      let height = this.$el.scrollHeight;
+      this.$el.style('height', height + 'px')
+      setTimeout(() => {
+        //this.$el.style('height', 'auto')
+        console.log(this.$el);
+      }, 500);
+       */
     }
   },
-  mounted() {
-    this.$nextTick(function () {
-      let el = document.querySelectorAll('.q-card-section-wrapper');
-      let height = el[0].scrollHeight;
-      el.forEach(function (el) {
-        el.style.setProperty('--max-height', height + 'px')
-      });
-    })
-  },
+  watch: {
+    visible: function (val) {
+      this.updateHeight()
+    }
+  }
 
 };
 </script>

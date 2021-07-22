@@ -35,10 +35,17 @@
           rel="stylesheet">
     <title>greybox 2.0</title>
     <style>
+      body {
+          height: 100vh;
+          width: 100vw;
+          padding: 0;
+          margin: 0;
+      }
       noscript {
         text-align: center;
-        height: 10rem;
-        width: calc(100vw - 16px);
+        padding: 2rem 1rem;
+        height: 15rem;
+        width: calc(100vw - 16px - 2rem);
         font-size: 1.5rem;
         font-family: sans-serif;
         transition: all 1s ease-in-out;
@@ -47,19 +54,29 @@
         align-items: center;
       }
 
-      noscript:hover {
+      body:hover > noscript{
         transform: rotate(720deg);
         font-size: 3rem;
         height: calc(100vh - 16px);
+      }
+
+      @media screen and (max-width: 768px){
+          noscript {
+              height: auto !important;
+              flex-direction: column;
+          }
+          noscript > strong {
+              margin: 2rem 0;
+          }
       }
     </style>
   </head>
   <body>
     <noscript>
-      <strong>Omlouváme se, ale greybox nebude JavaScriptu fungovat správně.<br>Prosím povolte jej
-        pro vstup na web.</strong>
-      <strong>We're sorry but greybox doesn't work properly without JavaScript enabled.<br>Please
-        enable it to continue.</strong>
+        <strong>Omlouváme se, ale greybox nebude JavaScriptu fungovat správně.<br>Prosím povolte jej
+            pro vstup na web.</strong>
+        <strong>We're sorry but greybox doesn't work properly without JavaScript enabled.<br>Please
+            enable it to continue.</strong>
     </noscript>
     <!-- DO NOT touch the following DIV -->
     <div id="q-app"></div>
