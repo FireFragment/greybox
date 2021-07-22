@@ -9,7 +9,7 @@
         <q-btn icon="fas fa-times" flat round dense v-close-popup />
       </q-card-section>
 
-      <q-form ref="q-form" @submit="submitForm" v-if="initialized">
+      <q-form ref="q-form" @submit="submitForm" v-show="initialized">
         <q-card-section>
           <div class="row q-col-gutter-md q-pb-sm">
             <q-input
@@ -179,7 +179,7 @@ export default {
           this.values[key] = this.client && this.client[key] ? this.client[key] : null;
         });
 
-      this._initSmartform();
+      this.$nextTick(this._initSmartform);
       this.initialized = true;
     },
 

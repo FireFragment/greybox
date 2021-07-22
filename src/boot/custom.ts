@@ -95,9 +95,10 @@ export default boot(({ app }) => {
       return {
         apiSettings: config.api,
         env: process.env.FULL_ENV,
-        DB_DEL: DB_DELETION_CONSTANT, // TODO - generovat uid všem komponentám kvůli formům
+        DB_DEL: DB_DELETION_CONSTANT,
       };
     },
+    // Generate unique ID for every component
     beforeCreate: function() {
       this.uuid = uuid.toString();
       uuid += 1;
