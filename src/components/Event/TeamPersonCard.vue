@@ -39,19 +39,21 @@
           </div>
         </div>
       </q-card-section>
-      <q-card-section v-show="visible">
-        <form-fields
-          ref="form-fields"
-          @update:model-value="catchInput"
-          :autofill="autofill"
-          :is-team="true"
-          :accommodationType="accommodationType"
-          :mealType="mealType"
-          :possibleDiets="possibleDiets"
-          :role="1"
-          :requireEmail="requireEmail"
-        />
-      </q-card-section>
+      <div class="q-card-section-wrapper" :class="{ hiddenCard: !visible }">
+        <q-card-section class="" >
+          <form-fields
+              ref="form-fields"
+              @update:model-value="catchInput"
+              :autofill="autofill"
+              :is-team="true"
+              :accommodationType="accommodationType"
+              :mealType="mealType"
+              :possibleDiets="possibleDiets"
+              :role="1"
+              :requireEmail="requireEmail"
+          />
+        </q-card-section>
+      </div>
     </q-card>
   </div>
 </template>
@@ -85,6 +87,7 @@ export default {
     return {
       translationPrefix: 'tournament.',
       formData: {},
+      showCard: false,
     };
   },
   methods: {
@@ -92,6 +95,19 @@ export default {
       this.formData = data;
       this.$emit('update:model-value', data, this.id);
     },
+    sectionClicked() {
+      this.showCard = !this.showCard;
+    }
   },
+  mounted() {
+    this.$nextTick(function () {
+      let el = document.querySelectorAll('.q-card-section-wrapper');
+      let height = el[0].scrollHeight;
+      el.forEach(function (el) {
+        el.style.setProperty('--max-height', height + 'px')
+      });
+    })
+  },
+
 };
 </script>
