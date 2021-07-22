@@ -110,7 +110,7 @@ export default {
   data() {
     return {
       translationPrefix: 'auth.',
-      email: null,
+      email: this.$auth.user().username,
       newPassword: null,
       oldPassword: null,
       isPwd: true,
@@ -126,7 +126,7 @@ export default {
 
       this.loading = true;
       this.$api({
-        url: `user/${this.$auth.user.id}/password`,
+        url: `user/${this.$auth.user().id}/password`,
         method: 'put',
         data: {
           username: this.email,
@@ -136,13 +136,11 @@ export default {
         },
         alerts: false,
       })
-        .then(() => {
-          this.$flash(this.$tr('auth.accountSettings.success'), 'done');
-          this.$auth.logout();
+        .then(async () => {
+          this.$flash(this.$tr('accountSettings.success'), 'done');
+          await this.$auth.logout();
         })
-        .catch((data) => {
-          outputValidationErrors(data.response.data);
-        })
+        .catch((data) => outputValidationErrors(data.response.data))
         .finally(() => {
           this.loading = false;
         });
