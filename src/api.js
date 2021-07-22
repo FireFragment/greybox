@@ -2,6 +2,7 @@
 import config from './config';
 import axios from 'axios';
 import { $flash, $tr } from 'boot/custom';
+import { logout } from 'boot/auth';
 
 const apiSettings = config.api;
 
@@ -24,7 +25,7 @@ function apiCall(options) {
   requestOptions.url = apiSettings.baseURL + requestOptions.url;
 
   if (requestOptions.sendToken && this.$auth.isLoggedIn()) {
-    requestOptions.headers['Authorization'] = this.$auth.getToken();
+    requestOptions.headers['Authorization'] = this.$auth.getToken() + '5';
   }
 
   const request = axios(requestOptions);
@@ -67,6 +68,13 @@ function apiCall(options) {
       console.error(data);
     });
   }
+
+  request.catch(async (request) => {
+    const { response: { status, data } } = request;
+    if (status === 401 && data === 'Unauthorized.') {
+      await logout();
+    }
+  });
 
   return request;
 }

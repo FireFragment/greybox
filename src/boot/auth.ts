@@ -89,12 +89,12 @@ const login = (credentials: LoginData): Promise<User | null> => new Promise(
   },
 );
 
-const logout = async () => {
+export const logout = async () => {
   localStorage.removeItem(localStorageKey);
   await Router.replace({ name: 'home' });
 };
 
-const user = (): User | null => {
+export const user = (): User | null => {
   const data = localStorage.getItem(localStorageKey);
   if (!data) return null;
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
