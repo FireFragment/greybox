@@ -1,7 +1,6 @@
 /* eslint-disable */
 const Bugsnag = require('@bugsnag/js');
 const BugsnagPluginVue = require('@bugsnag/plugin-vue');
-import apiCall from '../api';
 import config from '../config';
 import { Notify } from 'quasar';
 
@@ -90,13 +89,18 @@ export default boot(({ app }) => {
 
   // Mixins
   const DB_DELETION_CONSTANT = 'DELETE-THIS-DATABASE-ITEM'; // when DB item is set to this value, it will be deleted
+  let uuid = 0;
   app.mixin({
     data() {
       return {
         apiSettings: config.api,
         env: process.env.FULL_ENV,
-        DB_DEL: DB_DELETION_CONSTANT,
+        DB_DEL: DB_DELETION_CONSTANT, // TODO - generovat uid všem komponentám kvůli formům
       };
+    },
+    beforeCreate: function() {
+      this.uuid = uuid.toString();
+      uuid += 1;
     },
     methods: {
       // Translation simplification
@@ -128,9 +132,6 @@ export default boot(({ app }) => {
 
         return 'hsl(' + h + ', ' + s + '%, ' + l + '%)';
       },
-
-      // API
-      $api: apiCall,
 
       // Flash
       $flash,
@@ -216,30 +217,6 @@ export default boot(({ app }) => {
       },
     },
   });
-
-  /*
-  app.config.globalProperties.$auth = {
-    check: () => true,
-    user: () => ({
-      id: 5,
-      username: 'kuxik009@gmail.com',
-    }),
-    token: () => {},
-  };
-  */
-  // Auth
-  /*
-  app.use(VueAuth, {
-    loginData: {
-      headerToken: 'Authorization',
-    },
-    fetchData: {
-      url: config.api.baseURL + 'user',
-      method: 'GET',
-    },
-    authRedirect: () => $path('auth.login'),
-  });
-  */
 
   // Custom cache DB mechanism
   app.config.globalProperties.db = {};
