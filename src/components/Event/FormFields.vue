@@ -231,20 +231,20 @@
       </q-input>
 
       <mask-input
-        outlined
-        v-model="values.zip"
-        :label="$tr('fields.zip') + ' *'"
-        class="q-pt-sm"
-        :input-class="'smartform-zip ' + 'smartform-instance-' + _uid"
-        mask="### ##"
-        fill-mask="_"
-        :hint="$tr('fieldNotes.example') + ' 796 01'"
-        lazy-rules
-        :rules="[
-          val =>
-            (val && val.toString().match(/\d{3} ?\d{2}/)) ||
-            $tr('general.form.fieldError', null, false)
-        ]"
+          outlined
+          v-model="values.zip"
+          :label="$tr('fields.zip') + ' *'"
+          class="q-pt-sm"
+          :input-class="'smartform-zip ' + 'smartform-instance-' + _uid"
+          mask="### ##"
+          fill-mask="_"
+          :hint="$tr('fieldNotes.example') + ' 796 01'"
+          lazy-rules
+          :rules="[
+        val =>
+          (val && val.toString().match(/\d{3} ?\d{2}/)) ||
+          $tr('general.form.fieldError', null, false)
+      ]"
       >
         <template v-slot:prepend>
           <q-icon name="fas fa-file-archive" />
