@@ -211,7 +211,6 @@ import pickType from '../components/Event/PickType';
 import checkout from '../components/Event/Checkout';
 import teamForm from '../components/Event/TeamForm';
 import checkoutConfirm from '../components/Event/CheckoutConfirm';
-import { EventBus } from '../event-bus';
 import { date } from 'quasar';
 
 export default {

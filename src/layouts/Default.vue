@@ -144,7 +144,6 @@
 <script>
 /* eslint-disable */
 import Sidenav from './components/Sidenav';
-import { EventBus } from '../event-bus';
 
 export default {
   name: 'LayoutDefault',
