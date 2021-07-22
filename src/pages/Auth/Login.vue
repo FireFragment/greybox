@@ -66,7 +66,7 @@
 export default {
   name: 'PageSignIn',
   props: {
-    loginData: Object,
+    loginData: String,
   },
   data() {
     return {
