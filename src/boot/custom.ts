@@ -213,30 +213,6 @@ export default boot(({ app }) => {
     },
   });
 
-  /*
-  app.config.globalProperties.$auth = {
-    check: () => true,
-    user: () => ({
-      id: 5,
-      username: 'kuxik009@gmail.com',
-    }),
-    token: () => {},
-  };
-  */
-  // Auth
-  /*
-  app.use(VueAuth, {
-    loginData: {
-      headerToken: 'Authorization',
-    },
-    fetchData: {
-      url: config.api.baseURL + 'user',
-      method: 'GET',
-    },
-    authRedirect: () => $path('auth.login'),
-  });
-  */
-
   // Custom cache DB mechanism
   app.config.globalProperties.db = {};
   app.config.globalProperties.dbPersonal = {};
