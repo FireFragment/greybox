@@ -827,11 +827,14 @@ export default {
         note: this.values.note,
         email: this.values.email,
         meals: this.values.meals,
-        school_year: this.values.schoolYear?.value ?? null,
         dietary_requirement: this.values.dietary_requirement
           ? this.values.dietary_requirement.value
           : null,
       };
+
+      if (this.values.schoolYear && this.role === 1) {
+        returnObject.school_year = this.values.schoolYear.value;
+      }
 
       // Include accommodation data if it is requred or user wants it
       if (
