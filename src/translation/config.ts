@@ -2,9 +2,13 @@ const files: string[] = [
   'general', 'auth', 'paths', 'tournament', 'admin',
 ];
 
-// TODO - better typing
-const loadMessages = (locale: string): Record<string, any> => {
-  const messages: Record<string, any> = {};
+// Nested object
+interface Translations {
+  [path: string]: Translations | string
+}
+
+const loadMessages = (locale: string): Translations => {
+  const messages: Translations = {};
 
   files.forEach((file) => {
     // eslint-disable-next-line max-len
