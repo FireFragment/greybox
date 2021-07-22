@@ -172,7 +172,7 @@ export default {
         .then(() => {
           this.$bus.$emit('fullLoader', true);
           this.$router.push({
-            name: 'login',
+            name: 'auth.login',
             params: {
               loginData: JSON.stringify({
                 username: this.email,
