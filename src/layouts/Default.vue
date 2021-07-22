@@ -35,22 +35,18 @@
           </span>
         </q-toolbar-title>
 
-        <q-avatar size="25px" class="lang-switch">
+        <q-avatar
+          size="25px"
+          class="lang-switch"
+          v-for="(lang, locale) in languages"
+          v-bind:key="locale"
+        >
           <img
-            src="../assets/en_flag.png"
-            alt="English"
-            title="English"
-            :class="{ 'flag-dimmed': $i18n.locale === 'cs' }"
-            @click="switchLocale('en')"
-          />
-        </q-avatar>
-        <q-avatar size="25px" class="lang-switch">
-          <img
-            src="../assets/cs_flag.png"
-            alt="Čeština"
-            title="Čeština"
-            :class="{ 'flag-dimmed': $i18n.locale === 'en' }"
-            @click="switchLocale('cs')"
+            :src="require(`../assets/${locale}_flag.png`)"
+            :alt="lang.native"
+            :title="lang.native"
+            :class="{ 'flag-dimmed': $i18n.locale !== locale }"
+            @click="switchLocale(locale)"
           />
         </q-avatar>
 
@@ -144,6 +140,7 @@
 <script>
 /* eslint-disable */
 import Sidenav from './components/Sidenav';
+import i18nConfig from '../translation/config';
 
 export default {
   name: 'LayoutDefault',
@@ -159,6 +156,7 @@ export default {
         && localStorage.getItem('leftDrawerOpen') !== 'false',
       user: null,
       fullLoader: 0, // number of active loadings
+      languages: i18nConfig.languages,
     };
   },
   methods: {
