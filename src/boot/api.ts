@@ -1,19 +1,38 @@
-/* eslint-disable */
-import config from '../config';
-import axios, { AxiosPromise } from 'axios';
+import axios, {
+  AxiosError, AxiosPromise, AxiosRequestConfig, Method,
+} from 'axios';
 import { $flash, $tr } from 'boot/custom';
 import { getToken, isLoggedIn, logout } from 'boot/auth';
 import { boot } from 'quasar/wrappers';
+import config from '../config';
 
 const apiSettings = config.api;
 
-interface RequestOptionsAlerts {
+interface RequestOptionsAlertMessages {
   error: string | null
   success: string | null
 }
 
+type RequestOptionsAlerts = RequestOptionsAlertMessages | false;
+
+interface ApiCallOptionsArgument extends AxiosRequestConfig {
+  sendToken?: boolean
+  alerts?: RequestOptionsAlerts
+  headers?: Record<string, string | null>
+}
+
+interface ApiCallOptions extends AxiosRequestConfig {
+  url: string,
+  baseURL: string,
+  data: never | Record<never, never> | never[],
+  method: Method,
+  sendToken: boolean
+  alerts: RequestOptionsAlerts
+  headers: Record<string, string | null>
+}
+
 const flashResponseMessages = (
-  alerts: RequestOptionsAlerts | false,
+  alerts: RequestOptionsAlerts,
   request: AxiosPromise,
 ): void => {
   if (!alerts) return;
@@ -28,28 +47,32 @@ const flashResponseMessages = (
   }
 
   if (success) {
-    request.then(() => $flash(success, 'done'));
+    void request.then(() => $flash(success, 'done'));
   }
 };
 
 const logoutOnTokenFail = (
   request: AxiosPromise,
 ): void => {
-  request.catch(async (request) => {
+  request.catch(async (result: AxiosError<string | Record<never, never>>) => {
+    const { response } = result;
+    if (!response) return;
     const {
-      response: {
-        status,
-        data,
-      },
-    } = request;
+      data,
+      status,
+    } = response;
     if (status === 401 && data === 'Unauthorized.') {
       await logout();
     }
   });
 };
 
-const apiCall = (options: any) => {
-  const defaults = {
+const apiCall = (options: ApiCallOptionsArgument): AxiosPromise => {
+  const defaultError = $tr('general.error', null, false);
+  if (typeof defaultError !== 'string') {
+    throw new Error('Error needs to be string');
+  }
+  const defaults: ApiCallOptions = {
     url: '',
     baseURL: apiSettings.baseURL,
     data: {},
@@ -58,23 +81,24 @@ const apiCall = (options: any) => {
     sendToken: true,
     alerts: {
       success: null,
-      error: $tr('general.error', null, false),
+      error: defaultError,
     },
   };
 
-  let requestOptions = { ...defaults, ...options };
+  const requestOptions: ApiCallOptions = { ...defaults, ...options };
 
-  requestOptions.url = apiSettings.baseURL + requestOptions.url;
+  requestOptions.url = `${apiSettings.baseURL}${requestOptions.url}`;
 
   if (requestOptions.sendToken && isLoggedIn()) {
-    requestOptions.headers['Authorization'] = getToken() + '5';
+    requestOptions.headers.Authorization = getToken();
   }
 
-  const request = axios(requestOptions);
+  const request: AxiosPromise = axios(requestOptions);
   flashResponseMessages(requestOptions.alerts, request);
 
   if (config.debug) {
-    request.catch(data => {
+    request.catch((data) => {
+      // eslint-disable-next-line no-console
       console.error(data);
     });
   }
@@ -89,4 +113,3 @@ export default boot(({ app }) => {
 });
 
 export { apiCall };
-
