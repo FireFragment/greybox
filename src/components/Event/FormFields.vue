@@ -594,7 +594,7 @@ export default {
 
     const schoolYearsObject = this.$tr('fields.schoolYears');
     this.schoolYears = Object.keys(schoolYearsObject).map((year) => ({
-      value: year,
+      value: parseInt(year),
       label: schoolYearsObject[year]
     }));
 
@@ -799,6 +799,10 @@ export default {
           this.values[key] = this.speakerOptions.filter(
             (item) => item.value === data[key],
           )[0];
+        } else if (key === 'school_year') {
+          this.values['schoolYear'] = this.schoolYears.find(
+            (item) => item.value === data[key]
+          );
         }
         // Any other field -> pass raw value
         else {
