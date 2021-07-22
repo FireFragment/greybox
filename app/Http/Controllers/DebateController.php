@@ -106,6 +106,7 @@ class DebateController extends Controller
     {
         try {
             $debate = Debate::findOrFail($id);
+            event(new \App\Events\DebateDeletedEvent($debate));
             $debate->teams()->detach();
             $debate->delete();
             return response()->json(['message' => 'Deleted successfully.'], 204);

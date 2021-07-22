@@ -83,7 +83,7 @@ $app->routeMiddleware([
 $app->register(Bugsnag\BugsnagLaravel\BugsnagServiceProvider::class);
 // $app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
-// $app->register(App\Providers\EventServiceProvider::class);
+$app->register(App\Providers\EventServiceProvider::class);
 
 $app->configure('mail');
 $app->alias('mailer', Illuminate\Mail\Mailer::class);
