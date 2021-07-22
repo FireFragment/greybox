@@ -1,7 +1,7 @@
 import { boot } from 'quasar/wrappers';
-import { useRouter } from 'vue-router';
 import apiCall from 'src/api';
 import { AxiosResponse } from 'axios';
+import { Router } from 'src/router';
 
 type UserRole = 'admin' | 'none';
 
@@ -91,8 +91,7 @@ const login = (credentials: LoginData): Promise<User | null> => new Promise(
 
 const logout = async () => {
   localStorage.removeItem(localStorageKey);
-  const router = useRouter();
-  await router.replace({ name: 'home' });
+  await Router.replace({ name: 'home' });
 };
 
 const user = (): User | null => {
