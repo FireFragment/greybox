@@ -1,7 +1,6 @@
 /* eslint-disable */
 const Bugsnag = require('@bugsnag/js');
 const BugsnagPluginVue = require('@bugsnag/plugin-vue');
-import apiCall from '../api';
 import config from '../config';
 import { Notify } from 'quasar';
 
@@ -128,9 +127,6 @@ export default boot(({ app }) => {
 
         return 'hsl(' + h + ', ' + s + '%, ' + l + '%)';
       },
-
-      // API
-      $api: apiCall,
 
       // Flash
       $flash,

@@ -1,7 +1,7 @@
 import { boot } from 'quasar/wrappers';
-import apiCall from 'src/api';
 import { AxiosResponse } from 'axios';
 import { Router } from 'src/router';
+import { apiCall } from './api';
 
 type UserRole = 'admin' | 'none';
 
@@ -79,6 +79,7 @@ const login = (credentials: LoginData): Promise<User | null> => new Promise(
         username,
         password,
       },
+      alerts: false,
     })
       .then((response: AxiosResponse<User>) => {
         const { data } = response;
@@ -101,7 +102,7 @@ export const user = (): User | null => {
   return JSON.parse(data);
 };
 
-const getToken = (): string | null => user()?.api_token ?? null;
+export const getToken = (): string | null => user()?.api_token ?? null;
 
 export const isLoggedIn = (): boolean => getToken() !== null;
 export const isAdmin = (): boolean => isLoggedIn() && user()?.role === 'admin';
