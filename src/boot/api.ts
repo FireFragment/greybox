@@ -1,5 +1,5 @@
 import axios, {
-  AxiosError, AxiosPromise, AxiosRequestConfig, Method,
+  AxiosError, AxiosInstance, AxiosPromise, AxiosRequestConfig, Method,
 } from 'axios';
 import { $flash, $tr } from 'boot/custom';
 import { getToken, isLoggedIn, logout } from 'boot/auth';
@@ -108,7 +108,15 @@ const apiCall = (options: ApiCallOptionsArgument): AxiosPromise => {
   return request;
 };
 
+declare module '@vue/runtime-core' {
+  interface ComponentCustomProperties {
+    $axios: AxiosInstance
+    $api: (options: ApiCallOptionsArgument) => AxiosPromise
+  }
+}
+
 export default boot(({ app }) => {
+  app.config.globalProperties.$axios = axios;
   app.config.globalProperties.$api = apiCall;
 });
 
