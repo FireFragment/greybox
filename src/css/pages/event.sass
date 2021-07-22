@@ -51,6 +51,7 @@
 
 		.q-card
 			.q-card__section
+
 				&:not(.header)
 					padding-top: 1rem
 					position: relative
@@ -73,6 +74,13 @@
 
 		@media (min-width: $breakpoint-sm-max)
 			margin-left: 40px
+
+.q-card-section-wrapper
+	max-height: var(--max-height)
+	transition: max-height 0.5s ease
+
+	&.hiddenCard
+		max-height: 0
 
 .smaller-margin-menu
 	.q-item

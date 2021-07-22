@@ -129,9 +129,6 @@ module.exports = configure(() => {
 
     // animations: 'all', // --- includes all animations
     // https://v2.quasar.dev/options/animations
-    animations: [
-      'slideInDown',
-      'slideOutUp',
-    ],
+    // animations: [],
   };
 });
