@@ -14,7 +14,7 @@
           <DebateCard class="full-width" :debate="debate" />
         </div>
       </template>
-      <Pagination v-model="currentPage" :pages="10" route="myDebates" />
+      <Pagination v-model="currentPage" :pages="totalPages" route="myDebates" />
     </div>
   </q-page>
 </template>
@@ -33,6 +33,7 @@ type DebatesData = Record<string, {
 
 interface MyDebatesData {
   currentPage: number;
+  totalPages: number;
   debatesData: DebatesData;
 }
 
@@ -64,7 +65,8 @@ export default defineComponent({
   },
   data(): MyDebatesData {
     return {
-      currentPage: 6,
+      currentPage: 1,
+      totalPages: 1,
       debatesData: {},
     };
   },
@@ -82,12 +84,13 @@ export default defineComponent({
 
       setTimeout(() => {
         this.$api({
-          url: `user/${this.$auth.user()!.id}/debate`,
+          url: `user/${this.$auth.user()!.id}/debate?page=${page}`,
           method: 'get',
         })
-          .then(({ data }) => {
+          .then(({ data: { data, lastPage } }) => {
             assertDebatesData(data);
             this.debatesData = data;
+            this.totalPages = parseInt(lastPage, 10);
           })
           .catch(() => {
             this.$flash(this.$tr('removeModal.person.error'), 'error');
