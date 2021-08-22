@@ -70,13 +70,13 @@
 
 <script lang="ts">
 import { defineComponent, DefineComponent } from 'vue';
-import DebateCardRow from './DebateCardRow';
+import DebateCardRow from './DebateCardRow.vue';
 
 export default defineComponent({
   name: 'DebateCard',
   components: { DebateCardRow: <DefineComponent>DebateCardRow },
   props: {
-    victory: [Boolean, null],
+    victory: Boolean,
     adjudicator: Boolean,
   },
   data() {

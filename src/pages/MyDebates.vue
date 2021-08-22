@@ -16,16 +16,23 @@
         <DebateCard class="full-width" :victory="x % 3 === 2 ? null : !!(x % 3)"
                     :adjudicator="x % 3 === 2" />
       </div>
+      <Pagination v-model="currentPage" :pages="10" />
     </div>
   </q-page>
 </template>
 
 <script lang="ts">
 import { defineComponent, DefineComponent } from 'vue';
-import DebateCard from '../components/MyDebates/DebateCard';
+import Pagination from '../components/Pagination.vue';
+import DebateCard from '../components/MyDebates/DebateCard.vue';
 
 export default defineComponent({
   name: 'MyDebates',
-  components: { DebateCard: <DefineComponent>DebateCard },
+  components: { Pagination: <DefineComponent>Pagination, DebateCard: <DefineComponent>DebateCard },
+  data() {
+    return {
+      currentPage: 6,
+    };
+  },
 });
 </script>
