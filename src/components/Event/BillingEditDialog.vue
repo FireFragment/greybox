@@ -78,21 +78,40 @@
               </template>
             </q-input>
 
-            <mask-input
-              v-model="values.zip"
-              outlined
-              :label="$tr('fields.zip')"
-              class="col-5"
-              :input-class="'smartform-zip ' + 'smartform-instance-' + uuid"
-              :mask="validateZip ? '### ##' : ''"
-              fill-mask="_"
-              :hint="validateZip ? $tr('fieldNotes.example') + ' 796 01' : null"
-              lazy-rules
-            >
-              <template v-slot:prepend>
-                <q-icon name="fas fa-file-archive" />
-              </template>
-            </mask-input>
+            <template v-if="$isPDS">
+              <mask-input
+                  v-model="values.zip"
+                  outlined
+                  :label="$tr('fields.zip')"
+                  class="col-5"
+                  :input-class="'smartform-zip ' + 'smartform-instance-' + uuid"
+                  :mask="validateZip ? '### ##' : ''"
+                  fill-mask="_"
+                  :hint="validateZip ? $tr('fieldNotes.example') + ' 796 01' : null"
+              >
+                <template v-slot:prepend>
+                  <q-icon name="fas fa-file-archive" />
+                </template>
+              </mask-input>
+            </template>
+            <template v-else>
+              <mask-input
+                  v-model="values.zip"
+                  outlined
+                  :label="$tr('fields.zip')"
+                  class="col-5"
+                  :input-class="'smartform-zip ' + 'smartform-instance-' + uuid"
+                  :mask="validateZip ? '### ##' : ''"
+                  fill-mask="_"
+                  :hint="validateZip ? $tr('fieldNotes.example') + ' 796 01' : null"
+                  lazy-rules
+              >
+                <template v-slot:prepend>
+                  <q-icon name="fas fa-file-archive" />
+                </template>
+              </mask-input>
+            </template>
+
           </div>
           <country-select v-if="$isPDS" v-model="values.country" />
         </q-card-section>

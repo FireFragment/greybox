@@ -231,27 +231,46 @@
         </template>
       </q-input>
 
-      <mask-input
-        outlined
-        v-model="values.zip"
-        :label="$tr('fields.zip') + ' *'"
-        class="q-pt-sm"
-        :input-class="'smartform-zip ' + 'smartform-instance-' + uuid"
-        mask="### ##"
-        fill-mask="_"
-        :hint="$tr('fieldNotes.example') + ' 796 01'"
-        lazy-rules
-        :rules="[
+      <template v-if="$isPDS">
+        <mask-input
+            outlined
+            v-model="values.zip"
+            :label="$tr('fields.zip') + ' *'"
+            class="q-pt-sm"
+            :input-class="'smartform-zip ' + 'smartform-instance-' + uuid"
+            mask="### ##"
+            fill-mask="_"
+            :hint="$tr('fieldNotes.example') + ' 796 01'"
+        >
+          <template v-slot:prepend>
+            <q-icon name="fas fa-file-archive" />
+          </template>
+        </mask-input>
+      </template>
+      <template v-else>
+        <mask-input
+            outlined
+            v-model="values.zip"
+            :label="$tr('fields.zip') + ' *'"
+            class="q-pt-sm"
+            :input-class="'smartform-zip ' + 'smartform-instance-' + uuid"
+            mask="### ##"
+            fill-mask="_"
+            :hint="$tr('fieldNotes.example') + ' 796 01'"
+            lazy-rules
+            :rules="[
           val =>
             values.accommodation === false ||
             (val && val.toString().match(/\d{3} ?\d{2}/)) ||
             $tr('general.form.fieldError', null, false)
         ]"
-      >
-        <template v-slot:prepend>
-          <q-icon name="fas fa-file-archive" />
-        </template>
-      </mask-input>
+        >
+          <template v-slot:prepend>
+            <q-icon name="fas fa-file-archive" />
+          </template>
+        </mask-input>
+      </template>
+
     </div>
 
     <!-- -SCHOOL FIELD-
