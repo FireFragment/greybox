@@ -33,9 +33,9 @@ const routes: RouteRecordRaw[] = [
       {
         // TODO - type routes & therefore fix weird error below
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        path: `${CZroutes.myDebates}`,
+        path: `${CZroutes.myDebates}/:page?`,
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        alias: `${ENroutes.myDebates}`,
+        alias: `${ENroutes.myDebates}/:page?`,
         name: 'myDebates',
         component: () => import('pages/MyDebates.vue'),
         beforeEnter: loggedInMiddleware,

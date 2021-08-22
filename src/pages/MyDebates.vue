@@ -16,7 +16,7 @@
         <DebateCard class="full-width" :victory="x % 3 === 2 ? null : !!(x % 3)"
                     :adjudicator="x % 3 === 2" />
       </div>
-      <Pagination v-model="currentPage" :pages="10" />
+      <Pagination v-model="currentPage" :pages="10" route="myDebates" />
     </div>
   </q-page>
 </template>
@@ -28,11 +28,35 @@ import DebateCard from '../components/MyDebates/DebateCard.vue';
 
 export default defineComponent({
   name: 'MyDebates',
-  components: { Pagination: <DefineComponent>Pagination, DebateCard: <DefineComponent>DebateCard },
+  components: {
+    Pagination: <DefineComponent>Pagination,
+    DebateCard: <DefineComponent>DebateCard,
+  },
   data() {
     return {
       currentPage: 6,
     };
+  },
+  methods: {
+    loadPage(pageParam: string | string[]) {
+      if (typeof pageParam !== 'string') {
+        return;
+      }
+
+      this.$bus.$emit('fullLoader', true);
+      const pageParamInt = parseInt(pageParam, 10);
+      const page = pageParamInt > 0 ? pageParamInt : 1;
+
+      this.currentPage = page;
+
+      setTimeout(() => {
+        console.log('TODO - Call API to get data for page number ', page);
+        this.$bus.$emit('fullLoader', false);
+      }, 2000);
+    },
+  },
+  created() {
+    this.loadPage(this.$route.params.page);
   },
 });
 </script>

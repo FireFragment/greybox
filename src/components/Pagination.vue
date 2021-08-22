@@ -8,6 +8,7 @@
       color="primary"
       :max-pages="6"
       boundary-numbers
+      :to-fn="page => $path(route) + '/' + page"
     />
   </div>
 </template>
@@ -20,6 +21,10 @@ export default defineComponent({
   props: {
     modelValue: Number,
     pages: Number,
+    route: {
+      type: String,
+      required: true,
+    },
   },
   emits: ['update:modelValue'],
 });
