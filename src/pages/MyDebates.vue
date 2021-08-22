@@ -1,7 +1,7 @@
 <template>
   <div class="row q-pa-lg">
-    <div class="col-3 q-pa-sm" v-for="x in 10" v-bind:key="x">
-      <DebateCard :victory="x % 3 === 2 ? null : !!(x % 3)" />
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3 q-pa-sm" v-for="x in 10" v-bind:key="x">
+      <DebateCard class="full-width" :victory="x % 3 === 2 ? null : !!(x % 3)" />
     </div>
   </div>
 </template>
