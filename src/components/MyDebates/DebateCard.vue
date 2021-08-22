@@ -54,10 +54,17 @@
           icon="fas fa-file-upload"
           icon-color="primary"
           value="Nahrát ballot"
-          link="#"
+          :link="true"
+          @click="uploading = true"
         />
       </template>
     </q-list>
+    <q-inner-loading :showing="uploading">
+      <q-spinner size="50px" color="primary" />
+      <div class="q-pt-md">
+        Ballot se nahrává...
+      </div>
+    </q-inner-loading>
   </q-card>
 </template>
 

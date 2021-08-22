@@ -1,5 +1,5 @@
 <template>
-  <q-item :clickable="!!link" :to="link">
+  <q-item :clickable="!!link" :to="typeof link === 'string' ? link : null">
     <q-item-section avatar>
       <q-icon :color="iconColor" :name="icon" />
     </q-item-section>
@@ -36,7 +36,7 @@ export default defineComponent({
       required: false,
     },
     link: {
-      type: String,
+      type: [String, Boolean],
       default: undefined,
       required: false,
     },
