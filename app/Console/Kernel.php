@@ -34,7 +34,7 @@ class Kernel extends ConsoleKernel
             ->description('Update clients data from Fakturoid subjects.')
             ->everyMinute() // hack for Heroku
             ->when(function() {
-                return Cron::shouldRun('FakturoidClientUpdateJob', 24);
+                return Cron::shouldRun('FakturoidClientUpdateJob', 24*30);
             });
 
         $schedule->job(new FakturoidInvoiceUpdateJob(new FakturoidClientService()))

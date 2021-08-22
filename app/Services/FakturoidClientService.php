@@ -55,11 +55,14 @@ class FakturoidClientService // TODO: split into 2 services: subjects and invoic
     public function getAllInvoices(): array
     {
         $invoices = array();
-        $link = $this->fakturoidClient->getInvoices()->getHeader('Link');
+        $lastUpdateTime = new \DateTime('- 2 days');
+        $lastUpdateTimeString = $lastUpdateTime->format('Y-m-d\TH:i:s');
+
+        $link = $this->fakturoidClient->getInvoices(['updated_since' => $lastUpdateTimeString])->getHeader('Link');
 
         for ($page = 1; $page <= $this->getPagesCount($link); $page++)
         {
-            $invoicesPage = $this->fakturoidClient->getInvoices(['page' => $page])->getBody();
+            $invoicesPage = $this->fakturoidClient->getInvoices(['page' => $page, 'updated_since' => $lastUpdateTimeString])->getBody();
             foreach ($invoicesPage as $invoice)
             {
                 array_push($invoices, $invoice);
