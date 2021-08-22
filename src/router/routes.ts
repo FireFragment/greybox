@@ -32,7 +32,7 @@ const routes: RouteRecordRaw[] = [
       // My debates
       {
         path: CZroutes.myDebates,
-        alias: CZroutes.myDebates,
+        alias: ENroutes.myDebates,
         name: 'myDebates',
         component: () => import('pages/MyDebates.vue'),
         beforeEnter: loggedInMiddleware,
