@@ -7,7 +7,7 @@
     }">
       <div class="text-h6">
         Žena potřebuje muže jako ryba velociped
-        {{ victory && '- jsou ženy více ryby, nebo ryby více ženy?' }}
+        {{ victory ? '- jsou ženy více ryby, nebo ryby více ženy?' : '' }}
       </div>
     </q-card-section>
 
@@ -38,13 +38,25 @@
         value="AFF 3:0"
         class="q-mb-xs"
       />
-      <q-separator class="q-mt-auto" />
-      <DebateCardRow
-        icon="fas fa-file-download"
-        icon-color="primary"
-        value="Stáhnout ballot"
-        link="#"
-      />
+      <!-- TODO - hide if no ballot has been uploaded yet -->
+      <template v-if="!adjudicator || !victory">
+        <q-separator class="q-mt-auto" />
+        <DebateCardRow
+          icon="fas fa-file-download"
+          icon-color="primary"
+          value="Stáhnout ballot"
+          link="#"
+        />
+      </template>
+      <template v-if="adjudicator">
+        <q-separator />
+        <DebateCardRow
+          icon="fas fa-file-upload"
+          icon-color="primary"
+          value="Nahrát ballot"
+          link="#"
+        />
+      </template>
     </q-list>
   </q-card>
 </template>
@@ -58,6 +70,12 @@ export default defineComponent({
   components: { DebateCardRow: <DefineComponent>DebateCardRow },
   props: {
     victory: [Boolean, null],
+    adjudicator: Boolean,
+  },
+  data() {
+    return {
+      uploading: false,
+    };
   },
 });
 </script>
