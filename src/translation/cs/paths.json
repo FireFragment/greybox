@@ -7,7 +7,8 @@
     "signUp": "registrace",
     "logout": "odhlaseni",
     "passwordReset": "obnovit-heslo",
-    "accountSettings": "nastaveni-uctu"
+    "accountSettings": "nastaveni-uctu",
+    "currentRegistrations": "stavajici-prihlasky"
   },
   "admin": {
     "eventRegistrations": "prihlaseni-na-turnaje"

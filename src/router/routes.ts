@@ -82,6 +82,15 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/Auth/AccountSettings.vue'),
         beforeEnter: loggedInMiddleware,
       },
+      {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        path: CZroutes.auth.currentRegistrations,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        alias: ENroutes.auth.currentRegistrations,
+        name: 'auth.currentRegistrations',
+        component: () => import('pages/Auth/CurrentRegistrations.vue'),
+        beforeEnter: loggedInMiddleware,
+      },
     ],
   },
 

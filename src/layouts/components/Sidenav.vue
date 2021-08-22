@@ -62,6 +62,18 @@
 
       <q-item-label header>{{ $tr("general.user") }}</q-item-label>
       <template v-if="$auth.isLoggedIn() && $auth.user()">
+
+
+        <q-item :to="$path('auth.currentRegistrations')" clickable>
+          <q-item-section avatar>
+            <q-icon name="fas fa-list-alt" />
+          </q-item-section>
+
+          <q-item-section>{{
+              $tr("auth.currentRegistrations.link")
+            }}</q-item-section>
+        </q-item>
+
         <q-item :to="$path('auth.accountSettings')" clickable>
           <q-item-section avatar>
             <q-icon name="fas fa-cog" />
@@ -71,6 +83,7 @@
             $tr("auth.accountSettings.link")
           }}</q-item-section>
         </q-item>
+
         <!--
                 TODO - implement link to server to download personal data
                 <q-item clickable>
