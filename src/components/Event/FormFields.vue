@@ -111,7 +111,7 @@
           use-input
           @filter="filterDaySelect"
           input-debounce="0"
-          :rules="[val => val || $tr('general.form.fieldError', null, false)]"
+          :rules="[val => values.accommodation === false || val || $tr('general.form.fieldError', null, false)]"
         >
           <template v-slot:prepend>
             <q-icon name="fas fa-calendar-alt" />
@@ -132,7 +132,7 @@
           use-input
           @filter="filterMonthSelect"
           input-debounce="0"
-          :rules="[val => val || $tr('general.form.fieldError', null, false)]"
+          :rules="[val => values.accommodation === false || val || $tr('general.form.fieldError', null, false)]"
         >
           <template v-slot:prepend>
             <q-icon name="fas fa-calendar-alt" />
@@ -151,7 +151,7 @@
           use-input
           @filter="filterYearSelect"
           input-debounce="0"
-          :rules="[val => val || $tr('general.form.fieldError', null, false)]"
+          :rules="[val => values.accommodation === false || val || $tr('general.form.fieldError', null, false)]"
         >
           <template v-slot:prepend>
             <q-icon name="fas fa-calendar-alt" />
@@ -202,6 +202,7 @@
         lazy-rules
         :rules="[
           val =>
+            values.accommodation === false ||
             (val && val.length > 0) ||
             $tr('general.form.fieldError', null, false)
         ]"
@@ -220,6 +221,7 @@
         lazy-rules
         :rules="[
           val =>
+            values.accommodation === false ||
             (val && val.length > 0) ||
             $tr('general.form.fieldError', null, false)
         ]"
@@ -241,6 +243,7 @@
         lazy-rules
         :rules="[
           val =>
+            values.accommodation === false ||
             (val && val.toString().match(/\d{3} ?\d{2}/)) ||
             $tr('general.form.fieldError', null, false)
         ]"
@@ -835,7 +838,7 @@ export default {
         returnObject.school_year = this.values.schoolYear.value;
       }
 
-      // Include accommodation data if it is requred or user wants it
+      // Include accommodation data if it is required or user wants it
       if (
         this.accommodationType === 'required'
         || (this.accommodationType !== 'none'
