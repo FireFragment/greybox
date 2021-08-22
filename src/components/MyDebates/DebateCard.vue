@@ -1,10 +1,14 @@
 <template>
   <q-card class="my-card full-height column">
+    <!--
+    TODO - colorful header based on debate result
     <q-card-section :class="{
       'bg-negative': victory === false,
       'bg-positive': victory === true,
       'text-white': victory !== null,
     }">
+    -->
+    <q-card-section>
       <div class="text-h6">
         Žena potřebuje muže jako ryba velociped
         {{ victory ? '- jsou ženy více ryby, nebo ryby více ženy?' : '' }}
@@ -36,6 +40,14 @@
         icon-color="warning"
         label="Výsledek"
         value="AFF 3:0"
+        class="q-mb-xs"
+      />
+      <DebateCardRow
+        icon="fas fa-external-link-alt"
+        icon-color="indigo"
+        label="Greybox v1.0"
+        value="Zobrazit detail debaty"
+        link="https://debatovani.cz"
         class="q-mb-xs"
       />
       <!-- TODO - hide if no ballot has been uploaded (ensure only first separator has mt-auto) -->

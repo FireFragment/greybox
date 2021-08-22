@@ -1,5 +1,11 @@
 <template>
-  <q-item :clickable="!!link" :to="typeof link === 'string' ? link : null">
+  <q-item
+    :tag="link ? 'a' : 'div'"
+    :clickable="!!link"
+    :href="link ? link : null"
+    :target="link ? '_blank' : null"
+    :rel="link ? 'noopener' : null"
+  >
     <q-item-section avatar>
       <q-icon :color="iconColor" :name="icon" />
     </q-item-section>
