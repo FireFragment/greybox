@@ -4,6 +4,7 @@ import axios, {
 import { $flash, $tr } from 'boot/custom';
 import { getToken, isLoggedIn, logout } from 'boot/auth';
 import { boot } from 'quasar/wrappers';
+import { EventBus } from 'boot/eventBus';
 import config from '../config';
 
 const apiSettings = config.api;
@@ -119,5 +120,13 @@ export default boot(({ app }) => {
   app.config.globalProperties.$axios = axios;
   app.config.globalProperties.$api = apiCall;
 });
+
+// Required for TypeScript to work with global properties
+declare module '@vue/runtime-core' {
+  export interface ComponentCustomProperties {
+    $axios: AxiosInstance
+    $api: (options: ApiCallOptionsArgument) => AxiosPromise
+  }
+}
 
 export { apiCall };

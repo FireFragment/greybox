@@ -1,4 +1,5 @@
 import { boot } from 'quasar/wrappers';
+import { EventBus } from 'boot/eventBus';
 
 const validateEmail = (email: string): boolean => {
   const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -14,6 +15,7 @@ const validators: Validators = {
   validateEmail,
 };
 
+// Required for TypeScript to work with global properties
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
     $validators: Validators

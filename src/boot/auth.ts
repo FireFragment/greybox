@@ -120,4 +120,11 @@ export default boot(({ app }) => {
   app.config.globalProperties.$auth = auth;
 });
 
+// Required for TypeScript to work with global properties
+declare module '@vue/runtime-core' {
+  export interface ComponentCustomProperties {
+    $auth: Auth
+  }
+}
+
 export { auth };
