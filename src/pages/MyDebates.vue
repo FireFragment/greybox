@@ -22,17 +22,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, DefineComponent } from 'vue';
+import { defineComponent } from 'vue';
 import Pagination from '../components/Pagination.vue';
 import DebateCard from '../components/MyDebates/DebateCard.vue';
+
+interface MyDebatesData {
+  currentPage: number;
+}
 
 export default defineComponent({
   name: 'MyDebates',
   components: {
-    Pagination: <DefineComponent>Pagination,
-    DebateCard: <DefineComponent>DebateCard,
+    Pagination: <never>Pagination,
+    DebateCard: <never>DebateCard,
   },
-  data() {
+  data(): MyDebatesData {
     return {
       currentPage: 6,
     };
@@ -50,8 +54,20 @@ export default defineComponent({
       this.currentPage = page;
 
       setTimeout(() => {
-        console.log('TODO - Call API to get data for page number ', page);
-        this.$bus.$emit('fullLoader', false);
+        this.$api({
+          url: `user/${this.$auth.user()!.id}/debate`,
+          method: 'get',
+        })
+          .then((data) => {
+            console.log(data);
+          })
+          .catch(() => {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+            // this.$flash(this.$tr('removeModal.person.error'), 'error');
+          })
+          .finally(() => {
+            this.$bus.$emit('fullLoader', false);
+          });
       }, 2000);
     },
   },

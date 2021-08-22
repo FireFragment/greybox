@@ -4,7 +4,6 @@ import axios, {
 import { $flash, $tr } from 'boot/custom';
 import { getToken, isLoggedIn, logout } from 'boot/auth';
 import { boot } from 'quasar/wrappers';
-import { EventBus } from 'boot/eventBus';
 import config from '../config';
 
 const apiSettings = config.api;

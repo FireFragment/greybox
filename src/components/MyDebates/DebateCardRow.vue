@@ -14,32 +14,34 @@
 <script>
 import { defineComponent } from 'vue';
 
+const DebateCardRowProps = {
+  label: {
+    type: String,
+    default: undefined,
+    required: false,
+  },
+  value: {
+    type: String,
+    required: true,
+  },
+  icon: {
+    type: String,
+    required: true,
+  },
+  iconColor: {
+    type: String,
+    default: 'dark',
+    required: false,
+  },
+  link: {
+    type: [String, Boolean],
+    default: undefined,
+    required: false,
+  },
+};
+
 export default defineComponent({
   name: 'DebateCardRow',
-  props: {
-    label: {
-      type: String,
-      default: undefined,
-      required: false,
-    },
-    value: {
-      type: String,
-      required: true,
-    },
-    icon: {
-      type: String,
-      required: true,
-    },
-    iconColor: {
-      type: String,
-      default: 'dark',
-      required: false,
-    },
-    link: {
-      type: [String, Boolean],
-      default: undefined,
-      required: false,
-    },
-  },
+  props: DebateCardRowProps,
 });
 </script>

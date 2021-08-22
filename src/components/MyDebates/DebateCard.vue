@@ -38,13 +38,22 @@
         value="AFF 3:0"
         class="q-mb-xs"
       />
-      <!-- TODO - hide if no ballot has been uploaded yet -->
+      <!-- TODO - hide if no ballot has been uploaded (ensure only first separator has mt-auto) -->
+      <q-separator class="q-mt-auto" />
       <template v-if="!adjudicator || !victory">
-        <q-separator class="q-mt-auto" />
         <DebateCardRow
           icon="fas fa-file-download"
           icon-color="primary"
-          value="Stáhnout ballot"
+          value="Stáhnout ballot (Jakub Svíčka)"
+          link="#"
+        />
+      </template>
+      <template v-if="victory">
+        <q-separator v-if="!adjudicator" />
+        <DebateCardRow
+          icon="fas fa-file-download"
+          icon-color="primary"
+          value="Stáhnout ballot (Ladislav Borgir)"
           link="#"
         />
       </template>
@@ -69,17 +78,25 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, DefineComponent } from 'vue';
+import { defineComponent } from 'vue';
 import DebateCardRow from './DebateCardRow.vue';
+
+const DebateCardProps = {
+  victory: Boolean,
+  adjudicator: Boolean,
+};
+
+interface DebateCardData {
+  uploading: boolean;
+}
 
 export default defineComponent({
   name: 'DebateCard',
-  components: { DebateCardRow: <DefineComponent>DebateCardRow },
-  props: {
-    victory: Boolean,
-    adjudicator: Boolean,
+  components: {
+    DebateCardRow: <never>DebateCardRow,
   },
-  data() {
+  props: DebateCardProps,
+  data(): DebateCardData {
     return {
       uploading: false,
     };
