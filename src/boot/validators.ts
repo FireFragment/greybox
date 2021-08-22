@@ -14,6 +14,7 @@ const validators: Validators = {
   validateEmail,
 };
 
+// Required for TypeScript to work with global properties
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
     $validators: Validators

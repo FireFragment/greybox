@@ -1,6 +1,6 @@
 import { boot } from 'quasar/wrappers';
 
-type EventCallbackData = Record<string, never>;
+type EventCallbackData = Record<string, never> | boolean;
 type EventCallback = (data: EventCallbackData) => void;
 
 interface EventCallbacks {
@@ -12,7 +12,7 @@ interface Events {
 }
 
 // Source: https://stackoverflow.com/a/64045893
-class EventBus implements Events {
+export class EventBus implements Events {
   events: EventCallbacks = {};
 
   $on(eventName: string, fn: EventCallback) {
@@ -43,5 +43,12 @@ const bus: EventBus = new EventBus();
 export default boot(({ app }) => {
   app.config.globalProperties.$bus = bus;
 });
+
+// Required for TypeScript to work with global properties
+declare module '@vue/runtime-core' {
+  export interface ComponentCustomProperties {
+    $bus: EventBus
+  }
+}
 
 export { bus };

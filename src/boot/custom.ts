@@ -1,4 +1,7 @@
 /* eslint-disable */
+import { TranslateResult, VueMessageType } from 'vue-i18n';
+import { LocaleMessageValue } from '@intlify/core-base';
+
 const Bugsnag = require('@bugsnag/js');
 const BugsnagPluginVue = require('@bugsnag/plugin-vue');
 import config from '../config';
@@ -9,8 +12,20 @@ import { boot } from 'quasar/wrappers';
 import { i18n } from 'boot/i18n';
 import i18nConfig from '../translation/config';
 
-export const $tr = function (key: string, options: Record<string, unknown> | null = null, usePrefix = true) {
-  // Translate object received from API
+type TranslationValue = TranslateResult | LocaleMessageValue<VueMessageType> | {};
+
+// Required for TypeScript to work with global properties
+declare module '@vue/runtime-core' {
+  interface ComponentCustomProperties {
+    $flash: (message: string | TranslationValue, type?: string, icon?: string | undefined, timeout?: number) => Function;
+    $isPDS: boolean;
+    $path: (route: string) => string;
+    $tr: (key: string, options?: Record<string, unknown> | null, usePrefix?: boolean) => TranslationValue;
+  }
+}
+
+export const $tr = function (key: string, options: Record<string, unknown> | null = null, usePrefix: boolean = true): TranslationValue {
+  // Translate object received from APIimport { LocaleMessageValue } from '@intlify/core-base';
   const {
     locale,
     t,
@@ -38,11 +53,15 @@ export const $tr = function (key: string, options: Record<string, unknown> | nul
   return tm(key);
 };
 
-export const $path = function (route: string) {
+export const $path = function (route: string): string {
   return '/' + $tr(`paths.${route}`, null, false);
 };
 
-export const $flash = function (message: string, type: string = 'info', icon: string | undefined = undefined, timeout: number = 3500) {
+export const $flash = function (message: string | TranslationValue, type: string = 'info', icon: string | undefined = undefined, timeout: number = 3500): Function | undefined {
+  if (typeof message !== 'string') {
+    return;
+  }
+
   let color: string | undefined = undefined;
   if (type === 'success' || type === 'done') {
     color = 'green';

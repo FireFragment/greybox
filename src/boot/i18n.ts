@@ -9,6 +9,11 @@ import i18nConfig from '../translation/config';
 // EN is default with PDS
 if (process.env.IS_PDS === 'true') i18nConfig.default = 'en';
 
+export interface TranslatedString {
+  cs: string;
+  en: string;
+}
+
 const i18n = createI18n({
   locale: i18nConfig.default,
   fallbackLocale: i18nConfig.fallback,

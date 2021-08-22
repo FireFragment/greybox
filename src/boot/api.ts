@@ -120,4 +120,12 @@ export default boot(({ app }) => {
   app.config.globalProperties.$api = apiCall;
 });
 
+// Required for TypeScript to work with global properties
+declare module '@vue/runtime-core' {
+  export interface ComponentCustomProperties {
+    $axios: AxiosInstance
+    $api: (options: ApiCallOptionsArgument) => AxiosPromise
+  }
+}
+
 export { apiCall };

@@ -27,12 +27,15 @@
 .fade-enter, .fade-leave-to
 	opacity: 0
 
-main.q-page a
+main.q-page a:not(.q-item)
 	color: $primary
 	text-decoration: underline
 
 	&:hover
 		text-decoration: none
+
+.q-pagination a.q-btn[type=button]
+	text-decoration: none
 
 .dialog-medium
 	width: 1000px
