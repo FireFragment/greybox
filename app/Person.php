@@ -44,4 +44,12 @@ class Person extends Model implements AuthenticatableContract, AuthorizableContr
     {
         return $this->belongsTo(Institution::class, 'institution', 'id');
     }
+
+    /**
+     * @return string
+     */
+    public function getOldGreyboxId()
+    {
+        return $this->old_greybox_id;
+    }
 }

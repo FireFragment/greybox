@@ -28,6 +28,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 	$router->get('user/{userId}/person[/event/{eventId}]', ['uses' => 'UserController@showPeople']);
     $router->get('user/{userId}/team[/event/{eventId}]', ['uses' => 'UserController@showTeams']);
     $router->get('user/{id}/client', ['uses' => 'UserController@showClients']);
+    $router->get('user/{id}/debate', ['uses' => 'DebateController@showDebatesForUser']);
 
 	$router->post('login', ['uses' => 'UserController@login']);
 	$router->post('logout', ['uses' => 'UserController@logout']);

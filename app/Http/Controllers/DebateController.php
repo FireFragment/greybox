@@ -4,6 +4,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Debate;
+use App\User;
 use Illuminate\Http\Request;
 
 class DebateController extends Controller
@@ -36,6 +37,24 @@ class DebateController extends Controller
         $debate->motion->text = $debate->motion->textTranslation()->first();
 
         return response()->json($debate);
+    }
+
+    public function showDebatesForUser($id)
+    {
+        $user = User::findOrFail($id);
+        $person = $user->person()->first();
+        if (null !== $person)
+        {
+            $oldId = $person->getOldGreyboxId();
+            if (is_numeric($oldId))
+            {
+                $gb = file_get_contents('https://debatovani.cz/greybox/?page=clovek&clovek_id='.$oldId);
+                $debates = Debate::parseOldGreybox($gb);
+                $debates = Debate::groupByMonth($debates);
+
+                return response()->json($debates);
+            }
+        }
     }
 
     public function create(Request $request)
