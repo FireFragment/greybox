@@ -6,13 +6,13 @@
     :target="link ? '_blank' : null"
     :rel="link ? 'noopener' : null"
   >
-    <q-item-section avatar>
+    <q-item-section avatar class="items-center">
       <q-icon :color="iconColor" :name="icon" />
     </q-item-section>
 
     <q-item-section>
-      <q-item-label caption v-if="label">{{ label }}</q-item-label>
-      <q-item-label class="text-dark">{{ value }}</q-item-label>
+      <q-item-label :class="labelClass" caption v-if="label">{{ label }}</q-item-label>
+      <q-item-label :class="valueClass">{{ value }}</q-item-label>
     </q-item-section>
   </q-item>
 </template>
@@ -26,9 +26,17 @@ const DebateCardRowProps = {
     default: undefined,
     required: false,
   },
+  labelClass: {
+    type: String,
+    required: false,
+  },
   value: {
     type: String,
     required: true,
+  },
+  valueClass: {
+    type: String,
+    required: false,
   },
   icon: {
     type: String,

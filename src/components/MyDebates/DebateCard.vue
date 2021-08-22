@@ -10,8 +10,7 @@
     -->
     <q-card-section>
       <div class="text-h6">
-        Žena potřebuje muže jako ryba velociped
-        {{ victory ? '- jsou ženy více ryby, nebo ryby více ženy?' : '' }}
+        {{ debate.motion }}
       </div>
     </q-card-section>
 
@@ -21,26 +20,26 @@
       <DebateCardRow
         icon="far fa-calendar-alt"
         label="Datum"
-        value="5. 6. 2020"
+        :value="getDate(debate.date, 'D. M. YYYY')"
       />
       <DebateCardRow
         icon="fas fa-check-circle"
         icon-color="positive"
         label="Afirmace"
-        value="√1764"
+        :value="debate.affirmativeTeam"
       />
       <DebateCardRow
         icon="fas fa-times-circle"
         icon-color="negative"
         label="Negace"
-        value="Tři vepři"
+        :value="debate.negativeTeam"
       />
       <DebateCardRow
         icon="fas fa-gavel"
         icon-color="warning"
         label="Výsledek"
-        value="AFF 3:0"
-        class="q-mb-xs"
+        :value="debate.result"
+        value-class="text-uppercase"
       />
       <DebateCardRow
         icon="fas fa-external-link-alt"
@@ -52,7 +51,7 @@
       />
       <!-- TODO - hide if no ballot has been uploaded (ensure only first separator has mt-auto) -->
       <q-separator class="q-mt-auto" />
-      <template v-if="!adjudicator || !victory">
+      <template v-if="true">
         <DebateCardRow
           icon="fas fa-file-download"
           icon-color="primary"
@@ -60,8 +59,8 @@
           link="#"
         />
       </template>
-      <template v-if="victory">
-        <q-separator v-if="!adjudicator" />
+      <template v-if="true">
+        <q-separator v-if="true" />
         <DebateCardRow
           icon="fas fa-file-download"
           icon-color="primary"
@@ -69,7 +68,7 @@
           link="#"
         />
       </template>
-      <template v-if="adjudicator">
+      <template v-if="true">
         <q-separator />
         <DebateCardRow
           icon="fas fa-file-upload"
@@ -91,11 +90,23 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { date } from 'quasar';
 import DebateCardRow from './DebateCardRow.vue';
 
+export interface Debate {
+  affirmativeTeam: string;
+  date: string;
+  motion: string;
+  negativeTeam: string;
+  result: string;
+  role: string;
+}
+
 const DebateCardProps = {
-  victory: Boolean,
-  adjudicator: Boolean,
+  debate: {
+    type: Object as () => Debate,
+    required: true,
+  },
 };
 
 interface DebateCardData {
@@ -112,6 +123,9 @@ export default defineComponent({
     return {
       uploading: false,
     };
+  },
+  methods: {
+    getDate: date.formatDate,
   },
 });
 </script>
