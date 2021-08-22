@@ -31,7 +31,10 @@ const routes: RouteRecordRaw[] = [
 
       // My debates
       {
+        // TODO - type routes & therefore fix weird error below
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         path: CZroutes.myDebates,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         alias: ENroutes.myDebates,
         name: 'myDebates',
         component: () => import('pages/MyDebates.vue'),
