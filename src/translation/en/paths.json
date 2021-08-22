@@ -2,6 +2,7 @@
   "home": "en",
   "about": "about",
   "tournament": "tournaments",
+  "myDebates": "my-debates",
   "auth": {
     "login": "login",
     "signUp": "sign-up",

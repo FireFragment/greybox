@@ -29,6 +29,15 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/Event.vue'),
       },
 
+      // My debates
+      {
+        path: CZroutes.myDebates,
+        alias: ENroutes.myDebates,
+        name: 'myDebates',
+        component: () => import('pages/MyDebates.vue'),
+        beforeEnter: loggedInMiddleware,
+      },
+
       // Admin
       {
         path: CZroutes.admin.eventRegistrations,

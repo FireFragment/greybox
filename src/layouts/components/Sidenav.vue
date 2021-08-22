@@ -62,6 +62,15 @@
 
       <q-item-label header>{{ $tr("general.user") }}</q-item-label>
       <template v-if="$auth.isLoggedIn() && $auth.user()">
+        <q-item :to="$path('myDebates')" clickable>
+          <q-item-section avatar>
+            <q-icon name="fas fa-user-tie" />
+          </q-item-section>
+
+          <q-item-section>{{
+              $tr("myDebates.link")
+            }}</q-item-section>
+        </q-item>
         <q-item :to="$path('auth.accountSettings')" clickable>
           <q-item-section avatar>
             <q-icon name="fas fa-cog" />
