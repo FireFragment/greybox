@@ -45,10 +45,13 @@ class DebateController extends Controller
         $person = $user->person()->first();
         if (null !== $person)
         {
+            print_r($person);
             $oldId = $person->getOldGreyboxId();
+            echo $oldId;
             if (is_numeric($oldId))
             {
                 $gb = file_get_contents('https://debatovani.cz/greybox/?page=clovek&clovek_id='.$oldId);
+                print_r($gb);
                 $debates = Debate::parseOldGreybox($gb);
                 $debates = Debate::groupByMonth($debates);
 
