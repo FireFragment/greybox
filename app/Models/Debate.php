@@ -49,23 +49,29 @@ class Debate extends BaseModel
 
     public static function parseOldGreybox(string $text): array
     {
-
         $text = preg_split('/<h2 id="debaty">debaty<\/h2>/m', $text);
         $text = preg_split('/<h2 id="ibody">/m', $text[1]);
         $lines = preg_split('/\<tr\>/', $text[0]);
-        $numberOfDebates = count($lines);
+        array_shift($lines);
+        array_shift($lines);
 
         $debates = array();
-        for ($i = 2; $i < $numberOfDebates; $i++)
+        foreach ($lines as $line)
         {
-            $fields = preg_split('/<\/td>/m', $lines[$i]);
-            $debates[$i-2]['date'] = substr($fields[0], 4);
-            $debates[$i-2]['affirmativeTeam'] = self::removeLink($fields[1]);
-            $debates[$i-2]['negativeTeam'] = self::removeLink($fields[2]);
-            $debates[$i-2]['motion'] = self::removeLink($fields[3]);
-            $debates[$i-2]['result'] = substr($fields[4], 4);
-            $debates[$i-2]['role'] = substr($fields[6], 4);
-            $debates[$i-2]['score'] = substr($fields[7], 4);
+            $fields = preg_split('/<\/td>/m', $line);
+            $role = substr($fields[6], 4);
+            if ('organizátor' !== $role) {
+                $debates[] = array(
+                    'date' => substr($fields[0], 4),
+                    'affirmativeTeam' => self::removeLink($fields[1]),
+                    'negativeTeam' => self::removeLink($fields[2]),
+                    'motion' => ucfirst(self::removeLink($fields[3])),
+                    'result' => substr($fields[4], 4),
+                    'link' => 'https://debatovani.cz/greybox/?page=debata&debata_id=' . substr(substr($fields[5], 42), 0, -13),
+                    'role' => $role,
+                    'score' => substr($fields[7], 4)
+                );
+            }
         }
 
         return $debates;

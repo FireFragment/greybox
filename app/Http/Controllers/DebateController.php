@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Models\Debate;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class DebateController extends Controller
 {
@@ -39,7 +40,7 @@ class DebateController extends Controller
         return response()->json($debate);
     }
 
-    public function showDebatesForUser($id)
+    public function showDebatesForUser($id, Request $request)
     {
         $user = User::findOrFail($id);
         $person = $user->person()->first();
@@ -50,10 +51,38 @@ class DebateController extends Controller
             {
                 $gb = file_get_contents('https://debatovani.cz/greybox/?page=clovek&clovek_id='.$oldId);
                 $debates = Debate::parseOldGreybox($gb);
-                $debates = Debate::groupByMonth($debates);
 
-                return response()->json($debates);
+                $currentPage = $request->input('page') ?? 1;
+                $perPage = $request->input('limit') ?? 10;
+                $startingPoint = ($currentPage - 1) * $perPage;
+                $debatesCount = count($debates);
+
+                $slice = array_slice($debates, $startingPoint, $perPage, true);
+                $paginator = new LengthAwarePaginator($slice, $debatesCount, $perPage);
+
+                $result = array(
+                    'data' => Debate::groupByMonth($slice),
+                    'currentPage' => $currentPage,
+                    'firstPageUrl' => '/?page=1',
+                    'from' => $startingPoint + 1,
+                    'lastPage' => $paginator->lastPage(),
+                    'lastPageUrl' => '/?page=' . $paginator->lastPage(),
+                    'nextPageUrl' => $paginator->nextPageUrl(),
+                    'perPage' => $perPage,
+                    'prevPageUrl' => $paginator->previousPageUrl(),
+                    'to' => $startingPoint + $perPage - 1,
+                    'total' => $debatesCount
+                );
+                return response()->json($result);
             }
+            else
+            {
+                return response()->json(['message' => 'legacy greybox not connected'], 403);
+            }
+        }
+        else
+        {
+            return response()->json(['message' => 'legacy greybox not connected'], 403);
         }
     }
 
