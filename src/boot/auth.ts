@@ -57,7 +57,7 @@ export interface LoginData {
 
 interface Auth {
   login: (data: LoginData) => Promise<User | null>
-  logout: () => void
+  logout: (redirectHome?: boolean) => void
   user: () => User | null,
   getToken: () => string | null
   isLoggedIn: () => boolean
@@ -65,6 +65,10 @@ interface Auth {
 }
 
 const localStorageKey = 'greyboxAuthData';
+
+const saveUserData = (data: User) => {
+  localStorage.setItem(localStorageKey, JSON.stringify(data));
+};
 
 const login = (credentials: LoginData): Promise<User | null> => new Promise(
   (resolve, reject) => {
@@ -81,18 +85,20 @@ const login = (credentials: LoginData): Promise<User | null> => new Promise(
       },
       alerts: false,
     })
-      .then((response: AxiosResponse<User>) => {
-        const { data } = response;
-        localStorage.setItem(localStorageKey, JSON.stringify(data));
+      .then(({ data }: AxiosResponse<User>) => {
+        saveUserData(data);
         resolve(data);
       })
       .catch(reject);
   },
 );
 
-export const logout = async () => {
+export const logout = async (redirectHome: boolean = true) => {
   localStorage.removeItem(localStorageKey);
-  await Router.replace({ name: 'home' });
+
+  if (redirectHome) {
+    await Router.replace({ name: 'home' });
+  }
 };
 
 export const user = (): User | null => {
@@ -118,6 +124,22 @@ const auth: Auth = {
 
 export default boot(({ app }) => {
   app.config.globalProperties.$auth = auth;
+
+  if (!auth.isLoggedIn()) {
+    return;
+  }
+
+  // Check if saved token is valid
+  apiCall({
+    url: 'user/logged',
+    method: 'get',
+  })
+    .then(({ data: [data] }: AxiosResponse<User[]>) => {
+      saveUserData(data);
+    })
+    .catch(async () => {
+      await logout(false);
+    });
 });
 
 // Required for TypeScript to work with global properties
