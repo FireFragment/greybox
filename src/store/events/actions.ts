@@ -1,7 +1,9 @@
+/*
 import { Action } from 'vuex';
-import { TestState } from 'src/store/test/state';
+import { EventsState } from './state';
 
-export const testAction: Action<TestState, never> = ({ commit }) => {
+export const testAction: Action<EventsState, never> = ({ commit }) => {
   // Load products from API or something
   commit('updateDrawerState', 'actionValue');
 };
+*/

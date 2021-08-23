@@ -1,15 +1,15 @@
 import { createStore } from 'vuex';
 import config from '../config';
-import test from './test';
-import { TestState } from './test/state';
+import events from './events';
+import { EventsState } from './events/state';
 
 export interface State {
-  test: TestState
+  events: EventsState
 }
 
 export default () => createStore({
   modules: {
-    test,
+    events,
   },
   strict: config.debug,
 });
