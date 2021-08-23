@@ -22,6 +22,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { TranslatedString } from 'boot/i18n';
+import { assertDBValue, DBValue } from 'boot/custom';
 import Pagination from '../components/Pagination.vue';
 import DebateCard, { Debate } from '../components/MyDebates/DebateCard.vue';
 
@@ -76,29 +77,42 @@ export default defineComponent({
         return;
       }
 
-      this.$bus.$emit('fullLoader', true);
       const pageParamInt = parseInt(pageParam, 10);
       const page = pageParamInt > 0 ? pageParamInt : 1;
+      const DBkey = `my-debates-page${page}`;
 
       this.currentPage = page;
 
-      setTimeout(() => {
-        this.$api({
-          url: `user/${this.$auth.user()!.id}/debate?page=${page}`,
-          method: 'get',
+      const cached: DBValue = this.$db(DBkey);
+      if (cached) {
+        assertDebatesData(cached);
+        this.debatesData = cached;
+        return;
+      }
+
+      this.$bus.$emit('fullLoader', true);
+      this.$api({
+        url: `user/${this.$auth.user()!.id}/debate?page=${page}`,
+        method: 'get',
+      })
+        .then(({
+          data: {
+            data,
+            lastPage,
+          },
+        }) => {
+          assertDebatesData(data);
+          this.debatesData = data;
+          assertDBValue(data);
+          this.$db(DBkey, data);
+          this.totalPages = parseInt(lastPage, 10);
         })
-          .then(({ data: { data, lastPage } }) => {
-            assertDebatesData(data);
-            this.debatesData = data;
-            this.totalPages = parseInt(lastPage, 10);
-          })
-          .catch(() => {
-            this.$flash(this.$tr('removeModal.person.error'), 'error');
-          })
-          .finally(() => {
-            this.$bus.$emit('fullLoader', false);
-          });
-      }, 2000);
+        .catch(() => {
+          this.$flash(this.$tr('removeModal.person.error'), 'error');
+        })
+        .finally(() => {
+          this.$bus.$emit('fullLoader', false);
+        });
     },
   },
   created() {
