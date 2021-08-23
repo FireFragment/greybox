@@ -19,6 +19,12 @@ $router->get('/', function () use ($router) {
 $router->get('prokop', ['uses' => 'PersonController@prokop']);
 
 $router->group(['prefix' => 'api'], function () use ($router) {
+    $router->post('login', ['uses' => 'UserController@login']);
+    $router->post('logout', ['uses' => 'UserController@logout']);
+    $router->get('user/logged', ['uses' => 'UserController@isLoggedIn']);
+    $router->post('reset', ['uses' => 'UserController@sendResetPasswordEmail']);
+    $router->put('reset', ['uses' => 'UserController@resetPassword']);
+
 	$router->get('user',  ['uses' => 'UserController@showAll']);
 	$router->get('user/{id}', ['uses' => 'UserController@showOne']);
 	$router->post('user', ['uses' => 'UserController@create']);
@@ -29,12 +35,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->get('user/{userId}/team[/event/{eventId}]', ['uses' => 'UserController@showTeams']);
     $router->get('user/{id}/client', ['uses' => 'UserController@showClients']);
     $router->get('user/{id}/debate', ['uses' => 'DebateController@showDebatesForUser']);
-
-	$router->post('login', ['uses' => 'UserController@login']);
-	$router->post('logout', ['uses' => 'UserController@logout']);
-    $router->get('user/logged', ['uses' => 'UserController@isLoggedIn']);
-	$router->post('reset', ['uses' => 'UserController@sendResetPasswordEmail']);
-	$router->put('reset', ['uses' => 'UserController@resetPassword']);
 
 	$router->get('registration',  ['uses' => 'RegistrationController@showAll']);
 	$router->get('registration/{id}', ['uses' => 'RegistrationController@showOne']);
