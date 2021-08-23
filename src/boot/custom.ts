@@ -18,10 +18,17 @@ export type InfiniteObject = {
   [key: string]: string | number | undefined | null | InfiniteObject
 };
 
-export type DBValue = undefined | null | string | number | InfiniteObject | DBValue[];
+export type DBValue = undefined | string | number | boolean | null | InfiniteObject | DBValue[];
 
 export function assertDBValue(value: any): asserts value is DBValue {
-  if (typeof value === 'undefined' || value === null || typeof value === 'string' || typeof value === 'number') {
+  const allowedTypes = [
+    'undefined',
+    'string',
+    'number',
+    'boolean',
+  ];
+
+  if (value === null || allowedTypes.includes(typeof value)) {
     return;
   }
 
@@ -35,7 +42,7 @@ export function assertDBValue(value: any): asserts value is DBValue {
       .forEach((item) => assertDBValue(item));
     return;
   }
-  throw new TypeError('Invalid API data');
+  throw new TypeError('Invalid DB data');
 }
 
 // Required for TypeScript to work with global properties
