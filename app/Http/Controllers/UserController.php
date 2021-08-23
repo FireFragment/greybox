@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\ResetPassword;
+use App\Models\Token;
 use App\Repositories\PersonRepository;
 use App\Repositories\TeamRepository;
 use App\User;
@@ -47,11 +48,10 @@ class UserController extends Controller
             return response()->json(['message' => 'invalidCredentials'], 401);
         }
         try {
-            $user->setApiToken();
+            $apiToken = $user->setApiToken();
             $user->setRole(); // TODO: vyřešit elegantněji
-            $user->id_token = $user->api_token;
             return response()->json($user, 200)
-                ->header('Authorization', 'Bearer '.$user->api_token)
+                ->header('Authorization', 'Bearer '.$apiToken)
                 ->header('Access-Control-Expose-Headers', 'Authorization');
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
@@ -60,15 +60,9 @@ class UserController extends Controller
 
     public function logout(Request $request)
     {
-        $user = User::where('api_token', $request->input('api_token'))->first();
-        if (empty($user))
-        {
-            return response()->json(['message' => 'invalidCredentials'], 401);
-        }
+        $token = Token::where('api_token', $request->header('Authorization'));
         try {
-            $user->update([
-                    'api_token' => null
-            ]);
+            $token->delete();
             return response()->json(['message' => 'logoutSuccessful'], 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
@@ -96,7 +90,6 @@ class UserController extends Controller
             'username' => $user->username,
             'person' => $user->person()->first(),
             'role' => $user->role,
-            'api_token' => $user->api_token,
             'created_at' => $user->created_at,
             'updated_at' => $user->updated_at
         );
@@ -210,7 +203,9 @@ class UserController extends Controller
     public function delete($id)
     {
         try {
-            User::findOrFail($id)->delete();
+            $user = User::findOrFail($id);
+            $user->tokens()->delete();
+            $user->delete();
             return response()->json(['message' => 'Deleted successfully.'], 204);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);

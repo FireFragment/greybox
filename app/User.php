@@ -67,6 +67,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $this->hasMany(DeletedAutofill::class, 'user', 'id');
     }
 
+    public function tokens()
+    {
+        return $this->hasMany(\App\Models\Token::class, 'user', 'id');
+    }
+
     public function setRole() {
         $this->role = 'none';
         if ($this->isAdmin()) $this->role = 'admin';
@@ -74,12 +79,17 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
-     * Sets Api Token parameter and saves to the DB
+     * Creates new Token in the tokens table
      */
-    public function setApiToken()
+    public function setApiToken(): string
     {
-        $this->api_token = sha1($this->id.time());
-        $this->save();
+        $apiToken = sha1($this->id.time());
+        $this->tokens()->create([
+            'api_token' => $apiToken,
+            'user' => $this->id,
+            'valid_until' => new \DateTime('+ 24 hours')
+        ]);
+        return $apiToken;
     }
 
     /**

@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\User;
+use App\Models\Token;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -37,11 +37,10 @@ class AuthServiceProvider extends ServiceProvider
 
         $this->app['auth']->viaRequest('api', function ($request) {
             if ($request->header('Authorization')) {
-                return User::where('api_token', $request->header('Authorization'))->first();
-            }
-            // TODO: Backwards compatibility. To be deleted later.
-            if ($request->input('api_token')) {
-                return User::where('api_token', $request->input('api_token'))->first();
+                $token = Token::where('api_token', $request->header('Authorization'))->first();
+                if (null !== $token && new \DateTime() < new \DateTime($token->valid_until)) {
+                    return $token->user()->first();
+                }
             }
         });
     }
