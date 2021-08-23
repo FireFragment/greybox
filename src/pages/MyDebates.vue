@@ -23,6 +23,7 @@
 import { defineComponent } from 'vue';
 import { TranslatedString, TranslationPrefixData } from 'boot/i18n';
 import { assertDBValue, DBValue } from 'boot/custom';
+import { AxiosResponse } from 'axios';
 import Pagination from '../components/Pagination.vue';
 import DebateCard, { Debate } from '../components/MyDebates/DebateCard.vue';
 
@@ -101,12 +102,14 @@ export default defineComponent({
             data,
             lastPage,
           },
-        }) => {
-          assertDebatesData(data);
+        }: AxiosResponse<{
+          data: DebatesData,
+          lastPage: number,
+        }>) => {
           this.debatesData = data;
           assertDBValue(data);
           this.$db(DBkey, data);
-          this.totalPages = parseInt(lastPage, 10);
+          this.totalPages = lastPage;
         })
         .finally(() => {
           this.$bus.$emit('fullLoader', false);
