@@ -61,13 +61,15 @@ export default defineComponent({
 
       const pageParamInt = parseInt(pageParam, 10);
       const page = pageParamInt > 0 ? pageParamInt : 1;
-      const DBkey = `my-debates-page${page}`;
+      const DBkeyData = `my-debates-page${page}`;
+      const DBkeyPages = 'my-debates-total-pages';
 
       this.currentPage = page;
 
-      const cached: DBValue = this.$db(DBkey);
+      const cached: DBValue = this.$db(DBkeyData);
       if (cached) {
         this.debatesData = <DebatesData><unknown>cached;
+        this.totalPages = <number> this.$db(DBkeyPages);
         return;
       }
 
@@ -86,8 +88,9 @@ export default defineComponent({
           lastPage: number,
         }>) => {
           this.debatesData = data;
-          this.$db(DBkey, <DBValue><unknown>data);
+          this.$db(DBkeyData, <DBValue><unknown>data);
           this.totalPages = lastPage;
+          this.$db(DBkeyPages, lastPage);
         })
         .finally(() => {
           this.$bus.$emit('fullLoader', false);
