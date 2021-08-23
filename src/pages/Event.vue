@@ -269,7 +269,7 @@ export default {
         .catch(reject);
     });
 
-    eventPromise.then(([event, isLoading]) => {
+    eventPromise.then(([event, isLoading]) => {isLoading
       this.event = event;
       this.accommodationType = event.accommodation;
       this.mealType = event.meals;

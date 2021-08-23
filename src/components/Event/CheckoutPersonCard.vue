@@ -9,7 +9,7 @@
             </div>
           </div>
 
-          <div class="col-auto">
+          <div class="col-auto" v-if="menu">
             <q-btn color="white" round flat icon="fas fa-ellipsis-v">
               <q-menu cover auto-close>
                 <q-list class="smaller-margin-menu">
@@ -30,7 +30,7 @@
 
       <q-card-section>
         <div
-          v-for="(value, fieldName) in person.registration"
+          v-for="(value, fieldName) in registration"
           v-bind:key="'registration-fields-' + fieldName"
         >
           <template
@@ -63,7 +63,7 @@
           <dt>{{ $tr("registrationFields.meals") }}:</dt>
           <dd>
             {{
-              person.registration.meals
+              registration.meals
                 ? $tr("checkout.values.yes")
                 : $tr("checkout.values.no")
             }}
@@ -71,7 +71,7 @@
         </div>
 
         <div
-          v-if="person.registration.meals && person.person.dietary_requirement"
+          v-if="registration.meals && person.person.dietary_requirement"
         >
           <dt>{{ $tr("fields.diet") }}:</dt>
           <dd>{{ dietaryRequirement }}</dd>
@@ -83,9 +83,9 @@
         </div>
       </q-card-section>
 
-      <q-separator v-if="person.registration.accommodation" inset />
+      <q-separator v-if="registration.accommodation" inset />
 
-      <q-card-section v-if="person.registration.accommodation">
+      <q-card-section v-if="registration.accommodation">
         <div
           v-for="(value, fieldName) in person.person"
           v-bind:key="'person-fields-' + fieldName"
@@ -121,30 +121,28 @@ import { date } from 'quasar';
 export default {
   props: {
     person: Object,
+    registration: Object,
     personIndex: Number,
     possibleDiets: Array,
+    menu: { type: Boolean, required: false, default: true },
   },
   emits: ['remove'],
   data() {
     return {
       translationPrefix: 'tournament.',
+      roles: {},
     };
   },
   computed: {
     roleName() {
       let roleObject = null;
-      this.$db('rolesList').forEach((item) => {
-        if (item.id === this.person.registration.role) roleObject = item;
-      });
-      if (roleObject) return this.$tr(roleObject.name);
-
-      // For Bugsnag to catch
-      console.log(this.$db('rolesList'));
-      console.log(this.person);
-      console.error(
-        `Missing role ${this.person.registration.role}, see logs above`,
-      );
-      return '';
+      if (this.$db('rolesList')){
+        this.$db('rolesList').forEach((item) => {
+          if (item.id === this.person.registration.role) roleObject = item;
+        });
+        if (roleObject) return this.$tr(roleObject.name);
+      }
+      return 'provizor';
     },
     dietaryRequirement() {
       const id = this.person.person.dietary_requirement;
