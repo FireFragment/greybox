@@ -95,20 +95,18 @@ export default {
 
       // These translations don't work inside auth promises for some odd reason
       const invalidCredentials = this.$tr('login.validation.invalidCredentials');
-      const loginLink = this.$path('auth.login');
       const signupSuccess = this.$tr('signUp.success');
       const loginSuccess = this.$tr('login.success');
 
       this.$auth
         .login(requestData)
         .then(() => {
-          this.$bus.$emit('fullLoader', true);
-
           // User was automatically logged in after sign up
           if (
             typeof requestData.isSignUp === 'boolean'
             && requestData.isSignUp
           ) {
+            this.$bus.$emit('fullLoader', false);
             this.$router.replace({ name: 'home' });
             this.$flash(signupSuccess, 'done');
           } else {
@@ -117,9 +115,6 @@ export default {
           }
         })
         .catch(() => {
-          // Redirect is necessary because auth plugin automatically redirects to home
-          this.$router.replace(loginLink);
-          this.$bus.$emit('fullLoader', false);
           this.password = null;
           this.$flash(invalidCredentials, 'error');
         })
@@ -131,7 +126,6 @@ export default {
   created() {
     // Auto login user with passed data (from registration page)
     if (this.loginData) {
-      this.$bus.$emit('fullLoader', false);
       this.login(this.loginData);
     }
   },
