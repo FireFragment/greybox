@@ -12,5 +12,8 @@ export const setEvents: Mutation<EventsState> = (state, value: EventsData) => {
 };
 
 export const setFullEvent: Mutation<EventsState> = (state, value: EventFull) => {
-  state.eventsFull[value.id] = value;
+  state.eventsFull[value.id] = {
+    ...value,
+    fullyLoaded: true,
+  };
 };

@@ -26,7 +26,12 @@ export const load: Action<EventsState, never> = async ({
   })
     .then(({ data }: AxiosResponse<Event[]>) => {
       commit('setEvents', $makeIdObject(
-        data.filter((event) => event.pds === $isPDS),
+        data
+          .filter((event) => event.pds === $isPDS)
+          .map((item) => ({
+            ...item,
+            fullyLoaded: false,
+          })),
       ));
     })
     .finally(() => {

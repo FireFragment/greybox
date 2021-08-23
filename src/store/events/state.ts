@@ -28,6 +28,7 @@ export interface Event {
   soft_deadline: DateTime;
   // eslint-disable-next-line camelcase
   updated_at: DateTime;
+  fullyLoaded: boolean;
 }
 
 export interface EventFull extends Event {

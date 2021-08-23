@@ -65,7 +65,7 @@
         </q-banner>
       </div>
     </div>
-    <div v-else-if="!event" class="row justify-center">
+    <div v-else-if="!event.fullyLoaded" class="row justify-center">
       <div class="col-12 col-md-6">
         <q-banner class="bg-primary text-white q-mt-xl">
           <template v-slot:avatar>
@@ -248,61 +248,7 @@ export default {
   },
 
   async created() {
-    if (!this.$auth.isLoggedIn()) {
-      return;
-    }
-
-    // Not cached -> load from API
-    this.$bus.$emit('fullLoader', true);
-
-    // Promise to return object with event details
-    const eventId = this.$route.params.id;
-
-    await this.$store.dispatch('events/loadFull', eventId);
-
-    const event = this.fullEvent(eventId);
-
-    this.event = event;
-    this.accommodationType = event.accommodation;
-    this.mealType = event.meals;
-    this.possibleDiets = event.dietaryRequirements;
-
-    // Can't register to event -> don't even load roles
-    if (event.hard_deadline < this.now || !this.$auth.isLoggedIn()) {
-      return this.$bus.$emit('fullLoader', false);
-    }
-
-    await this.$store.dispatch('roles/load');
-
-    // Check if roles are present in event's prices
-    this.allRoles.forEach((role: Role) => {
-      let isPresent = event.prices.find((price) => price.role.id === role.id);
-      if (!isPresent) {
-        return;
-      }
-
-      // Individual debater should be hidden on PDS
-      if (role.id === 1 && this.$isPDS) {
-        return;
-      }
-
-      // Debater role is present -> push team role
-      if (role.id === 1) {
-        this.roles[0] = {
-          value: 0,
-          label: 'tournament.types.team',
-          icon: 'users',
-        };
-      }
-
-      this.roles[role.id] = {
-        value: role.id,
-        label: role.name,
-        icon: role.icon,
-      };
-    });
-
-    this.$bus.$emit('fullLoader', false);
+    await this.loadEvent();
   },
 
   beforeUnmount() {
@@ -316,6 +262,64 @@ export default {
   },
 
   methods: {
+    async loadEvent() {
+      const eventId = this.$route.params.id;
+
+      if (!this.$auth.isLoggedIn()) {
+        this.event = this.simpleEvent(eventId);
+        return;
+      }
+
+      // Not cached -> load from API
+      this.$bus.$emit('fullLoader', true);
+
+      await this.$store.dispatch('events/loadFull', eventId);
+
+      const event = this.fullEvent(eventId);
+
+      this.event = event;
+      this.accommodationType = event.accommodation;
+      this.mealType = event.meals;
+      this.possibleDiets = event.dietaryRequirements;
+
+      // Can't register to event -> don't even load roles
+      if (event.hard_deadline < this.now || !this.$auth.isLoggedIn()) {
+        return this.$bus.$emit('fullLoader', false);
+      }
+
+      await this.$store.dispatch('roles/load');
+
+      // Check if roles are present in event's prices
+      this.allRoles.forEach((role: Role) => {
+        let isPresent = event.prices.find((price) => price.role.id === role.id);
+        if (!isPresent) {
+          return;
+        }
+
+        // Individual debater should be hidden on PDS
+        if (role.id === 1 && this.$isPDS) {
+          return;
+        }
+
+        // Debater role is present -> push team role
+        if (role.id === 1) {
+          this.roles[0] = {
+            value: 0,
+            label: 'tournament.types.team',
+            icon: 'users',
+          };
+        }
+
+        this.roles[role.id] = {
+          value: role.id,
+          label: role.name,
+          icon: role.icon,
+        };
+      });
+
+      this.$bus.$emit('fullLoader', false);
+    },
+
     submitTeamForm(people, teamName, teamId) {
       // Function to call after team ID is known
       const doneCallback = (id, name) => {
@@ -434,15 +438,22 @@ export default {
           ].join(':')}`
       );
     },
-    ...mapGetters('events', [
-      'fullEvent'
-    ]),
+    ...mapGetters('events', {
+      simpleEvent: 'event',
+      fullEvent: 'fullEvent',
+    }),
     ...mapState('events', [
       'events',
     ]),
     ...mapState('roles', {
       allRoles: 'roles',
     }),
+  },
+
+  watch: {
+    events() {
+      void this.loadEvent();
+    },
   },
 };
 </script>
