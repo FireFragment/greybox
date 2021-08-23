@@ -200,10 +200,14 @@ class EventController extends Controller
 
     public function showUserRegistrations($eventId, $userId)
     {
-        $event = Event::find($eventId);
-        $user = \App\User::find($userId);
-        if ($user->id !== \Auth::user()->id) {
-            $this->authorize('showUserRegistrations', Event::class);
+        $event = Event::findOrFail($eventId);
+        $user = \App\User::findOrFail($userId);
+        try {
+            if ($user->id !== \Auth::user()->id) {
+                $this->authorize('showUserRegistrations', Event::class);
+            }
+        } catch (\Exception $exception) {
+            return response()->json(['message' => 'user not logged in'], 401);
         }
 
         $registrations = $event->registrations()->where('registered_by', $user->id)->get();
