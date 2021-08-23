@@ -1,22 +1,25 @@
 <template>
   <q-page padding>
     <h1 class="text-center text-h4">{{ $tr('currentRegistrations.title') }}</h1>
-
-    <template v-for="(entry, key) in people" :key="key">
-      <div class="row">
+    <div class="row">
+      <template v-for="(entry, key) in people" :key="key">
         <div class="col-12 q-px-sm">
           <h5 class="q-mt-lg q-mb-xs">{{ entry.name }}</h5>
         </div>
-        <checkout-person-card
+        <div
+          class="col-12 col-sm-6 col-md-4 col-lg-3 q-px-sm q-py-md items-stretch"
           v-for="(person, index) in entry.registrations"
-          v-bind:key="JSON.stringify(person)"
-          :person="person"
-          :registration="person"
-          :person-index="index"
-          :menu="false"
-        />
-      </div>
-    </template>
+          :key="JSON.stringify(person)"
+        >
+          <checkout-person-card
+            :person="person"
+            :registration="person"
+            :person-index="index"
+            :menu="false"
+          />
+        </div>
+      </template>
+    </div>
 
   </q-page>
 </template>
