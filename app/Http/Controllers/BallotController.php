@@ -6,13 +6,15 @@ namespace App\Http\Controllers;
 use App\Models\Ballot;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Response;
 
 class BallotController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth', ['only' => [
-            'create'
+            'create',
+            'showPdf'
         ]]);
     }
 
@@ -39,5 +41,11 @@ class BallotController extends Controller
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['message' => $e->getMessage()], $e->getCode());
         }
+    }
+
+    public function showPdf($filename)
+    {
+        $file = Storage::disk('s3')->get('ballots/' . $filename . '.pdf');
+        return (new Response($file, 200))->header('Content-Type', 'application/pdf');
     }
 }

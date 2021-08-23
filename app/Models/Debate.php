@@ -58,6 +58,7 @@ class Debate extends BaseModel
         foreach ($lines as $line)
         {
             $fields = preg_split('/<\/td>/m', $line);
+            $id = substr(substr($fields[5], 42), 0, -13);
             $result = ucfirst(substr($fields[4], 4));
             $win = null;
             switch (substr($result, 0, 3))
@@ -81,10 +82,11 @@ class Debate extends BaseModel
                     'negativeTeam' => self::removeLink($fields[2]),
                     'motion' => ucfirst(self::removeLink($fields[3])),
                     'result' => $result,
-                    'link' => 'https://debatovani.cz/greybox/?page=debata&debata_id=' . substr(substr($fields[5], 42), 0, -13),
+                    'link' => 'https://debatovani.cz/greybox/?page=debata&debata_id=' . $id,
                     'role' => $role,
                     'score' => substr($fields[7], 4),
-                    'win' => $win
+                    'win' => $win,
+                    'ballots' => self::addBallots($id)
                 );
             }
         }
@@ -142,5 +144,24 @@ class Debate extends BaseModel
             case 12:
                 return ['cs' => 'prosinec', 'en' => 'December'];
         }
+    }
+
+    private static function addBallots(int $debateId): array
+    {
+        $ballots = Ballot::where('old_greybox_id', $debateId)->get();
+        $list = array();
+        foreach ($ballots as $ballot) {
+            $adjudicator = $ballot->adjudicator()->first();
+            $adjudicatorName = 'TBD';
+            if (null != $adjudicator)
+            {
+                $adjudicatorName = $adjudicator->name . ' ' . $adjudicator->surname;
+            }
+            $list[] = array(
+                'filename' => substr($ballot->filename, 0, -3),
+                'adjudicator' => $adjudicatorName
+            );
+        }
+        return $list;
     }
 }
