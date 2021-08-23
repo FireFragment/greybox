@@ -11,6 +11,8 @@ const smartformModule = require('@smartform.cz/smartform');
 import { boot } from 'quasar/wrappers';
 import { i18n } from 'boot/i18n';
 import i18nConfig from '../translation/config';
+import store, { State } from '../store';
+import { Store } from 'vuex';
 
 type TranslationValue = TranslateResult | LocaleMessageValue<VueMessageType> | {};
 
@@ -28,6 +30,7 @@ declare module '@vue/runtime-core' {
     $isPDS: boolean;
     $path: (route: string) => string;
     $tr: (key: string, options?: Record<string, unknown> | null, usePrefix?: boolean) => TranslationValue;
+    $store: Store<State>
   }
 }
 
@@ -90,6 +93,8 @@ export const $flash = function (message: string | TranslationValue, type: string
 };
 
 export default boot(({ app }) => {
+  app.use(store);
+
   // $isPDS bool
   app.config.globalProperties.$isPDS = process.env.IS_PDS === 'true';
 
