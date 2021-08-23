@@ -112,7 +112,6 @@ export default defineComponent({
           method: 'get',
         })
           .then(({ data }: AxiosResponse<EventPersonRegistrations[]>) => {
-            console.log(data);
             this.people = data;
             this.$db(DBkey, <DBValue><unknown>data, true);
           })

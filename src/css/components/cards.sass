@@ -36,3 +36,37 @@
 	@media (max-width: $breakpoint-sm-max)
 		padding: 2rem 1rem
 		margin-bottom: 3rem
+
+.page-auth\.currentRegistrations
+	.q-card
+		height: 100%
+		overflow: hidden
+
+		dt, dd
+			display: inline-block
+
+		dt
+			font-weight: bold
+
+		dd
+			margin-left: .5rem
+
+	.team-form
+		> .q-field--error
+			margin-bottom: .5rem
+
+		.q-card
+			.q-card__section
+
+				&:not(.header)
+					padding-top: 1rem
+					position: relative
+					z-index: 1
+
+				&.header
+					position: relative
+					z-index: 9
+					background-color: #e6e6e6
+
+					.col .q-btn
+						margin-right: .5rem

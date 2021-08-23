@@ -135,78 +135,13 @@ export default {
   computed: {
     roleName() {
       let roleObject = null;
-      let isLoading = false;
-
-      /** TO REFACTOR **/
-      // Promise to return all roles
-      const rolesPromise = new Promise((resolve, reject) => {
-        // Load roles from cache if available
-        const cached = this.$db('rolesList');
-        if (cached) return resolve([cached, isLoading]);
-
-        if (!isLoading) this.$bus.$emit('fullLoader', true);
-
-        // Not cached -> load from API
-        this.$api({
-          url: 'role',
-          method: 'get',
-        })
-            .then((d) => {
-              this.$db('rolesList', d.data);
-              resolve([d.data, true]);
-            })
-            .catch(reject);
-      });
-
-      rolesPromise.then(([roles, isLoading]) => {
-        // Check if roles are present in event's prices
-        for (const role of roles) {
-          let isPresent = false;
-          for (const price of event.prices) {
-            if (price.role.id === role.id) {
-              isPresent = true;
-              break;
-            }
-          }
-
-          if (isPresent) {
-            // Debater role is present -> push team role
-            if (role.id === 1) {
-              this.roles[0] = {
-                value: 0,
-                label: 'tournament.types.team',
-                icon: 'users',
-              };
-            }
-
-            // Individual debater should be hidden on PDS
-            if (role.id !== 1 || !this.$isPDS)
-                // Push role to role list
-            {
-              this.roles[role.id] = {
-                value: role.id,
-                label: role.name,
-                icon: role.icon,
-              };
-            }
-          }
-        }
-
+      if (this.$db('rolesList')){
         this.$db('rolesList').forEach((item) => {
-          if (item.id === this.registration.role) roleObject = item;
+          if (item.id === this.person.registration.role) roleObject = item;
         });
         if (roleObject) return this.$tr(roleObject.name);
-
-        if (isLoading) return this.$bus.$emit('fullLoader', false);
-      });
-
-      // For Bugsnag to catch
-      console.log(this.$db('rolesList'));
-      console.log(this.person);
-      console.error(
-        `Missing role ${this.registration.role}, see logs above`,
-      );
-      return '';
+      }
+      return 'provizor';
     },
     dietaryRequirement() {
       const id = this.person.person.dietary_requirement;
@@ -232,11 +167,5 @@ export default {
     },
     getDate: date.formatDate,
   },
-  /*
-  created() {
-    console.log(this.person);
-    console.log(this.registration);
-  }
-   */
 };
 </script>
