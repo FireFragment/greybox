@@ -8,7 +8,9 @@
     "signUp": "sign-up",
     "logout": "logout",
     "passwordReset": "password-reset",
-    "accountSettings": "account-settings",
+    "accountSettings": "account-settings"
+  },
+  "user": {
     "currentRegistrations": "current-registrations"
   },
   "admin": {

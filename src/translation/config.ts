@@ -1,5 +1,5 @@
 const files: string[] = [
-  'general', 'auth', 'paths', 'tournament', 'admin', 'myDebates',
+  'general', 'auth', 'paths', 'tournament', 'admin', 'myDebates', 'user',
 ];
 
 // Nested object

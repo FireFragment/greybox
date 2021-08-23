@@ -182,7 +182,8 @@
         lazy-rules
         :rules="[
           val =>
-            !val ||
+            values.accommodation === false ||
+            val === '_________' ||
             val === '#########' ||
             val.toString().match(/\d{9}/) ||
             $tr('general.form.fieldError', null, false)
@@ -881,7 +882,7 @@ export default {
           this.values.birthMonth,
           this.values.birthDay,
         );
-        returnObject.id_number = this.values.id_number === '_________' ? null : this.values.id_number;
+        returnObject.id_number = (this.values.id_number !== '_________' && this.values.accommodation !== false) ? this.values.id_number : null;
         returnObject.street = this.values.street;
         returnObject.city = this.values.city;
         returnObject.zip = this.values.zip
