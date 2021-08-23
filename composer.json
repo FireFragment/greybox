@@ -16,7 +16,8 @@
         "rikudou/czqrpayment": "4.0.2",
         "endroid/qr-code": "3.9.6",
         "loudislav/debatematch": "dev-master",
-        "bugsnag/bugsnag-laravel": "2.21.0"
+        "bugsnag/bugsnag-laravel": "2.21.0",
+        "google/apiclient": "^2.10"
     },
     "require-dev": {
         "fzaninotto/faker": "1.9.2",
@@ -37,6 +38,12 @@
     "scripts": {
         "post-root-package-install": [
             "php -r \"copy('.env.example', '.env');\""
+        ],
+        "pre-autoload-dump": "Google\\Task\\Composer::cleanup"
+    },
+    "extra": {
+        "google/apiclient-services": [
+            "Drive"
         ]
     },
     "minimum-stability": "dev",
