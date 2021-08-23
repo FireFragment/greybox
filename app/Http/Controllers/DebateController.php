@@ -49,7 +49,7 @@ class DebateController extends Controller
             $oldId = $person->getOldGreyboxId();
             if (is_numeric($oldId))
             {
-                $gb = file_get_contents('https://debatovani.cz/greybox/?page=clovek&clovek_id='.$oldId);
+                $gb = file_get_contents('https://debatovani.cz/greybox/?page=clovek.debaty&clovek_id='.$oldId);
                 $debates = Debate::parseOldGreybox($gb);
 
                 $currentPage = $request->input('page') ?? 1;

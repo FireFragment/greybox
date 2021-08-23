@@ -49,9 +49,8 @@ class Debate extends BaseModel
 
     public static function parseOldGreybox(string $text): array
     {
-        $text = preg_split('/<h2 id="debaty">debaty<\/h2>/m', $text);
-        $text = preg_split('/<h2 id="ibody">/m', $text[1]);
-        $lines = preg_split('/\<tr\>/', $text[0]);
+        $text = preg_split('/<table>/m', $text);
+        $lines = preg_split('/\<tr\>/', $text[1]);
         array_shift($lines);
         array_shift($lines);
 
