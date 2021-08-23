@@ -54,10 +54,6 @@ export default defineComponent({
         assertDBValue(data);
         this.$db(DBkey, data, true);
       })
-      .catch(() => {
-        // TODO - output correct error message
-        // this.$flash(this.$tr(''), 'error');
-      })
       .finally(() => {
         // console.log(this.eventId);
         // console.log(this.$auth.user()!.id);
