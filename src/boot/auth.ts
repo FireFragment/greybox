@@ -97,6 +97,14 @@ export const logout = async (redirectHome: boolean = true) => {
 
   if (redirectHome) {
     await Router.replace({ name: 'home' });
+  } else {
+    // Soft reload current page
+    const currentPath = Router.currentRoute.value;
+
+    // Redirect here before route switch to avoid redundant redirect error
+    const midRedirect = currentPath.name === 'home' ? 'about' : 'home';
+    await Router.push({ name: midRedirect });
+    await Router.replace({ path: currentPath.path });
   }
 };
 
@@ -133,7 +141,7 @@ export default boot(({ app }) => {
     url: 'user/logged',
     method: 'get',
   })
-    .then(({ data: [data] }: AxiosResponse<User[]>) => {
+    .then(({ data }: AxiosResponse<User>) => {
       saveUserData(data);
     })
     .catch(async () => {
