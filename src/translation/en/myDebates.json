@@ -1,4 +1,20 @@
 {
   "link": "My debates",
-  "title": "My debates"
+  "title": "My debates",
+  "cardRows": {
+    "date": "Date",
+    "affirmatives": "Affirmatives",
+    "negatives": "Negatives",
+    "result": "Result",
+    "showDetail": "Show debate detail"
+  },
+  "cardButtons": {
+    "downloadBallot": "Download ballot",
+    "uploadBallot": "Upload ballot"
+  },
+  "uploadBallot": {
+    "uploading": "Uploading ballot",
+    "error": "Uploading ballot failed",
+    "success": "Ballot was successfully uploaded"
+  }
 }

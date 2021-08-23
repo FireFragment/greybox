@@ -19,25 +19,25 @@
     <q-list class="col-grow column">
       <DebateCardRow
         icon="far fa-calendar-alt"
-        label="Datum"
+        :label="$tr('cardRows.date')"
         :value="getDate(debate.date, 'D. M. YYYY')"
       />
       <DebateCardRow
         icon="fas fa-check-circle"
         icon-color="positive"
-        label="Afirmace"
+        :label="$tr('cardRows.affirmatives')"
         :value="debate.affirmativeTeam"
       />
       <DebateCardRow
         icon="fas fa-times-circle"
         icon-color="negative"
-        label="Negace"
+        :label="$tr('cardRows.negatives')"
         :value="debate.negativeTeam"
       />
       <DebateCardRow
         icon="fas fa-gavel"
         icon-color="warning"
-        label="Výsledek"
+        :label="$tr('cardRows.result')"
         :value="debate.result"
         value-class="text-uppercase"
       />
@@ -45,7 +45,7 @@
         icon="fas fa-external-link-alt"
         icon-color="indigo"
         label="Greybox v1.0"
-        value="Zobrazit detail debaty"
+        :value="$tr('cardRows.showDetail')"
         :link="debate.link"
         class="q-mb-xs"
       />
@@ -54,8 +54,8 @@
       <template v-if="true">
         <DebateCardRow
           icon="fas fa-file-download"
-          icon-color="primary"
-          value="Stáhnout ballot (Jakub Svíčka)"
+          icon-color="green-9"
+          :value="`${$tr('cardButtons.downloadBallot')} (Jakub Svíčka)`"
           link="#"
         />
       </template>
@@ -63,8 +63,8 @@
         <q-separator v-if="true" />
         <DebateCardRow
           icon="fas fa-file-download"
-          icon-color="primary"
-          value="Stáhnout ballot (Ladislav Borgir)"
+          icon-color="green-9"
+          :value="`${$tr('cardButtons.downloadBallot')} (Ladislav Borgir)`"
           link="#"
         />
       </template>
@@ -73,8 +73,8 @@
         <DebateCardRow
           icon="fas fa-file-upload"
           icon-color="primary"
-          value="Nahrát ballot"
-          :link="true"
+          :value="$tr('cardButtons.uploadBallot')"
+          link="#"
           @click="uploading = true"
         />
       </template>
@@ -82,7 +82,7 @@
     <q-inner-loading :showing="uploading">
       <q-spinner size="50px" color="primary" />
       <div class="q-pt-md">
-        Ballot se nahrává...
+        {{ $tr('uploadBallot.uploading') }}...
       </div>
     </q-inner-loading>
   </q-card>
@@ -91,6 +91,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { date } from 'quasar';
+import { TranslationPrefixData } from 'boot/i18n';
 import DebateCardRow from './DebateCardRow.vue';
 
 export interface Debate {
@@ -111,7 +112,7 @@ const DebateCardProps = {
   },
 };
 
-interface DebateCardData {
+interface DebateCardData extends TranslationPrefixData {
   uploading: boolean;
 }
 
@@ -124,6 +125,7 @@ export default defineComponent({
   data(): DebateCardData {
     return {
       uploading: false,
+      translationPrefix: 'myDebates.',
     };
   },
   methods: {

@@ -1,6 +1,6 @@
 <template>
   <q-page padding>
-    <h1 class="text-center text-h4">{{ $tr('myDebates.title') }}</h1>
+    <h1 class="text-center text-h4">{{ $tr('title') }}</h1>
     <div class="row">
       <template v-for="(month, key) in debatesData" :key="key">
         <div class="col-12 q-px-sm">
@@ -21,7 +21,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { TranslatedString } from 'boot/i18n';
+import { TranslatedString, TranslationPrefixData } from 'boot/i18n';
 import { assertDBValue, DBValue } from 'boot/custom';
 import Pagination from '../components/Pagination.vue';
 import DebateCard, { Debate } from '../components/MyDebates/DebateCard.vue';
@@ -32,7 +32,7 @@ type DebatesData = Record<string, {
   year: number
 }>;
 
-interface MyDebatesData {
+interface MyDebatesData extends TranslationPrefixData {
   currentPage: number;
   totalPages: number;
   debatesData: DebatesData;
@@ -69,6 +69,7 @@ export default defineComponent({
       currentPage: 1,
       totalPages: 1,
       debatesData: {},
+      translationPrefix: 'myDebates.',
     };
   },
   methods: {
