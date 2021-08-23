@@ -18,6 +18,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { assertDBValue, DBValue } from 'boot/custom';
 import PersonCard from '../../components/Event/CheckoutPersonCard.vue';
 
 interface CurrentRegistrationsData {
@@ -34,14 +35,28 @@ export default defineComponent({
     };
   },
   created() {
+    const DBkey = 'current-registrations';
+    const cached: DBValue = this.$db(DBkey);
+    if (cached) {
+      // TODO - save cached data
+      // this.data = cached;
+      return;
+    }
+
     this.$bus.$emit('fullLoader', true);
     this.$api({
       url: `event/${this.eventId}/user/${this.$auth.user()!.id}/registration`,
       method: 'get',
     })
-      .then((d) => {
-        // console.log('cs1');
-        // console.log(d);
+      .then(({ data }) => {
+        // TODO - save loaded data
+        // this.data = data;
+        assertDBValue(data);
+        this.$db(DBkey, data, true);
+      })
+      .catch(() => {
+        // TODO - output correct error message
+        // this.$flash(this.$tr(''), 'error');
       })
       .finally(() => {
         // console.log(this.eventId);
