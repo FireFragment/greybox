@@ -138,7 +138,7 @@ export default {
       let roleObject = null;
       if (this.$db('rolesList')){
         this.$db('rolesList').forEach((item) => {
-          if (item.id === this.person.registration.role) roleObject = item;
+          if (item.id === this.person.registration?.role) roleObject = item;
         });
         if (roleObject) return this.$tr(roleObject.name);
       }

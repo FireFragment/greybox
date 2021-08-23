@@ -92,11 +92,24 @@ export const $flash = function (message: string | TranslationValue, type: string
   });
 };
 
+export const $isPDS = process.env.IS_PDS === 'true';
+
+// Convert array of objects into object of objects (with IDs as keys)
+export const $makeIdObject = (array: any) => {
+  let result: Record<string | number, any> = {};
+
+  array.map((item: Record<string, string | number>) => {
+    result[item.id] = item;
+  });
+
+  return result;
+};
+
 export default boot(({ app }) => {
   app.use(store);
 
   // $isPDS bool
-  app.config.globalProperties.$isPDS = process.env.IS_PDS === 'true';
+  app.config.globalProperties.$isPDS = $isPDS;
 
   // Initialize SmartForms
   smartformModule.load();
@@ -190,16 +203,7 @@ export default boot(({ app }) => {
           .replace(/-+$/, ''); // Trim - from end of text
       },
 
-      // Convert array of objects into object of objects (with IDs as keys)
-      $makeIdObject(array: any) {
-        let result: Record<string | number, any> = {};
-
-        array.map((item: Record<string, string | number>) => {
-          result[item.id] = item;
-        });
-
-        return result;
-      },
+      $makeIdObject,
 
       // Simple global database interface
 

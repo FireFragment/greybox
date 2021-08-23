@@ -1,6 +1,7 @@
 import { boot } from 'quasar/wrappers';
 import { createI18n } from 'vue-i18n';
 import { setLocaleToRoute } from 'src/router';
+import { DateTime } from 'src/types/general';
 import config from '../config';
 
 // Import localization data from JSONs
@@ -16,6 +17,14 @@ export interface TranslationPrefixData {
 export interface TranslatedString {
   cs: string;
   en: string;
+}
+
+export interface TranslatedDatabaseString extends TranslatedString {
+  id: number;
+  // eslint-disable-next-line camelcase
+  created_at: DateTime;
+  // eslint-disable-next-line camelcase
+  updated_at: DateTime;
 }
 
 const i18n = createI18n({

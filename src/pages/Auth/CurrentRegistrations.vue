@@ -8,12 +8,12 @@
           <h5 class="q-mt-lg q-mb-xs">{{ entry.name }}</h5>
         </div>
         <checkout-person-card
-            v-for="(person, index) in entry.registrations"
-            v-bind:key="JSON.stringify(person)"
-            :person="person"
-            :registration="person"
-            :person-index="index"
-            menu="false"
+          v-for="(person, index) in entry.registrations"
+          v-bind:key="JSON.stringify(person)"
+          :person="person"
+          :registration="person"
+          :person-index="index"
+          :menu="false"
         />
       </div>
     </template>
@@ -27,7 +27,8 @@ import { DBValue } from 'boot/custom';
 import { AxiosResponse } from 'axios';
 import CheckoutPersonCard from 'components/Event/CheckoutPersonCard.vue';
 import { TranslationPrefixData } from 'boot/i18n';
-import internal from 'stream';
+import { mapGetters } from 'vuex';
+import { Event } from 'src/store/events/state';
 
 interface PersonRegistrations {
   id: number;
@@ -100,40 +101,55 @@ export default defineComponent({
       people: [],
     };
   },
-  created() {
-    const DBkey = 'current-registrations';
-    const cached: DBValue = this.$db(DBkey);
-    if (cached) {
-      this.people = <EventPersonRegistrations[]><unknown>cached;
-      return;
-    }
-
-    this.$bus.$emit('fullLoader', true);
-
-    setTimeout(() => {
-      const events = this.$db('eventsList');
-
-      if (!events) {
+  computed: {
+    ...mapGetters('events', [
+      'eventsArray',
+    ]),
+  },
+  watch: {
+    eventsArray() {
+      void this.loadRegistrations();
+    },
+  },
+  methods: {
+    async loadRegistrations() {
+      const events: Event[] = <Event[]> this.eventsArray;
+      if (!events.length) {
         return;
       }
 
-      const eventArray = Object.values(<Record<number, any>>events);
-      eventArray.forEach((event) => {
-        this.$api({
-          url: `event/${event.id}/user/${this.$auth.user()!.id}/registration`,
-          method: 'get',
-        })
-          .then(({ data }: AxiosResponse<PersonRegistrations[]>) => {
-            // eslint-disable-next-line max-len
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
-            this.people.push({ name: event.name.cs, registrations: data });
-            this.$db(DBkey, <DBValue><unknown>data, true);
+      const DBkey = 'current-registrations';
+      const cached: DBValue = this.$db(DBkey);
+      if (cached) {
+        this.people = <EventPersonRegistrations[]><unknown>cached;
+        return;
+      }
+
+      this.$bus.$emit('fullLoader', true);
+      await Promise.all(
+        events.map(async (event: Event) => {
+          await this.$api({
+            url: `event/${event.id}/user/${this.$auth.user()!.id}/registration`,
+            method: 'get',
           })
-          .finally(() => {
-            this.$bus.$emit('fullLoader', false);
-          });
-      });
-    }, 1000);
+            .then(({ data }: AxiosResponse<PersonRegistrations[]>) => {
+              if (!data.length) {
+                return;
+              }
+
+              this.people.push({
+                name: event.name.cs,
+                registrations: data,
+              });
+            });
+        }),
+      );
+      this.$db(DBkey, <DBValue><unknown> this.people, true);
+      this.$bus.$emit('fullLoader', false);
+    },
+  },
+  created() {
+    void this.loadRegistrations();
   },
 });
 </script>

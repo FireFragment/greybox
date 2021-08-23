@@ -1,5 +1,3 @@
-/*
-import { EventsState } from './state';
+import { Event, EventsState } from './state';
 
-export const drawerStateGetter = (state: EventsState) => `${state.drawerState} :)`;
-*/
+export const eventsArray = (state: EventsState): Event[] => Object.values(state.events);

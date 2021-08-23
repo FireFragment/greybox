@@ -1,8 +1,12 @@
-/*
 import { Mutation } from 'vuex';
-import { EventsState } from './state';
+import { Event, EventsState } from './state';
 
-export const updateDrawerState: Mutation<EventsState> = (state, value: string) => {
-  state.drawerState = value;
+export const startLoadingEvents: Mutation<EventsState> = (state) => {
+  state.loading = true;
 };
-*/
+
+export const setEvents: Mutation<EventsState> = (state, value: Event[]) => {
+  state.events = value;
+  state.loaded = true;
+  state.loading = false;
+};

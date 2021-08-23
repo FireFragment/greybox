@@ -206,13 +206,9 @@ export default {
   },
 
   created() {
-    // Show loading until events load
-    this.fullLoader = 1;
-    let self = this;
-
-    window.addEventListener('keydown', function (e) {
+    window.addEventListener('keydown', (e) => {
       if (document.activeElement === document.body && e.code === 'KeyM') {
-        self.toggleDrawerMenu();
+        this.toggleDrawerMenu();
       }
     });
 
