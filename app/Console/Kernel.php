@@ -4,6 +4,7 @@ namespace App\Console;
 
 use App\Jobs\FakturoidClientUpdateJob;
 use App\Jobs\FakturoidInvoiceUpdateJob;
+use App\Jobs\InvalidatedTokensDeleteJob;
 use App\Jobs\PasswordResetsDeleteJob;
 use App\Jobs\PersonSchoolYearUpdateJob;
 use App\Services\FakturoidClientService;
@@ -34,7 +35,7 @@ class Kernel extends ConsoleKernel
             ->description('Update clients data from Fakturoid subjects.')
             ->everyMinute() // hack for Heroku
             ->when(function() {
-                return Cron::shouldRun('FakturoidClientUpdateJob', 24*30);
+                return Cron::shouldRun('FakturoidClientUpdateJob', 720);
             });
 
         $schedule->job(new FakturoidInvoiceUpdateJob(new FakturoidClientService()))
@@ -56,6 +57,13 @@ class Kernel extends ConsoleKernel
             ->everyMinute() // hack for Heroku
             ->when(function() {
                 return Cron::shouldRun('PersonSchoolYearUpdateJob', 8760);
+            });
+
+        $schedule->job(new InvalidatedTokensDeleteJob())
+            ->description('Delete tokens that are no longer valid.')
+            ->everyMinute() // hack for Heroku
+            ->when(function() {
+                return Cron::shouldRun('InvalidatedTokensDeleteJob', 24);
             });
     }
 }
