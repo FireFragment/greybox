@@ -1,4 +1,20 @@
 {
   "link": "Moje debaty",
-  "title": "Moje debaty"
+  "title": "Moje debaty",
+  "cardRows": {
+    "date": "Datum",
+    "affirmatives": "Afirmace",
+    "negatives": "Negace",
+    "result": "Výsledek",
+    "showDetail": "Zobrazit detail debaty"
+  },
+  "cardButtons": {
+    "downloadBallot": "Stáhnout ballot",
+    "uploadBallot": "Nahrát ballot"
+  },
+  "uploadBallot": {
+    "uploading": "Ballot se nahrává",
+    "error": "Ballot se nepodařilo nahrát",
+    "success": "Ballot úspěšně nahrán"
+  }
 }

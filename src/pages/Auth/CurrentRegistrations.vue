@@ -3,14 +3,6 @@
     <h1 class="text-center text-h4">{{ $tr('currentRegistrations.title') }}</h1>
 
     <div class="row">
-      <person-card
-          v-for="(person, index) in formData"
-          v-bind:key="JSON.stringify(person)"
-          :person="person"
-          :person-index="index"
-          :possible-diets="possibleDiets"
-          @remove="removePerson"
-      />
     </div>
 
   </q-page>
@@ -19,7 +11,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { assertDBValue, DBValue } from 'boot/custom';
-import PersonCard from '../../components/Event/CheckoutPersonCard.vue';
 
 interface CurrentRegistrationsData {
   translationPrefix: string;
@@ -59,9 +50,6 @@ export default defineComponent({
         console.log('cs');
         this.$bus.$emit('fullLoader', false);
       });
-  },
-  components: {
-    PersonCard: <never>PersonCard,
   },
 });
 </script>
