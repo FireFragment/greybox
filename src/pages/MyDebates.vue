@@ -107,9 +107,6 @@ export default defineComponent({
           this.$db(DBkey, data);
           this.totalPages = parseInt(lastPage, 10);
         })
-        .catch(() => {
-          this.$flash(this.$tr('removeModal.person.error'), 'error');
-        })
         .finally(() => {
           this.$bus.$emit('fullLoader', false);
         });
