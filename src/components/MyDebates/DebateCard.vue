@@ -46,7 +46,7 @@
         icon-color="indigo"
         label="Greybox v1.0"
         value="Zobrazit detail debaty"
-        link="https://debatovani.cz"
+        :link="debate.link"
         class="q-mb-xs"
       />
       <!-- TODO - hide if no ballot has been uploaded (ensure only first separator has mt-auto) -->
@@ -96,10 +96,12 @@ import DebateCardRow from './DebateCardRow.vue';
 export interface Debate {
   affirmativeTeam: string;
   date: string;
+  link: string;
   motion: string;
   negativeTeam: string;
   result: string;
   role: string;
+  score: string;
 }
 
 const DebateCardProps = {

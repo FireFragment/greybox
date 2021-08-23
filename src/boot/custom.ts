@@ -14,9 +14,34 @@ import i18nConfig from '../translation/config';
 
 type TranslationValue = TranslateResult | LocaleMessageValue<VueMessageType> | {};
 
+export type InfiniteObject = {
+  [key: string]: string | number | undefined | null | InfiniteObject
+};
+
+export type DBValue = undefined | null | string | number | InfiniteObject | DBValue[];
+
+export function assertDBValue(value: any): asserts value is DBValue {
+  if (typeof value === 'undefined' || value === null || typeof value === 'string' || typeof value === 'number') {
+    return;
+  }
+
+  if (Array.isArray(value)) {
+    value.forEach((item) => assertDBValue(item));
+    return;
+  }
+
+  if (typeof value === 'object') {
+    Object.values(value)
+      .forEach((item) => assertDBValue(item));
+    return;
+  }
+  throw new TypeError('Invalid API data');
+}
+
 // Required for TypeScript to work with global properties
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
+    $db: (key: any, value?: DBValue, personal?: boolean) => DBValue;
     $flash: (message: string | TranslationValue, type?: string, icon?: string | undefined, timeout?: number) => Function;
     $isPDS: boolean;
     $path: (route: string) => string;
@@ -80,7 +105,7 @@ export const $flash = function (message: string | TranslationValue, type: string
     timeout,
     closeBtn: '-',
   });
-}
+};
 
 export default boot(({ app }) => {
   // $isPDS bool
@@ -118,7 +143,7 @@ export default boot(({ app }) => {
       };
     },
     // Generate unique ID for every component
-    beforeCreate: function() {
+    beforeCreate: function () {
       this.uuid = uuid.toString();
       uuid += 1;
     },
@@ -194,7 +219,7 @@ export default boot(({ app }) => {
       // @key: Index for the value to be stored under
       // @value: null = read value; undefined = delete value; other = set value
       // @personal: true = value will be uncached on logout
-      $db(key: any, value = null, personal: boolean = false) {
+      $db(key: string, value: DBValue = null, personal: boolean = false): DBValue {
         let dbKey = personal ? 'dbPersonal' : 'db';
 
         // Workaround for personal GET and DELETE
@@ -210,7 +235,8 @@ export default boot(({ app }) => {
 
         // Delete request
         if (value === DB_DELETION_CONSTANT) {
-          return delete app.config.globalProperties[dbKey][key];
+          delete app.config.globalProperties[dbKey][key];
+          return;
         }
 
         // Insert/update request

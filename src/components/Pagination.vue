@@ -1,5 +1,5 @@
 <template>
-  <div class="col-12 q-pt-xl q-pb-lg flex flex-center">
+  <div class="col-12 q-pt-xl q-pb-lg flex flex-center" v-if="pages > 1">
     <q-pagination
       @update:modelValue="$emit('update:modelValue', $event)"
       :modelValue="modelValue"
