@@ -12,10 +12,11 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { assertDBValue, DBValue } from 'boot/custom';
+import { AxiosResponse } from 'axios';
 
 interface CurrentRegistrationsData {
   translationPrefix: string;
-  eventId: number;
+  // people:
 }
 
 interface EventPersonRegistrations {
@@ -26,18 +27,18 @@ interface EventPersonRegistrations {
     surname: string;
     birthdate: string;
     // eslint-disable-next-line camelcase
-    id_number: string|null;
+    id_number: string | null;
     street: string;
     city: string;
     zip: string;
-    school: string|null;
-    note: string|null;
+    school: string | null;
+    note: string | null;
     // eslint-disable-next-line camelcase
     created_at: string;
     // eslint-disable-next-line camelcase
     updated_at: string;
   },
-  note: string|null;
+  note: string | null;
   event: string;
   // eslint-disable-next-line camelcase
   event_id: number;
@@ -52,7 +53,7 @@ interface EventPersonRegistrations {
       // eslint-disable-next-line camelcase
       updated_at: string;
     },
-    icon: string|null;
+    icon: string | null;
     // eslint-disable-next-line camelcase
     created_at: string;
     // eslint-disable-next-line camelcase
@@ -60,10 +61,10 @@ interface EventPersonRegistrations {
   },
   accommodation: number;
   confirmed: number;
-  team: string|null;
+  team: string | null;
   // eslint-disable-next-line camelcase
   registered_by: number;
-  invoice: string|null;
+  invoice: string | null;
   // eslint-disable-next-line camelcase
   created_at: string;
   // eslint-disable-next-line camelcase
@@ -75,42 +76,50 @@ export default defineComponent({
   data(): CurrentRegistrationsData {
     return {
       translationPrefix: 'auth.',
-      people: [],
+      // people: [],
     };
   },
   created() {
     const DBkey = 'current-registrations';
     const cached: DBValue = this.$db(DBkey);
     if (cached) {
-      this.people = cached.people;
+      // this.people = cached.people;
       return;
     }
 
     this.$bus.$emit('fullLoader', true);
 
-    const events = this.$db('eventsList');
-    const eventIds = Object.keys(events);
-    eventIds.forEach(function (eventId) {
-      console.log(eventId);
-      this.$api({
-        url: `event/${eventId}/user/${this.$auth.user()!.id}/registration`,
-        method: 'get',
-      })
-        .then(({ data }) => {
-          // TODO - save loaded data
-          // this.people = data;
-          console.log(data);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    setTimeout(() => {
+      const events = this.$db('eventsList');
 
-          // assertDBValue(data);
-          this.$db(DBkey, data, true);
+      if (!events) {
+        return;
+      }
+
+      // eslint-disable-next-line
+      const eventIds = Object.keys(<Record<number, never>>events!);
+      eventIds.forEach((eventId) => {
+        console.log(eventId);
+        this.$api({
+          url: `event/${eventId}/user/${this.$auth.user()!.id}/registration`,
+          method: 'get',
         })
-        .finally(() => {
-          console.log('cs');
+            .then(({ data }: AxiosResponse<EventPersonRegistrations>) => {
+              // TODO - save loaded data
+              // this.people = data;
+              console.log(data);
 
-          this.$bus.$emit('fullLoader', false);
-        });
-    });
+              assertDBValue(data);
+              this.$db(DBkey, data, true);
+            })
+            .finally(() => {
+              console.log('cs');
 
+              this.$bus.$emit('fullLoader', false);
+            });
+      });
+    }, 1000);
   },
 });
 </script>
