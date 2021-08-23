@@ -58,6 +58,21 @@ class Debate extends BaseModel
         foreach ($lines as $line)
         {
             $fields = preg_split('/<\/td>/m', $line);
+            $result = ucfirst(substr($fields[4], 4));
+            $win = null;
+            switch (substr($result, 0, 3))
+            {
+                case 'Aff':
+                case 'Neg':
+                    $result = strtoupper($result);
+                    break;
+                case 'Vyh':
+                    $win = true;
+                    break;
+                case 'Pro':
+                    $win = false;
+                    break;
+            }
             $role = substr($fields[6], 4);
             if ('organizátor' !== $role) {
                 $debates[] = array(
@@ -65,10 +80,11 @@ class Debate extends BaseModel
                     'affirmativeTeam' => self::removeLink($fields[1]),
                     'negativeTeam' => self::removeLink($fields[2]),
                     'motion' => ucfirst(self::removeLink($fields[3])),
-                    'result' => substr($fields[4], 4),
+                    'result' => $result,
                     'link' => 'https://debatovani.cz/greybox/?page=debata&debata_id=' . substr(substr($fields[5], 42), 0, -13),
                     'role' => $role,
-                    'score' => substr($fields[7], 4)
+                    'score' => substr($fields[7], 4),
+                    'win' => $win
                 );
             }
         }
