@@ -71,9 +71,11 @@ class UserController extends Controller
         }
     }
 
-    public function isLoggedIn()
+    public function isLoggedIn(Request $request)
     {
-        return response()->json([\Auth::user()]);
+        $user = \Auth::user();
+        $user->apiToken = $request->header('Authorization');
+        return response()->json($user);
     }
 
     public function showAll()
