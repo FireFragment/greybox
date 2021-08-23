@@ -50,6 +50,8 @@ class UserController extends Controller
         try {
             $apiToken = $user->setApiToken();
             $user->setRole(); // TODO: vyřešit elegantněji
+            $user->apiToken = $apiToken;
+
             return response()->json($user, 200)
                 ->header('Authorization', 'Bearer '.$apiToken)
                 ->header('Access-Control-Expose-Headers', 'Authorization');
