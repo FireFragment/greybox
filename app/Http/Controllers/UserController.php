@@ -21,6 +21,7 @@ class UserController extends Controller
         // TODO: solve auth/only
         $this->middleware('auth', ['only' => [
             'logout',
+            'isLoggedIn',
             'showAll',
             'showOne',
             'update',
@@ -72,6 +73,11 @@ class UserController extends Controller
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
+    }
+
+    public function isLoggedIn()
+    {
+        return response()->json([\Auth::user()]);
     }
 
     public function showAll()
