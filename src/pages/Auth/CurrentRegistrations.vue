@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { assertDBValue, DBValue } from 'boot/custom';
+import { DBValue } from 'boot/custom';
 import { AxiosResponse } from 'axios';
 
 interface CurrentRegistrationsData {
@@ -89,7 +89,6 @@ export default defineComponent({
 
     this.$bus.$emit('fullLoader', true);
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     setTimeout(() => {
       const events = this.$db('eventsList');
 
@@ -97,27 +96,24 @@ export default defineComponent({
         return;
       }
 
-      // eslint-disable-next-line
-      const eventIds = Object.keys(<Record<number, never>>events!);
+      const eventIds = Object.keys(<Record<number, never>>events);
       eventIds.forEach((eventId) => {
         console.log(eventId);
         this.$api({
           url: `event/${eventId}/user/${this.$auth.user()!.id}/registration`,
           method: 'get',
         })
-            .then(({ data }: AxiosResponse<EventPersonRegistrations>) => {
-              // TODO - save loaded data
-              // this.people = data;
-              console.log(data);
+          .then(({ data }: AxiosResponse<EventPersonRegistrations>) => {
+            // TODO - save loaded data
+            // this.people = data;
+            console.log(data);
+            this.$db(DBkey, <DBValue><unknown>data, true);
+          })
+          .finally(() => {
+            console.log('cs');
 
-              assertDBValue(data);
-              this.$db(DBkey, data, true);
-            })
-            .finally(() => {
-              console.log('cs');
-
-              this.$bus.$emit('fullLoader', false);
-            });
+            this.$bus.$emit('fullLoader', false);
+          });
       });
     }, 1000);
   },

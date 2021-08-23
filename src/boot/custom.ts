@@ -20,31 +20,6 @@ export type InfiniteObject = {
 
 export type DBValue = undefined | string | number | boolean | null | InfiniteObject | DBValue[];
 
-export function assertDBValue(value: any): asserts value is DBValue {
-  const allowedTypes = [
-    'undefined',
-    'string',
-    'number',
-    'boolean',
-  ];
-
-  if (value === null || allowedTypes.includes(typeof value)) {
-    return;
-  }
-
-  if (Array.isArray(value)) {
-    value.forEach((item) => assertDBValue(item));
-    return;
-  }
-
-  if (typeof value === 'object') {
-    Object.values(value)
-      .forEach((item) => assertDBValue(item));
-    return;
-  }
-  throw new TypeError('Invalid DB data');
-}
-
 // Required for TypeScript to work with global properties
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {

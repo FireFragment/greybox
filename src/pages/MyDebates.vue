@@ -22,7 +22,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { TranslatedString, TranslationPrefixData } from 'boot/i18n';
-import { assertDBValue, DBValue } from 'boot/custom';
+import { DBValue } from 'boot/custom';
 import { AxiosResponse } from 'axios';
 import Pagination from '../components/Pagination.vue';
 import DebateCard, { Debate } from '../components/MyDebates/DebateCard.vue';
@@ -37,26 +37,6 @@ interface MyDebatesData extends TranslationPrefixData {
   currentPage: number;
   totalPages: number;
   debatesData: DebatesData;
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function assertDebatesData(value: any): asserts value is DebatesData {
-  if (typeof value !== 'object') {
-    throw new TypeError('Invalid API data');
-  }
-
-  Object.values(value)
-    .forEach((month) => {
-      if (
-        typeof month !== 'object'
-        || !month
-        || !('debates' in month)
-        || !('month' in month)
-        || !('year' in month)
-      ) {
-        throw new TypeError('Invalid API data');
-      }
-    });
 }
 
 export default defineComponent({
@@ -87,8 +67,7 @@ export default defineComponent({
 
       const cached: DBValue = this.$db(DBkey);
       if (cached) {
-        assertDebatesData(cached);
-        this.debatesData = cached;
+        this.debatesData = <DebatesData><unknown>cached;
         return;
       }
 
@@ -107,8 +86,7 @@ export default defineComponent({
           lastPage: number,
         }>) => {
           this.debatesData = data;
-          assertDBValue(data);
-          this.$db(DBkey, data);
+          this.$db(DBkey, <DBValue><unknown>data);
           this.totalPages = lastPage;
         })
         .finally(() => {
