@@ -1,14 +1,10 @@
 <template>
   <q-card class="my-card full-height column">
-    <!--
-    TODO - colorful header based on debate result
     <q-card-section :class="{
-      'bg-negative': victory === false,
-      'bg-positive': victory === true,
-      'text-white': victory !== null,
+      'bg-negative': debate.win === false,
+      'bg-positive': debate.win === true,
+      'text-white': debate.win !== null,
     }">
-    -->
-    <q-card-section>
       <div class="text-h6">
         {{ debate.motion }}
       </div>
@@ -103,6 +99,7 @@ export interface Debate {
   result: string;
   role: string;
   score: string;
+  win: boolean | null;
 }
 
 const DebateCardProps = {
