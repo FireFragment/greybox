@@ -9,7 +9,7 @@ import { Notify } from 'quasar';
 
 const smartformModule = require('@smartform.cz/smartform');
 import { boot } from 'quasar/wrappers';
-import { i18n } from 'boot/i18n';
+import { i18n, TranslatedString } from 'boot/i18n';
 import i18nConfig from '../translation/config';
 import store, { State } from '../store';
 import { Store } from 'vuex';
@@ -29,7 +29,7 @@ declare module '@vue/runtime-core' {
     $flash: (message: string | TranslationValue, type?: string, icon?: string | undefined, timeout?: number) => Function;
     $isPDS: boolean;
     $path: (route: string) => string;
-    $tr: (key: string, options?: Record<string, unknown> | null, usePrefix?: boolean) => TranslationValue;
+    $tr: (key: string | TranslatedString, options?: Record<string, unknown> | null, usePrefix?: boolean) => TranslationValue;
     $store: Store<State>
   }
 }
@@ -43,7 +43,7 @@ export const $tr = function (key: string, options: Record<string, unknown> | nul
   } = i18n.global;
   if (typeof key === 'object') {
     // @ts-ignore
-    let activeLocale: string = locale || i18nConfig.default;
+    let activeLocale: cs | en = locale || i18nConfig.default;
 
     if (!key || !key[activeLocale]) return '';
 

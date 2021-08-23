@@ -8,7 +8,9 @@
     "signUp": "registrace",
     "logout": "odhlaseni",
     "passwordReset": "obnovit-heslo",
-    "accountSettings": "nastaveni-uctu",
+    "accountSettings": "nastaveni-uctu"
+  },
+  "user": {
     "currentRegistrations": "stavajici-prihlasky"
   },
   "admin": {

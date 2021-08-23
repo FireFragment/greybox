@@ -95,12 +95,14 @@ const routes: RouteRecordRaw[] = [
         beforeEnter: loggedInMiddleware,
       },
       {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        path: CZroutes.auth.currentRegistrations,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        alias: ENroutes.auth.currentRegistrations,
-        name: 'auth.currentRegistrations',
-        component: () => import('pages/Auth/CurrentRegistrations.vue'),
+        // eslint-disable-next-line max-len
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
+        path: CZroutes.user.currentRegistrations,
+        // eslint-disable-next-line max-len
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
+        alias: ENroutes.user.currentRegistrations,
+        name: 'user.currentRegistrations',
+        component: () => import('pages/User/CurrentRegistrations.vue'),
         beforeEnter: loggedInMiddleware,
       },
     ],

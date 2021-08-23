@@ -64,13 +64,13 @@
       <q-item-label header>{{ $tr('general.user') }}</q-item-label>
       <template v-if="$auth.isLoggedIn() && $auth.user()">
 
-        <q-item :to="$path('auth.currentRegistrations')" clickable>
+        <q-item :to="$path('user.currentRegistrations')" clickable>
           <q-item-section avatar>
             <q-icon name="fas fa-list-alt" />
           </q-item-section>
 
           <q-item-section>{{
-              $tr('auth.currentRegistrations.link')
+              $tr('user.currentRegistrations.link')
             }}
           </q-item-section>
         </q-item>
