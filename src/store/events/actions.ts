@@ -3,7 +3,7 @@ import { bus } from 'boot/eventBus';
 import { AxiosResponse } from 'axios';
 import { $isPDS, $makeIdObject } from 'boot/custom';
 import { apiCall } from 'boot/api';
-import { Event, EventsState } from './state';
+import { Event, EventFull, EventsState } from './state';
 
 export const load: Action<EventsState, never> = async ({
   commit,
@@ -33,5 +33,22 @@ export const load: Action<EventsState, never> = async ({
       if (loading) {
         bus.$emit('fullLoader', false);
       }
+    });
+};
+
+export const loadFull: Action<EventsState, never> = async ({
+  commit,
+  state,
+}, id: number) => {
+  if (state.eventsFull[id]) {
+    return;
+  }
+
+  await apiCall({
+    url: `event/${id}`,
+    method: 'get',
+  })
+    .then(({ data: event }: AxiosResponse<EventFull>) => {
+      commit('setFullEvent', event);
     });
 };

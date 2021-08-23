@@ -65,7 +65,7 @@
         </q-banner>
       </div>
     </div>
-    <div v-else-if="!$auth.isLoggedIn()" class="row justify-center">
+    <div v-else-if="!event" class="row justify-center">
       <div class="col-12 col-md-6">
         <q-banner class="bg-primary text-white q-mt-xl">
           <template v-slot:avatar>
@@ -203,7 +203,7 @@
   </q-page>
 </template>
 
-<script>
+<script lang="ts">
 /* eslint-disable */
 import autofillCard from '../components/Event/AutofillCard';
 import formFields from '../components/Event/FormFields';
@@ -212,7 +212,8 @@ import checkout from '../components/Event/Checkout';
 import teamForm from '../components/Event/TeamForm';
 import checkoutConfirm from '../components/Event/CheckoutConfirm';
 import { date } from 'quasar';
-import { mapState } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
+import { Role } from 'src/store/roles/state';
 
 export default {
   name: 'Event',
@@ -247,30 +248,20 @@ export default {
   },
 
   async created() {
+    if (!this.$auth.isLoggedIn()) {
+      return;
+    }
+
+    // Not cached -> load from API
+    this.$bus.$emit('fullLoader', true);
+
     // Promise to return object with event details
-    const eventPromise = new Promise((resolve, reject) => {
-      const eventId = this.$route.params.id;
+    const eventId = this.$route.params.id;
 
-      // Try to load event from cache
-      const cached = this.$db(`event-${eventId}`);
+    await this.$store.dispatch('events/loadFull', eventId);
 
-      if (cached) return resolve([cached, false]);
+    const event = this.fullEvent(eventId);
 
-      // Not cached -> load from API
-      this.$bus.$emit('fullLoader', true);
-      this.$api({
-        url: `event/${eventId}`,
-        method: 'get',
-      })
-        .then((d) => {
-          const event = d.data;
-          this.$db(`event-${eventId}`, event);
-          resolve([event, true]);
-        })
-        .catch(reject);
-    });
-
-    const [event, isLoading] = await eventPromise;
     this.event = event;
     this.accommodationType = event.accommodation;
     this.mealType = event.meals;
@@ -278,46 +269,40 @@ export default {
 
     // Can't register to event -> don't even load roles
     if (event.hard_deadline < this.now || !this.$auth.isLoggedIn()) {
-      if (isLoading) return this.$bus.$emit('fullLoader', false);
-      return;
+      return this.$bus.$emit('fullLoader', false);
     }
 
     await this.$store.dispatch('roles/load');
 
     // Check if roles are present in event's prices
-    this.allRoles.forEach((role) => {
-      let isPresent = false;
-      for (const price of event.prices) {
-        if (price.role.id === role.id) {
-          isPresent = true;
-          break;
-        }
+    this.allRoles.forEach((role: Role) => {
+      let isPresent = event.prices.find((price) => price.role.id === role.id);
+      if (!isPresent) {
+        return;
       }
 
-      if (isPresent) {
-        // Debater role is present -> push team role
-        if (role.id === 1) {
-          this.roles[0] = {
-            value: 0,
-            label: 'tournament.types.team',
-            icon: 'users',
-          };
-        }
-
-        // Individual debater should be hidden on PDS
-        if (role.id !== 1 || !this.$isPDS)
-          // Push role to role list
-        {
-          this.roles[role.id] = {
-            value: role.id,
-            label: role.name,
-            icon: role.icon,
-          };
-        }
+      // Individual debater should be hidden on PDS
+      if (role.id === 1 && this.$isPDS) {
+        return;
       }
+
+      // Debater role is present -> push team role
+      if (role.id === 1) {
+        this.roles[0] = {
+          value: 0,
+          label: 'tournament.types.team',
+          icon: 'users',
+        };
+      }
+
+      this.roles[role.id] = {
+        value: role.id,
+        label: role.name,
+        icon: role.icon,
+      };
     });
 
-    if (isLoading) return this.$bus.$emit('fullLoader', false);
+    this.$bus.$emit('fullLoader', false);
   },
 
   beforeUnmount() {
@@ -449,6 +434,9 @@ export default {
           ].join(':')}`
       );
     },
+    ...mapGetters('events', [
+      'fullEvent'
+    ]),
     ...mapState('events', [
       'events',
     ]),

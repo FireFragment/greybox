@@ -1,5 +1,6 @@
 import { Date, DateTime } from 'src/types/general';
 import { TranslatedDatabaseString } from 'boot/i18n';
+import { EventPrice } from 'src/types/event';
 
 type EventOptionalSelect = 'opt-in' | 'opt-out' | 'none' | 'required';
 
@@ -25,20 +26,33 @@ export interface Event {
   place: string;
   // eslint-disable-next-line camelcase
   soft_deadline: DateTime;
+  // eslint-disable-next-line camelcase
+  updated_at: DateTime;
+}
+
+export interface EventFull extends Event {
+  dietaryRequirements: string[];
+  prices: EventPrice[];
 }
 
 export type EventsData = {
   [key: number]: Event
 };
 
+export type EventsFullData = {
+  [key: number]: EventFull
+};
+
 export interface EventsState {
   events: EventsData;
+  eventsFull: EventsFullData;
   loading: boolean;
   loaded: boolean;
 }
 
 export default (): EventsState => ({
-  events: [],
+  events: {},
+  eventsFull: {},
   loading: false,
   loaded: false,
 });
