@@ -31,8 +31,7 @@ interface Person {
 
 interface User {
   admin: boolean
-  // eslint-disable-next-line camelcase
-  api_token: string
+  apiToken: string
   // eslint-disable-next-line camelcase
   created_at: string
   id: 292
@@ -108,7 +107,7 @@ export const user = (): User | null => {
   return JSON.parse(data);
 };
 
-export const getToken = (): string | null => user()?.api_token ?? null;
+export const getToken = (): string | null => user()?.apiToken ?? null;
 
 export const isLoggedIn = (): boolean => getToken() !== null;
 export const isAdmin = (): boolean => isLoggedIn() && user()?.role === 'admin';
