@@ -1,5 +1,6 @@
 import { Mutation } from 'vuex';
-import { EventFull, EventsData, EventsState } from './state';
+import { EventFull } from 'src/types/event';
+import { EventsData, EventsState } from './state';
 
 export const startLoadingEvents: Mutation<EventsState> = (state) => {
   state.loading = true;

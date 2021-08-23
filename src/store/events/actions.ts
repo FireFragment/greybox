@@ -3,7 +3,8 @@ import { bus } from 'boot/eventBus';
 import { AxiosResponse } from 'axios';
 import { $isPDS, $makeIdObject } from 'boot/custom';
 import { apiCall } from 'boot/api';
-import { Event, EventFull, EventsState } from './state';
+import { Event, EventFull } from 'src/types/event';
+import { EventsState } from 'src/store/events/state';
 
 export const load: Action<EventsState, never> = async ({
   commit,

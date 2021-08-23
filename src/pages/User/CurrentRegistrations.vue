@@ -38,7 +38,7 @@ import { AxiosResponse } from 'axios';
 import CheckoutPersonCard from 'components/Event/CheckoutPersonCard.vue';
 import { TranslationPrefixData } from 'boot/i18n';
 import { mapGetters } from 'vuex';
-import { Event } from 'src/store/events/state';
+import { Event } from 'src/types/event';
 
 interface PersonRegistrations {
   id: number;

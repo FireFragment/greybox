@@ -1,4 +1,5 @@
-import { Event, EventFull, EventsState } from './state';
+import { Event, EventFull } from 'src/types/event';
+import { EventsState } from './state';
 
 export const eventsArray = (state: EventsState): Event[] => Object.values(state.events);
 

@@ -1,59 +1,7 @@
 <template>
   <q-page padding v-if="event">
     <!-- Header card -->
-    <div class="text-center">
-      <q-card
-        class="inline-block event-header"
-        :class="{ smaller: role || role === 0 }"
-      >
-        <h1 class="text-center text-h4">
-          {{ $tr('title') }} {{ $tr(event.name) }}
-        </h1>
-        <div
-          class="text-center close-paragraphs q-p-1"
-          v-if="!role && role !== 0"
-        >
-          <p>
-            <q-icon name="far fa-calendar-alt" class="text-primary" />
-            <template
-              v-if="event.beginning.substr(0, 4) !== event.end.substr(0, 4)"
-            >
-              <!-- Year is different -->
-              {{ getDate(event.beginning, 'D. M. YYYY') }} - {{ getDate(event.end, 'D. M. YYYY') }}
-            </template>
-            <template
-              v-else-if="
-                event.beginning.substr(0, 7) !== event.end.substr(0, 7)
-              "
-            >
-              <!-- Month is different -->
-              {{ getDate(event.beginning, 'D. M.') }} - {{ getDate(event.end, 'D. M. YYYY') }}
-            </template>
-            <template v-else-if="event.beginning !== event.end">
-              <!-- Just day is different-->
-              {{ getDate(event.beginning, 'D. M. YYYY') }}
-              -
-            </template
-            >
-            {{ getDate(event.end, 'D. M. YYYY') }}
-            <!-- else - One day event -->
-          </p>
-          <p>
-            <q-icon name="fas fa-landmark" class="text-primary" />
-            {{ event.place }}
-          </p>
-          <p>
-            <q-icon name="far fa-bell" class="text-negative" />
-            {{ $tr('deadline') }}:
-            {{ getDate(event.soft_deadline, 'D. M. YYYY H:mm') }}
-          </p>
-          <p v-if="event.note">
-            <q-icon name="fas fa-info" class="text-primary" />
-            {{ $tr(event.note) }}
-          </p>
-        </div>
-      </q-card>
-    </div>
+    <HeaderCard :event="event" :smaller="role || role === 0" />
 
     <div v-if="event.hard_deadline < now" class="row justify-center">
       <div class="col-12 col-md-4">
@@ -211,21 +159,22 @@ import pickType from '../components/Event/PickType';
 import checkout from '../components/Event/Checkout';
 import teamForm from '../components/Event/TeamForm';
 import checkoutConfirm from '../components/Event/CheckoutConfirm';
-import { date } from 'quasar';
 import { mapGetters, mapState } from 'vuex';
 import { Role } from 'src/store/roles/state';
+import { defineComponent } from 'vue';
+import HeaderCard from 'components/Event/HeaderCard.vue';
 
-export default {
+export default defineComponent({
   name: 'Event',
 
   components: {
+    HeaderCard,
     autofillCard,
     formFields,
     pickType,
     checkout,
     teamForm,
     checkoutConfirm,
-    date
   },
 
   data() {
@@ -275,7 +224,7 @@ export default {
 
       await this.$store.dispatch('events/loadFull', eventId);
 
-      const event = this.fullEvent(eventId);
+      const event: Event = this.fullEvent(eventId);
 
       this.event = event;
       this.accommodationType = event.accommodation;
@@ -352,8 +301,6 @@ export default {
           this.$bus.$emit('fullLoader', false);
         });
     },
-
-    getDate: date.formatDate,
 
     sendForm(data, autofill) {
       const personData = data;
@@ -455,5 +402,5 @@ export default {
       void this.loadEvent();
     },
   },
-};
+});
 </script>
