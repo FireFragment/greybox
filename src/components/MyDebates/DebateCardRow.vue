@@ -11,8 +11,8 @@
     </q-item-section>
 
     <q-item-section>
-      <q-item-label :class="labelClass" caption v-if="label">{{ label }}</q-item-label>
-      <q-item-label :class="valueClass">{{ value }}</q-item-label>
+      <q-item-label caption v-if="label">{{ label }}</q-item-label>
+      <q-item-label>{{ value }}</q-item-label>
     </q-item-section>
   </q-item>
 </template>
@@ -26,17 +26,9 @@ const DebateCardRowProps = {
     default: undefined,
     required: false,
   },
-  labelClass: {
-    type: String,
-    required: false,
-  },
   value: {
     type: String,
     required: true,
-  },
-  valueClass: {
-    type: String,
-    required: false,
   },
   icon: {
     type: String,
