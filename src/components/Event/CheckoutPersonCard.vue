@@ -1,5 +1,5 @@
 <template>
-  <div class="col-12 col-sm-6 col-md-3 q-pa-xs items-stretch">
+  <div class="col-12 col-sm-6 col-md-4 col-lg-3 q-pa-xs items-stretch">
     <q-card class="thin-header-card normal-margin-card">
       <q-card-section class="bg-primary text-white card-header">
         <div class="row items-center no-wrap">

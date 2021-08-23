@@ -51,13 +51,12 @@ export default defineComponent({
       .then(({ data }) => {
         // TODO - save loaded data
         // this.data = data;
-        assertDBValue(data);
+        console.log(data);
+        // assertDBValue(data);
         this.$db(DBkey, data, true);
       })
       .finally(() => {
-        // console.log(this.eventId);
-        // console.log(this.$auth.user()!.id);
-        // console.log('cs');
+        console.log('cs');
         this.$bus.$emit('fullLoader', false);
       });
   },
