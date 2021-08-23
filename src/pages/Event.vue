@@ -153,12 +153,13 @@
 
 <script lang="ts">
 /* eslint-disable */
-import autofillCard from '../components/Event/AutofillCard';
-import formFields from '../components/Event/FormFields';
-import pickType from '../components/Event/PickType';
-import checkout from '../components/Event/Checkout';
-import teamForm from '../components/Event/TeamForm';
-import checkoutConfirm from '../components/Event/CheckoutConfirm';
+// @ts-nocheck
+import autofillCard from '../components/Event/AutofillCard.vue';
+import formFields from '../components/Event/FormFields.vue';
+import pickType from '../components/Event/PickType.vue';
+import checkout from '../components/Event/Checkout.vue';
+import teamForm from '../components/Event/TeamForm.vue';
+import checkoutConfirm from '../components/Event/CheckoutConfirm.vue';
 import { mapGetters, mapState } from 'vuex';
 import { Role } from 'src/store/roles/state';
 import { defineComponent } from 'vue';
