@@ -17,37 +17,41 @@
 </template>
 
 <script lang="ts">
-import personCard from './CheckoutPersonCard';
+import { defineComponent } from 'vue';
+import PersonCard from '../../components/Event/CheckoutPersonCard.vue';
 
 interface CurrentRegistrationsData {
   translationPrefix: string;
   eventId: number;
-};
+}
 
-export default {
+export default defineComponent({
   name: 'CurrentRegistrations',
   data(): CurrentRegistrationsData {
     return {
       translationPrefix: 'auth.',
-      eventId: 41
+      eventId: 41,
     };
   },
   created() {
+    this.$bus.$emit('fullLoader', true);
     this.$api({
-      url: `event/${this.eventId}/user/${this.$auth.user().id}/registration`,
-      sendToken: false,
+      url: `event/${this.eventId}/user/${this.$auth.user()!.id}/registration`,
       method: 'get',
     })
-        .then((d) => {
-          this.$db('eventsList', this.$makeIdObject(this.events));
-        })
-        .finally(() => {
-          //console.log("cs");
-          this.$bus.$emit('fullLoader', false);
-        });
-  }
-  components: {
-    personCard,
+      .then((d) => {
+        // console.log('cs1');
+        // console.log(d);
+      })
+      .finally(() => {
+        // console.log(this.eventId);
+        // console.log(this.$auth.user()!.id);
+        // console.log('cs');
+        this.$bus.$emit('fullLoader', false);
+      });
   },
-};
+  components: {
+    PersonCard: <never>PersonCard,
+  },
+});
 </script>

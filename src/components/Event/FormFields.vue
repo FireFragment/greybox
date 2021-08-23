@@ -111,7 +111,11 @@
           use-input
           @filter="filterDaySelect"
           input-debounce="0"
-          :rules="[val => values.accommodation === false || val || $tr('general.form.fieldError', null, false)]"
+          :rules="[val =>
+            values.accommodation === false ||
+            val ||
+            $tr('general.form.fieldError', null, false)
+          ]"
         >
           <template v-slot:prepend>
             <q-icon name="fas fa-calendar-alt" />
@@ -132,7 +136,11 @@
           use-input
           @filter="filterMonthSelect"
           input-debounce="0"
-          :rules="[val => values.accommodation === false || val || $tr('general.form.fieldError', null, false)]"
+          :rules="[val =>
+            values.accommodation === false ||
+            val ||
+            $tr('general.form.fieldError', null, false)
+          ]"
         >
           <template v-slot:prepend>
             <q-icon name="fas fa-calendar-alt" />
@@ -151,7 +159,11 @@
           use-input
           @filter="filterYearSelect"
           input-debounce="0"
-          :rules="[val => values.accommodation === false || val || $tr('general.form.fieldError', null, false)]"
+          :rules="[val =>
+            values.accommodation === false ||
+            val ||
+            $tr('general.form.fieldError', null, false)
+          ]"
         >
           <template v-slot:prepend>
             <q-icon name="fas fa-calendar-alt" />
