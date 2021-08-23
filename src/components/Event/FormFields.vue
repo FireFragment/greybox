@@ -182,7 +182,8 @@
         lazy-rules
         :rules="[
           val =>
-            !val ||
+            values.accommodation === false ||
+            val === '_________' ||
             val === '#########' ||
             val.toString().match(/\d{9}/) ||
             $tr('general.form.fieldError', null, false)
