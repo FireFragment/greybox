@@ -3,7 +3,13 @@
     <h1 class="text-center text-h4">{{ $tr('currentRegistrations.title') }}</h1>
 
     <div class="row">
-
+      <checkout-person-card
+          v-for="(person, index) in people"
+          v-bind:key="JSON.stringify(person)"
+          :person="person"
+          :registration="person"
+          :person-index="index"
+      />
     </div>
 
   </q-page>
@@ -13,11 +19,8 @@
 import { defineComponent } from 'vue';
 import { DBValue } from 'boot/custom';
 import { AxiosResponse } from 'axios';
-
-interface CurrentRegistrationsData {
-  translationPrefix: string;
-  // people:
-}
+import CheckoutPersonCard from 'components/Event/CheckoutPersonCard.vue';
+import { TranslationPrefixData } from 'boot/i18n';
 
 interface EventPersonRegistrations {
   id: number;
@@ -71,19 +74,25 @@ interface EventPersonRegistrations {
   updated_at: string;
 }
 
+interface CurrentRegistrationsData extends TranslationPrefixData {
+  translationPrefix: string;
+  people: EventPersonRegistrations[];
+}
+
 export default defineComponent({
   name: 'CurrentRegistrations',
+  components: { CheckoutPersonCard },
   data(): CurrentRegistrationsData {
     return {
       translationPrefix: 'auth.',
-      // people: [],
+      people: [],
     };
   },
   created() {
     const DBkey = 'current-registrations';
     const cached: DBValue = this.$db(DBkey);
     if (cached) {
-      // this.people = cached.people;
+      this.people = <EventPersonRegistrations[]><unknown>cached;
       return;
     }
 
@@ -98,20 +107,16 @@ export default defineComponent({
 
       const eventIds = Object.keys(<Record<number, never>>events);
       eventIds.forEach((eventId) => {
-        console.log(eventId);
         this.$api({
           url: `event/${eventId}/user/${this.$auth.user()!.id}/registration`,
           method: 'get',
         })
-          .then(({ data }: AxiosResponse<EventPersonRegistrations>) => {
-            // TODO - save loaded data
-            // this.people = data;
+          .then(({ data }: AxiosResponse<EventPersonRegistrations[]>) => {
             console.log(data);
+            this.people = data;
             this.$db(DBkey, <DBValue><unknown>data, true);
           })
           .finally(() => {
-            console.log('cs');
-
             this.$bus.$emit('fullLoader', false);
           });
       });

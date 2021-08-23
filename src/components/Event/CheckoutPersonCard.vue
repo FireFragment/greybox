@@ -30,7 +30,7 @@
 
       <q-card-section>
         <div
-          v-for="(value, fieldName) in person.registration"
+          v-for="(value, fieldName) in registration"
           v-bind:key="'registration-fields-' + fieldName"
         >
           <template
@@ -63,7 +63,7 @@
           <dt>{{ $tr("registrationFields.meals") }}:</dt>
           <dd>
             {{
-              person.registration.meals
+              registration.meals
                 ? $tr("checkout.values.yes")
                 : $tr("checkout.values.no")
             }}
@@ -71,7 +71,7 @@
         </div>
 
         <div
-          v-if="person.registration.meals && person.person.dietary_requirement"
+          v-if="registration.meals && person.person.dietary_requirement"
         >
           <dt>{{ $tr("fields.diet") }}:</dt>
           <dd>{{ dietaryRequirement }}</dd>
@@ -83,9 +83,9 @@
         </div>
       </q-card-section>
 
-      <q-separator v-if="person.registration.accommodation" inset />
+      <q-separator v-if="registration.accommodation" inset />
 
-      <q-card-section v-if="person.registration.accommodation">
+      <q-card-section v-if="registration.accommodation">
         <div
           v-for="(value, fieldName) in person.person"
           v-bind:key="'person-fields-' + fieldName"
@@ -121,6 +121,7 @@ import { date } from 'quasar';
 export default {
   props: {
     person: Object,
+    registration: Object,
     personIndex: Number,
     possibleDiets: Array,
   },
@@ -128,21 +129,82 @@ export default {
   data() {
     return {
       translationPrefix: 'tournament.',
+      roles: {},
     };
   },
   computed: {
     roleName() {
       let roleObject = null;
-      this.$db('rolesList').forEach((item) => {
-        if (item.id === this.person.registration.role) roleObject = item;
+      let isLoading = false;
+
+      /** TO REFACTOR **/
+      // Promise to return all roles
+      const rolesPromise = new Promise((resolve, reject) => {
+        // Load roles from cache if available
+        const cached = this.$db('rolesList');
+        if (cached) return resolve([cached, isLoading]);
+
+        if (!isLoading) this.$bus.$emit('fullLoader', true);
+
+        // Not cached -> load from API
+        this.$api({
+          url: 'role',
+          method: 'get',
+        })
+            .then((d) => {
+              this.$db('rolesList', d.data);
+              resolve([d.data, true]);
+            })
+            .catch(reject);
       });
-      if (roleObject) return this.$tr(roleObject.name);
+
+      rolesPromise.then(([roles, isLoading]) => {
+        // Check if roles are present in event's prices
+        for (const role of roles) {
+          let isPresent = false;
+          for (const price of event.prices) {
+            if (price.role.id === role.id) {
+              isPresent = true;
+              break;
+            }
+          }
+
+          if (isPresent) {
+            // Debater role is present -> push team role
+            if (role.id === 1) {
+              this.roles[0] = {
+                value: 0,
+                label: 'tournament.types.team',
+                icon: 'users',
+              };
+            }
+
+            // Individual debater should be hidden on PDS
+            if (role.id !== 1 || !this.$isPDS)
+                // Push role to role list
+            {
+              this.roles[role.id] = {
+                value: role.id,
+                label: role.name,
+                icon: role.icon,
+              };
+            }
+          }
+        }
+
+        this.$db('rolesList').forEach((item) => {
+          if (item.id === this.registration.role) roleObject = item;
+        });
+        if (roleObject) return this.$tr(roleObject.name);
+
+        if (isLoading) return this.$bus.$emit('fullLoader', false);
+      });
 
       // For Bugsnag to catch
       console.log(this.$db('rolesList'));
       console.log(this.person);
       console.error(
-        `Missing role ${this.person.registration.role}, see logs above`,
+        `Missing role ${this.registration.role}, see logs above`,
       );
       return '';
     },
@@ -170,5 +232,11 @@ export default {
     },
     getDate: date.formatDate,
   },
+  /*
+  created() {
+    console.log(this.person);
+    console.log(this.registration);
+  }
+   */
 };
 </script>

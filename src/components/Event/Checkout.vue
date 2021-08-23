@@ -65,6 +65,7 @@
         v-for="(person, index) in formData"
         v-bind:key="JSON.stringify(person)"
         :person="person"
+        :registration="person.registration"
         :person-index="index"
         :possible-diets="possibleDiets"
         @remove="removePerson"
