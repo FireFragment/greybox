@@ -22,6 +22,8 @@ class Token extends BaseModel
     protected $hidden = [
     ];
 
+    public $primaryKey = 'api_token';
+
     public function user()
     {
         return $this->belongsTo(\App\User::class, 'user', 'id');
