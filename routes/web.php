@@ -130,4 +130,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->post('debate', ['uses' => 'DebateController@create']);
     $router->delete('debate/{id}', ['uses' => 'DebateController@delete']);
     $router->put('debate/{id}', ['uses' => 'DebateController@update']);
+
+    $router->post('ballot', ['uses' => 'BallotController@create']);
 });
