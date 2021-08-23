@@ -20,7 +20,7 @@ export interface Event {
   // eslint-disable-next-line camelcase
   membership_required: boolean;
   name: TranslatedDatabaseString;
-  note: string | null;
+  note: TranslatedDatabaseString | null;
   pds: boolean;
   place: string;
   // eslint-disable-next-line camelcase

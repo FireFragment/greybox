@@ -212,6 +212,7 @@ import checkout from '../components/Event/Checkout';
 import teamForm from '../components/Event/TeamForm';
 import checkoutConfirm from '../components/Event/CheckoutConfirm';
 import { date } from 'quasar';
+import { mapState } from 'vuex';
 
 export default {
   name: 'Event',
@@ -245,7 +246,7 @@ export default {
     };
   },
 
-  created() {
+  async created() {
     // Promise to return object with event details
     const eventPromise = new Promise((resolve, reject) => {
       const eventId = this.$route.params.id;
@@ -269,78 +270,61 @@ export default {
         .catch(reject);
     });
 
-    eventPromise.then(([event, isLoading]) => {isLoading
-      this.event = event;
-      this.accommodationType = event.accommodation;
-      this.mealType = event.meals;
-      this.possibleDiets = event.dietaryRequirements;
+    const [event, isLoading] = await eventPromise;
+    this.event = event;
+    this.accommodationType = event.accommodation;
+    this.mealType = event.meals;
+    this.possibleDiets = event.dietaryRequirements;
 
-      // Can't register to event -> don't even load roles
-      if (event.hard_deadline < this.now || !this.$auth.isLoggedIn()) {
-        if (isLoading) return this.$bus.$emit('fullLoader', false);
-        return;
+    // Can't register to event -> don't even load roles
+    if (event.hard_deadline < this.now || !this.$auth.isLoggedIn()) {
+      if (isLoading) return this.$bus.$emit('fullLoader', false);
+      return;
+    }
+
+    await this.$store.dispatch('roles/load');
+
+    // Check if roles are present in event's prices
+    this.allRoles.forEach((role) => {
+      let isPresent = false;
+      for (const price of event.prices) {
+        if (price.role.id === role.id) {
+          isPresent = true;
+          break;
+        }
       }
 
-      // Promise to return all roles
-      const rolesPromise = new Promise((resolve, reject) => {
-        // Load roles from cache if available
-        const cached = this.$db('rolesList');
-        if (cached) return resolve([cached, isLoading]);
-
-        if (!isLoading) this.$bus.$emit('fullLoader', true);
-
-        // Not cached -> load from API
-        this.$api({
-          url: 'role',
-          method: 'get',
-        })
-          .then((d) => {
-            this.$db('rolesList', d.data);
-            resolve([d.data, true]);
-          })
-          .catch(reject);
-      });
-
-      rolesPromise.then(([roles, isLoading]) => {
-        // Check if roles are present in event's prices
-        for (const role of roles) {
-          let isPresent = false;
-          for (const price of event.prices) {
-            if (price.role.id === role.id) {
-              isPresent = true;
-              break;
-            }
-          }
-
-          if (isPresent) {
-            // Debater role is present -> push team role
-            if (role.id === 1) {
-              this.roles[0] = {
-                value: 0,
-                label: 'tournament.types.team',
-                icon: 'users',
-              };
-            }
-
-            // Individual debater should be hidden on PDS
-            if (role.id !== 1 || !this.$isPDS)
-              // Push role to role list
-            {
-              this.roles[role.id] = {
-                value: role.id,
-                label: role.name,
-                icon: role.icon,
-              };
-            }
-          }
+      if (isPresent) {
+        // Debater role is present -> push team role
+        if (role.id === 1) {
+          this.roles[0] = {
+            value: 0,
+            label: 'tournament.types.team',
+            icon: 'users',
+          };
         }
 
-        if (isLoading) return this.$bus.$emit('fullLoader', false);
-      });
+        // Individual debater should be hidden on PDS
+        if (role.id !== 1 || !this.$isPDS)
+          // Push role to role list
+        {
+          this.roles[role.id] = {
+            value: role.id,
+            label: role.name,
+            icon: role.icon,
+          };
+        }
+      }
     });
+
+    if (isLoading) return this.$bus.$emit('fullLoader', false);
   },
 
   beforeUnmount() {
+    if (!this.event) {
+      return;
+    }
+
     // Invalidate autofill cache
     this.$db(`autofillDebaters-event${this.event.id}`, this.DB_DEL);
     this.$db(`autofillTeams-event${this.event.id}`, this.DB_DEL);
@@ -465,6 +449,12 @@ export default {
           ].join(':')}`
       );
     },
+    ...mapState('events', [
+      'events',
+    ]),
+    ...mapState('roles', {
+      allRoles: 'roles',
+    }),
   },
 };
 </script>
