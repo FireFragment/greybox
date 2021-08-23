@@ -9,7 +9,7 @@
             </div>
           </div>
 
-          <div class="col-auto">
+          <div class="col-auto" v-if="menu">
             <q-btn color="white" round flat icon="fas fa-ellipsis-v">
               <q-menu cover auto-close>
                 <q-list class="smaller-margin-menu">
@@ -124,6 +124,7 @@ export default {
     registration: Object,
     personIndex: Number,
     possibleDiets: Array,
+    menu: { type: Boolean, required: false, default: true },
   },
   emits: ['remove'],
   data() {

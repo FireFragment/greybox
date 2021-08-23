@@ -13,6 +13,7 @@
             :person="person"
             :registration="person"
             :person-index="index"
+            menu="false"
         />
       </div>
     </template>
@@ -123,7 +124,6 @@ export default defineComponent({
           method: 'get',
         })
           .then(({ data }: AxiosResponse<PersonRegistrations[]>) => {
-            console.log(event.name.cs);
             // eslint-disable-next-line max-len
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
             this.people.push({ name: event.name.cs, registrations: data });
