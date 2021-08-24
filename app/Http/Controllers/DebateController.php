@@ -50,7 +50,7 @@ class DebateController extends Controller
             if (is_numeric($oldId))
             {
                 $gb = file_get_contents('https://debatovani.cz/greybox/?page=clovek.debaty&clovek_id='.$oldId);
-                $debates = Debate::parseOldGreybox($gb);
+                $debates = Debate::parseOldGreybox($gb, $person->isAdjudicator());
 
                 $currentPage = $request->input('page') ?? 1;
                 $perPage = $request->input('limit') ?? 10;
@@ -62,7 +62,6 @@ class DebateController extends Controller
 
                 $result = array(
                     'data' => Debate::groupByMonth($slice),
-                    'canUploadBallot' => $person->isAdjudicator(),
                     'currentPage' => $currentPage,
                     'firstPageUrl' => '/?page=1',
                     'from' => $startingPoint + 1,

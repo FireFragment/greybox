@@ -47,7 +47,7 @@ class Debate extends BaseModel
         return $this->teams()->where(['side' => 'n'])->first();
     }
 
-    public static function parseOldGreybox(string $text): array
+    public static function parseOldGreybox(string $text, bool $adjudicator): array
     {
         $text = preg_split('/<table>/m', $text);
         $lines = preg_split('/\<tr\>/', $text[1]);
@@ -61,11 +61,13 @@ class Debate extends BaseModel
             $id = substr(substr($fields[5], 42), 0, -13);
             $result = ucfirst(substr($fields[4], 4));
             $win = null;
+            $canUploadBallot = false;
             switch (substr($result, 0, 3))
             {
                 case 'Aff':
                 case 'Neg':
                     $result = strtoupper($result);
+                    $canUploadBallot = $adjudicator;
                     break;
                 case 'Vyh':
                     $win = true;
@@ -87,7 +89,8 @@ class Debate extends BaseModel
                     'role' => $role,
                     'score' => substr($fields[7], 4),
                     'win' => $win,
-                    'ballots' => self::addBallots($id)
+                    'ballots' => self::addBallots($id),
+                    'canUploadBallot' => $canUploadBallot
                 );
             }
         }
