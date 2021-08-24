@@ -1,6 +1,7 @@
 {
   "title": "Admin",
   "eventRegistrations": {
-    "link": "Tournaments registrations"
+    "link": "Tournaments registrations",
+    "chooseEvent" : "Choose event"
   }
 }

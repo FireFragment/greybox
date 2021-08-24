@@ -1,6 +1,7 @@
 {
   "title": "Admin",
   "eventRegistrations": {
-    "link": "Registrace na turnaje"
+    "link": "Registrace na turnaje",
+    "chooseEvent" : "Vyberte turnaj"
   }
 }
