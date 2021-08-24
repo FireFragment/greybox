@@ -77,12 +77,12 @@ class DebateController extends Controller
             }
             else
             {
-                return response()->json(['message' => 'legacy greybox not connected'], 403);
+                return response()->json(['message' => 'legacy greybox not connected'], 404);
             }
         }
         else
         {
-            return response()->json(['message' => 'legacy greybox not connected'], 403);
+            return response()->json(['message' => 'legacy greybox not connected'], 404);
         }
     }
 
