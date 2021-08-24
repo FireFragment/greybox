@@ -7,6 +7,7 @@ class Ballot extends BaseModel
 
     /**
      * The attributes that are mass assignable.
+     * TODO: Delete filename field from the DB
      *
      * @var array
      */

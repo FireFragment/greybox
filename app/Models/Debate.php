@@ -157,8 +157,9 @@ class Debate extends BaseModel
             {
                 $adjudicatorName = $adjudicator->name . ' ' . $adjudicator->surname;
             }
+
             $list[] = array(
-                'filename' => substr($ballot->filename, 0, -3),
+                'url' => $ballot->url,
                 'adjudicator' => $adjudicatorName
             );
         }

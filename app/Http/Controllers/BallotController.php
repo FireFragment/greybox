@@ -13,8 +13,7 @@ class BallotController extends Controller
     public function __construct()
     {
         $this->middleware('auth', ['only' => [
-            'create',
-            'showPdf'
+            'create'
         ]]);
     }
 
@@ -41,11 +40,5 @@ class BallotController extends Controller
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['message' => $e->getMessage()], $e->getCode());
         }
-    }
-
-    public function showPdf($filename)
-    {
-        $file = Storage::disk('s3')->get('ballots/' . $filename . '.pdf');
-        return (new Response($file, 200))->header('Content-Type', 'application/pdf');
     }
 }
