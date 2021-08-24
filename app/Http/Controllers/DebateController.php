@@ -62,6 +62,7 @@ class DebateController extends Controller
 
                 $result = array(
                     'data' => Debate::groupByMonth($slice),
+                    'canUploadBallot' => $person->isAdjudicator(),
                     'currentPage' => $currentPage,
                     'firstPageUrl' => '/?page=1',
                     'from' => $startingPoint + 1,

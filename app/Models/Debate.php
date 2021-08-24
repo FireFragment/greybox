@@ -154,7 +154,7 @@ class Debate extends BaseModel
         foreach ($ballots as $ballot) {
             $adjudicator = $ballot->adjudicator()->first();
             $adjudicatorName = 'TBD';
-            if (null != $adjudicator)
+            if (null !== $adjudicator)
             {
                 $adjudicatorName = $adjudicator->name . ' ' . $adjudicator->surname;
             }

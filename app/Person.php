@@ -45,11 +45,25 @@ class Person extends Model implements AuthenticatableContract, AuthorizableContr
         return $this->belongsTo(Institution::class, 'institution', 'id');
     }
 
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
     /**
      * @return string
      */
     public function getOldGreyboxId()
     {
         return $this->old_greybox_id;
+    }
+
+    /**
+     * True if Adjudicator is among Roles
+     * @return bool
+     */
+    public function isAdjudicator(): bool
+    {
+        return $this->roles()->where('id','2')->exists(); // 2 = ID of Adjudicator Role
     }
 }
