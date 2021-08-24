@@ -58,7 +58,7 @@
           :link="ballot.url"
         />
       </template>
-      <template v-if="canUpload">
+      <template v-if="debate.canUploadBallot">
         <q-separator :class="{ 'q-mt-auto': !debate.ballots.length }" />
         <q-file
           v-model="file"
@@ -102,7 +102,6 @@ const DebateCardProps = {
 
 interface DebateCardData extends TranslationPrefixData {
   uploading: boolean;
-  canUpload: boolean;
   file: null | File;
   maxSizeMB: number;
 }
@@ -119,7 +118,6 @@ export default defineComponent({
   data(): DebateCardData {
     return {
       uploading: false,
-      canUpload: true,
       translationPrefix: 'myDebates.',
       file: null,
       maxSizeMB: 10,

@@ -6,6 +6,7 @@ export interface Ballot {
 export interface Debate {
   affirmativeTeam: string;
   ballots: Ballot[];
+  canUploadBallot: boolean;
   date: string;
   link: string;
   motion: string;
