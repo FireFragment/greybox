@@ -88,6 +88,7 @@ import { defineComponent } from 'vue';
 import { date } from 'quasar';
 import { TranslationPrefixData } from 'boot/i18n';
 import { Debate } from 'src/types/debate';
+import { AxiosError } from 'axios';
 import DebateCardRow from './DebateCardRow.vue';
 
 const DebateCardProps = {
@@ -101,6 +102,7 @@ interface DebateCardData extends TranslationPrefixData {
   uploading: boolean;
   canUpload: boolean;
   file: null | File;
+  maxSizeMB: number;
 }
 
 export default defineComponent({
@@ -118,6 +120,7 @@ export default defineComponent({
       canUpload: true,
       translationPrefix: 'myDebates.',
       file: null,
+      maxSizeMB: 10,
     };
   },
   methods: {
@@ -134,8 +137,11 @@ export default defineComponent({
       formData.append('oldGreyboxId', this.debate?.oldGreyboxId ?? '');
 
       // $tr doesn't work inside promises for some weird reason
-      const errorMessage = this.$tr('uploadBallot.error');
       const successMessage = this.$tr('uploadBallot.success');
+      const errorMessageTooLarge = this.$tr('uploadBallot.errorTooLarge', {
+        size: `${this.maxSizeMB} MB`,
+      });
+      const errorMessageGeneral = this.$tr('uploadBallot.error');
 
       this.$api({
         url: 'ballot',
@@ -149,8 +155,21 @@ export default defineComponent({
           this.$flash(successMessage, 'success');
           this.$emit('reload-data');
         })
-        .catch(() => {
-          this.$flash(errorMessage, 'error');
+        .catch(({ response }: AxiosError<{
+          ballot: string[],
+        }>) => {
+          if (
+            response
+            && response.status === 422
+            && response.data.ballot.length
+            && response.data.ballot[0] === 'validation.max.file'
+          ) {
+            // File too large
+            this.$flash(errorMessageTooLarge, 'error');
+          } else {
+            // General error
+            this.$flash(errorMessageGeneral, 'error');
+          }
         })
         .finally(() => {
           this.uploading = false;

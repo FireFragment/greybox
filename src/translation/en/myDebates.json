@@ -15,7 +15,8 @@
   },
   "uploadBallot": {
     "uploading": "Uploading ballot",
-    "error": "Uploading ballot failed",
+    "error": "Uploading ballot failed, please try again",
+    "errorTooLarge": "The uploaded file is too big, max file size is {size}",
     "success": "Ballot was successfully uploaded"
   }
 }

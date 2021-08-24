@@ -15,7 +15,8 @@
   },
   "uploadBallot": {
     "uploading": "Ballot se nahrává",
-    "error": "Ballot se nepodařilo nahrát",
+    "error": "Ballot se nepodařilo nahrát, zkuste to znovu",
+    "errorTooLarge": "Nahraný ballot je příliš velký, maximální velikost je {size}",
     "success": "Ballot úspěšně nahrán"
   }
 }
