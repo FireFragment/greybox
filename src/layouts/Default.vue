@@ -4,22 +4,6 @@
     :class="'bg-grey-2 page-' + $route.name"
   >
 
-    <div id="game"
-         style="position: fixed;
-         height: 100%;
-         width: 100%;
-         z-index: 99999;
-         top: 0;
-         left: 0;
-         background-color: rgba(0,0,0,0.5);
-         display: none;">
-      <iframe src="https://bward2.github.io/pacman-js/"
-              width="1000px"
-              height="600px"
-              style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-      </iframe>
-    </div>
-
     <q-header elevated>
       <q-toolbar>
         <q-btn
@@ -238,32 +222,6 @@ export default {
 
       if (this.fullLoader < 0) this.fullLoader = 0;
     });
-
-    // game:
-    let buffer = [];
-    let lastKeyTime = Date.now();
-
-    document.addEventListener('keydown', event => {
-      const charList = 'abcdefghijklmnopqrstuvwxyz0123456789';
-      const key = event.key.toLowerCase();
-
-      // we are only interested in alphanumeric keys
-      if (charList.indexOf(key) === -1) return;
-
-      const currentTime = Date.now();
-
-      if (currentTime - lastKeyTime > 1000) {
-        buffer = [];
-      }
-
-      buffer.push(key);
-      lastKeyTime = currentTime;
-
-      if (buffer[0] === "g" && buffer[1] === "a" && buffer[2] === "m" && buffer[3] === "e"){
-        document.getElementById("game").style.display = "block";
-      }
-    });
-
 
   }
 };
