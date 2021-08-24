@@ -60,7 +60,11 @@
       </template>
       <template v-if="canUpload">
         <q-separator :class="{ 'q-mt-auto': !debate.ballots.length }" />
-        <q-file v-model="file" ref="fileUploader" style="display: none" />
+        <q-file
+          v-model="file"
+          ref="fileUploader"
+          style="display: none"
+        />
         <DebateCardRow
           icon="fas fa-file-upload"
           icon-color="primary"
@@ -84,6 +88,7 @@ import { defineComponent } from 'vue';
 import { date } from 'quasar';
 import { TranslationPrefixData } from 'boot/i18n';
 import { Debate } from 'src/types/debate';
+import { $tr } from 'boot/custom';
 import DebateCardRow from './DebateCardRow.vue';
 
 const DebateCardProps = {
@@ -116,26 +121,46 @@ export default defineComponent({
   methods: {
     getDate: date.formatDate,
 
-    async uploadFile(file: File) {
+    uploadFile(file: File) {
       this.uploading = true;
-      const content = await file.text();
 
       // Clear input
       this.file = null;
 
-      // TODO - send to API
-      // console.log(content);
+      const formData = new FormData();
+      formData.append('ballot', file);
+      formData.append('oldGreyboxId', this.debate?.oldGreyboxId ?? '');
 
-      this.uploading = false;
+      // $tr doesn't work inside promises for some weird reason
+      const errorMessage = this.$tr('uploadBallot.error');
+      const successMessage = this.$tr('uploadBallot.success');
+
+      this.$api({
+        url: 'ballot',
+        data: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        alerts: false,
+      })
+        .then(() => {
+          this.$flash(successMessage, 'success');
+        })
+        .catch(() => {
+          this.$flash(errorMessage, 'error');
+        })
+        .finally(() => {
+          this.uploading = false;
+        });
     },
   },
   watch: {
-    async file(file: File | null) {
+    file(file: File | null) {
       if (file === null) {
         return;
       }
 
-      await this.uploadFile(file);
+      this.uploadFile(file);
     },
   },
 });
