@@ -28,6 +28,11 @@
     </q-card-section>
 
     <q-card-section>
+      <div v-if="person.team">
+        <dt>{{ $tr("types.team") }}:</dt>
+        <dd>{{ person.team.name }}</dd>
+      </div>
+
       <div
         v-for="(value, fieldName) in registration"
         v-bind:key="'registration-fields-' + fieldName"
@@ -86,9 +91,9 @@
       </div>
     </q-card-section>
 
-    <q-separator v-if="registration.accommodation" inset />
+    <q-separator v-if="registration.accommodation && person.person.city" inset />
 
-    <q-card-section v-if="registration.accommodation">
+    <q-card-section v-if="registration.accommodation && person.person.city">
       <div
         v-for="(value, fieldName) in person.person"
         v-bind:key="'person-fields-' + fieldName"
@@ -134,7 +139,7 @@ export default {
       translationPrefix: 'tournament.',
       roles: {},
       showRegistrationFields: ['teamName', 'accommodation', 'role'],
-      ignorePersonFields: ['dietary_requirement', 'email', 'id', 'created_at', 'updated_at', 'old_greybox_id'],
+      ignorePersonFields: ['dietary_requirement', 'email', 'id', 'created_at', 'updated_at', 'old_greybox_id', 'school_year'],
     };
   },
   computed: {
@@ -142,6 +147,7 @@ export default {
       'role',
     ]),
     roleName() {
+
       if (this.person.role) {
         return this.$tr(this.person.role.name);
       }
