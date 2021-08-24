@@ -45,27 +45,21 @@
         :link="debate.link"
         class="q-mb-xs"
       />
-      <!-- TODO - hide if no ballot has been uploaded (ensure only first separator has mt-auto) -->
-      <q-separator class="q-mt-auto" />
-      <template v-if="true">
+
+      <template
+        v-for="(ballot, index) in debate.ballots"
+        :key="ballot.url"
+      >
+        <q-separator :class="{ 'q-mt-auto': index === 0 }" />
         <DebateCardRow
           icon="fas fa-file-download"
           icon-color="green-9"
-          :value="`${$tr('cardButtons.downloadBallot')} (Jakub Svíčka)`"
-          link="#"
+          :value="`${$tr('cardButtons.downloadBallot')} (${ballot.adjudicator})`"
+          :link="ballot.url"
         />
       </template>
-      <template v-if="true">
-        <q-separator v-if="true" />
-        <DebateCardRow
-          icon="fas fa-file-download"
-          icon-color="green-9"
-          :value="`${$tr('cardButtons.downloadBallot')} (Ladislav Borgir)`"
-          link="#"
-        />
-      </template>
-      <template v-if="true">
-        <q-separator />
+      <template v-if="canUpload">
+        <q-separator :class="{ 'q-mt-auto': !debate.ballots.length }" />
         <DebateCardRow
           icon="fas fa-file-upload"
           icon-color="primary"
@@ -88,19 +82,8 @@
 import { defineComponent } from 'vue';
 import { date } from 'quasar';
 import { TranslationPrefixData } from 'boot/i18n';
+import { Debate } from 'src/types/debate';
 import DebateCardRow from './DebateCardRow.vue';
-
-export interface Debate {
-  affirmativeTeam: string;
-  date: string;
-  link: string;
-  motion: string;
-  negativeTeam: string;
-  result: string;
-  role: string;
-  score: string;
-  win: boolean | null;
-}
 
 const DebateCardProps = {
   debate: {
@@ -111,6 +94,7 @@ const DebateCardProps = {
 
 interface DebateCardData extends TranslationPrefixData {
   uploading: boolean;
+  canUpload: boolean,
 }
 
 export default defineComponent({
@@ -122,6 +106,7 @@ export default defineComponent({
   data(): DebateCardData {
     return {
       uploading: false,
+      canUpload: true,
       translationPrefix: 'myDebates.',
     };
   },

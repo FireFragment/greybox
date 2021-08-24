@@ -30,7 +30,8 @@ import { $tr, DBValue } from 'boot/custom';
 import { AxiosError, AxiosResponse } from 'axios';
 import NoDataMessage from 'components/NoDataMessage.vue';
 import Pagination from 'components/Pagination.vue';
-import DebateCard, { Debate } from 'components/MyDebates/DebateCard.vue';
+import DebateCard from 'components/MyDebates/DebateCard.vue';
+import { Debate } from 'src/types/debate';
 
 type DebatesData = Record<string, {
   debates: Debate[]
