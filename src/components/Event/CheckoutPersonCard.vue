@@ -34,21 +34,25 @@
       >
         <template
           v-if="
-            ['teamName', 'accommodation', 'role'].includes(fieldName) &&
-              (fieldName !== 'teamName' || value)
+            showRegistrationFields.includes(fieldName) &&
+              (fieldName !== 'teamName' || value) &&
+              (fieldName !== 'role' || roleName)
           "
         >
           <dt>{{ $tr("registrationFields." + fieldName) }}:</dt>
-          <dd v-if="fieldName === 'role'">
-            {{ roleName }}
-          </dd>
-          <dd v-else-if="fieldName === 'accommodation'">
-            {{
-              value ? $tr("checkout.values.yes") : $tr("checkout.values.no")
-            }}
-          </dd>
-          <dd v-else>
-            {{ value }}
+
+          <dd>
+            <template v-if="fieldName === 'role'">
+              {{ roleName }}
+            </template>
+            <template v-else-if="fieldName === 'accommodation'">
+              {{
+                value ? $tr("checkout.values.yes") : $tr("checkout.values.no")
+              }}
+            </template>
+            <template v-else>
+              {{ value }}
+            </template>
           </dd>
         </template>
       </div>
@@ -93,8 +97,7 @@
           v-if="
             value &&
               fieldName.substr(-4) !== 'name' &&
-              fieldName !== 'dietary_requirement' &&
-              fieldName !== 'email'
+              !ignorePersonFields.includes(fieldName)
           "
         >
           <dt>{{ $tr("fields." + fieldName) }}:</dt>
@@ -114,6 +117,7 @@
 
 <script>
 import { date } from 'quasar';
+import { mapGetters } from 'vuex';
 
 /* eslint-disable */
 export default {
@@ -129,18 +133,25 @@ export default {
     return {
       translationPrefix: 'tournament.',
       roles: {},
+      showRegistrationFields: ['teamName', 'accommodation', 'role'],
+      ignorePersonFields: ['dietary_requirement', 'email', 'id', 'created_at', 'updated_at', 'old_greybox_id'],
     };
   },
   computed: {
+    ...mapGetters('roles', [
+      'role',
+    ]),
     roleName() {
-      let roleObject = null;
-      if (this.$db('rolesList')){
-        this.$db('rolesList').forEach((item) => {
-          if (item.id === this.person.registration?.role) roleObject = item;
-        });
-        if (roleObject) return this.$tr(roleObject.name);
+      if (this.person.role) {
+        return this.$tr(this.person.role.name);
       }
-      return 'provizor';
+
+      const role = this.role(this.person.registration?.role);
+      if (!role) {
+        return null;
+      }
+
+      return this.$tr(role.name);
     },
     dietaryRequirement() {
       const id = this.person.person.dietary_requirement;
