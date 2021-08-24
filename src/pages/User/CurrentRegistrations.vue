@@ -2,26 +2,25 @@
   <q-page padding>
     <h1 class="text-center text-h4">{{ $tr('currentRegistrations.title') }}</h1>
     <div class="row">
-      <template v-if="Object.keys(this.people).length === 0">
-        <div class="col-12 q-px-sm">
-          <h5 class="q-mt-lg q-mb-xs">{{ $tr('currentRegistrations.empty') }}</h5>
-        </div>
-      </template>
+      <NoDataMessage
+        v-if="Object.keys(this.people).length === 0"
+        :message="$tr('currentRegistrations.empty')"
+      />
       <template v-else>
         <template v-for="(entry, key) in people" :key="key">
           <div class="col-12 q-px-sm">
             <h5 class="q-mt-lg q-mb-xs">{{ entry.name }}</h5>
           </div>
           <div
-              class="col-12 col-sm-6 col-md-4 col-lg-3 q-px-sm q-py-md items-stretch"
-              v-for="(person, index) in entry.registrations"
-              :key="JSON.stringify(person)"
+            class="col-12 col-sm-6 col-md-4 col-lg-3 q-px-sm q-py-md items-stretch"
+            v-for="(person, index) in entry.registrations"
+            :key="JSON.stringify(person)"
           >
             <checkout-person-card
-                :person="person"
-                :registration="person"
-                :person-index="index"
-                :menu="false"
+              :person="person"
+              :registration="person"
+              :person-index="index"
+              :menu="false"
             />
           </div>
         </template>
@@ -39,6 +38,7 @@ import CheckoutPersonCard from 'components/Event/CheckoutPersonCard.vue';
 import { TranslationPrefixData } from 'boot/i18n';
 import { mapGetters } from 'vuex';
 import { Event } from 'src/types/event';
+import NoDataMessage from 'components/NoDataMessage.vue';
 
 interface PersonRegistrations {
   id: number;
@@ -104,7 +104,10 @@ interface CurrentRegistrationsData extends TranslationPrefixData {
 
 export default defineComponent({
   name: 'CurrentRegistrations',
-  components: { CheckoutPersonCard },
+  components: {
+    NoDataMessage,
+    CheckoutPersonCard,
+  },
   data(): CurrentRegistrationsData {
     return {
       translationPrefix: 'user.',
