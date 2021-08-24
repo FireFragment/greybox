@@ -1,6 +1,7 @@
 {
   "link": "My debates",
   "title": "My debates",
+  "empty": "You have no debates yet. If you have signed up just recently, they will appear soon.",
   "cardRows": {
     "date": "Date",
     "affirmatives": "Affirmatives",

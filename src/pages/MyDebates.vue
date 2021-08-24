@@ -2,6 +2,10 @@
   <q-page padding>
     <h1 class="text-center text-h4">{{ $tr('title') }}</h1>
     <div class="row">
+      <NoDataMessage
+        v-if="Object.keys(this.debatesData).length === 0"
+        :message="$tr('empty')"
+      />
       <template v-for="(month, key) in debatesData" :key="key">
         <div class="col-12 q-px-sm">
           <h5 class="q-mt-lg q-mb-xs">{{ $tr(month.month) }} {{ month.year }}</h5>
@@ -22,10 +26,11 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { TranslatedString, TranslationPrefixData } from 'boot/i18n';
-import { DBValue } from 'boot/custom';
-import { AxiosResponse } from 'axios';
-import Pagination from '../components/Pagination.vue';
-import DebateCard, { Debate } from '../components/MyDebates/DebateCard.vue';
+import { $tr, DBValue } from 'boot/custom';
+import { AxiosError, AxiosResponse } from 'axios';
+import NoDataMessage from 'components/NoDataMessage.vue';
+import Pagination from 'components/Pagination.vue';
+import DebateCard, { Debate } from 'components/MyDebates/DebateCard.vue';
 
 type DebatesData = Record<string, {
   debates: Debate[]
@@ -44,6 +49,7 @@ export default defineComponent({
   components: {
     Pagination: <never>Pagination,
     DebateCard: <never>DebateCard,
+    NoDataMessage: <never>NoDataMessage,
   },
   data(): MyDebatesData {
     return {
@@ -77,6 +83,7 @@ export default defineComponent({
       this.$api({
         url: `user/${this.$auth.user()!.id}/debate?page=${page}`,
         method: 'get',
+        alerts: false,
       })
         .then(({
           data: {
@@ -91,6 +98,15 @@ export default defineComponent({
           this.$db(DBkeyData, <DBValue><unknown>data);
           this.totalPages = lastPage;
           this.$db(DBkeyPages, lastPage);
+        })
+        .catch(({ response }: AxiosError) => {
+          if (response && response.status === 404) {
+            // Just no debates found
+            this.$db(DBkeyData, {});
+          } else {
+            // Actual error
+            this.$flash($tr('general.error', null, false), 'error');
+          }
         })
         .finally(() => {
           this.$bus.$emit('fullLoader', false);
