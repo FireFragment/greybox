@@ -95,6 +95,8 @@ const login = (credentials: LoginData): Promise<User | null> => new Promise(
 export const logout = async (redirectHome: boolean = true) => {
   localStorage.removeItem(localStorageKey);
 
+  // TODO - flush personal DB once it is connected to Vuex
+
   if (redirectHome) {
     await Router.replace({ name: 'home' });
   } else {

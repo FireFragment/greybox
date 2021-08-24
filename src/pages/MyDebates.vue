@@ -95,14 +95,14 @@ export default defineComponent({
           lastPage: number,
         }>) => {
           this.debatesData = data;
-          this.$db(DBkeyData, <DBValue><unknown>data);
+          this.$db(DBkeyData, <DBValue><unknown>data, true);
           this.totalPages = lastPage;
-          this.$db(DBkeyPages, lastPage);
+          this.$db(DBkeyPages, lastPage, true);
         })
         .catch(({ response }: AxiosError) => {
           if (response && response.status === 404) {
             // Just no debates found
-            this.$db(DBkeyData, {});
+            this.$db(DBkeyData, {}, true);
           } else {
             // Actual error
             this.$flash($tr('general.error', null, false), 'error');

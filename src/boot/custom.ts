@@ -234,6 +234,10 @@ export default boot(({ app }) => {
         return app.config.globalProperties[dbKey][key] = value;
       },
 
+      $dbFlushPersonal(): void {
+        app.config.globalProperties['dbPersonal'] = {};
+      },
+
       // Show basic confirm dialog
       $confirm(settings: any) {
         let defaults = {
