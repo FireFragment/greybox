@@ -1,6 +1,7 @@
 <template>
   <q-drawer :model-value="modelValue" bordered>
     <q-list>
+      <q-scroll-area>
       <q-item :to="$path('home')" exact>
         <q-item-section avatar>
           <q-icon name="fas fa-home" />
@@ -12,29 +13,29 @@
 
       <q-item-label header>{{ $tr('tournament.link') }}</q-item-label>
       <q-item
-        v-for="event in events"
-        v-bind:key="event.id"
-        @mouseup="
-          eventLinkClicked(
-            $path('tournament') +
-              '/' +
-              event.id +
-              '-' +
-              $slug($tr(event.name) + ' ' + event.place)
-          )
-        "
-        :class="`${
-          $route.name === 'tournament' && parseInt($route.params.id) === event.id
-            ? 'q-router-link--active'
-            : ''
-        }`"
-        :to="
+          v-for="event in events"
+          v-bind:key="event.id"
+          @mouseup="
+        eventLinkClicked(
           $path('tournament') +
             '/' +
             event.id +
             '-' +
             $slug($tr(event.name) + ' ' + event.place)
-        ">
+        )
+      "
+          :class="`${
+        $route.name === 'tournament' && parseInt($route.params.id) === event.id
+          ? 'q-router-link--active'
+          : ''
+      }`"
+          :to="
+        $path('tournament') +
+          '/' +
+          event.id +
+          '-' +
+          $slug($tr(event.name) + ' ' + event.place)
+      ">
         <q-item-section avatar>
           <q-icon name="fas fa-trophy" />
         </q-item-section>
@@ -146,12 +147,12 @@
 
       <q-item-label header>{{ $tr('general.essentialLinks') }}</q-item-label>
       <q-item
-        clickable
-        tag="a"
-        rel="noopener"
-        target="_blank"
-        href="https://debatovani.cz/greybox/"
-        v-if="!$isPDS"
+          clickable
+          tag="a"
+          rel="noopener"
+          target="_blank"
+          href="https://debatovani.cz/greybox/"
+          v-if="!$isPDS"
       >
         <q-item-section avatar>
           <q-icon name="fas fa-chart-bar" />
@@ -168,7 +169,8 @@
         <q-item-section>
           <q-item-label>{{ $tr('general.aboutUs') }}</q-item-label>
         </q-item-section>
-      </q-item>
+        </q-item>
+      </q-scroll-area>
     </q-list>
   </q-drawer>
 </template>

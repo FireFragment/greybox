@@ -1,4 +1,5 @@
 <template>
+
   <q-layout
     view="lHh Lpr lFf"
     :class="'bg-grey-2 page-' + $route.name"
