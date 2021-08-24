@@ -76,7 +76,7 @@ export default defineComponent({
 
       this.currentPage = page;
 
-      const cached: DBValue = this.$db(DBkeyData);
+      const cached: DBValue = this.$db(DBkeyPageData);
       if (cached && !forceReload) {
         this.debatesData = <DebatesData><unknown>cached;
         this.totalPages = <number> this.$db(DBkeyPages);
@@ -106,7 +106,7 @@ export default defineComponent({
         .catch(({ response }: AxiosError) => {
           if (response && response.status === 404) {
             // Just no debates found
-            this.$db(DBkeyData, {}, true);
+            this.$db(DBkeyPageData, {}, true);
           } else {
             // Actual error
             this.$flash($tr('general.error', null, false), 'error');
