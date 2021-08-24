@@ -1,6 +1,7 @@
 <template>
   <q-page padding>
     <h1 class="text-center text-h4">{{ $tr('currentRegistrations.title') }}</h1>
+
     <div class="row">
       <NoDataMessage
         v-if="Object.keys(this.people).length === 0"

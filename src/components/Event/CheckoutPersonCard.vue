@@ -1,5 +1,6 @@
 <template>
   <q-card class="thin-header-card normal-margin-card">
+
     <q-card-section class="bg-primary text-white card-header">
       <div class="row items-center no-wrap">
         <div class="col">
