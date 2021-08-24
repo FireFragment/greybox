@@ -1,10 +1,8 @@
 <template>
-
   <q-layout
     view="lHh Lpr lFf"
     :class="'bg-grey-2 page-' + $route.name"
   >
-
     <q-header elevated>
       <q-toolbar>
         <q-btn
@@ -15,6 +13,7 @@
           aria-label="Menu"
           icon="fas fa-bars"
           class="lt-md"
+          ref="toggleDrawerMenuButton"
         />
 
         <q-toolbar-title>
@@ -168,7 +167,10 @@ export default {
       localStorage.setItem('leftDrawerOpen', this.leftDrawerOpen);
     },
     checkDrawerOpened() {
-      if (document.getElementsByTagName("BODY")[0].offsetWidth > 1024) {
+      const toggleButtonVisible = this.$refs.toggleDrawerMenuButton.$el.offsetParent !== null;
+
+      // Desktop
+      if (!toggleButtonVisible) {
         this.leftDrawerOpen = true;
         localStorage.setItem('leftDrawerOpen', true);
       }
@@ -215,17 +217,13 @@ export default {
   },
 
   created() {
-
     /*
     window.addEventListener('keydown', (e) => {
       if (document.activeElement === document.body && e.code === 'KeyM') {
         this.toggleDrawerMenu();
       }
     });
-     */
-
-    this.checkDrawerOpened();
-    window.addEventListener("resize", this.checkDrawerOpened, true)
+    */
 
     this.$bus.$on('fullLoader', (value) => {
       if (value) {
@@ -237,6 +235,15 @@ export default {
       if (this.fullLoader < 0) this.fullLoader = 0;
     });
 
+  },
+
+  mounted() {
+    this.checkDrawerOpened();
+    window.addEventListener("resize", this.checkDrawerOpened, true);
+  },
+
+  unmounted() {
+    window.removeEventListener("resize", this.checkDrawerOpened, true);
   }
 };
 </script>
