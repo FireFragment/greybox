@@ -88,7 +88,6 @@ import { defineComponent } from 'vue';
 import { date } from 'quasar';
 import { TranslationPrefixData } from 'boot/i18n';
 import { Debate } from 'src/types/debate';
-import { $tr } from 'boot/custom';
 import DebateCardRow from './DebateCardRow.vue';
 
 const DebateCardProps = {
@@ -110,6 +109,9 @@ export default defineComponent({
     DebateCardRow: <never>DebateCardRow,
   },
   props: DebateCardProps,
+  emits: [
+    'reload-data',
+  ],
   data(): DebateCardData {
     return {
       uploading: false,
@@ -145,6 +147,7 @@ export default defineComponent({
       })
         .then(() => {
           this.$flash(successMessage, 'success');
+          this.$emit('reload-data');
         })
         .catch(() => {
           this.$flash(errorMessage, 'error');

@@ -15,7 +15,7 @@
           v-for="(debate, index) in month.debates"
           :key="index"
         >
-          <DebateCard class="full-width" :debate="debate" />
+          <DebateCard class="full-width" :debate="debate" @reload-data="loadPage(true)" />
         </div>
       </template>
       <Pagination v-model="currentPage" :pages="totalPages" route="myDebates" />
@@ -45,6 +45,8 @@ interface MyDebatesData extends TranslationPrefixData {
   debatesData: DebatesData;
 }
 
+export const DBkeyData = (page: number): string => `my-debates-page${page}`;
+
 export default defineComponent({
   name: 'MyDebates',
   components: {
@@ -61,20 +63,21 @@ export default defineComponent({
     };
   },
   methods: {
-    loadPage(pageParam: string | string[]) {
+    loadPage(forceReload: boolean = false) {
+      const pageParam: string | string[] = this.$route.params.page;
       if (typeof pageParam !== 'string') {
         return;
       }
 
       const pageParamInt = parseInt(pageParam, 10);
       const page = pageParamInt > 0 ? pageParamInt : 1;
-      const DBkeyData = `my-debates-page${page}`;
+      const DBkeyPageData = DBkeyData(page);
       const DBkeyPages = 'my-debates-total-pages';
 
       this.currentPage = page;
 
       const cached: DBValue = this.$db(DBkeyData);
-      if (cached) {
+      if (cached && !forceReload) {
         this.debatesData = <DebatesData><unknown>cached;
         this.totalPages = <number> this.$db(DBkeyPages);
         return;
@@ -96,7 +99,7 @@ export default defineComponent({
           lastPage: number,
         }>) => {
           this.debatesData = data;
-          this.$db(DBkeyData, <DBValue><unknown>data, true);
+          this.$db(DBkeyPageData, <DBValue><unknown>data, true);
           this.totalPages = lastPage;
           this.$db(DBkeyPages, lastPage, true);
         })
@@ -115,7 +118,7 @@ export default defineComponent({
     },
   },
   created() {
-    this.loadPage(this.$route.params.page);
+    this.loadPage();
   },
 });
 </script>
