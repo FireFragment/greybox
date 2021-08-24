@@ -35,20 +35,24 @@
         <template
           v-if="
             showRegistrationFields.includes(fieldName) &&
-              (fieldName !== 'teamName' || value)
+              (fieldName !== 'teamName' || value) &&
+              (fieldName !== 'role' || roleName)
           "
         >
           <dt>{{ $tr("registrationFields." + fieldName) }}:</dt>
-          <dd v-if="fieldName === 'role'">
-            {{ roleName }}
-          </dd>
-          <dd v-else-if="fieldName === 'accommodation'">
-            {{
-              value ? $tr("checkout.values.yes") : $tr("checkout.values.no")
-            }}
-          </dd>
-          <dd v-else>
-            {{ value }}
+
+          <dd>
+            <template v-if="fieldName === 'role'">
+              {{ roleName }}
+            </template>
+            <template v-else-if="fieldName === 'accommodation'">
+              {{
+                value ? $tr("checkout.values.yes") : $tr("checkout.values.no")
+              }}
+            </template>
+            <template v-else>
+              {{ value }}
+            </template>
           </dd>
         </template>
       </div>
@@ -113,6 +117,7 @@
 
 <script>
 import { date } from 'quasar';
+import { mapGetters } from 'vuex';
 
 /* eslint-disable */
 export default {
@@ -133,15 +138,20 @@ export default {
     };
   },
   computed: {
+    ...mapGetters('roles', [
+      'role',
+    ]),
     roleName() {
-      let roleObject = null;
-      if (this.$db('rolesList')){
-        this.$db('rolesList').forEach((item) => {
-          if (item.id === this.person.registration?.role) roleObject = item;
-        });
-        if (roleObject) return this.$tr(roleObject.name);
+      if (this.person.role) {
+        return this.$tr(this.person.role.name);
       }
-      return 'provizor';
+
+      const role = this.role(this.person.registration?.role);
+      if (!role) {
+        return null;
+      }
+
+      return this.$tr(role.name);
     },
     dietaryRequirement() {
       const id = this.person.person.dietary_requirement;
