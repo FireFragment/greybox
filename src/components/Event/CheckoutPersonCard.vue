@@ -1,124 +1,125 @@
 <template>
-  <q-card class="thin-header-card normal-margin-card">
+  <div class="col-12 col-sm-6 col-md-4 col-lg-3 q-px-sm q-py-md items-stretch">
+    <q-card class="thin-header-card normal-margin-card">
+      <q-card-section class="bg-primary text-white card-header">
+        <div class="row items-center no-wrap">
+          <div class="col">
+            <div class="text-h6">
+              {{ person.person.name }} {{ person.person.surname }}
+            </div>
+          </div>
 
-    <q-card-section class="bg-primary text-white card-header">
-      <div class="row items-center no-wrap">
-        <div class="col">
-          <div class="text-h6">
-            {{ person.person.name }} {{ person.person.surname }}
+          <div class="col-auto" v-if="menu">
+            <q-btn color="white" round flat icon="fas fa-ellipsis-v">
+              <q-menu cover auto-close>
+                <q-list class="smaller-margin-menu">
+                  <q-item clickable @click="removePerson">
+                    <q-item-section avatar>
+                      <q-icon name="fas fa-trash" />
+                    </q-item-section>
+                    <q-item-section>{{
+                      $tr("general.confirmModal.remove", null, false)
+                    }}</q-item-section>
+                  </q-item>
+                </q-list>
+              </q-menu>
+            </q-btn>
           </div>
         </div>
+      </q-card-section>
 
-        <div class="col-auto" v-if="menu">
-          <q-btn color="white" round flat icon="fas fa-ellipsis-v">
-            <q-menu cover auto-close>
-              <q-list class="smaller-margin-menu">
-                <q-item clickable @click="removePerson">
-                  <q-item-section avatar>
-                    <q-icon name="fas fa-trash" />
-                  </q-item-section>
-                  <q-item-section>{{
-                    $tr("general.confirmModal.remove", null, false)
-                  }}</q-item-section>
-                </q-item>
-              </q-list>
-            </q-menu>
-          </q-btn>
+      <q-card-section>
+        <div v-if="person.team">
+          <dt>{{ $tr("types.team") }}:</dt>
+          <dd>{{ person.team.name }}</dd>
         </div>
-      </div>
-    </q-card-section>
 
-    <q-card-section>
-      <div v-if="person.team">
-        <dt>{{ $tr("types.team") }}:</dt>
-        <dd>{{ person.team.name }}</dd>
-      </div>
-
-      <div
-        v-for="(value, fieldName) in registration"
-        v-bind:key="'registration-fields-' + fieldName"
-      >
-        <template
-          v-if="
-            showRegistrationFields.includes(fieldName) &&
-              (fieldName !== 'teamName' || value) &&
-              (fieldName !== 'role' || roleName)
-          "
+        <div
+          v-for="(value, fieldName) in registration"
+          v-bind:key="'registration-fields-' + fieldName"
         >
-          <dt>{{ $tr("registrationFields." + fieldName) }}:</dt>
+          <template
+            v-if="
+              showRegistrationFields.includes(fieldName) &&
+                (fieldName !== 'teamName' || value) &&
+                (fieldName !== 'role' || roleName)
+            "
+          >
+            <dt>{{ $tr("registrationFields." + fieldName) }}:</dt>
 
+            <dd>
+              <template v-if="fieldName === 'role'">
+                {{ roleName }}
+              </template>
+              <template v-else-if="fieldName === 'accommodation'">
+                {{
+                  value ? $tr("checkout.values.yes") : $tr("checkout.values.no")
+                }}
+              </template>
+              <template v-else>
+                {{ value }}
+              </template>
+            </dd>
+          </template>
+        </div>
+
+        <div v-if="person.person.speaker_status">
+          <dt>{{ $tr("fields.speakerStatus") }}:</dt>
+          <dd>{{ person.person.speaker_status.toUpperCase() }}</dd>
+        </div>
+
+        <div>
+          <dt>{{ $tr("registrationFields.meals") }}:</dt>
           <dd>
-            <template v-if="fieldName === 'role'">
-              {{ roleName }}
-            </template>
-            <template v-else-if="fieldName === 'accommodation'">
-              {{
-                value ? $tr("checkout.values.yes") : $tr("checkout.values.no")
-              }}
-            </template>
-            <template v-else>
-              {{ value }}
-            </template>
+            {{
+              registration.meals
+                ? $tr("checkout.values.yes")
+                : $tr("checkout.values.no")
+            }}
           </dd>
-        </template>
-      </div>
+        </div>
 
-      <div v-if="person.person.speaker_status">
-        <dt>{{ $tr("fields.speakerStatus") }}:</dt>
-        <dd>{{ person.person.speaker_status.toUpperCase() }}</dd>
-      </div>
-
-      <div>
-        <dt>{{ $tr("registrationFields.meals") }}:</dt>
-        <dd>
-          {{
-            registration.meals
-              ? $tr("checkout.values.yes")
-              : $tr("checkout.values.no")
-          }}
-        </dd>
-      </div>
-
-      <div
-        v-if="registration.meals && person.person.dietary_requirement"
-      >
-        <dt>{{ $tr("fields.diet") }}:</dt>
-        <dd>{{ dietaryRequirement }}</dd>
-      </div>
-
-      <div v-if="person.person.email && person.person.email">
-        <dt>{{ $tr("auth.fields.email", null, false) }}:</dt>
-        <dd>{{ person.person.email }}</dd>
-      </div>
-    </q-card-section>
-
-    <q-separator v-if="registration.accommodation && person.person.city" inset />
-
-    <q-card-section v-if="registration.accommodation && person.person.city">
-      <div
-        v-for="(value, fieldName) in person.person"
-        v-bind:key="'person-fields-' + fieldName"
-      >
-        <template
-          v-if="
-            value &&
-              fieldName.substr(-4) !== 'name' &&
-              !ignorePersonFields.includes(fieldName)
-          "
+        <div
+          v-if="registration.meals && person.person.dietary_requirement"
         >
-          <dt>{{ $tr("fields." + fieldName) }}:</dt>
-          <dd v-if="fieldName === 'birthdate'">
-            {{ getDate(value, "D. M. YYYY") }}
-            <!--
-            {{ /*(value).format("D. M. Y")*/ }}
-          --></dd>
-          <dd v-else-if="value != null">
-            {{ value }}
-          </dd>
-        </template>
-      </div>
-    </q-card-section>
-  </q-card>
+          <dt>{{ $tr("fields.diet") }}:</dt>
+          <dd>{{ dietaryRequirement }}</dd>
+        </div>
+
+        <div v-if="person.person.email && person.person.email">
+          <dt>{{ $tr("auth.fields.email", null, false) }}:</dt>
+          <dd>{{ person.person.email }}</dd>
+        </div>
+      </q-card-section>
+
+      <q-separator v-if="registration.accommodation && person.person.city" inset />
+
+      <q-card-section v-if="registration.accommodation && person.person.city">
+        <div
+          v-for="(value, fieldName) in person.person"
+          v-bind:key="'person-fields-' + fieldName"
+        >
+          <template
+            v-if="
+              value &&
+                fieldName.substr(-4) !== 'name' &&
+                !ignorePersonFields.includes(fieldName)
+            "
+          >
+            <dt>{{ $tr("fields." + fieldName) }}:</dt>
+            <dd v-if="fieldName === 'birthdate'">
+              {{ getDate(value, "D. M. YYYY") }}
+              <!--
+              {{ /*(value).format("D. M. Y")*/ }}
+            --></dd>
+            <dd v-else-if="value != null">
+              {{ value }}
+            </dd>
+          </template>
+        </div>
+      </q-card-section>
+    </q-card>
+  </div>
 </template>
 
 <script>

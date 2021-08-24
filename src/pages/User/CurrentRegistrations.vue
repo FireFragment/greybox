@@ -12,18 +12,14 @@
           <div class="col-12 q-px-sm">
             <h5 class="q-mt-lg q-mb-xs">{{ entry.name }}</h5>
           </div>
-          <div
-            class="col-12 col-sm-6 col-md-4 col-lg-3 q-px-sm q-py-md items-stretch"
+          <checkout-person-card
             v-for="(person, index) in entry.registrations"
             :key="JSON.stringify(person)"
-          >
-            <checkout-person-card
-              :person="person"
-              :registration="person"
-              :person-index="index"
-              :menu="false"
-            />
-          </div>
+            :person="person"
+            :registration="person"
+            :person-index="index"
+            :menu="false"
+          />
         </template>
       </template>
     </div>
