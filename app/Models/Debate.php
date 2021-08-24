@@ -77,6 +77,7 @@ class Debate extends BaseModel
             $role = substr($fields[6], 4);
             if ('organizátor' !== $role) {
                 $debates[] = array(
+                    'oldGreyboxId' => $id,
                     'date' => substr($fields[0], 4),
                     'affirmativeTeam' => self::removeLink($fields[1]),
                     'negativeTeam' => self::removeLink($fields[2]),

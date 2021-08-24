@@ -21,17 +21,22 @@ class BallotController extends Controller
     {
         $this->validate($request, [
             'debate' => 'integer',
-            'adjudicator' => 'integer',
             'oldGreyboxId' => 'integer',
             'ballot' => 'file'
         ]);
 
         try {
             $path = $request->file('ballot')->store('ballots', 's3');
+            $authenticatedUserPerson = \Auth::user()->person()->first();
+            $adjudicator = null;
+            if (null !== $authenticatedUserPerson)
+            {
+                $adjudicator = $authenticatedUserPerson->id;
+            }
 
             $ballot = Ballot::create([
                 'debate' => $request->input('debate'),
-                'adjudicator' => $request->input('adjudicator'),
+                'adjudicator' => $adjudicator,
                 'filename' => basename($path),
                 'url' => Storage::disk('s3')->url($path),
                 'old_greybox_id' => $request->input('oldGreyboxId')
