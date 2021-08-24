@@ -13,6 +13,7 @@
           @click="toggleDrawerMenu"
           aria-label="Menu"
           icon="fas fa-bars"
+          class="lt-md"
         />
 
         <q-toolbar-title>
@@ -165,6 +166,12 @@ export default {
       this.leftDrawerOpen = !this.leftDrawerOpen;
       localStorage.setItem('leftDrawerOpen', this.leftDrawerOpen);
     },
+    checkDrawerOpened() {
+      if (document.getElementsByTagName("BODY")[0].offsetWidth > 1024) {
+        this.leftDrawerOpen = true;
+        localStorage.setItem('leftDrawerOpen', true);
+      }
+    },
     async switchLocale(locale) {
       if (this.$i18n.locale === locale) return;
 
@@ -207,11 +214,17 @@ export default {
   },
 
   created() {
+
+    /*
     window.addEventListener('keydown', (e) => {
       if (document.activeElement === document.body && e.code === 'KeyM') {
         this.toggleDrawerMenu();
       }
     });
+     */
+
+    this.checkDrawerOpened();
+    window.addEventListener("resize", this.checkDrawerOpened, true)
 
     this.$bus.$on('fullLoader', (value) => {
       if (value) {
