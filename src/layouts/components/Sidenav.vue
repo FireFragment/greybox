@@ -1,5 +1,9 @@
 <template>
-  <q-drawer :model-value="modelValue" bordered>
+  <q-drawer
+      :model-value="modelValue"
+      @update:model-value="$emit('update:model-value', $event)"
+      bordered
+  >
     <q-list>
       <q-scroll-area>
       <q-item :to="$path('home')" exact>
