@@ -1,5 +1,8 @@
 <template>
-  <div class="btn-container col-12 col-sm-6 col-md q-mb-md text-center">
+  <div :class="`
+    btn-container col-12 col-sm-6 q-mb-md text-center
+    ${autoSize ? 'col-md' : 'col-md-3'}
+  `">
     <q-btn
       :icon="'fas fa-' + icon"
       size="xl"
@@ -12,12 +15,15 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { TranslatedString } from 'boot/i18n';
+
 export default {
   props: {
-    label: [String, Object],
+    label: [String, Object as () => TranslatedString],
     icon: String,
     color: String,
+    autoSize: Boolean,
   },
   emits: ['click'],
   name: 'PickingButton',
