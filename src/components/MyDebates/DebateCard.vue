@@ -60,12 +60,13 @@
       </template>
       <template v-if="canUpload">
         <q-separator :class="{ 'q-mt-auto': !debate.ballots.length }" />
+        <q-file v-model="file" ref="fileUploader" style="display: none" />
         <DebateCardRow
           icon="fas fa-file-upload"
           icon-color="primary"
           :value="$tr('cardButtons.uploadBallot')"
-          link="#"
-          @click="uploading = true"
+          :link="true"
+          @click="$refs.fileUploader.pickFiles()"
         />
       </template>
     </q-list>
@@ -94,7 +95,8 @@ const DebateCardProps = {
 
 interface DebateCardData extends TranslationPrefixData {
   uploading: boolean;
-  canUpload: boolean,
+  canUpload: boolean;
+  file: null | File;
 }
 
 export default defineComponent({
@@ -108,10 +110,33 @@ export default defineComponent({
       uploading: false,
       canUpload: true,
       translationPrefix: 'myDebates.',
+      file: null,
     };
   },
   methods: {
     getDate: date.formatDate,
+
+    async uploadFile(file: File) {
+      this.uploading = true;
+      const content = await file.text();
+
+      // Clear input
+      this.file = null;
+
+      // TODO - send to API
+      // console.log(content);
+
+      this.uploading = false;
+    },
+  },
+  watch: {
+    async file(file: File | null) {
+      if (file === null) {
+        return;
+      }
+
+      await this.uploadFile(file);
+    },
   },
 });
 </script>

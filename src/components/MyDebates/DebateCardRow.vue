@@ -1,10 +1,10 @@
 <template>
   <q-item
-    :tag="link ? 'a' : 'div'"
+    :tag="externalLink ? 'a' : 'div'"
     :clickable="!!link"
-    :href="link ? link : null"
-    :target="link ? '_blank' : null"
-    :rel="link ? 'noopener' : null"
+    :href="externalLink ? link : null"
+    :target="externalLink ? '_blank' : null"
+    :rel="externalLink ? 'noopener' : null"
   >
     <q-item-section avatar class="items-center">
       <q-icon :color="iconColor" :name="icon" />
@@ -49,5 +49,10 @@ const DebateCardRowProps = {
 export default defineComponent({
   name: 'DebateCardRow',
   props: DebateCardRowProps,
+  computed: {
+    externalLink() {
+      return typeof this.link === 'string';
+    },
+  },
 });
 </script>

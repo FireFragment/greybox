@@ -10,6 +10,7 @@ export interface Debate {
   link: string;
   motion: string;
   negativeTeam: string;
+  oldGreyboxId: string;
   result: string;
   role: string;
   score: string;
