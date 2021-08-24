@@ -22,7 +22,7 @@ class BallotController extends Controller
         $this->validate($request, [
             'debate' => 'integer',
             'oldGreyboxId' => 'integer',
-            'ballot' => 'file'
+            'ballot' => 'file|max:10240'
         ]);
 
         try {
