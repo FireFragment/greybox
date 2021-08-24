@@ -34,7 +34,7 @@
       >
         <template
           v-if="
-            ['teamName', 'accommodation', 'role'].includes(fieldName) &&
+            showRegistrationFields.includes(fieldName) &&
               (fieldName !== 'teamName' || value)
           "
         >
@@ -93,8 +93,7 @@
           v-if="
             value &&
               fieldName.substr(-4) !== 'name' &&
-              fieldName !== 'dietary_requirement' &&
-              fieldName !== 'email'
+              !ignorePersonFields.includes(fieldName)
           "
         >
           <dt>{{ $tr("fields." + fieldName) }}:</dt>
@@ -129,6 +128,8 @@ export default {
     return {
       translationPrefix: 'tournament.',
       roles: {},
+      showRegistrationFields: ['teamName', 'accommodation', 'role'],
+      ignorePersonFields: ['dietary_requirement', 'email', 'id', 'created_at', 'updated_at', 'old_greybox_id'],
     };
   },
   computed: {
