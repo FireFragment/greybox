@@ -1,0 +1,25 @@
+.drag-and-drop
+  width: 100%
+  height: 100%
+  position: relative
+
+  &.dragging
+    *
+      pointer-events: none
+
+    &::after
+      content: attr(data-dragging-text)
+      width: 100%
+      height: 100%
+      background: transparentize($primary, .2)
+      color: white
+      font-size: 1.75rem
+      font-weight: 500
+      position: absolute
+      left: 0
+      top: 0
+      display: flex
+      justify-content: center
+      align-items: center
+      padding: 1rem
+      border: 3px dashed white

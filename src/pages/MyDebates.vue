@@ -15,7 +15,7 @@
           v-for="(debate, index) in month.debates"
           :key="index"
         >
-          <DebateCard class="full-width" :debate="debate" @reload-data="loadPage(true)" />
+          <DebateCard :debate="debate" @reload-data="loadPage(true)" />
         </div>
       </template>
       <Pagination v-model="currentPage" :pages="totalPages" route="myDebates" />
