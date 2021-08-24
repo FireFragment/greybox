@@ -860,12 +860,15 @@ export default {
         name: this.values.name ? this.values.name.trim() : null,
         surname: this.values.surname ? this.values.surname.trim() : null,
         note: this.values.note,
-        email: this.values.email,
         meals: this.values.meals,
         dietary_requirement: this.values.dietary_requirement
           ? this.values.dietary_requirement.value
           : null,
       };
+
+      if (this.values.email || this.requireEmail) {
+        returnObject.email = this.values.email;
+      }
 
       if (this.values.schoolYear && this.role === 1) {
         returnObject.school_year = this.values.schoolYear.value;
