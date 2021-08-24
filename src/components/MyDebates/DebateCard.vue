@@ -64,6 +64,8 @@
           v-model="file"
           ref="fileUploader"
           style="display: none"
+          :max-file-size="String(this.maxSizeMB * 1024 * 1024)"
+          @rejected="validationFailed"
         />
         <DebateCardRow
           icon="fas fa-file-upload"
@@ -124,6 +126,10 @@ export default defineComponent({
     };
   },
   methods: {
+    validationFailed() {
+      this.$flash(this.errorMessageTooLarge, 'error');
+    },
+
     getDate: date.formatDate,
 
     uploadFile(file: File) {
@@ -138,9 +144,6 @@ export default defineComponent({
 
       // $tr doesn't work inside promises for some weird reason
       const successMessage = this.$tr('uploadBallot.success');
-      const errorMessageTooLarge = this.$tr('uploadBallot.errorTooLarge', {
-        size: `${this.maxSizeMB} MB`,
-      });
       const errorMessageGeneral = this.$tr('uploadBallot.error');
 
       this.$api({
@@ -165,7 +168,7 @@ export default defineComponent({
             && response.data.ballot[0] === 'validation.max.file'
           ) {
             // File too large
-            this.$flash(errorMessageTooLarge, 'error');
+            this.$flash(this.errorMessageTooLarge, 'error');
           } else {
             // General error
             this.$flash(errorMessageGeneral, 'error');
@@ -183,6 +186,13 @@ export default defineComponent({
       }
 
       this.uploadFile(file);
+    },
+  },
+  computed: {
+    errorMessageTooLarge(): string {
+      return <string> this.$tr('uploadBallot.errorTooLarge', {
+        size: `${this.maxSizeMB} MB`,
+      });
     },
   },
 });
