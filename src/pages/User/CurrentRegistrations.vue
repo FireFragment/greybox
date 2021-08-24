@@ -39,6 +39,9 @@ import { TranslationPrefixData } from 'boot/i18n';
 import { mapGetters } from 'vuex';
 import { Event } from 'src/types/event';
 import NoDataMessage from 'components/NoDataMessage.vue';
+import { Role } from 'src/types/role';
+
+export const DBkey = 'current-registrations';
 
 interface PersonRegistrations {
   id: number;
@@ -63,23 +66,7 @@ interface PersonRegistrations {
   event: string;
   // eslint-disable-next-line camelcase
   event_id: number;
-  role: {
-    id: number;
-    name: {
-      id: number;
-      cs: string;
-      en: string;
-      // eslint-disable-next-line camelcase
-      created_at: string;
-      // eslint-disable-next-line camelcase
-      updated_at: string;
-    },
-    icon: string | null;
-    // eslint-disable-next-line camelcase
-    created_at: string;
-    // eslint-disable-next-line camelcase
-    updated_at: string;
-  },
+  role: Role,
   accommodation: number;
   confirmed: number;
   team: string | null;
@@ -131,7 +118,6 @@ export default defineComponent({
         return;
       }
 
-      const DBkey = 'current-registrations';
       const cached: DBValue = this.$db(DBkey);
       if (cached) {
         this.people = <EventPersonRegistrations[]><unknown>cached;

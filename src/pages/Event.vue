@@ -164,6 +164,7 @@ import { mapGetters, mapState } from 'vuex';
 import { Role } from 'src/store/roles/state';
 import { defineComponent } from 'vue';
 import HeaderCard from 'components/Event/HeaderCard.vue';
+import { DBkey as CurrentRegistrationsDBKey } from './User/CurrentRegistrations';
 
 export default defineComponent({
   name: 'Event',
@@ -359,6 +360,7 @@ export default defineComponent({
       // Remove autofill data to include newly added people later
       this.$db(`autofillDebaters-event${this.event.id}`, this.DB_DEL);
       this.$db(`autofillTeams-event${this.event.id}`, this.DB_DEL);
+      this.$db(CurrentRegistrationsDBKey, this.DB_DEL);
     },
 
     removePerson(index) {

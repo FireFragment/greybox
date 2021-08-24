@@ -1,7 +1,8 @@
 import { Action } from 'vuex';
 import { AxiosResponse } from 'axios';
 import { apiCall } from 'boot/api';
-import { Role, RolesState } from './state';
+import { Role } from 'src/types/role';
+import { RolesState } from './state';
 
 export const load: Action<RolesState, never> = async ({
   commit,
