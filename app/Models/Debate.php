@@ -97,7 +97,7 @@ class Debate extends BaseModel
     private static function removeLink(string $text): string
     {
         $text = preg_split('/>/m', $text);
-        return substr($text[2], 0, -3);
+        return htmlspecialchars_decode(substr($text[2], 0, -3));
     }
 
     public static function groupByMonth(array $debates): array
