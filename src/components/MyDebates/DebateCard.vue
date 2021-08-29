@@ -1,6 +1,7 @@
 <template>
   <drag-and-drop
     :overlay-text="$tr('cardButtons.uploadBallot')"
+    :active="debate.canUploadBallot"
   >
     <q-card class="my-card full-height full-width column">
       <q-card-section :class="{

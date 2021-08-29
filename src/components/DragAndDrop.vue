@@ -1,14 +1,17 @@
 <template>
+  <!-- Prevent event listeners registration if drag&drop is not active -->
   <div
+    v-on="active ? {
+      dragenter: dragStart,
+      dragover: dragStart,
+      dragleave: dragEnd,
+      drop: drop,
+    } : {}"
     :class="{
-      'drag-and-drop': true,
+      'drag-and-drop': active,
       'dragging': dragging,
     }"
-    @dragenter="dragStart"
-    @dragover="dragStart"
-    @dragleave="dragEnd"
-    @drop="drop"
-    :data-dragging-text="overlayText"
+    :data-dragging-text="active ? overlayText : null"
   >
     <slot></slot>
   </div>
@@ -22,6 +25,11 @@ const DragAndDropProps = {
   overlayText: {
     type: String,
     required: true,
+  },
+  active: {
+    type: Boolean,
+    required: false,
+    default: true,
   },
 };
 
@@ -65,9 +73,7 @@ export default defineComponent({
       const fileInput = this.$parent?.$refs.fileInput;
 
       if (!fileInput) {
-        const error = 'DragAndDrop requires parent to have QUploader as fileInput $ref';
-        console.error(error);
-        throw new Error(error);
+        throw new Error('DragAndDrop requires parent to have QUploader as fileInput $ref');
       }
 
       (<QUploader>fileInput).addFiles(
