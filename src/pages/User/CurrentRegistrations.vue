@@ -4,11 +4,11 @@
 
     <div class="row">
       <NoDataMessage
-        v-if="Object.keys(this.events).length === 0"
+        v-if="Object.keys(events).length === 0"
         :message="$tr('currentRegistrations.empty')"
       />
       <template v-else>
-        <template v-for="(entry, key) in events" :key="key">
+        <template v-for="(entry, id) in events" :key="id">
           <div class="col-12 q-px-sm">
             <h5 class="q-mt-lg q-mb-xs">{{ $tr(entry.event.name) }}</h5>
           </div>
@@ -82,9 +82,11 @@ interface EventPersonRegistrations {
   registrations: PersonRegistrations[];
 }
 
+type EventPersonRegistrationsData = Record<number, EventPersonRegistrations>;
+
 interface CurrentRegistrationsData extends TranslationPrefixData {
   translationPrefix: string;
-  events: EventPersonRegistrations[];
+  events: EventPersonRegistrationsData;
 }
 
 export default defineComponent({
@@ -96,7 +98,7 @@ export default defineComponent({
   data(): CurrentRegistrationsData {
     return {
       translationPrefix: 'user.',
-      events: [],
+      events: {},
     };
   },
   computed: {
@@ -118,7 +120,7 @@ export default defineComponent({
 
       const cached: DBValue = this.$db(DBkey);
       if (cached) {
-        this.events = <EventPersonRegistrations[]><unknown>cached;
+        this.events = <EventPersonRegistrationsData><unknown>cached;
         return;
       }
 
@@ -134,10 +136,10 @@ export default defineComponent({
                 return;
               }
 
-              this.events.push({
+              this.events[event.id] = {
                 event,
                 registrations: data,
-              });
+              };
             });
         }),
       );
