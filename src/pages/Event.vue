@@ -1,7 +1,7 @@
 <template>
   <q-page padding v-if="event">
     <!-- Header card -->
-    <HeaderCard :event="event" :smaller="role || role === 0" />
+    <HeaderCard :event="event" :smaller="typeof role === 'number'" />
 
     <div v-if="event.hard_deadline < now" class="row justify-center">
       <div class="col-12 col-md-4">
