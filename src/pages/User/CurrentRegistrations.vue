@@ -4,13 +4,13 @@
 
     <div class="row">
       <NoDataMessage
-        v-if="Object.keys(this.people).length === 0"
+        v-if="Object.keys(this.events).length === 0"
         :message="$tr('currentRegistrations.empty')"
       />
       <template v-else>
-        <template v-for="(entry, key) in people" :key="key">
+        <template v-for="(entry, key) in events" :key="key">
           <div class="col-12 q-px-sm">
-            <h5 class="q-mt-lg q-mb-xs">{{ entry.name }}</h5>
+            <h5 class="q-mt-lg q-mb-xs">{{ $tr(entry.event.name) }}</h5>
           </div>
           <checkout-person-card
             v-for="(person, index) in entry.registrations"
@@ -18,6 +18,7 @@
             :person="person"
             :registration="person"
             :person-index="index"
+            :possible-diets="entry.event.dietaryRequirements"
             :menu="false"
           />
         </template>
@@ -77,13 +78,13 @@ interface PersonRegistrations {
 }
 
 interface EventPersonRegistrations {
-  name: string;
+  event: Event;
   registrations: PersonRegistrations[];
 }
 
 interface CurrentRegistrationsData extends TranslationPrefixData {
   translationPrefix: string;
-  people: EventPersonRegistrations[];
+  events: EventPersonRegistrations[];
 }
 
 export default defineComponent({
@@ -95,7 +96,7 @@ export default defineComponent({
   data(): CurrentRegistrationsData {
     return {
       translationPrefix: 'user.',
-      people: [],
+      events: [],
     };
   },
   computed: {
@@ -117,7 +118,7 @@ export default defineComponent({
 
       const cached: DBValue = this.$db(DBkey);
       if (cached) {
-        this.people = <EventPersonRegistrations[]><unknown>cached;
+        this.events = <EventPersonRegistrations[]><unknown>cached;
         return;
       }
 
@@ -133,14 +134,14 @@ export default defineComponent({
                 return;
               }
 
-              this.people.push({
-                name: <string> this.$tr(event.name),
+              this.events.push({
+                event,
                 registrations: data,
               });
             });
         }),
       );
-      this.$db(DBkey, <DBValue><unknown> this.people, true);
+      this.$db(DBkey, <DBValue><unknown> this.events, true);
       this.$bus.$emit('fullLoader', false);
     },
   },

@@ -80,7 +80,7 @@
         </div>
 
         <div
-          v-if="registration.meals && person.person.dietary_requirement"
+          v-if="registration.meals && person.person.dietary_requirement && dietaryRequirement"
         >
           <dt>{{ $tr("fields.diet") }}:</dt>
           <dd>{{ dietaryRequirement }}</dd>
@@ -132,8 +132,16 @@ export default {
     person: Object,
     registration: Object,
     personIndex: Number,
-    possibleDiets: Array,
-    menu: { type: Boolean, required: false, default: true },
+    possibleDiets: {
+      type: Array,
+      required: false,
+      default: [],
+    },
+    menu: {
+      type: Boolean,
+      required: false,
+      default: true,
+    },
   },
   emits: ['remove'],
   data() {
@@ -164,10 +172,14 @@ export default {
     dietaryRequirement() {
       const id = this.person.person.dietary_requirement;
 
+      const diet = this.possibleDiets.find((item) => item.id === id);
+
+      if (!diet) {
+        return null;
+      }
+
       // Get dietary requirement name
-      const name = this.$tr(
-        this.possibleDiets.filter((item) => item.id === id)[0].name,
-      );
+      const name = this.$tr(diet.name,);
 
       // Capitalize
       return name.charAt(0).toUpperCase() + name.slice(1);
