@@ -205,7 +205,7 @@ export default {
               this.$emit('confirm', data.data);
             })
             .catch((data) => {
-              if (data.response.data) {
+              if (data.response && data.response.data) {
                 const { message } = data.response.data;
 
                 if (message) {
@@ -225,7 +225,7 @@ export default {
         .catch(([data, person = null]) => {
           this.loading = false;
 
-          if (data.response.data) {
+          if (data.response && data.response.data) {
             const { message } = data.response.data;
 
             if (message) {
