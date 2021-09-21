@@ -1,102 +1,102 @@
 <template>
-  <div class="q-px-sm">
-    <div class="row q-mb-md">
-      <div class="col-12 col-sm-6 col-md-3 q-py-xs items-stretch">
-        <q-card class="thin-header-card normal-margin-card">
-          <q-card-section class="bg-blue-9 text-white card-header">
-            <div class="row items-center no-wrap">
-              <div class="col">
-                <div class="text-h6">{{ $tr('billing.title') }}</div>
+    <div class="q-px-lg">
+      <div class="row q-mb-md">
+        <div class="col-12 col-sm-6 col-md-3 q-py-xs items-stretch">
+          <q-card class="thin-header-card normal-margin-card">
+            <q-card-section class="bg-blue-9 text-white card-header">
+              <div class="row items-center no-wrap">
+                <div class="col">
+                  <div class="text-h6">{{ $tr('billing.title') }}</div>
+                </div>
+                <div class="col-auto">
+                  <billing-menu @selected="changeBilling" />
+                </div>
               </div>
-              <div class="col-auto">
-                <billing-menu @selected="changeBilling" />
-              </div>
-            </div>
-          </q-card-section>
+            </q-card-section>
 
-          <q-card-section>
-            <div v-if="!billingClient">
-              {{ $auth.user().username }}
-            </div>
-            <div v-else>
-              <p class="q-mb-sm">
-                <b>{{ billingClient.name }}</b>
-                <template v-if="billingClient.email">
-                  <br />{{ billingClient.email }}
-                </template>
-              </p>
-              <p class="q-mb-sm" v-if="billingClient.registration_no">
-                {{ $tr('billing.fields.registration_no') }}:
-                {{ billingClient.registration_no }}
-              </p>
-              <p
-                class="q-mb-none"
-                v-if="
+            <q-card-section>
+              <div v-if="!billingClient">
+                {{ $auth.user().username }}
+              </div>
+              <div v-else>
+                <p class="q-mb-sm">
+                  <b>{{ billingClient.name }}</b>
+                  <template v-if="billingClient.email">
+                    <br />{{ billingClient.email }}
+                  </template>
+                </p>
+                <p class="q-mb-sm" v-if="billingClient.registration_no">
+                  {{ $tr('billing.fields.registration_no') }}:
+                  {{ billingClient.registration_no }}
+                </p>
+                <p
+                    class="q-mb-none"
+                    v-if="
                   billingClient.street ||
                     billingClient.city ||
                     billingClient.zip ||
                     selectedCountry
                 "
-              >
-                {{ billingClient.street }} <br v-if="billingClient.street" />
-                {{
-                  billingClient.city
-                }}
-                <template v-if="billingClient.zip && billingClient.city"
-                >,
-                </template>
-                {{ billingClient.zip }}
-                <template v-if="selectedCountry">
-                  <br v-if="billingClient.city || billingClient.zip" />
-                  {{ $tr(selectedCountry) }}
+                >
+                  {{ billingClient.street }} <br v-if="billingClient.street" />
+                  {{
+                    billingClient.city
+                  }}
+                  <template v-if="billingClient.zip && billingClient.city"
+                  >,
+                  </template>
+                  {{ billingClient.zip }}
+                  <template v-if="selectedCountry">
+                    <br v-if="billingClient.city || billingClient.zip" />
+                    {{ $tr(selectedCountry) }}
 
-                  <!-- Element has to be mounted in order for API to be loaded -->
-                  <country-select v-show="false" />
-                </template>
-              </p>
-            </div>
-          </q-card-section>
-        </q-card>
+                    <!-- Element has to be mounted in order for API to be loaded -->
+                    <country-select v-show="false" />
+                  </template>
+                </p>
+              </div>
+            </q-card-section>
+          </q-card>
+        </div>
       </div>
-    </div>
 
-    <div class="row -q-mx-sm">
-      <person-card
-        v-for="(person, index) in formData"
-        v-bind:key="JSON.stringify(person)"
-        :person="person"
-        :registration="person.registration"
-        :person-index="index"
-        :possible-diets="possibleDiets"
-        @remove="removePerson"
-      />
-    </div>
-
-    <div class="q-pt-md row">
-      <div class="col-12 col-sm-6">
-        <q-btn
-          :label="$tr('back')"
-          color="blue-9"
-          @click="$emit('goToRolePick')"
-          class="q-my-xs"
+      <div class="row -q-mx-sm">
+        <person-card
+            v-for="(person, index) in formData"
+            v-bind:key="JSON.stringify(person)"
+            :person="person"
+            :registration="person.registration"
+            :person-index="index"
+            :possible-diets="possibleDiets"
+            @remove="removePerson"
         />
       </div>
-      <div class="col-12 col-sm-6">
-        <q-btn
-          :loading="loading"
-          class="float-right q-my-xs"
-          size="lg"
-          color="primary"
-          @click="sendForm"
-        >
-          {{ $tr('submit') }}
-          <template v-slot:loading>
-            <q-spinner-hourglass class="on-left" />
-            {{ $tr('loading') }}
-          </template>
-        </q-btn>
+
+      <div class="q-pt-md row">
+        <div class="col-12 col-sm-6">
+          <q-btn
+              :label="$tr('back')"
+              color="blue-9"
+              @click="$emit('goToRolePick')"
+              class="q-my-xs"
+          />
+        </div>
+        <div class="col-12 col-sm-6">
+          <q-btn
+              :loading="loading"
+              class="float-right q-my-xs"
+              size="lg"
+              color="primary"
+              @click="sendForm"
+          >
+            {{ $tr('submit') }}
+            <template v-slot:loading>
+              <q-spinner-hourglass class="on-left" />
+              {{ $tr('loading') }}
+            </template>
+          </q-btn>
+        </div>
       </div>
-    </div>
   </div>
 </template>
 

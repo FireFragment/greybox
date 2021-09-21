@@ -9,29 +9,31 @@
 
     <div class="row q-col-gutter-md">
       <q-form @submit="submit" class="col-12 col-sm-6 q-mt-lg offset-sm-3">
-        <q-input
-          outlined
-          type="email"
-          v-model="email"
-          :label="$tr('fields.email')"
-          lazy-rules
-          :rules="[val => (val !== null && val !== '') || $tr(`errors.email`),
-                  val => $validators.validateEmail(val) || $tr('errors.emailFormat')]"
-        >
-          <template v-slot:prepend>
-            <q-icon name="fas fa-at" />
-          </template>
-        </q-input>
-
-        <div class="text-center q-mt-sm">
-          <q-btn type="submit" color="primary" :loading="loading">
-            {{ $tr("passwordReset.submit") }}
-            <template v-slot:loading>
-              <q-spinner-hourglass class="on-left" />
-              {{ $tr("passwordReset.loading") }}
+        <q-card class="q-pa-md q-ma-sm">
+          <q-input
+            outlined
+            type="email"
+            v-model="email"
+            :label="$tr('fields.email')"
+            lazy-rules
+            :rules="[val => (val !== null && val !== '') || $tr(`errors.email`),
+                    val => $validators.validateEmail(val) || $tr('errors.emailFormat')]"
+          >
+            <template v-slot:prepend>
+              <q-icon name="fas fa-at" />
             </template>
-          </q-btn>
-        </div>
+          </q-input>
+
+          <div class="text-center q-mt-sm">
+            <q-btn type="submit" color="primary" :loading="loading">
+              {{ $tr("passwordReset.submit") }}
+              <template v-slot:loading>
+                <q-spinner-hourglass class="on-left" />
+                {{ $tr("passwordReset.loading") }}
+              </template>
+            </q-btn>
+          </div>
+        </q-card>
       </q-form>
     </div>
   </q-page>

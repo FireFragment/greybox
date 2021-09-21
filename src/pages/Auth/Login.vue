@@ -3,58 +3,67 @@
     <h1 class="text-center text-h4">{{ $tr("login.title") }}</h1>
     <div class="row q-col-gutter-md">
       <q-form @submit="login" class="col-12 col-sm-6 q-mt-lg offset-sm-3">
-        <q-input
-          outlined
-          type="email"
-          v-model="email"
-          :label="$tr('fields.email')"
-          lazy-rules
-          :rules="[val => (val !== null && val !== '') || $tr(`errors.email`),
+        <q-card class="q-pa-md q-ma-sm">
+          <q-input
+              outlined
+              type="email"
+              v-model="email"
+              :label="$tr('fields.email')"
+              lazy-rules
+              :rules="[val => (val !== null && val !== '') || $tr(`errors.email`),
                   val => $validators.validateEmail(val) || $tr('errors.emailFormat')]"
-        >
-          <template v-slot:prepend>
-            <q-icon name="fas fa-at" />
-          </template>
-        </q-input>
+          >
+            <template v-slot:prepend>
+              <q-icon name="fas fa-at" />
+            </template>
+          </q-input>
 
-        <q-input
-          v-model="password"
-          outlined
-          :type="isPwd ? 'password' : 'text'"
-          :label="$tr('fields.password')"
-          class="q-mt-sm"
-          lazy-rules
-          :rules="[
+          <q-input
+              v-model="password"
+              outlined
+              :type="isPwd ? 'password' : 'text'"
+              :label="$tr('fields.password')"
+              class="q-mt-sm"
+              lazy-rules
+              :rules="[
             val => (val !== null && val !== '') || $tr('errors.password')
           ]"
-        >
-          <template v-slot:prepend>
-            <q-icon name="fas fa-key" />
-          </template>
-          <template v-slot:append>
-            <q-icon
-              :name="isPwd ? 'fas fa eye-slash' : 'fas fa-eye'"
-              class="cursor-pointer"
-              @click="isPwd = !isPwd"
-            />
-          </template>
-        </q-input>
-        <div class="q-mt-sm q-mb-lg text-center">
-          {{ $tr("passwordReset.loginQuestion") }}
-          <router-link :to="$path('auth.passwordReset')">{{
-            $tr("passwordReset.loginLink")
-          }}</router-link>
-        </div>
-
-        <div class="text-center">
-          <q-btn type="submit" color="primary" :loading="loading">
-            {{ $tr("login.submit") }}
-            <template v-slot:loading>
-              <q-spinner-hourglass class="on-left" />
-              {{ $tr("login.loading") }}
+          >
+            <template v-slot:prepend>
+              <q-icon name="fas fa-key" />
             </template>
-          </q-btn>
-        </div>
+            <template v-slot:append>
+              <q-icon
+                  :name="isPwd ? 'fas fa eye-slash' : 'fas fa-eye'"
+                  class="cursor-pointer"
+                  @click="isPwd = !isPwd"
+              />
+            </template>
+          </q-input>
+          <div class="q-mt-sm q-mb-sm text-center">
+            {{ $tr("passwordReset.loginQuestion") }}
+            <router-link :to="$path('auth.passwordReset')">{{
+                $tr("passwordReset.loginLink")
+              }}</router-link>
+          </div>
+          <div class="q-mt-sm q-mb-lg text-center">
+            {{ $tr("signUp.no_account_yet") }}
+            <router-link :to="$path('auth.signUp')">{{
+                $tr("signUp.cta")
+              }}</router-link>
+          </div>
+
+          <div class="text-center">
+            <q-btn type="submit" color="primary" :loading="loading">
+              {{ $tr("login.submit") }}
+              <template v-slot:loading>
+                <q-spinner-hourglass class="on-left" />
+                {{ $tr("login.loading") }}
+              </template>
+            </q-btn>
+          </div>
+        </q-card>
+
       </q-form>
     </div>
   </q-page>

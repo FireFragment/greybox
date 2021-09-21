@@ -9,6 +9,8 @@
   "downloadPersonalData": "Stáhnout osobní údaje",
   "save": "Uložit",
   "error": "Vyskytla se chyba, opakujte akci později",
+  "login_needed": "Pro příhlašení na debatní akci je nutné se nejdříve přihlásit do registračního systému.",
+  "no_account_yet": "Ještě nemáte účet? Zaregistrujte se!",
   "confirmModal": {
     "title": "Potvrďte akci",
     "confirm": "Potvrdit",

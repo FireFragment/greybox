@@ -4,22 +4,31 @@
       <img class="q-mx-auto" alt="Logo ADK" src="../assets/logo_napis.png" />
     </div>
     <div class="row q-mt-xl flex-center" v-if="!$auth.isLoggedIn()">
-      <q-btn
-        class="q-mx-md q-mb-md hidden-link"
-        :to="$path('auth.login')"
-        icon="fas fa-sign-in-alt"
-        :label="$tr('auth.login.link')"
-        color="primary"
-        size="lg"
-      />
-      <q-btn
-        class="q-mx-md q-mb-md hidden-link"
-        :to="$path('auth.signUp')"
-        icon="fas fa-user-plus"
-        :label="$tr('auth.signUp.link')"
-        color="blue-9"
-        size="lg"
-      />
+      <q-card class="home-infocard">
+          <p>
+            {{ $tr('general.login_needed') }}
+            <br>
+            {{ $tr('general.no_account_yet') }}
+          </p>
+        <div class="text-center">
+          <q-btn
+              class="q-ma-md hidden-link"
+              :to="$path('auth.login')"
+              icon="fas fa-sign-in-alt"
+              :label="$tr('auth.login.link')"
+              color="primary"
+              size="lg"
+          />
+          <q-btn
+              class="q-ma-md hidden-link"
+              :to="$path('auth.signUp')"
+              icon="fas fa-user-plus"
+              :label="$tr('auth.signUp.link')"
+              color="blue-9"
+              size="lg"
+          />
+        </div>
+      </q-card>
     </div>
   </q-page>
 </template>
