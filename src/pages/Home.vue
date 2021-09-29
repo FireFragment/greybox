@@ -6,9 +6,9 @@
     <div class="row q-mt-xl flex-center" v-if="!$auth.isLoggedIn()">
       <q-card class="home-infocard">
           <p>
-            {{ $tr('general.login_needed') }}
+            {{ $tr('general.loginNeeded') }}
             <br>
-            {{ $tr('general.no_account_yet') }}
+            {{ $tr('general.noAccountYet') }}
           </p>
         <div class="text-center">
           <q-btn

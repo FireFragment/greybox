@@ -47,7 +47,7 @@
               }}</router-link>
           </div>
           <div class="q-mt-sm q-mb-lg text-center">
-            {{ $tr("signUp.no_account_yet") }}
+            {{ $tr("signUp.noAccountYet") }}
             <router-link :to="$path('auth.signUp')">{{
                 $tr("signUp.cta")
               }}</router-link>
