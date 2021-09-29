@@ -70,17 +70,17 @@
     >
       <q-checkbox
         v-model="values.accommodation"
-        v-if="accommodationType !== 'opt-in'"
-        :true-value="false"
-        :false-value="true"
-        :label="$tr('fields.accommodation')"
+        v-if="accommodationType === 'opt-in'"
+        :true-value="true"
+        :false-value="false"
+        :label="$tr('fields.accommodationOptIn')"
       />
       <q-checkbox
         v-model="values.accommodation"
         v-else
-        :true-value="true"
-        :false-value="false"
-        :label="$tr('fields.accommodationOptIn')"
+        :true-value="false"
+        :false-value="true"
+        :label="$tr('fields.accommodation')"
       />
       <q-icon name="fas fa-info-circle" class="q-pl-sm">
         <q-tooltip anchor="top middle" self="bottom middle" :offset="[0, 0]">
@@ -326,17 +326,17 @@
     >
       <q-checkbox
         v-model="values.meals"
-        v-if="mealType !== 'opt-in'"
-        :true-value="false"
-        :false-value="true"
-        :label="$tr('fields.meals')"
+        v-if="mealType === 'opt-in'"
+        :true-value="true"
+        :false-value="false"
+        :label="$tr('fields.mealsOptIn')"
       />
       <q-checkbox
         v-model="values.meals"
         v-else
-        :true-value="true"
-        :false-value="false"
-        :label="$tr('fields.mealsOptIn')"
+        :true-value="false"
+        :false-value="true"
+        :label="$tr('fields.meals')"
       />
       <!--
       <q-icon name="fas fa-info-circle" class="q-pl-sm">
@@ -876,9 +876,7 @@ export default {
 
       // Include accommodation data if it is required or user wants it
       if (
-        this.accommodationType === 'required'
-        || (this.accommodationType !== 'none'
-        && this.values.accommodation === (this.accommodationType === 'opt-in'))
+        this.accommodationType === 'required' || (this.accommodationType !== 'none' && this.values.accommodation)
       ) {
         returnObject.accommodation = true;
         returnObject.birthdate = this.birthdateFormatter(
