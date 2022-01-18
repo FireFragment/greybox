@@ -144,10 +144,10 @@ class RegistrationController extends FakturoidController
             if ($event->membership_required) {
                 $invoice->setMembershipFeeLines($registrationGroup);
             }
-            if ($event->pds)
+            /*if ($event->pds)
             {
                 $invoice->setMissingAdjudicatorFeeLine($registration->countTeams(), $registration->countAdjudicators());
-            }
+            }*/
             $people = $invoice->getPeopleListForEmail($registrationGroup, $language);
 
             $data->invoiceLines = $invoice->lines;
