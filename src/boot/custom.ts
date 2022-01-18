@@ -94,6 +94,10 @@ export const $flash = function (message: string | TranslationValue, type: string
 
 export const $isPDS = process.env.IS_PDS === 'true';
 
+// A bit dirty
+if ($isPDS)
+  document.title = 'Prague Debate Spring';
+
 // Convert array of objects into object of objects (with IDs as keys)
 export const $makeIdObject = (array: any) => {
   let result: Record<string | number, any> = {};

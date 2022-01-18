@@ -21,19 +21,21 @@
             <q-avatar size="35px">
               <img src="../assets/logo.svg" alt="logo" />
             </q-avatar>
-            greybox 2.0
-            <template v-if="env.STAGE === 'pds'">PDS</template>
-            <span v-if="env.MODE !== 'production'" class="mode-flag">
-              <template v-if="env.STAGE === 'debug'">
-                debug
-              </template>
-              <template v-else-if="env.STAGE === 'local'">
-                dev
-              </template>
-              <template v-else>
-                pds
-              </template>
-            </span>
+
+            <template v-if="$isPDS">
+              Prague Debate Spring
+            </template>
+            <template v-else>
+              greybox 2.0
+              <span v-if="env.MODE !== 'production'" class="mode-flag">
+                <template v-if="env.STAGE === 'debug'">
+                  debug
+                </template>
+                <template v-else-if="env.STAGE === 'local'">
+                  dev
+                </template>
+              </span>
+            </template>
           </span>
         </q-toolbar-title>
 
