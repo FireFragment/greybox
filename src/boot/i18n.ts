@@ -1,14 +1,11 @@
 import { boot } from 'quasar/wrappers';
 import { createI18n } from 'vue-i18n';
-import { setLocaleToRoute } from 'src/router';
 import { DateTime } from 'src/types/general';
+import { $isPDS } from 'boot/custom';
 import config from '../config';
 
 // Import localization data from JSONs
 import i18nConfig from '../translation/config';
-
-// EN is default with PDS
-if (process.env.IS_PDS === 'true') i18nConfig.default = 'en';
 
 export interface TranslationPrefixData {
   translationPrefix: string
@@ -44,7 +41,10 @@ export default boot(({
 
   void router.isReady()
     .then(() => {
-      setLocaleToRoute(router.currentRoute.value);
+      // PDS mode, homepage -> switch language to EN (without changing route)
+      if ($isPDS && router.currentRoute.value.name === 'home') {
+        i18n.global.locale = 'en';
+      }
     });
 });
 
