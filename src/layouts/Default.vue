@@ -19,7 +19,9 @@
         <q-toolbar-title>
           <span>
             <q-avatar size="35px">
-              <img src="../assets/logo.svg" alt="logo" />
+              <!-- Template strings cannot be used in [src] attributes -->
+              <img src="../assets/logo.svg" alt="logo" v-if="!$isPDS" />
+              <img src="../assets/logo_pds.svg" alt="logo" v-else />
             </q-avatar>
 
             <template v-if="$isPDS">

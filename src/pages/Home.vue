@@ -1,7 +1,9 @@
 <template>
   <q-page class="flex flex-center content-center">
     <div class="row full-width text-center">
-      <img class="q-mx-auto" alt="Logo ADK" src="../assets/logo_napis.png" />
+      <!-- Template strings cannot be used in [src] attributes -->
+      <img class="q-mx-auto" alt="Logo ADK" src="../assets/logo_text.png" v-if="!$isPDS" />
+      <img class="q-mx-auto" alt="PDS Logo" src="../assets/logo_pds_text.png" v-else />
     </div>
     <div class="row q-mt-xl flex-center" v-if="!$auth.isLoggedIn()">
       <q-card class="home-infocard">
