@@ -247,11 +247,6 @@ export default defineComponent({
           return;
         }
 
-        // Individual debater should be hidden on PDS
-        if (role.id === 1 && this.$isPDS) {
-          return;
-        }
-
         // Debater role is present -> push team role
         if (role.id === 1) {
           this.roles[0] = {
@@ -259,6 +254,11 @@ export default defineComponent({
             label: 'tournament.types.team',
             icon: 'users',
           };
+        }
+
+        // Individual debater should be hidden on PDS
+        if (role.id === 1 && this.$isPDS) {
+          return;
         }
 
         this.roles[role.id] = {
