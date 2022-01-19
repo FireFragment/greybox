@@ -49,7 +49,7 @@
 
     <q-select
       outlined
-      v-if="role === 1"
+      v-if="requireSchoolYear"
       v-model="values.schoolYear"
       :options="schoolYears"
       :label="`${$tr('fields.schoolYear')} *`"
@@ -589,6 +589,7 @@ export default {
       schoolYears: [],
       possibleDietsOptions: [],
       showSpeakerStatusModal: false,
+      requireSchoolYear: !this.$isPDS && this.role === 1, // only for non-PDS debaters
       requireSpeakerStatus: this.$isPDS && this.role === 1, // only for PDS debaters
       requireJudingExperience: this.$isPDS && this.role === 2, // show "Judging experience" instead of note (only for PDS judges)
       speakerOptions: [
@@ -870,7 +871,7 @@ export default {
         returnObject.email = this.values.email;
       }
 
-      if (this.values.schoolYear && this.role === 1) {
+      if (this.values.schoolYear && this.requireSchoolYear) {
         returnObject.school_year = this.values.schoolYear.value;
       }
 
