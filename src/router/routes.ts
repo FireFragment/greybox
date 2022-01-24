@@ -56,7 +56,6 @@ const routes: RouteRecordRaw[] = [
         alias: ENroutes.auth.login,
         name: 'auth.login',
         component: () => import('pages/Auth/Login.vue'),
-        props: true,
         beforeEnter: notLoggedInMiddleware,
       },
       {

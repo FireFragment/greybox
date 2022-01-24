@@ -172,17 +172,13 @@ export default {
         alerts: false,
       })
         .then(() => {
+          localStorage.setItem('loginData', JSON.stringify({
+            username: this.email,
+            password: this.password,
+            isSignUp: true,
+          }));
           this.$bus.$emit('fullLoader', true);
-          this.$router.push({
-            name: 'auth.login',
-            params: {
-              loginData: JSON.stringify({
-                username: this.email,
-                password: this.password,
-                isSignUp: true,
-              }),
-            },
-          });
+          this.$router.push(this.$path('auth.login'));
         })
         .catch((data) => outputValidationErrors(data.response.data))
         .finally(() => {

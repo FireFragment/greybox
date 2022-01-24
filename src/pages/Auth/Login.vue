@@ -74,9 +74,6 @@
 
 export default {
   name: 'PageSignIn',
-  props: {
-    loginData: String,
-  },
   data() {
     return {
       translationPrefix: 'auth.',
@@ -133,9 +130,12 @@ export default {
     },
   },
   created() {
+    const loginData = localStorage.getItem('loginData');
+
     // Auto login user with passed data (from registration page)
-    if (this.loginData) {
-      this.login(this.loginData);
+    if (loginData) {
+      localStorage.removeItem('loginData');
+      this.login(loginData);
     }
   },
 };
