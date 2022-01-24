@@ -203,6 +203,10 @@ export default {
     },
 
     _initSmartform() {
+      // Disable Smart Form Autocomplete for PDS
+      if (this.$isPDS)
+        return;
+
       // Renitialize smartform
       window.smartform.rebindAllForms(true, () => {
         // Loop through instances

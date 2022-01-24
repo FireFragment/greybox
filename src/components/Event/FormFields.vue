@@ -660,38 +660,7 @@ export default {
   },
 
   mounted() {
-    // Renitialize smartform
-    window.smartform.rebindAllForms(true, () => {
-      // Loop through instances
-      window.smartform.getInstanceIds()
-        .forEach((id) => {
-          const instance = window.smartform.getInstance(id);
-
-          // Set limit to 3 results for every field
-          [
-            'smartform-street-and-number',
-            'smartform-city',
-            'smartform-zip',
-          ].forEach((input) => {
-            instance.getBox(input)
-              .setLimit(3);
-          });
-
-          // Run this callback on selection
-          instance.setSelectionCallback((element, value, fieldType) => {
-            const field = fieldType.substr('10');
-
-            const varName = field !== 'street-and-number' ? field : 'street';
-
-            // Emit global event so other form instances can receive it
-            this.$bus.$emit('smartform', {
-              instance: id,
-              field: varName,
-              value,
-            });
-          });
-        });
-    });
+    this._initSmartform();
   },
 
   emits: [
@@ -701,6 +670,45 @@ export default {
   ],
 
   methods: {
+    _initSmartform() {
+      // Disable Smart Form Autocomplete for PDS
+      if (this.$isPDS)
+        return;
+
+      // Renitialize smartform
+      window.smartform.rebindAllForms(true, () => {
+        // Loop through instances
+        window.smartform.getInstanceIds()
+          .forEach((id) => {
+            const instance = window.smartform.getInstance(id);
+
+            // Set limit to 3 results for every field
+            [
+              'smartform-street-and-number',
+              'smartform-city',
+              'smartform-zip',
+            ].forEach((input) => {
+              instance.getBox(input)
+                .setLimit(3);
+            });
+
+            // Run this callback on selection
+            instance.setSelectionCallback((element, value, fieldType) => {
+              const field = fieldType.substr('10');
+
+              const varName = field !== 'street-and-number' ? field : 'street';
+
+              // Emit global event so other form instances can receive it
+              this.$bus.$emit('smartform', {
+                instance: id,
+                field: varName,
+                value,
+              });
+            });
+          });
+      });
+    },
+
     sendForm() {
       if (!this.isTeam && !this.values.accept) return !(this.acceptError = true);
 
