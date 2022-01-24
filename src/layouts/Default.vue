@@ -209,9 +209,9 @@ export default {
         midRedirect = 'home';
       }
 
-      await this.$router.push({
-        name: midRedirect
-      });
+      await this.$router.push(
+        this.$path(midRedirect)
+      );
 
       // go to new url
       await this.$router.replace({

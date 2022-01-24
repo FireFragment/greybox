@@ -64,7 +64,7 @@ export default {
       })
         .then(() => {
           this.$flash(this.$tr('passwordReset.successEmail'), 'success');
-          this.$router.replace({ name: 'home' });
+          this.$router.replace(this.$path('home'));
         })
         .catch((data) => {
           this.email = null;

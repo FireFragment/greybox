@@ -116,10 +116,10 @@ export default {
             && requestData.isSignUp
           ) {
             this.$bus.$emit('fullLoader', false);
-            this.$router.replace({ name: 'home' });
+            this.$router.replace(this.$path('home'));
             this.$flash(signupSuccess, 'done');
           } else {
-            this.$router.push({ name: 'home' });
+            this.$router.push(this.$path('home'));
             this.$flash(loginSuccess, 'done');
           }
         })

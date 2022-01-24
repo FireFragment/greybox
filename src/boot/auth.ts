@@ -1,6 +1,7 @@
 import { boot } from 'quasar/wrappers';
 import { AxiosResponse } from 'axios';
 import { Router } from 'src/router';
+import { $path } from 'boot/custom';
 import { apiCall } from './api';
 
 type UserRole = 'admin' | 'none';
@@ -98,14 +99,14 @@ export const logout = async (redirectHome: boolean = true) => {
   // TODO - flush personal DB once it is connected to Vuex
 
   if (redirectHome) {
-    await Router.replace({ name: 'home' });
+    await Router.replace($path('home'));
   } else {
     // Soft reload current page
     const currentPath = Router.currentRoute.value;
 
     // Redirect here before route switch to avoid redundant redirect error
     const midRedirect = currentPath.name === 'home' ? 'about' : 'home';
-    await Router.push({ name: midRedirect });
+    await Router.push($path(midRedirect));
     await Router.replace({ path: currentPath.path });
   }
 };
