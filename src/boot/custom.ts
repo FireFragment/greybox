@@ -94,6 +94,8 @@ export const $flash = function (message: string | TranslationValue, type: string
 
 export const $isPDS = process.env.IS_PDS === 'true';
 
+export const $isPride = (new Date()).getMonth() == 5;
+
 // A bit dirty
 if ($isPDS)
   document.title = 'Prague Debate Spring';
@@ -114,6 +116,7 @@ export default boot(({ app }) => {
 
   // $isPDS bool
   app.config.globalProperties.$isPDS = $isPDS;
+  app.config.globalProperties.$isPride = $isPride;
 
   // Initialize SmartForms
   smartformModule.load();

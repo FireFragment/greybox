@@ -20,7 +20,8 @@
           <span>
             <q-avatar size="35px">
               <!-- Template strings cannot be used in [src] attributes -->
-              <img src="../assets/logo.svg" alt="logo" v-if="!$isPDS" />
+              <img src="../assets/pride_logo.png" alt="logo" v-if="$isPride && !$isPDS" />
+              <img src="../assets/logo.svg" alt="logo" v-else-if="!$isPDS" />
               <img src="../assets/logo_pds.svg" alt="logo" v-else />
             </q-avatar>
 
