@@ -110,7 +110,7 @@
 <script>
 /* eslint-disable */
 import { $tr, $flash } from '../../boot/custom';
-import { switchLocale } from '../boot/i18n';
+import { switchLocale } from '../../boot/i18n';
 
 export const outputValidationErrors = (data) => {
   if (!data) {

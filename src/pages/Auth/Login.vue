@@ -71,7 +71,7 @@
 
 <script>
 /* eslint-disable */
-import { switchLocale } from '../boot/i18n';
+import { switchLocale } from '../../boot/i18n';
 
 export default {
   name: 'PageSignIn',
