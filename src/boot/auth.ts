@@ -2,32 +2,37 @@ import { boot } from 'quasar/wrappers';
 import { AxiosResponse } from 'axios';
 import { Router } from 'src/router';
 import { $path } from 'boot/custom';
+import { Date, DateTime } from 'src/types/general';
 import { apiCall } from './api';
 
 type UserRole = 'admin' | 'none';
 
-interface Person {
-  name: string
-  surname: string
-  email: string
+export interface Person {
+  id: number;
+  name: string;
+  surname: string;
+  email: string;
+  institution: string;
   // eslint-disable-next-line camelcase
-  school_year: number
-  birthdate: string
+  old_greybox_id: number;
+  birthdate: Date;
   // eslint-disable-next-line camelcase
-  id_number: string
-  street: string
-  city: string
-  zip: string
+  dietary_requirement: string;
   // eslint-disable-next-line camelcase
-  dietary_requirement: number
+  id_number: string;
+  street: string;
+  city: string;
+  zip: string;
+  school: string;
   // eslint-disable-next-line camelcase
-  speaker_status: string
-  note: string
+  school_year: number;
   // eslint-disable-next-line camelcase
-  updated_at: string
+  speaker_status: string;
+  note: string;
   // eslint-disable-next-line camelcase
-  created_at: string
-  id: number
+  created_at: DateTime;
+  // eslint-disable-next-line camelcase
+  updated_at: DateTime;
 }
 
 interface User {
