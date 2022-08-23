@@ -2,26 +2,37 @@
   <q-page padding>
     <h1 class="text-center text-h4">{{ $tr("admin.eventRegistrations.chooseEvent") }}</h1>
     <q-btn
-        class="block q-mx-auto q-mb-lg q-pa-md"
-        icon="fas fa-trophy"
-        color="primary"
-        label="Turnaj #1"
+      v-for="event in events"
+      v-bind:key="event.id"
+      class="block q-mx-auto q-mb-lg q-pa-md"
+      icon="fas fa-trophy"
+      color="primary"
+      :label="$tr(event.name)"
+      :to="
+        $path('admin.events') +
+          '/' +
+          event.id +
+          '-' +
+          $slug($tr(event.name) + ' ' + event.place)
+      "
     />
-    <q-btn
-        class="block q-mx-auto q-mb-lg q-pa-md"
-        icon="fas fa-trophy"
-        color="primary"
-        label="Třetí turnaj XXV. ročníku Debatní ligy a Debate League"
-    />
+    <div v-if="!Object.keys(events).length" class="empty-info">
+      {{ $tr('tournament.empty') }}
+    </div>
   </q-page>
 </template>
 
 <script>
 
+import { mapState } from 'vuex';
+
 export default {
   name: 'EventRegistrations',
-  data() {
-    return {};
+  computed: {
+    // TODO - filter out those events that the user doesn't have admin permissions for
+    ...mapState('events', [
+      'events',
+    ]),
   },
 };
 </script>

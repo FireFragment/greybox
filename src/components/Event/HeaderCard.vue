@@ -49,6 +49,18 @@
           <q-icon name="fas fa-info" class="text-primary" />
           {{ $tr(event.note) }}
         </p>
+
+        <router-link
+          :to="
+            $path('admin.events') +
+              '/' +
+              event.id +
+              '-' +
+              $slug($tr(event.name) + ' ' + event.place)
+          "
+          v-if="$auth.isAdmin()">
+          Admin
+        </router-link>
       </div>
     </q-card>
   </div>
