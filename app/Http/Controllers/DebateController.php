@@ -49,6 +49,7 @@ class DebateController extends Controller
             $oldId = $person->getOldGreyboxId();
             if (is_numeric($oldId))
             {
+                // TODO: use OldGreyboxService
                 $gb = file_get_contents('https://debatovani.cz/greybox/?page=clovek.debaty&clovek_id='.$oldId);
                 $debates = Debate::parseOldGreybox($gb, $person->isAdjudicator());
 

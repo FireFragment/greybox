@@ -4,14 +4,24 @@ namespace App\Events;
 
 class TeamsRegisteredEvent extends Event
 {
-    public $debaters;
+    /**
+     * @var int
+     */
+    public $competitionId;
+
+    /**
+     * @var array
+     */
+    public $debatersInTeams;
+
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($debatersInTeams)
+    public function __construct(int $competitionId, array $debatersInTeams)
     {
-        $this->debaters = $debatersInTeams;
+        $this->competitionId = $competitionId;
+        $this->debatersInTeams = $debatersInTeams;
     }
 }

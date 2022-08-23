@@ -34,7 +34,7 @@ class TeamRulesBreachWarning extends Mailable
             ->subject(Lang::get('messages.team.rules.breach.warning.subject'))
             ->view('email.teamrulesbreachwarning')
             ->with([
-                'data' => $this->data
+                'warnings' => $this->data
             ]);
     }
 }

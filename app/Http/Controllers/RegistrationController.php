@@ -180,8 +180,8 @@ class RegistrationController extends FakturoidController
             }
 
             if (0 < $registration->countTeams()) {
-                $debatersInTeams = $registration->getDebatersInTeams();
-                event(new TeamsRegisteredEvent($debatersInTeams));
+                $debatersInTeams = $registration->getDebatersInTeamsRegistrations();
+                event(new TeamsRegisteredEvent($event->competition, $debatersInTeams));
             }
 
             // TODO: vyřešit jak nastavit locale pouze pro email / případně jak používat locale vůbec

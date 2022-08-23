@@ -102,12 +102,20 @@ class Registration extends Model implements AuthenticatableContract, Authorizabl
         return $adjudicatorsCount;
     }
 
-    public function getDebatersInTeams()
+    public function getDebatersInTeamsRegistrations()
     {
         $registrationGroupQuery = $this->getRegistrationGroupQuery();
         $debaters = $registrationGroupQuery
-            ->whereNotNull('team');
-        return $debaters->get();
+            ->whereNotNull('team')
+            ->orderBy('team');
+
+        $debatersInTeams = array();
+        foreach ($debaters->get() as $debaterRegistration)
+        {
+            $teamName = $debaterRegistration->team()->first()->name;
+            $debatersInTeams[$teamName][] = $debaterRegistration->person()->first();
+        }
+        return $debatersInTeams;
     }
 
     public function confirmRegistrationGroup($invoiceId = null)
