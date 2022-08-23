@@ -1,21 +1,23 @@
 <template>
   <q-page padding>
     <h1 class="text-center text-h4">{{ $tr("admin.eventRegistrations.chooseEvent") }}</h1>
-    <q-btn
-      v-for="event in events"
-      v-bind:key="event.id"
-      class="block q-mx-auto q-mb-lg q-pa-md"
-      icon="fas fa-trophy"
-      color="primary"
-      :label="$tr(event.name)"
-      :to="
-        $path('admin.events') +
-          '/' +
-          event.id +
-          '-' +
-          $slug($tr(event.name) + ' ' + event.place)
-      "
-    />
+    <div class="flex column">
+      <q-btn
+        v-for="event in events"
+        v-bind:key="event.id"
+        class="q-mx-auto q-my-lg q-pa-md"
+        icon="fas fa-trophy"
+        color="primary"
+        :label="$tr(event.name)"
+        :to="
+          $path('admin.events') +
+            '/' +
+            event.id +
+            '-' +
+            $slug($tr(event.name) + ' ' + event.place)
+        "
+      />
+    </div>
     <div v-if="!Object.keys(events).length" class="empty-info">
       {{ $tr('tournament.empty') }}
     </div>
