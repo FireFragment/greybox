@@ -1,6 +1,6 @@
 <template>
     <div class="q-px-lg">
-      <div class="row q-mb-md">
+      <div class="row q-mb-md justify-center">
         <div class="col-12 col-sm-6 col-md-3 q-py-xs items-stretch">
           <q-card class="thin-header-card normal-margin-card">
             <q-card-section class="bg-blue-9 text-white card-header">
@@ -60,7 +60,7 @@
         </div>
       </div>
 
-      <div class="row -q-mx-sm">
+      <div class="row -q-mx-sm justify-center">
         <person-card
             v-for="(person, index) in formData"
             v-bind:key="JSON.stringify(person)"
