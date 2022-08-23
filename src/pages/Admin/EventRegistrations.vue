@@ -1,6 +1,6 @@
 <template>
   <q-page padding>
-    <h1 class="text-center text-h4">...</h1>
+    <h1 class="text-center text-h4">{{ event ? $tr(event.name) : "-" }}</h1>
     <div class="q-pa-md">
       <q-table
           :rows="$store.getters['eventsRegistrations/eventRegistrations'](eventId)"
@@ -18,7 +18,7 @@
 <script lang="ts">
 
 import { mapState } from 'vuex';
-import { EventRegistration } from 'src/types/event';
+import { Event, EventRegistration } from 'src/types/event';
 
 export default {
   name: 'EventRegistrations',
@@ -26,6 +26,9 @@ export default {
     ...mapState('events', [
       'eventRegistrations',
     ]),
+    event(): Event {
+      return this.$store.getters['events/event'](this.eventId);
+    },
   },
   async created() {
     await this.$store.dispatch('eventsRegistrations/load', this.eventId);
@@ -50,6 +53,8 @@ export default {
         name: 'accommodation', label: 'Ubytování', align: 'center', field: 'accommodation', format: outputBoolean, sortable: true,
       }, {
         name: 'meals', label: 'Jídlo', align: 'center', field: 'meals', format: outputBoolean, sortable: true,
+      }, {
+        name: 'dietary_requirements', label: 'Jídlo - omezení', align: 'center', field: (row: EventRegistration) => row.person.dietary_requirement, sortable: true,
       }],
       initialPagination: {
         sortBy: 'surname',

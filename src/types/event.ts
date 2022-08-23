@@ -64,13 +64,23 @@ export interface Person {
   id: number;
   name: string;
   surname: string;
+  email: string;
+  institution: string;
+  // eslint-disable-next-line camelcase
+  old_greybox_id: number;
   birthdate: Date;
+  // eslint-disable-next-line camelcase
+  dietary_requirement: string;
   // eslint-disable-next-line camelcase
   id_number: string;
   street: string;
   city: string;
   zip: string;
-  school: null;
+  school: string;
+  // eslint-disable-next-line camelcase
+  school_year: number;
+  // eslint-disable-next-line camelcase
+  speaker_status: string;
   note: string;
   // eslint-disable-next-line camelcase
   created_at: DateTime;
