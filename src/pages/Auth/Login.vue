@@ -71,6 +71,7 @@
 
 <script>
 /* eslint-disable */
+import { switchLocale } from '../boot/i18n';
 
 export default {
   name: 'PageSignIn',
@@ -126,6 +127,9 @@ export default {
         })
         .finally(() => {
           this.loading = false;
+          if(this.$auth.user().preferred_locale !== this.$i18n.locale) {
+            switchLocale(this.$i18n.locale);
+          }
         });
     },
   },

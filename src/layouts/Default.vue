@@ -145,9 +145,9 @@
 </template>
 
 <script>
-/* eslint-disable */
 import Sidenav from './components/Sidenav';
 import i18nConfig from '../translation/config';
+import { switchLocale } from '../boot/i18n';
 
 export default {
   name: 'LayoutDefault',
@@ -167,6 +167,7 @@ export default {
     };
   },
   methods: {
+    switchLocale, 
     toggleDrawerMenu() {
       this.leftDrawerOpen = !this.leftDrawerOpen;
       localStorage.setItem('leftDrawerOpen', this.leftDrawerOpen);
@@ -180,45 +181,6 @@ export default {
         localStorage.setItem('leftDrawerOpen', true);
       }
     },
-    async switchLocale(locale) {
-      if (this.$i18n.locale === locale) return;
-
-      // current URL
-      const originalPath = this.$tr(
-        `paths.${this.$route.name}`,
-      );
-
-      // change locale
-      this.$i18n.locale = locale;
-
-      // new URL
-      const newPath = this.$tr(`paths.${this.$route.name}`);
-
-      // get URL from router
-      let url = { ...this.$route };
-
-      // Redirect here before route switch to avoid redundant redirect error
-      let midRedirect = 'about';
-      // Homepage cases
-      if (originalPath === '') {
-        url.path = '/en/';
-      } else if (newPath === '') {
-        url.path = '/';
-      }// replace url in router with localized one
-      else {
-        url.path = url.path.replace(originalPath, newPath);
-        midRedirect = 'home';
-      }
-
-      await this.$router.push(
-        this.$path(midRedirect)
-      );
-
-      // go to new url
-      await this.$router.replace({
-        path: url.path
-      });
-    },
   },
 
   created() {
@@ -229,6 +191,12 @@ export default {
       }
     });
     */
+   console.log("created");
+    console.log(this.$auth.user()?.preferred_locale);
+    console.log(this.$i18n.locale);
+    if (this.$auth.user() && this.$auth.user().preferred_locale !== this.$i18n.locale) {
+      switchLocale(this.$auth.user().preferred_locale);
+    }
 
     this.$bus.$on('fullLoader', (value) => {
       if (value) {

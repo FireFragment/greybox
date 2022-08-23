@@ -110,6 +110,8 @@
 <script>
 /* eslint-disable */
 import { $tr, $flash } from '../../boot/custom';
+import { switchLocale } from '../boot/i18n';
+
 export const outputValidationErrors = (data) => {
   if (!data) {
     $flash($tr('general.error', null, false), 'error');
@@ -168,6 +170,7 @@ export default {
           username: this.email,
           password: this.password,
           password_confirmation: this.passwordConfirmation,
+          preferred_locale: this.$i18n.locale,
         },
         alerts: false,
       })
@@ -183,6 +186,9 @@ export default {
         .catch((data) => outputValidationErrors(data.response.data))
         .finally(() => {
           this.loading = false;
+          if (this.$auth.user().preferred_locale !== this.$i18n.locale) {
+            switchLocale(this.$i18n.locale);
+          }
         });
     },
   },

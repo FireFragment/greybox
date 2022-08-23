@@ -1,3 +1,5 @@
+import { user } from 'src/boot/auth';
+
 const files: string[] = [
   'general', 'auth', 'paths', 'tournament', 'admin', 'myDebates', 'user',
 ];
@@ -19,9 +21,12 @@ const loadMessages = (locale: string): Translations => {
   return messages;
 };
 
+const defaultLocale = user()?.preferred_locale ?? 'cs';
+const fallbackLocale = defaultLocale === 'cs' ? 'en' : 'cs';
+
 export default {
-  default: 'cs',
-  fallback: 'en',
+  default: defaultLocale,
+  fallback: fallbackLocale,
   languages: {
     cs: {
       en: 'Czech',
