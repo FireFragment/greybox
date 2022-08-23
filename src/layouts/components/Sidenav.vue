@@ -53,7 +53,7 @@
 
       <template v-if="$auth.isAdmin()">
         <q-item-label header>{{ $tr('admin.title') }}</q-item-label>
-        <q-item :to="$path('admin.eventRegistrations')">
+        <q-item :to="$path('admin.events')">
           <q-item-section avatar>
             <q-icon name="fas fa-trophy" />
           </q-item-section>

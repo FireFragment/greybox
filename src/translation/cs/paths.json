@@ -14,6 +14,6 @@
     "currentRegistrations": "stavajici-prihlasky"
   },
   "admin": {
-    "eventRegistrations": "prihlaseni-na-turnaje"
+    "events": "admin-turnaje"
   }
 }

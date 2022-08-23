@@ -31,7 +31,7 @@ const routes: RouteRecordRaw[] = [
 
       // My debates
       {
-        // TODO - type routes & therefore fix weird error below
+        // TODO - type routes & therefore fix weird errors below
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         path: `${CZroutes.myDebates}/:page?`,
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -43,8 +43,19 @@ const routes: RouteRecordRaw[] = [
 
       // Admin
       {
-        path: CZroutes.admin.eventRegistrations,
-        alias: ENroutes.admin.eventRegistrations,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        path: CZroutes.admin.events,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        alias: ENroutes.admin.events,
+        name: 'admin.events',
+        component: () => import('pages/Admin/Events.vue'),
+        beforeEnter: adminMiddleware,
+      },
+      {
+        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+        path: `${CZroutes.admin.events}/:id-:slug`,
+        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+        alias: `${ENroutes.admin.events}/:id-:slug`,
         name: 'admin.eventRegistrations',
         component: () => import('pages/Admin/EventRegistrations.vue'),
         beforeEnter: adminMiddleware,

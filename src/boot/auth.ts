@@ -121,7 +121,7 @@ export const user = (): User | null => {
 export const getToken = (): string | null => user()?.apiToken ?? null;
 
 export const isLoggedIn = (): boolean => getToken() !== null;
-export const isAdmin = (): boolean => isLoggedIn() && user()?.role === 'admin';
+export const isAdmin = (): boolean => isLoggedIn() && (user()?.role === 'admin' || !!user()?.admin);
 
 const auth: Auth = {
   login,
