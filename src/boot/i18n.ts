@@ -34,14 +34,14 @@ const i18n = createI18n({
   silentTranslationWarn: !config.debug,
 });
 
-export const switchLocale = async (locale: string) => {
+export const switchLocale = async (locale: string): Promise<void> => {
   if (i18n.global.locale === locale) return;
 
   // update preference
   const userObj = user();
   if (userObj) {
     userObj.preferred_locale = locale;
-    apiCall({
+    void apiCall({
       url: `user/${userObj.id}`,
       sendToken: true,
       method: 'put',

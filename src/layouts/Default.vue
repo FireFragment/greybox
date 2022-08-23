@@ -145,19 +145,22 @@
 </template>
 
 <script>
+import { defineComponent } from 'vue';
 import Sidenav from './components/Sidenav';
 import i18nConfig from '../translation/config';
 import { switchLocale } from '../boot/i18n';
 
-export default {
+export default defineComponent({
   name: 'LayoutDefault',
 
   components: {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     Sidenav,
   },
 
   data() {
     return {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       leftDrawerOpen:
         this.$q.platform.is.desktop
         && localStorage.getItem('leftDrawerOpen') !== 'false',
@@ -167,12 +170,13 @@ export default {
     };
   },
   methods: {
-    switchLocale, 
+    switchLocale,
     toggleDrawerMenu() {
       this.leftDrawerOpen = !this.leftDrawerOpen;
       localStorage.setItem('leftDrawerOpen', this.leftDrawerOpen);
     },
     checkDrawerOpened() {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       const toggleButtonVisible = this.$refs.toggleDrawerMenuButton.$el.offsetParent !== null;
 
       // Desktop
@@ -184,39 +188,28 @@ export default {
   },
 
   created() {
-    /*
-    window.addEventListener('keydown', (e) => {
-      if (document.activeElement === document.body && e.code === 'KeyM') {
-        this.toggleDrawerMenu();
-      }
-    });
-    */
-   console.log("created");
-    console.log(this.$auth.user()?.preferred_locale);
-    console.log(this.$i18n.locale);
     if (this.$auth.user() && this.$auth.user().preferred_locale !== this.$i18n.locale) {
-      switchLocale(this.$auth.user().preferred_locale);
+      void switchLocale(this.$auth.user().preferred_locale);
     }
 
     this.$bus.$on('fullLoader', (value) => {
       if (value) {
-        this.fullLoader++;
+        this.fullLoader += 1;
       } else {
-        this.fullLoader--;
+        this.fullLoader -= 1;
       }
 
       if (this.fullLoader < 0) this.fullLoader = 0;
     });
-
   },
 
   mounted() {
     this.checkDrawerOpened();
-    window.addEventListener("resize", this.checkDrawerOpened, true);
+    window.addEventListener('resize', () => this.checkDrawerOpened(), true);
   },
 
   unmounted() {
-    window.removeEventListener("resize", this.checkDrawerOpened, true);
-  }
-};
+    window.removeEventListener('resize', () => this.checkDrawerOpened(), true);
+  },
+});
 </script>
