@@ -43,6 +43,8 @@ class SendTeamRulesBreachWarning
 
         foreach ($debatersInTeams as $teamName => $members)
         {
+            $this->addWarningsAboutPastSharedTeams($members, $event->competitionId, $teamName);
+
             $pastTeamDebatersIds = $this->oldGreybox->getPastTeamDebaters($event->competitionId, $teamName);
 
             if (!$this->teamRegistrationContainsPastTeamDebaters($pastTeamDebatersIds, $members))
@@ -64,6 +66,42 @@ class SendTeamRulesBreachWarning
         }
 
         Mail::to('info@debatovani.cz')->send(new TeamRulesBreachWarning($this->warnings));
+    }
+
+    private function addWarningsAboutPastSharedTeams(array $teamRegisteredDebaters, int $competitionId, string $teamName): void
+    {
+        $teamRegisteredDebatersCount = count($teamRegisteredDebaters);
+
+        for ($i = 0; $i < $teamRegisteredDebatersCount; $i++)
+        {
+            for ($j = $i + 1; $j < $teamRegisteredDebatersCount; $j++)
+            {
+                $sharedTeams = $this->oldGreybox->getPastSharedTeamsInTheSameTournament($competitionId, $teamRegisteredDebaters[$i]->old_greybox_id, $teamRegisteredDebaters[$j]->old_greybox_id);
+                $person1 = $teamRegisteredDebaters[$i]->name . ' ' . $teamRegisteredDebaters[$i]->surname;
+                $person2 = $teamRegisteredDebaters[$j]->name . ' ' . $teamRegisteredDebaters[$j]->surname;
+
+                // These two people were not together in a team before
+                if (empty($sharedTeams))
+                {
+                    continue;
+                }
+
+                // These two people were in multiple teams together -> something went wrong
+                if (1 !== count($sharedTeams))
+                {
+                    $this->warnings[] = 'Debatéři ' . $person1  . ' a ' . $person2 . ' spolu debatovali ve více týmech ' . implode(', ', $sharedTeams) . ' a teď jsou přihlášeni za tým ' . $teamName . '.';
+                    continue;
+                }
+
+                // These two people were together in the same team before
+                if ($teamName === $sharedTeams[0]) {
+                    continue;
+                }
+
+                // These two people were together in a different team before
+                $this->warnings[] = 'Lidi ' . $person1  . ' a ' . $person2 . ' spolu debatovali v týmu ' . $sharedTeams[0] . ', ale teď jsou přihlášeni za tým ' . $teamName . '.';
+            }
+        }
     }
 
     /**
