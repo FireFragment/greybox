@@ -1,6 +1,26 @@
 <template>
   <q-page padding>
     <h1 class="text-center text-h4">{{ event ? $tr(event.name) : '-' }}</h1>
+    <div class="q-pa-md" style="max-width: 350px">
+      <q-card>
+        <q-card-section>
+          <div class="text-subtitle2">Počet přihlášek</div>
+        </q-card-section>
+        <q-card-section class="q-pa-none">
+          <q-list bordered separator>
+            <q-item
+              v-for="role in uniqueRoles"
+              :key="role.id"
+            >
+              <q-item-section>
+                <q-item-label caption>{{ $tr(role.name) }}</q-item-label>
+                <q-item-label>{{ roleRegistrationsCount(role) }}</q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-card-section>
+      </q-card>
+    </div>
     <div class="q-pa-md">
       <q-table
         :rows="registrations"
@@ -172,6 +192,9 @@ export default defineComponent({
         && (terms.meals == null || terms.meals === 'Vše' || ((terms.meals === 'Ano') === item.meals))
       ))
     ),
+    roleRegistrationsCount(role: Role): number {
+      return this.registrations.filter((item) => role.id === 0 || role.id === item.role.id).length;
+    },
   },
 });
 </script>
