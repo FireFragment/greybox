@@ -53,6 +53,7 @@
 
       <template v-if="$auth.isAdmin()">
         <q-item-label header>{{ $tr('admin.title') }}</q-item-label>
+        <!-- TODO - keep link active even when a detail of an event is the current URL -->
         <q-item :to="$path('admin.events')">
           <q-item-section avatar>
             <q-icon name="fas fa-trophy" />

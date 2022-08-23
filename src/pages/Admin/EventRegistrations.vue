@@ -4,21 +4,33 @@
     <div class="q-pa-md">
       <q-table
           title="Účastníci"
-          :rows="rows"
+          :rows="$store.getters['eventsRegistrations/eventRegistrations'](127)"
           :columns="columns"
-          row-key="name"
+          row-key="id"
       />
     </div>
   </q-page>
 </template>
 
-<script>
+<script lang="ts">
+
+import { mapState } from 'vuex';
 
 export default {
   name: 'EventRegistrations',
+  computed: {
+    ...mapState('events', [
+      'eventRegistrations',
+    ]),
+  },
+  async created() {
+    // TODO - 89 = $route.params.id
+    await this.$store.dispatch('eventsRegistrations/load', 127);
+  },
   data() {
     return {
       columns: [
+        /*
         {
           name: 'name',
           required: true,
@@ -31,21 +43,36 @@ export default {
           format: (val) => `${val}`,
           sortable: true,
         },
+        */
         {
-          name: 'calories', align: 'center', label: 'Calories', field: 'calories', sortable: true,
+          name: 'surname', label: 'Příjmení', field: (row) => row.person.surname, sortable: true,
         },
         {
-          name: 'fat', label: 'Fat (g)', field: 'fat', sortable: true,
+          name: 'name', label: 'Jméno', field: (row) => row.person.name, sortable: true,
         },
-        { name: 'carbs', label: 'Carbs (g)', field: 'carbs' },
-        { name: 'protein', label: 'Protein (g)', field: 'protein' },
-        { name: 'sodium', label: 'Sodium (mg)', field: 'sodium' },
+        {
+          name: 'role', label: 'Role', field: (row) => this.$tr(row.role.name), sortable: true,
+        },
+        {
+          name: 'team', label: 'Tým', field: (row) => row.team?.name ?? '-', sortable: true,
+        },
+        {
+          name: 'note', label: 'Poznámka', field: 'note',
+        },
+        {
+          name: 'accommodation', label: 'Ubytování', align: 'center', field: (row) => (row.accommodation ? '✅' : '❌'), sortable: true,
+        },
+        {
+          name: 'meals', label: 'Jídlo', align: 'center', field: (row) => (row.meals ? '✅' : '❌'), sortable: true,
+        },
+        /*
         {
           name: 'calcium', label: 'Calcium (%)', field: 'calcium', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10),
         },
         {
           name: 'iron', label: 'Iron (%)', field: 'iron', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10),
         },
+        */
       ],
       rows: [
         {

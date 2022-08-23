@@ -52,6 +52,7 @@ const routes: RouteRecordRaw[] = [
         beforeEnter: adminMiddleware,
       },
       {
+        // TODO - check if has admin access to this event
         // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
         path: `${CZroutes.admin.events}/:id-:slug`,
         // eslint-disable-next-line @typescript-eslint/restrict-template-expressions

@@ -1,5 +1,7 @@
 import { Date, DateTime } from 'src/types/general';
 import { TranslatedDatabaseString } from 'boot/i18n';
+import { Role } from 'src/types/role';
+import { Team } from 'src/types/debate';
 
 type EventOptionalSelect = 'opt-in' | 'opt-out' | 'none' | 'required';
 
@@ -56,4 +58,41 @@ export interface Event {
 export interface EventFull extends Event {
   dietaryRequirements: string[];
   prices: EventPrice[];
+}
+
+export interface Person {
+  id: number;
+  name: string;
+  surname: string;
+  birthdate: Date;
+  // eslint-disable-next-line camelcase
+  id_number: string;
+  street: string;
+  city: string;
+  zip: string;
+  school: null;
+  note: string;
+  // eslint-disable-next-line camelcase
+  created_at: DateTime;
+  // eslint-disable-next-line camelcase
+  updated_at: DateTime;
+}
+
+export interface EventRegistration {
+  id: number;
+  person: Person;
+  note: string;
+  event: number;
+  role: Role;
+  accommodation: boolean;
+  meals: boolean;
+  confirmed: boolean;
+  team: Team;
+  // eslint-disable-next-line camelcase
+  registered_by: number;
+  invoice: number;
+  // eslint-disable-next-line camelcase
+  created_at: DateTime;
+  // eslint-disable-next-line camelcase
+  updated_at: DateTime;
 }

@@ -1,3 +1,5 @@
+import { DateTime } from 'src/types/general';
+
 export interface Ballot {
   adjudicator: string;
   url: string;
@@ -16,4 +18,16 @@ export interface Debate {
   role: string;
   score: string;
   win: boolean | null;
+}
+
+export interface Team {
+  id: number;
+  institution: string | null;
+  name: string;
+  // eslint-disable-next-line camelcase
+  registered_by: number;
+  // eslint-disable-next-line camelcase
+  created_at: DateTime;
+  // eslint-disable-next-line camelcase
+  updated_at: DateTime;
 }
