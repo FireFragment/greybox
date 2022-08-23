@@ -69,6 +69,14 @@
             </q-select>
           </q-th>
         </template>
+        <template v-slot:body-cell-note="props">
+          <q-td :props="props" class="small-overflow-column">
+            {{ props.value }}
+            <q-tooltip v-if="props.row.note">
+              {{ props.value }}
+            </q-tooltip>
+          </q-td>
+        </template>
       </q-table>
     </div>
   </q-page>
