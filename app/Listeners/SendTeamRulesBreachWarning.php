@@ -17,11 +17,6 @@ class SendTeamRulesBreachWarning
     private $oldGreybox;
 
     /**
-     * @var int
-     */
-    private $competitionId;
-
-    /**
      * @var string[]
      */
     private $warnings = array();
@@ -44,14 +39,27 @@ class SendTeamRulesBreachWarning
      */
     public function handle(TeamsRegisteredEvent $event)
     {
-        $this->competitionId = $event->competitionId;
         $debatersInTeams = $event->debatersInTeams;
 
         foreach ($debatersInTeams as $teamName => $members)
         {
-            if (!$this->teamRegistrationContainsPastTeamDebaters($members, $teamName))
+            $pastTeamDebatersIds = $this->oldGreybox->getPastTeamDebaters($event->competitionId, $teamName);
+
+            if (!$this->teamRegistrationContainsPastTeamDebaters($pastTeamDebatersIds, $members))
             {
                 $this->warnings[] = 'Za tým ' . $teamName . ' na předchozích turnajích nikdo z této registrace nedebatoval. (Debatéři v registraci: ' . $this->listDebaters($members) . '.)';
+            }
+            if ($event->finals)
+            {
+                $notPastTeamDebaters = $this->teamRegistrationContainsOnlyPastTeamDebaters($pastTeamDebatersIds, $members);
+                if (false === $notPastTeamDebaters)
+                {
+                    $this->warnings[] = 'Tým ' . $teamName . ' je přihlášený na finále, ale na předchozích turnajích nemá žádné debatéry.';
+                }
+                elseif (count($notPastTeamDebaters))
+                {
+                    $this->warnings[] = 'Za tým ' . $teamName . ' přihlášený na finále na předchozích turnajích nedebatovali tito debatéři z této registrace: ' . $this->listDebaters($members) . '.';
+                }
             }
         }
 
@@ -59,17 +67,14 @@ class SendTeamRulesBreachWarning
     }
 
     /**
-     * @param array $teamRegisteredDebaters
-     * @param string $teamName
-     * @param int $competitionId
+     * @param int[] $pastTeamDebaters
+     * @param Person[] $teamRegisteredDebaters
      * @return bool
      *
      * Odstavec 3.1: Není přípustné, aby pod stejným názvem týmu přijeli na turnaj pouze debatéři, kteří na žádném z předchozích turnajů v témže jazyce ještě za tento tým nedebatovali.
      */
-    private function teamRegistrationContainsPastTeamDebaters(array $teamRegisteredDebaters, string $teamName): bool
+    private function teamRegistrationContainsPastTeamDebaters(array $pastTeamDebaters, array $teamRegisteredDebaters): bool
     {
-        $pastTeamDebaters = $this->oldGreybox->getPastTeamDebaters($this->competitionId, $teamName);
-
         // New team
         if (!count($pastTeamDebaters))
         {
@@ -86,6 +91,34 @@ class SendTeamRulesBreachWarning
         }
 
         return false;
+    }
+
+    /**
+     * @param int[] $pastTeamDebaters
+     * @param Person[] $teamRegisteredDebaters
+     * @return false|array
+     *
+     * Odstavec 3.2: Na finálovém turnaji smí za tým debatovat jen ti debatéři, kteří za tým debatovali v některém z kvalifikačních turnajů ve stejném jazyce.
+     */
+    private function teamRegistrationContainsOnlyPastTeamDebaters(array $pastTeamDebaters, array $teamRegisteredDebaters)
+    {
+        // New team -> can't be for finals
+        if (!count($pastTeamDebaters)) {
+            return false;
+        }
+
+        $notPastTeamDebaters = [];
+
+        foreach ($teamRegisteredDebaters as $registeredDebater)
+        {
+            // This person was debating for this team before
+            if (!in_array($registeredDebater->old_greybox_id, $pastTeamDebaters))
+            {
+                $notPastTeamDebaters[] = $registeredDebater;
+            }
+        }
+
+        return $notPastTeamDebaters;
     }
 
     private function listDebaters(array $debaters): string

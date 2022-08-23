@@ -15,13 +15,19 @@ class TeamsRegisteredEvent extends Event
     public $debatersInTeams;
 
     /**
+     * @var bool
+     */
+    public $finals;
+
+    /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(int $competitionId, array $debatersInTeams)
+    public function __construct(int $competitionId, array $debatersInTeams, bool $finals)
     {
         $this->competitionId = $competitionId;
         $this->debatersInTeams = $debatersInTeams;
+        $this->finals = $finals;
     }
 }

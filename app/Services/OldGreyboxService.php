@@ -23,6 +23,7 @@ class OldGreyboxService
         $url .= '&competition_id=' . $competitionId;
         $url .= '&team_name=' . $teamName;
 
+        // TODO: obalit try-catch blokem
         $gb = file_get_contents($url);
 
         return(json_decode($gb));
