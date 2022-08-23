@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Client;
+use App\Events\TeamsRegisteredEvent;
 use App\Invoice;
 use App\Mail\RegistrationConfirmation;
 use App\Registration;
@@ -176,6 +177,11 @@ class RegistrationController extends FakturoidController
                 $data->invoice = $invoice;
             } else {
                 $invoice = null;
+            }
+
+            if (0 < $registration->countTeams()) {
+                $debatersInTeams = $registration->getDebatersInTeams();
+                event(new TeamsRegisteredEvent($debatersInTeams));
             }
 
             // TODO: vyřešit jak nastavit locale pouze pro email / případně jak používat locale vůbec

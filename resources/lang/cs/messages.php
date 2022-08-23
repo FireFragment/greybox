@@ -18,5 +18,8 @@ return [
     'registration.confirmation.before_price' => 'Pokud jste tak ještě neučinil(a), prosím uhraďte',
     'registration.confirmation.before_date' => 'do',
     'registration.confirmation.after_date' => 'na účet ADK. Podrobnosti platby najdete v přiložené faktuře.',
-    'registration.confirmation.mistake' => 'Pokud je někde chyba, odpovězte nám prosím na tento email.'
+    'registration.confirmation.mistake' => 'Pokud je někde chyba, odpovězte nám prosím na tento email.',
+
+    'team.rules.breach.warning.subject' => 'Došlo k potenciálnímu porušení pravidel pro přihlašování týmů',
+    'team.rules.breach.warning.body' => 'Došlo k potenciálnímu porušení pravidel pro přihlašování týmů. Prosím zkontrolujte následující'
 ];

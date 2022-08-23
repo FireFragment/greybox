@@ -15,5 +15,8 @@ class EventServiceProvider extends ServiceProvider
         \App\Events\DebateDeletedEvent::class => [
             \App\Listeners\RecalculateLeague::class,
         ],
+        \App\Events\TeamsRegisteredEvent::class => [
+            \App\Listeners\SendTeamRulesBreachWarning::class,
+        ]
     ];
 }

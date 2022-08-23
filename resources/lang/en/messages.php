@@ -18,5 +18,8 @@ return [
     'registration.confirmation.before_price' => 'If you haven\'t done so yet, please send',
     'registration.confirmation.before_date' => 'before',
     'registration.confirmation.after_date' => 'to CDA\'s bank account. You can find the payment details in the attached invoice.',
-    'registration.confirmation.mistake' => 'If you find any mistake, please reply to this email.'
+    'registration.confirmation.mistake' => 'If you find any mistake, please reply to this email.',
+
+    'team.rules.breach.warning.subject' => 'There has been a potential breach in rules for team registrations',
+    'team.rules.breach.warning.body' => 'There has been a potential breach in rules for team registrations. Please take a look at these'
 ];
