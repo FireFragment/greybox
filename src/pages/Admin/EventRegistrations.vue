@@ -57,17 +57,22 @@
 import { mapState } from 'vuex';
 import { Event, EventRegistration } from 'src/types/event';
 import { Role } from 'src/types/role';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'EventRegistrations',
   computed: {
     ...mapState('events', [
       'eventRegistrations',
     ]),
     registrations(): EventRegistration[] {
+      // eslint-disable-next-line max-len
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       return <EventRegistration[]> this.$store.getters['eventsRegistrations/eventRegistrations'](this.eventId);
     },
     event(): Event {
+      // eslint-disable-next-line max-len
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       return <Event> this.$store.getters['events/event'](this.eventId);
     },
     roleFilterOptions(): Role[] {
@@ -75,12 +80,19 @@ export default {
         return [];
       }
 
-      const roles: Role[] = (<EventRegistration[]>Object.values(this.registrations))
+      const roles: Role[] = (Object.values(this.registrations))
         .map((item) => item.role);
       const idsOnly = roles.map((item) => item.id);
 
       // Filter out only unique roles
       return roles.filter((item, index) => idsOnly.indexOf(item.id) === index);
+    },
+    eventId(): number {
+      const idParam: string | string[] = this.$route.params.id;
+      if (typeof idParam !== 'string') {
+        return 0;
+      }
+      return parseInt(idParam, 10);
     },
   },
   async created() {
@@ -95,7 +107,6 @@ export default {
       mealsFilterModel: null,
       booleanFilterOptions: ['Vše', 'Ano', 'Ne'],
       // TODO - translate labels
-      eventId: parseInt(this.$route.params.id, 10),
       columns: [{
         name: 'surname', label: 'Příjmení', field: (row: EventRegistration) => row.person.surname, sortable: true, align: 'left',
       }, {
@@ -121,5 +132,5 @@ export default {
       // TODO - translate 'Records per page' etc
     };
   },
-};
+});
 </script>
