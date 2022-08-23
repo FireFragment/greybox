@@ -16,7 +16,7 @@ class UserWSTest extends TestCase
      */
     public function testLogin()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $formValues = array(
             'username' => $user->username,
             'password' => 'testPassword1'
@@ -26,11 +26,10 @@ class UserWSTest extends TestCase
 
         $this->seeStatusCode(200);
         $this->seeJsonStructure([
-            'id_token',
             'id',
             'username',
             'role',
-            'api_token',
+            'apiToken',
             'created_at',
             'updated_at'
         ]);
@@ -40,7 +39,7 @@ class UserWSTest extends TestCase
 
     public function testLoginWithWrongPassword()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $formValues = array(
             'username' => $user->username,
             'password' => 'WrongPassword'
@@ -54,7 +53,7 @@ class UserWSTest extends TestCase
 
     public function testLoginWithWrongUsername()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $formValues = array(
             'username' => 'wrong@User.name',
             'password' => 'testPassword1'
@@ -68,17 +67,14 @@ class UserWSTest extends TestCase
 
     public function testLogout()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $loginFormValues = array(
             'username' => $user->username,
             'password' => 'testPassword1'
         );
         $loggedUser = $this->call('POST', $this->apiPrefix.'/login', $loginFormValues);
 
-        $logoutFormValues = array(
-            'api_token' => $loggedUser['api_token']
-        );
-        $this->post($this->apiPrefix.'/logout', $logoutFormValues);
+        $this->post($this->apiPrefix.'/logout', array(), ['Authorization' => $loggedUser['apiToken']]);
 
         $this->seeStatusCode(200);
         $this->seeJsonEquals(['message' => 'logoutSuccessful']);
@@ -86,28 +82,22 @@ class UserWSTest extends TestCase
 
     public function testLogoutWithWrongApiToken()
     {
-        $logoutFormValues = array(
-            'api_token' => time()
-        );
-        $this->post($this->apiPrefix.'/logout', $logoutFormValues);
+        $this->post($this->apiPrefix.'/logout', array(), ['Authorization' => time()]);
 
         $this->seeStatusCode(401);
     }
 
     public function testShowAllAdmin()
     {
-        factory(User::class)->create();
-        $admin = factory(User::class)->states('admin')->create();
+        $user = User::factory()->create();
+        $admin = User::factory()->isAdmin()->create();
         $loginFormValues = array(
             'username' => $admin->username,
             'password' => 'testPassword1'
         );
         $loggedAdmin = $this->call('POST', $this->apiPrefix.'/login', $loginFormValues);
 
-        $headers = array(
-            'Authorization' => $loggedAdmin['api_token']
-        );
-        $this->get($this->apiPrefix.'/user', $headers);
+        $this->get($this->apiPrefix.'/user', ['Authorization' => $loggedAdmin['apiToken']]);
         $response = json_decode($this->response->content(), true);
 
         $this->seeStatusCode(200);
@@ -115,14 +105,12 @@ class UserWSTest extends TestCase
         $this->seeJsonStructure([
             'id',
             'username',
-            'api_token',
             'created_at',
             'updated_at'
         ], $response[0]);
         $this->seeJsonStructure([
             'id',
             'username',
-            'api_token',
             'created_at',
             'updated_at'
         ], $response[1]);
@@ -130,17 +118,14 @@ class UserWSTest extends TestCase
 
     public function testShowAllNormalUser()
     {
-        $normalUser = factory(User::class)->create();
+        $normalUser = User::factory()->create();
         $loginFormValues = array(
             'username' => $normalUser->username,
             'password' => 'testPassword1'
         );
         $loggedNormalUser = $this->call('POST', $this->apiPrefix.'/login', $loginFormValues);
 
-        $headers = array(
-            'Authorization' => $loggedNormalUser['api_token']
-        );
-        $this->get($this->apiPrefix.'/user', $headers);
+        $this->get($this->apiPrefix.'/user', ['Authorization' => $loggedNormalUser['apiToken']]);
         $response = json_decode($this->response->content(), true);
 
         $this->seeStatusCode(200);
@@ -148,7 +133,6 @@ class UserWSTest extends TestCase
         $this->seeJsonStructure([
             'id',
             'username',
-            'api_token',
             'created_at',
             'updated_at'
         ], $response[0]);
