@@ -152,6 +152,7 @@ export default defineComponent({
   },
   data() {
     const outputBoolean = (val: boolean) => (val ? '✅' : '❌');
+    const emptyToHyphen = (val: string | null) => (val ?? '-');
 
     return {
       roleFilterModel: null,
@@ -168,13 +169,13 @@ export default defineComponent({
       }, {
         name: 'team', label: 'Tým', field: (row: EventRegistration) => row.team?.name ?? '-', sortable: true, align: 'left',
       }, {
-        name: 'note', label: 'Poznámka', field: 'note', align: 'left', sortable: true,
+        name: 'note', label: 'Poznámka', field: 'note', format: emptyToHyphen, sortable: true, align: 'left',
       }, {
-        name: 'accommodation', label: 'Ubytování', align: 'center', field: 'accommodation', format: outputBoolean, sortable: false,
+        name: 'accommodation', label: 'Ubytování', field: 'accommodation', format: outputBoolean, sortable: false, align: 'center',
       }, {
-        name: 'meals', label: 'Jídlo', align: 'center', field: 'meals', format: outputBoolean, sortable: false,
+        name: 'meals', label: 'Jídlo', field: 'meals', format: outputBoolean, sortable: false, align: 'center',
       }, {
-        name: 'dietary_requirements', label: 'Jídlo - omezení', align: 'center', field: (row: EventRegistration) => row.person.dietary_requirement, sortable: true,
+        name: 'dietary_requirements', label: 'Jídlo - omezení', field: (row: EventRegistration) => row.person.dietary_requirement, format: emptyToHyphen, sortable: true, align: 'center',
       }],
       initialPagination: {
         sortBy: 'surname',
