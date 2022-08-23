@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\TeamsRegisteredEvent;
+use App\Services\OldGreyboxService;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Mail;
@@ -10,6 +11,10 @@ use App\Mail\TeamRulesBreachWarning;
 
 class SendTeamRulesBreachWarning
 {
+    /**
+     * @var OldGreyboxService
+     */
+    private $oldGreybox;
 
     /**
      * Create the event listener.
@@ -18,6 +23,7 @@ class SendTeamRulesBreachWarning
      */
     public function __construct()
     {
+        $this->oldGreybox = new OldGreyboxService();
     }
 
     /**
@@ -30,6 +36,8 @@ class SendTeamRulesBreachWarning
     {
         $debaters = $event->debaters;
 
-        Mail::to('info@debatovani.cz')->send(new TeamRulesBreachWarning($debaters));
+        $data = $this->oldGreybox->getPastTeamDebaters(38, 'Ewoci');
+
+        Mail::to('info@debatovani.cz')->send(new TeamRulesBreachWarning($data));
     }
 }
