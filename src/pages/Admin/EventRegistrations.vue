@@ -10,11 +10,13 @@
         :pagination="initialPagination"
         no-data-label="Žádné přihlášky nenalezeny"
         row-key="id"
+        :filter="filterObject"
+        :filter-method="filterTableRows"
       >
         <template v-slot:header-cell-role="props">
           <q-th :props="props" class="filterable-table-heading">
             <q-select borderless v-model="roleFilterModel"
-                      :options="roleFilterOptions"
+                      :options="uniqueRoles"
                       option-value="id"
                       :option-label="item => $tr(item.name)"
                       :label="props.col.label" :dense="true" :options-dense="true"
@@ -59,6 +61,14 @@ import { Event, EventRegistration } from 'src/types/event';
 import { Role } from 'src/types/role';
 import { defineComponent } from 'vue';
 
+const booleanFilterOptions = ['Vše', 'Ano', 'Ne'];
+
+interface FilterObject {
+  role: Role | null;
+  accommodation: typeof booleanFilterOptions[number] | null;
+  meals: (typeof booleanFilterOptions[number]) | null;
+}
+
 export default defineComponent({
   name: 'EventRegistrations',
   computed: {
@@ -75,7 +85,7 @@ export default defineComponent({
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       return <Event> this.$store.getters['events/event'](this.eventId);
     },
-    roleFilterOptions(): Role[] {
+    uniqueRoles(): Role[] {
       if (!this.registrations) {
         return [];
       }
@@ -85,7 +95,22 @@ export default defineComponent({
       const idsOnly = roles.map((item) => item.id);
 
       // Filter out only unique roles
-      return roles.filter((item, index) => idsOnly.indexOf(item.id) === index);
+      return [
+        {
+          id: 0,
+          icon: '',
+          name: {
+            id: 0,
+            cs: 'Vše',
+            en: 'All',
+            created_at: '',
+            updated_at: '',
+          },
+          created_at: '',
+          updated_at: '',
+        },
+        ...roles.filter((item, index) => idsOnly.indexOf(item.id) === index),
+      ];
     },
     eventId(): number {
       const idParam: string | string[] = this.$route.params.id;
@@ -93,6 +118,13 @@ export default defineComponent({
         return 0;
       }
       return parseInt(idParam, 10);
+    },
+    filterObject(): FilterObject {
+      return {
+        role: this.roleFilterModel,
+        accommodation: this.accommodationFilterModel,
+        meals: this.mealsFilterModel,
+      };
     },
   },
   async created() {
@@ -105,7 +137,7 @@ export default defineComponent({
       roleFilterModel: null,
       accommodationFilterModel: null,
       mealsFilterModel: null,
-      booleanFilterOptions: ['Vše', 'Ano', 'Ne'],
+      booleanFilterOptions,
       // TODO - translate labels
       columns: [{
         name: 'surname', label: 'Příjmení', field: (row: EventRegistration) => row.person.surname, sortable: true, align: 'left',
@@ -131,6 +163,15 @@ export default defineComponent({
       },
       // TODO - translate 'Records per page' etc
     };
+  },
+  methods: {
+    filterTableRows: (rows: EventRegistration[], terms: FilterObject): EventRegistration[] => (
+      rows.filter((item) => (
+        (terms.role == null || terms.role.id === 0 || terms.role.id === item.role.id)
+        && (terms.accommodation == null || terms.accommodation === 'Vše' || ((terms.accommodation === 'Ano') === item.accommodation))
+        && (terms.meals == null || terms.meals === 'Vše' || ((terms.meals === 'Ano') === item.meals))
+      ))
+    ),
   },
 });
 </script>
