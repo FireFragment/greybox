@@ -3,7 +3,8 @@ import { RolesState } from 'src/store/roles/state';
 import { Getter } from 'vuex';
 import { State } from 'src/store';
 import { EventFull, EventPrice } from 'src/types/event';
-import { $isPDS, $tr } from 'boot/custom';
+import { $isPDS } from 'boot/custom';
+import { translationMatchesInAnyLanguage } from 'boot/i18n';
 
 export const role = (state: RolesState) => (id: number): Role | undefined => state.roles
   .find((item) => (item.id === id));
@@ -30,4 +31,4 @@ export const eventRoles: Getter<RolesState, State> = (
 
 export const roleFromSlug = (state: RolesState) => (
   slug: string,
-): Role | undefined => state.roles.find((r: Role) => $tr(r.slug, null, false, 'cs') === slug || $tr(r.slug, null, false, 'en') === slug);
+): Role | undefined => state.roles.find((r: Role) => translationMatchesInAnyLanguage(r.slug, slug));

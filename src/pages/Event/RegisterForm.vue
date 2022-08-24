@@ -56,7 +56,7 @@
             :label="$tr('groupModal.submit')"
             color="primary"
             v-close-popup
-            @click="goTo('checkout')"
+            :to="checkoutRoute"
           />
         </q-card-actions>
       </q-card>
@@ -73,6 +73,7 @@ import { Event, EventFull } from 'src/types/event';
 import autofillCard from 'components/Event/AutofillCard.vue';
 import formFields from 'components/Event/FormFields.vue';
 import teamForm from 'components/Event/TeamForm.vue';
+import { translationMatchesInAnyLanguage } from 'boot/i18n';
 
 export default defineComponent({
   name: 'RegisterForm',
@@ -119,6 +120,13 @@ export default defineComponent({
         },
       };
     },
+    checkoutRoute() {
+      return {
+        /* TODO - translate route to use alias ($tr() on paths maybe) */
+        name: 'event-checkout',
+        params: this.$route.params,
+      };
+    }
   },
 
   methods: {
@@ -153,8 +161,8 @@ export default defineComponent({
         autofill,
       });
 
-      if (this.type === 'single') {
-        this.goTo('checkout');
+      if (translationMatchesInAnyLanguage('paths.eventParams.type.individual', this.$route.params.type)) {
+        this.$router.push(this.checkoutRoute);
       } else {
         this.showGroupModal = true;
       }
@@ -191,10 +199,6 @@ export default defineComponent({
         .finally(() => {
           this.$bus.$emit('fullLoader', false);
         });
-    },
-
-    goTo(phase: string) {
-      window.alert(`GO TO ${phase}`);
     },
 
     goToRolePick(): void {

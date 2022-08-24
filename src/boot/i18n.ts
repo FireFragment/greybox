@@ -36,6 +36,13 @@ const i18n = createI18n({
   silentTranslationWarn: !config.debug,
 });
 
+export const translationMatchesInAnyLanguage = (
+  key: string | TranslatedString, comparison: string,
+): boolean => (
+  $tr(key, null, false, 'cs') === comparison
+  || $tr(key, null, false, 'en') === comparison
+);
+
 export const getCurrentRouteTranslatedPath = (): TranslationValue => $tr(
   `paths.${String(Router.currentRoute.value.meta.translationName ?? Router.currentRoute.value.name)}`,
 );
