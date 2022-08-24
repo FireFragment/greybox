@@ -36,7 +36,7 @@ declare module '@vue/runtime-core' {
 }
 
 export const $tr = function (
-  key: string, options: Record<string, unknown> | null = null, usePrefix: boolean = true, lang: Locale | null = null,
+  key: string | TranslatedString, options: Record<string, unknown> | null = null, usePrefix: boolean = true, lang: Locale | null = null,
 ): TranslationValue {
   // Translate object received from APIimport { LocaleMessageValue } from '@intlify/core-base';
   const {
@@ -45,8 +45,7 @@ export const $tr = function (
     tm,
   } = i18n.global;
   if (typeof key === 'object') {
-    // @ts-ignore
-    let activeLocale: cs | en = locale || i18nConfig.default;
+    let activeLocale = <keyof TranslatedString>(locale || i18nConfig.default);
 
     if (!key || !key[activeLocale]) return '';
 
