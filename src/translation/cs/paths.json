@@ -15,7 +15,7 @@
       "volunteer": "dobrovolnik"
     },
     "checkout": "prehled",
-    "registered": "odeslano"
+    "confirmation": "potvrzeni"
   },
   "auth": {
     "login": "prihlaseni",

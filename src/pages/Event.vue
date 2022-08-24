@@ -52,11 +52,9 @@ import autofillCard from '../components/Event/AutofillCard.vue';
 import formFields from '../components/Event/FormFields.vue';
 import pickType from 'components/Event/PickingButtons.vue';
 import teamForm from '../components/Event/TeamForm.vue';
-import checkoutConfirm from '../components/Event/CheckoutConfirm.vue';
 import { mapGetters, mapState } from 'vuex';
 import { defineComponent } from 'vue';
 import HeaderCard from 'components/Event/HeaderCard.vue';
-import { DBkey as CurrentRegistrationsDBKey } from './User/CurrentRegistrations';
 
 export default defineComponent({
   name: 'Event',
@@ -67,7 +65,6 @@ export default defineComponent({
     formFields,
     pickType,
     teamForm,
-    checkoutConfirm,
   },
 
   data() {
@@ -124,104 +121,6 @@ export default defineComponent({
       await this.$store.dispatch('roles/load');
 
       this.$bus.$emit('fullLoader', false)
-    },
-
-    submitTeamForm(people, teamName, teamId) {
-      // Function to call after team ID is known
-      const doneCallback = (id, name) => {
-        for (const index in people) {
-          const person = people[index];
-
-          person.formData.team = id;
-          person.formData.teamName = name;
-
-          this.sendForm(person.formData, person.autofillData);
-        }
-      };
-
-      // Team is autofilled -> call callback right away
-      if (teamId) return doneCallback(teamId, teamName);
-
-      // Team is new -> submit to API first before we can know the ID
-      this.$bus.$emit('fullLoader', true);
-      this.$api({
-        url: 'team',
-        data: {
-          name: teamName,
-          event: this.event.id,
-        },
-      })
-        .then((data) => {
-          doneCallback(data.data.id, teamName);
-        })
-        .finally(() => {
-          this.$bus.$emit('fullLoader', false);
-        });
-    },
-
-    sendForm(data, autofill) {
-      const personData = data;
-
-      const registrationData = {
-        person: null,
-        event: this.event.id,
-        role: this.role === 0 ? 1 : this.role, // if role is team, set as debater
-        accommodation: data.accommodation,
-        meals: data.meals,
-        team: data.team || null,
-        teamName: data.teamName || null,
-        note: data.note,
-      };
-
-      // Move data from person to registration
-      delete personData.team;
-      delete personData.teamName;
-      delete personData.accommodation;
-      delete personData.meals;
-      delete personData.note;
-
-      this.dataToSubmit.push({
-        person: personData,
-        registration: registrationData,
-        autofill,
-      });
-
-      if (/*this.type*/ 'group' === 'single') {
-        this.goTo('checkout');
-      } else {
-        this.showGroupModal = true;
-      }
-    },
-
-    typePicked(key, value) {
-      this[key] = value;
-      this.autofillData = null;
-    },
-
-    debaterSelected(data) {
-      this.autofillData = data;
-    },
-
-    goTo(phase) {
-      if (phase === 'role') {
-        this.role = this.autofillData = this.checkout = null;
-      } else if (phase === 'checkout') this.role = this.checkout = true;
-    },
-
-    // Registration sent
-    checkoutConfirmed(data) {
-      this.confirmData = data;
-
-      // Remove autofill data to include newly added people later
-      this.$db(`autofillDebaters-event${this.event.id}`, this.DB_DEL);
-      this.$db(`autofillTeams-event${this.event.id}`, this.DB_DEL);
-      this.$db(CurrentRegistrationsDBKey, this.DB_DEL);
-    },
-
-    removePerson(index) {
-      this.dataToSubmit.splice(index, 1);
-
-      if (!this.dataToSubmit.length) this.goTo('role');
     },
   },
 

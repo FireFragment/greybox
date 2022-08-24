@@ -73,13 +73,13 @@ const routes: RouteRecordRaw[] = [
             },
             component: () => import('pages/Event/Checkout.vue'),
           }, {
-            path: `${<string>(<Routes>CZroutes.eventParams).registered}`,
-            alias: `${<string>(<Routes>ENroutes.eventParams).registered}`,
-            name: 'event-registered',
+            path: `${<string>(<Routes>CZroutes.eventParams).confirmation}`,
+            alias: `${<string>(<Routes>ENroutes.eventParams).confirmation}`,
+            name: 'event-confirmation',
             meta: {
               translationName: 'event',
             },
-            component: () => import('pages/Event/PickType.vue'),
+            component: () => import('pages/Event/Confirmation.vue'),
           }],
         }],
       },

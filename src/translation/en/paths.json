@@ -15,7 +15,7 @@
       "volunteer": "volunteer"
     },
     "checkout": "checkout",
-    "registered": "registered"
+    "confirmation": "confirmation"
   },
   "auth": {
     "login": "login",

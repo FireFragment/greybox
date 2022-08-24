@@ -140,7 +140,7 @@ export default defineComponent({
       const registrationData = {
         person: null,
         event: this.eventId,
-        role: this.role.id === Infinity ? 1 : this.role, // if role is team, set as debater
+        role: this.role.id === Infinity ? 1 : this.role.id, // if role is team, set as debater
         accommodation: data.accommodation,
         meals: data.meals,
         team: data.team || null,
