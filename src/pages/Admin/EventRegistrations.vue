@@ -69,6 +69,13 @@
             </q-select>
           </q-th>
         </template>
+        <template v-slot:body-cell-role="props">
+          <q-td :props="props">
+          <!-- add organizer to roles -->
+          <q-select borderless v-model="participantRole" :options="applicableRoles" option-value="id" :option-label="item => $tr(item.name, null, false)">
+          </q-select>
+          </q-td>
+        </template>
         <template v-slot:body-cell-note="props">
           <q-td :props="props" class="small-overflow-column">
             {{ props.value }}
@@ -115,23 +122,53 @@ export default defineComponent({
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       return <Event> this.$store.getters['events/event'](this.eventId);
     },
+    roles(): Role[] {
+      const roles: Role[] = (Object.values(this.registrations))
+        .map((item) => item.role);
+      const idsOnly = roles.map((item) => item.id);
+
+      return [
+        ...roles.filter((item, index) => idsOnly.indexOf(item.id) === index),
+      ];
+    }
+    applicableRoles(): Role[] {
+      if (!this.registrations) {
+        return [];
+      }
+
+      let itemOrganizer = {
+          id: 4,
+          icon: '',
+          name: {
+            id: 4,
+            created_at: '',
+            updated_at: '',
+          },
+          created_at: '',
+          updated_at: '',
+        };
+        // 'Organizer' in different languages
+        for (const lang in i18nConfig.languages) {
+          itemOrganizer.name[lang] = this.$tr("tournament.types.organizer", null, false, lang);
+        }
+
+        return [
+          itemOrganizer,
+          ...roles()
+        ]
+
+    },
     uniqueRoles(): Role[] {
       if (!this.registrations) {
         return [];
       }
 
-      const roles: Role[] = (Object.values(this.registrations))
-        .map((item) => item.role);
-      const idsOnly = roles.map((item) => item.id);
-
       // Filter out only unique roles
-      let returnObj = {
+      let itemAll = {
           id: 0,
           icon: '',
           name: {
             id: 0,
-            cs: 'Vše',
-            en: 'All',
             created_at: '',
             updated_at: '',
           },
@@ -140,12 +177,11 @@ export default defineComponent({
         };
         // 'All' keyword in different languages
         for (const lang in i18nConfig.languages) {
-          returnObj.name[lang] = this.$tr("all", null, true, lang);
+          itemAll.name[lang] = this.$tr("all", null, true, lang);
         }
-
       return [
-        returnObj,
-        ...roles.filter((item, index) => idsOnly.indexOf(item.id) === index),
+        itemAll,
+        ...roles()
       ];
     },
     eventId(): number {

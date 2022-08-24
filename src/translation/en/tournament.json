@@ -8,7 +8,8 @@
     "individual": "Individual",
     "group": "Group",
     "team": "Team",
-    "debater": "Debater"
+    "debater": "Debater",
+    "organizer": "Organizer"
   },
   "errors": {
     "deadline": "This tournament is already past deadline, registrations are not accepted.",
