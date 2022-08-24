@@ -94,7 +94,7 @@ export default defineComponent({
   props: HeaderCardProps,
   data(): TranslationPrefixData {
     return {
-      translationPrefix: 'tournament.',
+      translationPrefix: 'event.',
     };
   },
   methods: {

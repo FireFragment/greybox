@@ -41,7 +41,123 @@
       </div>
     </div>
 
-    <router-view v-else />
+    <!-- Individual or group -->
+    <pick-type
+      v-else-if="!type"
+      name="type"
+      :values="[
+        {
+          label: 'event.types.individual',
+          icon: 'user',
+          color: 'btn-2',
+          value: 'single'
+        },
+        {
+          label: 'event.types.group',
+          icon: 'users',
+          color: 'btn-3',
+          value: 'group'
+        }
+      ]"
+      @selected="typePicked"
+    />
+
+    <!-- Role -->
+    <template v-else-if="role === null">
+      <div class="picking-role">
+        <pick-type
+          name="role"
+          :values="roles"
+          @selected="typePicked"
+          :hideFirst="type === 'single' && !dataToSubmit.length"
+        />
+        <q-btn
+          v-if="dataToSubmit.length"
+          :label="$tr('buttons.goToCheckout')"
+          type="reset"
+          color="blue-9"
+          class="q-mt-xl float-right"
+          @click="goTo('checkout')"
+        />
+      </div>
+    </template>
+
+    <!-- Event form -->
+    <div class="row q-col-gutter-md reverse" v-else-if="!checkout">
+      <div class="col-12 col-sm-4 col-md-5 autofill-wrapper">
+        <autofill-card @person-selected="debaterSelected" :eventId="event.id" />
+      </div>
+      <div class="col-12 col-sm-8 col-md-7">
+        <form-fields
+          v-if="role !== 0"
+          @submit="sendForm"
+          :autofill="autofillData"
+          :accommodationType="accommodationType"
+          :mealType="mealType"
+          :possibleDiets="possibleDiets"
+          :role="role"
+          :requireEmail="event.email_required"
+          @goToRolePick="goTo('role')"
+        />
+        <team-form
+          v-else
+          @submit="submitTeamForm"
+          @goToRolePick="goTo('role')"
+          @autofillPerson="debaterSelected"
+          :autofill="autofillData"
+          :accommodationType="accommodationType"
+          :mealType="mealType"
+          :possibleDiets="possibleDiets"
+          :eventId="event.id"
+          :requireEmail="event.email_required"
+        ></team-form>
+      </div>
+    </div>
+
+    <!-- Checkout -->
+    <checkout
+      v-else-if="!confirmData"
+      :form-data="dataToSubmit"
+      :possible-diets="possibleDiets"
+      @confirm="checkoutConfirmed"
+      @goToRolePick="goTo('role')"
+      @removePerson="removePerson"
+    />
+    <checkout-confirm v-else :data="confirmData"></checkout-confirm>
+
+    <!-- Success -->
+    <q-dialog v-model="showGroupModal" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <div class="text-h6">{{ $tr('groupModal.title') }}</div>
+        </q-card-section>
+        <q-card-section class="row items-center text-center">
+          <q-avatar
+            icon="fas fa-check"
+            class="margin-center"
+            color="primary"
+            text-color="white"
+          />
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            :label="$tr('groupModal.anotherPerson')"
+            color="primary"
+            v-close-popup
+            @click="goTo('role')"
+          />
+          <q-btn
+            flat
+            :label="$tr('groupModal.submit')"
+            color="primary"
+            v-close-popup
+            @click="checkout = true"
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 

@@ -1,66 +1,5 @@
 <template>
   <q-page padding v-if="event" class="page-event">
-    <!-- Header card -->
-    <div class="text-center">
-      <!--
-      <q-btn color="white" text-color="black" class="float-left q-mb-md" @click="goBack"
-             v-if="type">
-        <q-icon size="2em" name="fas fa-arrow-left" />
-      </q-btn>
-      -->
-      <q-card
-        class="inline-block event-header"
-        :class="{ smaller: role || role === 0 }"
-      >
-        <h1 class="text-center text-h4">
-          {{ $tr('title') }} {{ $tr(event.name) }}
-        </h1>
-        <div
-          class="text-center close-paragraphs q-p-1"
-          v-if="!role && role !== 0"
-        >
-          <p>
-            <q-icon name="far fa-calendar-alt" class="text-primary" />
-            <template
-              v-if="event.beginning.substr(0, 4) !== event.end.substr(0, 4)"
-            >
-              <!-- Year is different -->
-              {{ getDate(event.beginning, 'D. M. YYYY') }} - {{ getDate(event.end, 'D. M. YYYY') }}
-            </template>
-            <template
-              v-else-if="
-                event.beginning.substr(0, 7) !== event.end.substr(0, 7)
-              "
-            >
-              <!-- Month is different -->
-              {{ getDate(event.beginning, 'D. M.') }} - {{ getDate(event.end, 'D. M. YYYY') }}
-            </template>
-            <template v-else-if="event.beginning !== event.end">
-              <!-- Just day is different-->
-              {{ getDate(event.beginning, 'D. M. YYYY') }}
-              -
-            </template
-            >
-            {{ getDate(event.end, 'D. M. YYYY') }}
-            <!-- else - One day event -->
-          </p>
-          <p>
-            <q-icon name="fas fa-landmark" class="text-primary" />
-            {{ event.place }}
-          </p>
-          <p>
-            <q-icon name="far fa-bell" class="text-negative" />
-            {{ $tr('deadline') }}:
-            {{ getDate(event.soft_deadline, 'D. M. YYYY H:mm') }}
-          </p>
-          <p v-if="event.note">
-            <q-icon name="fas fa-info" class="text-primary" />
-            {{ $tr(event.note) }}
-          </p>
-        </div>
-      </q-card>
-    </div>
-
     <!-- After deadline -->
     <div v-if="event.hard_deadline < now" class="row justify-center">
       <div class="col-12 col-md-4">
@@ -129,7 +68,7 @@ import pickType from '../../components/Event/PickType';
 import { date } from 'quasar';
 
 export default {
-  name: 'Event',
+  name: 'PickTypePage',
 
   components: {
     pickType,
