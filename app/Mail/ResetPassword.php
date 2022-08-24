@@ -11,16 +11,18 @@ class ResetPassword extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $data;
+    private $token;
+    private $url;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($data)
+    public function __construct(string $token, bool $pds)
     {
-        $this->data = $data;
+        $this->token = $token;
+        $this->url = ($pds) ? 'https://debatovani.cz/pds/registration/' : 'https://debatovani.cz/greybox/registrace/';
     }
 
     /**
@@ -34,7 +36,8 @@ class ResetPassword extends Mailable
             ->subject(Lang::get('messages.password.reset.subject'))
             ->view('email.resetpassword')
             ->with([
-                'data' => $this->data
+                'token' => $this->token,
+                'url' => $this->url
             ]);
     }
 }

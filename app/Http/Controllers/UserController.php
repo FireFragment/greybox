@@ -232,13 +232,13 @@ class UserController extends Controller
                 $recovery_token = sha1($user->id.time());
                 DB::insert('insert into password_resets (email, token, created_at) values (?, ?, now())', array($username, $recovery_token));
 
+                $pds = $request->has('pds') ? $request->input('locale') : false;
+
+                $locale = $request->has('locale') ? $request->input('locale') : 'en';
+                app('translator')->setLocale($locale);
+
                 try {
-                    $mail_data = array('token' => $recovery_token);
-
-                    // TODO: vyřešit jak nastavit locale pouze pro email / případně jak používat locale vůbec
-                    app('translator')->setLocale($user->preferredLocale());
-
-                    Mail::to($username)->bcc('greybox@debatovani.cz')->send(new ResetPassword($mail_data));
+                    Mail::to($username)->bcc('greybox@debatovani.cz')->send(new ResetPassword($recovery_token, $pds));
                     return response()->json(['message' => 'E-mail sent.'], 200);
                 } catch (\Exception $e) {
                     return response()->json(['message' => $e->getMessage()], 500);
