@@ -2,10 +2,12 @@
   <q-page padding v-if="event" class="page-event">
     <!-- Header card -->
     <div class="text-center">
+      <!--
       <q-btn color="white" text-color="black" class="float-left q-mb-md" @click="goBack"
              v-if="type">
         <q-icon size="2em" name="fas fa-arrow-left" />
       </q-btn>
+      -->
       <q-card
         class="inline-block event-header"
         :class="{ smaller: role || role === 0 }"
@@ -243,8 +245,8 @@ export default {
 
   beforeUnmount() {
     // Invalidate autofill cache
-    this.$db(`autofillDebaters-event${this.event.id}`, this.DB_DEL);
-    this.$db(`autofillTeams-event${this.event.id}`, this.DB_DEL);
+    this.$db(`autofillDebaters-event${this.event?.id}`, this.DB_DEL);
+    this.$db(`autofillTeams-event${this.event?.id}`, this.DB_DEL);
   },
 
   methods: {

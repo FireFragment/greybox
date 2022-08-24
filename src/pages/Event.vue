@@ -171,10 +171,10 @@ import checkout from '../components/Event/Checkout.vue';
 import teamForm from '../components/Event/TeamForm.vue';
 import checkoutConfirm from '../components/Event/CheckoutConfirm.vue';
 import { mapGetters, mapState } from 'vuex';
-import { Role } from 'src/store/roles/state';
 import { defineComponent } from 'vue';
 import HeaderCard from 'components/Event/HeaderCard.vue';
 import { DBkey as CurrentRegistrationsDBKey } from './User/CurrentRegistrations';
+import { Role } from 'src/types/role';
 
 export default defineComponent({
   name: 'Event',

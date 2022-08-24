@@ -1,5 +1,11 @@
 <template>
   <div class="text-center">
+    <!--
+    <q-btn color="white" text-color="black" class="float-left q-mb-md go-back-button"
+      @click="goBack" v-if="type">
+      <q-icon size="2em" name="fas fa-arrow-left " />
+    </q-btn>
+    -->
     <q-card
       class="inline-block event-header"
       :class="{ smaller }"

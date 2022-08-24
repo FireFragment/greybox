@@ -1,14 +1,16 @@
 import { RouteRecordRaw, RouterView } from 'vue-router';
 import { adminMiddleware, loggedInMiddleware, notLoggedInMiddleware } from './middlewares';
 
+interface Routes {
+  [key: string]: string | Routes
+}
+
 // Translations
 import CZroutes from '../translation/cs/paths.json';
 import ENroutes from '../translation/en/paths.json';
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-const eventTypes = (routes: any) => Object.values(routes.eventParams.type).join('|');
-// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-const eventRoles = (routes: any) => Object.values(routes.eventParams.role).join('|');
+const eventTypes = (routes: Routes) => Object.values((<Routes>routes.eventParams).type).join('|');
+const eventRoles = (routes: Routes) => Object.values((<Routes>routes.eventParams).role).join('|');
 
 const routes: RouteRecordRaw[] = [
   {
