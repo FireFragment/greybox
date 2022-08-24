@@ -4,7 +4,7 @@
     <picking-button
       v-for="btn in options"
       v-bind:key="btn.value"
-      :label="`event.${name}s.${btn.value}`"
+      :label="`event.${name}s.${btn.label ?? btn.value}`"
       :icon="btn.icon"
       :color="btn.color"
       :auto-size="options.length > 4"
@@ -23,11 +23,22 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import type { PropType } from 'vue';
 import pickingButton from './PickingButton.vue';
+
+export interface PickingButtonOptions {
+  icon: string;
+  color: string;
+  value: string | number;
+  label?: string;
+}
 
 export default defineComponent({
   props: {
-    values: [Array, Object],
+    values: {
+      type: Array as PropType<PickingButtonOptions[]>,
+      required: true,
+    },
     name: {
       type: String,
       required: true,
@@ -42,10 +53,10 @@ export default defineComponent({
     pickingButton,
   },
   computed: {
-    options() {
+    options(): PickingButtonOptions[] {
       return Object.values(this.values).filter((item) => !this.hideFirst || item.value !== 0);
     },
   },
-  name: 'PickType',
+  name: 'PickingButtons',
 });
 </script>

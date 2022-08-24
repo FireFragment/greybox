@@ -166,7 +166,7 @@
 // @ts-nocheck
 import autofillCard from '../components/Event/AutofillCard.vue';
 import formFields from '../components/Event/FormFields.vue';
-import pickType from '../components/Event/PickType.vue';
+import pickType from 'components/Event/PickingButtons.vue';
 import checkout from '../components/Event/Checkout.vue';
 import teamForm from '../components/Event/TeamForm.vue';
 import checkoutConfirm from '../components/Event/CheckoutConfirm.vue';

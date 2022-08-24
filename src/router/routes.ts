@@ -52,7 +52,7 @@ const routes: RouteRecordRaw[] = [
           meta: {
             translationName: 'event',
           },
-          component: () => import('pages/Event/Debater.vue'),
+          component: () => import('pages/Event/PickType.vue'),
           children: [
             {
               path: `:role(${eventRoles(CZroutes)})`,
@@ -61,7 +61,7 @@ const routes: RouteRecordRaw[] = [
               meta: {
                 translationName: 'event',
               },
-              component: () => import('pages/Event/Debater.vue'),
+              component: () => import('pages/Event/PickType.vue'),
             }, {
               path: `${<string>(<Routes>CZroutes.eventParams).checkout}`,
               alias: `${<string>(<Routes>ENroutes.eventParams).checkout}`,
@@ -69,7 +69,7 @@ const routes: RouteRecordRaw[] = [
               meta: {
                 translationName: 'event',
               },
-              component: () => import('pages/Event/Debater.vue'),
+              component: () => import('pages/Event/PickType.vue'),
             }, {
               path: `${<string>(<Routes>CZroutes.eventParams).registered}`,
               alias: `${<string>(<Routes>ENroutes.eventParams).registered}`,
@@ -77,7 +77,7 @@ const routes: RouteRecordRaw[] = [
               meta: {
                 translationName: 'event',
               },
-              component: () => import('pages/Event/Debater.vue'),
+              component: () => import('pages/Event/PickType.vue'),
             },
           ],
         }],
