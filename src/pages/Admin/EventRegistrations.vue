@@ -69,6 +69,12 @@
             </q-select>
           </q-th>
         </template>
+        <template v-slot:body-cell-role="props">
+          <q-td :props="props">
+          <q-select borderless v-model="participantRole" :options="applicableRoles" option-value="id" :option-label="item => $tr(item.name, null, false)">
+          </q-select>
+          </q-td>
+        </template>
         <template v-slot:body-cell-note="props">
           <q-td :props="props" class="small-overflow-column">
             {{ props.value }}
@@ -106,6 +112,7 @@ export default defineComponent({
       'eventRegistrations',
     ]),
     registrations(): EventRegistration[] {
+      console.log(this.$store.getters['eventsRegistrations/eventRegistrations'](this.eventId));
       // eslint-disable-next-line max-len
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       return <EventRegistration[]> this.$store.getters['eventsRegistrations/eventRegistrations'](this.eventId);
@@ -114,6 +121,36 @@ export default defineComponent({
       // eslint-disable-next-line max-len
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       return <Event> this.$store.getters['events/event'](this.eventId);
+    },
+    applicableRoles(): Role[] {
+      if (!this.registrations) {
+        return [];
+      }
+
+      const roles: Role[] = (Object.values(this.registrations))
+        .map((item) => item.role);
+      const idsOnly = roles.map((item) => item.id);
+
+      const itemOrganizer = {
+        id: 4,
+        icon: '',
+        name: {
+          id: 4,
+          created_at: '',
+          updated_at: '',
+        },
+        created_at: '',
+        updated_at: '',
+      };
+        // 'Organizer' in different languages
+      for (const lang in i18nConfig.languages) {
+        itemOrganizer.name[lang] = this.$tr('tournament.types.organizer', null, false, lang);
+      }
+
+      return [
+        ...roles.filter((item, index) => idsOnly.indexOf(item.id) === index),
+        itemOrganizer
+      ];
     },
     uniqueRoles(): Role[] {
       if (!this.registrations) {
@@ -125,13 +162,11 @@ export default defineComponent({
       const idsOnly = roles.map((item) => item.id);
 
       // Filter out only unique roles
-      const returnObj = {
+      const itemAll = {
         id: 0,
         icon: '',
         name: {
           id: 0,
-          cs: 'Vše',
-          en: 'All',
           created_at: '',
           updated_at: '',
         },
@@ -144,11 +179,10 @@ export default defineComponent({
       };
         // 'All' keyword in different languages
       for (const lang in i18nConfig.languages) {
-        returnObj.name[lang] = this.$tr('all', null, true, lang);
+        itemAll.name[lang] = this.$tr('all', null, true, lang);
       }
-
       return [
-        returnObj,
+        itemAll,
         ...roles.filter((item, index) => idsOnly.indexOf(item.id) === index),
       ];
     },
@@ -178,6 +212,7 @@ export default defineComponent({
       roleFilterModel: null,
       accommodationFilterModel: null,
       mealsFilterModel: null,
+      participantRole: null,
       booleanFilterOptions,
       columns: [{
         name: 'surname', label: this.$tr('admin.eventRegistrations.labels.surname'), field: (row: EventRegistration) => row.person.surname, sortable: true, align: 'left',
