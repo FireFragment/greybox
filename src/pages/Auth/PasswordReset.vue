@@ -58,6 +58,7 @@ export default {
         sendToken: false,
         data: {
           username: this.email,
+          locale: this.$auth.user().preferred_locale,
         },
         alerts: false,
         method: 'post',
