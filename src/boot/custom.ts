@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { TranslateResult, VueMessageType } from 'vue-i18n';
+import { Locale, TranslateResult, VueMessageType } from 'vue-i18n';
 import { LocaleMessageValue } from '@intlify/core-base';
 
 const Bugsnag = require('@bugsnag/js');
@@ -34,7 +34,9 @@ declare module '@vue/runtime-core' {
   }
 }
 
-export const $tr = function (key: string, options: Record<string, unknown> | null = null, usePrefix: boolean = true): TranslationValue {
+export const $tr = function (
+  key: string, options: Record<string, unknown> | null = null, usePrefix: boolean = true, lang: Locale | null = null,
+): TranslationValue {
   // Translate object received from APIimport { LocaleMessageValue } from '@intlify/core-base';
   const {
     locale,
@@ -59,6 +61,9 @@ export const $tr = function (key: string, options: Record<string, unknown> | nul
 
   if (options !== null) {
     return t(key, options);
+  }
+  if (lang !== null) {
+    return t(key, lang);
   }
   return tm(key);
 };

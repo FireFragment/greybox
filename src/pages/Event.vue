@@ -77,7 +77,6 @@ export default defineComponent({
     return {
       translationPrefix: 'event.',
       event: null,
-      type: null, // single/group
       role: null,
       roles: {},
       checkout: false,
@@ -134,35 +133,10 @@ export default defineComponent({
 
       await this.$store.dispatch('roles/load');
 
-      // Check if roles are present in event's prices
-      this.allRoles.forEach((role: Role) => {
-        let isPresent = event.prices.find((price) => price.role.id === role.id);
-        if (!isPresent) {
-          return;
-        }
+      this.$bus.$emit('fullLoader', false)
 
-        // Debater role is present -> push team role
-        if (role.id === 1) {
-          this.roles[0] = {
-            value: 0,
-            label: 'event.types.team',
-            icon: 'users',
-          };
-        }
-
-        // Individual debater should be hidden on PDS
-        if (role.id === 1 && this.$isPDS) {
-          return;
-        }
-
-        this.roles[role.id] = {
-          value: role.id,
-          label: role.name,
-          icon: role.icon,
-        };
-      });
-
-      this.$bus.$emit('fullLoader', false);
+      // TODO - hodit do pick roles a přemapovat tam
+      // console.log(this.$store.getters['roles/eventRoles'](eventId));
     },
 
     submitTeamForm(people, teamName, teamId) {
@@ -225,7 +199,7 @@ export default defineComponent({
         autofill,
       });
 
-      if (this.type === 'single') {
+      if (/*this.type*/ 'group' === 'single') {
         this.goTo('checkout');
       } else {
         this.showGroupModal = true;
