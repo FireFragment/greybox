@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\TeamRepository;
 use App\Team;
 use Illuminate\Http\Request;
 
@@ -47,11 +48,12 @@ class TeamController extends Controller
             'name' => 'required'
         ]);
 
+        $request->merge(['registered_by' => \Auth::user()->id]);
+
+        if (null !== $duplicate = TeamRepository::findDuplicate($request)) return response()->json($duplicate, 200);
+
         try {
-            $team = Team::create([
-                'name' => $request->input('name'),
-                'registered_by' => \Auth::user()->id // to be checked
-            ]);
+            $team = Team::create($request->all());
             return response()->json($team, 201);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
