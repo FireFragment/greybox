@@ -88,7 +88,6 @@ export default defineComponent({
     return {
       translationPrefix: 'event.',
       autofillData: null,
-      dataToSubmit: [],
       showGroupModal: false,
     };
   },
@@ -138,7 +137,7 @@ export default defineComponent({
       delete personData.meals;
       delete personData.note;
 
-      this.dataToSubmit.push({
+      this.$store.commit('eventRegistrationForm/addEventRegistration', {
         person: personData,
         registration: registrationData,
         autofill,
