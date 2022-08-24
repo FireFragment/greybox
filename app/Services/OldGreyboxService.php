@@ -20,24 +20,44 @@ class OldGreyboxService
     }
 
     /**
+     * @param string $url
+     * @return array|false
+     */
+    private function getDataFromOldGreybox(string $url)
+    {
+        try
+        {
+            $gb = file_get_contents($url);
+            return json_decode($gb);
+        }
+        catch (\Exception $e)
+        {
+            return false;
+        }
+    }
+
+    /**
      * @param int $competitionId
      * @param string $teamName
-     * @return array
+     * @return array|false
      */
-    public function getPastTeamDebaters(int $competitionId, string $teamName): array
+    public function getPastTeamDebaters(int $competitionId, string $teamName)
     {
         $url = $this->baseUrl;
         $url .= '&past_team_debaters=1';
         $url .= '&competition_id=' . $competitionId;
         $url .= '&team_name=' . $teamName;
 
-        // TODO: obalit try-catch blokem
-        $gb = file_get_contents($url);
-
-        return(json_decode($gb));
+        return $this->getDataFromOldGreybox($url);
     }
 
-    public function getPastSharedTeamsInTheSameTournament(int $competitionId, int $person1Id, int $person2Id): array
+    /**
+     * @param int $competitionId
+     * @param int $person1Id
+     * @param int $person2Id
+     * @return array|false
+     */
+    public function getPastSharedTeamsInTheSameTournament(int $competitionId, int $person1Id, int $person2Id)
     {
         $url = $this->baseUrl;
         $url .= '&past_shared_teams=1';
@@ -45,10 +65,7 @@ class OldGreyboxService
         $url .= '&person1_id=' . $person1Id;
         $url .= '&person2_id=' . $person2Id;
 
-        // TODO: obalit try-catch blokem
-        $gb = file_get_contents($url);
-
-        return(json_decode($gb));
+        return $this->getDataFromOldGreybox($url);
     }
 
 }

@@ -11,14 +11,10 @@ use App\Mail\TeamRulesBreachWarning;
 
 class SendTeamRulesBreachWarning
 {
-    /**
-     * @var OldGreyboxService
-     */
+    /** @var OldGreyboxService */
     private $oldGreybox;
 
-    /**
-     * @var string[]
-     */
+    /** @var string[] */
     private $warnings = array();
 
     /**
@@ -46,6 +42,13 @@ class SendTeamRulesBreachWarning
             $this->addWarningsAboutPastSharedTeams($members, $event->competitionId, $teamName);
 
             $pastTeamDebatersIds = $this->oldGreybox->getPastTeamDebaters($event->competitionId, $teamName);
+
+            // old greybox unreachable
+            if (false === $pastTeamDebatersIds)
+            {
+                $this->warnings[] = 'Pro tým ' . $teamName . ' nebylo možné zkontrolovat pravidla podle odstavců 3.1 a 3.2.';
+                continue;
+            }
 
             if (!$this->teamRegistrationContainsPastTeamDebaters($pastTeamDebatersIds, $members))
             {
@@ -77,8 +80,14 @@ class SendTeamRulesBreachWarning
             for ($j = $i + 1; $j < $teamRegisteredDebatersCount; $j++)
             {
                 $sharedTeams = $this->oldGreybox->getPastSharedTeamsInTheSameTournament($competitionId, $teamRegisteredDebaters[$i]->old_greybox_id, $teamRegisteredDebaters[$j]->old_greybox_id);
-                $person1 = $teamRegisteredDebaters[$i]->name . ' ' . $teamRegisteredDebaters[$i]->surname;
-                $person2 = $teamRegisteredDebaters[$j]->name . ' ' . $teamRegisteredDebaters[$j]->surname;
+                $debaters = [$teamRegisteredDebaters[$i], $teamRegisteredDebaters[$j]];
+
+                // old greybox unreachable
+                if (false === $sharedTeams)
+                {
+                    $this->warnings[] = 'Pro debatéry ' . $this->listDebaters($debaters) . ' nebylo možné zkontrolovat pravidla podle odstavce 2.';
+                    continue;
+                }
 
                 // These two people were not together in a team before
                 if (empty($sharedTeams))
@@ -89,7 +98,7 @@ class SendTeamRulesBreachWarning
                 // These two people were in multiple teams together -> something went wrong
                 if (1 !== count($sharedTeams))
                 {
-                    $this->warnings[] = 'Debatéři ' . $person1  . ' a ' . $person2 . ' spolu debatovali ve více týmech ' . implode(', ', $sharedTeams) . ' a teď jsou přihlášeni za tým ' . $teamName . '.';
+                    $this->warnings[] = 'Debatéři ' . $this->listDebaters($debaters) . ' spolu debatovali ve více týmech ' . implode(', ', $sharedTeams) . ' a teď jsou přihlášeni za tým ' . $teamName . '.';
                     continue;
                 }
 
@@ -99,7 +108,7 @@ class SendTeamRulesBreachWarning
                 }
 
                 // These two people were together in a different team before
-                $this->warnings[] = 'Lidi ' . $person1  . ' a ' . $person2 . ' spolu debatovali v týmu ' . $sharedTeams[0] . ', ale teď jsou přihlášeni za tým ' . $teamName . '.';
+                $this->warnings[] = 'Lidi ' . $this->listDebaters($debaters) . ' spolu debatovali v týmu ' . $sharedTeams[0] . ', ale teď jsou přihlášeni za tým ' . $teamName . '.';
             }
         }
     }
