@@ -38,6 +38,7 @@ export default defineComponent({
         icon: role.icon,
         value: role.id,
         label: role.name,
+        routeParam: String(this.$tr(role.slug)),
       }));
     },
   },

@@ -2,18 +2,18 @@
   <div class="row justify-center picking-buttons items-stretch q-mt-lg">
     <div class="col" v-if="values.length < 4"></div>
     <picking-button
-      v-for="btn in options"
+      v-for="btn in values"
       v-bind:key="btn.value"
       :label="btn.label ? btn.label : `event.${name}s.${btn.value}`"
       :icon="btn.icon"
       :color="btn.color"
-      :auto-size="options.length > 4"
+      :auto-size="values.length > 4"
       :to="{
         /* TODO - translate route to use alias ($tr() on paths maybe) */
         name: this.nextRoute,
         params: {
           ...this.$route.params,
-          [this.name]: $tr(`paths.eventParams.${name}.${btn.value}`),
+          [this.name]: btn.routeParam ?? $tr(`paths.eventParams.${name}.${btn.value}`),
         }
       }"
     />
@@ -32,6 +32,7 @@ export interface PickingButtonOptions {
   color?: string;
   value: string | number;
   label?: TranslatedString;
+  routeParam?: string;
 }
 
 export default defineComponent({
@@ -48,15 +49,9 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    hideFirst: Boolean,
   },
   components: {
     pickingButton,
-  },
-  computed: {
-    options(): PickingButtonOptions[] {
-      return Object.values(this.values).filter((item) => !this.hideFirst || item.value !== 0);
-    },
   },
   name: 'PickingButtons',
 });

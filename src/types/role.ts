@@ -1,7 +1,7 @@
 import { DateTime } from 'src/types/general';
-import { TranslatedDatabaseString } from 'boot/i18n';
+import { TranslatedDatabaseString, TranslatedString } from 'boot/i18n';
 
-export interface Role {
+export interface RoleRaw {
   // eslint-disable-next-line camelcase
   created_at: DateTime;
   icon: string;
@@ -9,4 +9,8 @@ export interface Role {
   name: TranslatedDatabaseString;
   // eslint-disable-next-line camelcase
   updated_at: DateTime;
+}
+
+export interface Role extends RoleRaw {
+  slug: TranslatedString;
 }

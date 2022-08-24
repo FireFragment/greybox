@@ -13,7 +13,6 @@ const CZroutes: Routes = <Routes>CZroutesJson;
 const ENroutes: Routes = <Routes>ENroutesJson;
 
 const eventTypes = (routes: Routes) => Object.values((<Routes>routes.eventParams).type).join('|');
-const eventRoles = (routes: Routes) => Object.values((<Routes>routes.eventParams).role).join('|');
 
 const routes: RouteRecordRaw[] = [
   {
@@ -55,8 +54,8 @@ const routes: RouteRecordRaw[] = [
           component: () => import('pages/Event/PickRole.vue'),
           children: [
             {
-              path: `:role(${eventRoles(CZroutes)})`,
-              alias: `:role(${eventRoles(ENroutes)})`,
+              path: ':role',
+              alias: ':role',
               name: 'event-register-form',
               meta: {
                 translationName: 'event',
