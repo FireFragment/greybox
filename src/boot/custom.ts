@@ -14,7 +14,7 @@ import i18nConfig from '../translation/config';
 import store, { State } from '../store';
 import { Store } from 'vuex';
 
-type TranslationValue = TranslateResult | LocaleMessageValue<VueMessageType> | {};
+export type TranslationValue = TranslateResult | LocaleMessageValue<VueMessageType> | {};
 
 export type InfiniteObject = {
   [key: string]: string | number | undefined | null | InfiniteObject

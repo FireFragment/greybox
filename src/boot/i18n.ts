@@ -1,7 +1,9 @@
 import { boot } from 'quasar/wrappers';
 import { createI18n } from 'vue-i18n';
 import { DateTime } from 'src/types/general';
-import { $isPDS, $tr, $path } from 'boot/custom';
+import {
+  $isPDS, $tr, $path, TranslationValue,
+} from 'boot/custom';
 import { Router } from 'src/router';
 import { user } from 'src/boot/auth';
 import config from '../config';
@@ -34,9 +36,11 @@ const i18n = createI18n({
   silentTranslationWarn: !config.debug,
 });
 
-export const switchLocale = async (locale: string): Promise<void> => {
-  if (i18n.global.locale === locale) return;
+export const getCurrentRouteTranslatedPath = (): TranslationValue => $tr(
+  `paths.${String(Router.currentRoute.value.meta.translationName ?? Router.currentRoute.value.name)}`,
+);
 
+export const switchLocale = async (locale: string): Promise<void> => {
   // update preference
   const userObj = user();
   if (userObj) {
@@ -52,19 +56,15 @@ export const switchLocale = async (locale: string): Promise<void> => {
   }
 
   // current URL
-  const originalPath = $tr(
-    `paths.${String(Router.currentRoute.value.name)}`,
-  );
+  const originalPath = getCurrentRouteTranslatedPath();
 
   // change locale
   i18n.global.locale = locale;
 
   // new URL
-  // console.log(Router);
-  const newPath = $tr(`paths.${String(Router.currentRoute.value.name)}`);
+  const newPath = getCurrentRouteTranslatedPath();
 
   // get URL from router
-  // console.log(Router);
   const url = { ...Router.currentRoute.value };
 
   // Redirect here before route switch to avoid redundant redirect error

@@ -47,21 +47,24 @@ const routes: RouteRecordRaw[] = [
         path: CZroutes.admin.events,
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         alias: ENroutes.admin.events,
-        name: 'admin.events',
-        component: () => import('pages/Admin/Events.vue'),
+        component: () => import('components/EmptyNestedRouteParent.vue'),
         beforeEnter: adminMiddleware,
+        children: [{
+          path: '',
+          alias: '',
+          name: 'admin.events',
+          component: () => import('pages/Admin/Events.vue'),
+        }, {
+          // TODO - check if has admin access to this specific event
+          path: ':id-:slug',
+          alias: ':id-:slug',
+          name: 'admin.eventRegistrations',
+          meta: {
+            translationName: 'admin.events',
+          },
+          component: () => import('pages/Admin/EventRegistrations.vue'),
+        }],
       },
-      {
-        // TODO - check if has admin access to this event
-        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-        path: `${CZroutes.admin.events}/:id-:slug`,
-        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-        alias: `${ENroutes.admin.events}/:id-:slug`,
-        name: 'admin.eventRegistrations',
-        component: () => import('pages/Admin/EventRegistrations.vue'),
-        beforeEnter: adminMiddleware,
-      },
-
       // Auth
       {
         path: CZroutes.auth.login,
