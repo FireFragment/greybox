@@ -189,7 +189,6 @@ export default defineComponent({
         descending: false,
         rowsPerPage: 20,
       },
-      // TODO - translate 'Records per page' etc
     };
   },
   methods: {
