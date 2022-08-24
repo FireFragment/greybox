@@ -9,17 +9,14 @@ import { Router } from 'src/router';
 import { user } from 'src/boot/auth';
 import config from '../config';
 // Import localization data from JSONs
-import i18nConfig from '../translation/config';
+import i18nConfig, { Lang, langs } from '../translation/config';
 import { apiCall } from './api';
 
 export interface TranslationPrefixData {
   translationPrefix: string
 }
 
-export interface TranslatedString {
-  cs: string;
-  en: string;
-}
+export type TranslatedString = Record<Lang, string>;
 
 export interface TranslatedDatabaseString extends TranslatedString {
   id: number;
@@ -37,6 +34,12 @@ const i18n = createI18n({
   silentTranslationWarn: !config.debug,
 });
 
+export const getAllTranslations = (key: string): TranslatedString => (
+  <TranslatedString>Object.fromEntries(
+    new Map(langs.map((lang) => ([lang, $tr(key, null, false, lang)]))),
+  )
+);
+
 export const translationMatchesInAnyLanguage = (
   key: string | TranslatedString, comparison: string,
 ): boolean => (
@@ -48,7 +51,7 @@ export const getCurrentRouteTranslatedPath = (): TranslationValue => $tr(
   `paths.${String(Router.currentRoute.value.meta.translationName ?? Router.currentRoute.value.name)}`,
 );
 
-export const switchLocale = async (locale: string): Promise<void> => {
+export const switchLocale = async (locale: Lang): Promise<void> => {
   // update preference
   const userObj = user();
   if (userObj) {
@@ -68,11 +71,11 @@ export const switchLocale = async (locale: string): Promise<void> => {
   try {
     await import(
       `quasar/lang/${langIso}`
-    ).then((lang) => {
-      Quasar.lang.set(lang.default);
+    ).then(({ default: lang }) => {
+      Quasar.lang.set(lang);
     });
   } catch (err) {
-    console.error('Quasar language not found');
+    void (0);
   }
 
   // current URL

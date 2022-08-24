@@ -3,6 +3,7 @@ import { AxiosResponse } from 'axios';
 import { Router } from 'src/router';
 import { $path } from 'boot/custom';
 import { Date, DateTime } from 'src/types/general';
+import { Lang } from 'src/translation/config';
 import { apiCall } from './api';
 
 type UserRole = 'admin' | 'none';
@@ -36,37 +37,37 @@ export interface Person {
 }
 
 interface User {
-  admin: boolean
-  apiToken: string
+  admin: boolean;
+  apiToken: string;
   // eslint-disable-next-line camelcase
-  created_at: string
-  id: 292
+  created_at: string;
+  id: 292;
   // eslint-disable-next-line camelcase
-  id_token: string
-  person: Person | null
+  id_token: string;
+  person: Person | null;
   // eslint-disable-next-line camelcase
-  person_id: number | null
+  person_id: number | null;
   // eslint-disable-next-line camelcase
-  preferred_locale: string
-  role: UserRole
+  preferred_locale: Lang;
+  role: UserRole;
   // eslint-disable-next-line camelcase
-  updated_at: string
-  username: string
+  updated_at: string;
+  username: string;
 }
 
 export interface LoginData {
-  username: string
-  password: string
-  isSignUp: boolean
+  username: string;
+  password: string;
+  isSignUp: boolean;
 }
 
 interface Auth {
-  login: (data: LoginData) => Promise<User | null>
-  logout: (redirectHome?: boolean) => void
-  user: () => User | null,
-  getToken: () => string | null
-  isLoggedIn: () => boolean
-  isAdmin: () => boolean
+  login: (data: LoginData) => Promise<User | null>;
+  logout: (redirectHome?: boolean) => void;
+  user: () => User | null;
+  getToken: () => string | null;
+  isLoggedIn: () => boolean;
+  isAdmin: () => boolean;
 }
 
 const localStorageKey = 'greyboxAuthData';

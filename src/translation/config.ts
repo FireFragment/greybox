@@ -21,8 +21,11 @@ const loadMessages = (locale: string): Translations => {
   return messages;
 };
 
-const defaultLocale = user()?.preferred_locale ?? 'cs';
-const fallbackLocale = defaultLocale === 'cs' ? 'en' : 'cs';
+export const langs = ['cs', 'en'] as const;
+export type Lang = typeof langs[number];
+
+const defaultLocale: Lang = user()?.preferred_locale ?? 'cs';
+const fallbackLocale: Lang = defaultLocale === 'cs' ? 'en' : 'cs';
 
 export default {
   default: defaultLocale,
@@ -36,7 +39,7 @@ export default {
       en: 'English',
       native: 'English',
     },
-  },
+  } as Record<Lang, Record<string, string>>,
   messages: {
     cs: loadMessages('cs'),
     en: loadMessages('en'),

@@ -30,7 +30,7 @@ declare module '@vue/runtime-core' {
     $flash: (message: string | TranslationValue, type?: string, icon?: string | undefined, timeout?: number) => Function;
     $isPDS: boolean;
     $path: (route: string) => string;
-    $tr: (key: string | TranslatedString, options?: Record<string, unknown> | null, usePrefix?: boolean) => TranslationValue;
+    $tr: (key: string | TranslatedString, options?: Record<string, unknown> | null, usePrefix?: boolean, lang?: Locale | null) => TranslationValue;
     $store: Store<State>
   }
 }

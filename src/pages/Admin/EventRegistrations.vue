@@ -71,8 +71,9 @@
         </template>
         <template v-slot:body-cell-role="props">
           <q-td :props="props">
-          <q-select borderless v-model="participantRole" :options="applicableRoles" option-value="id" :option-label="item => $tr(item.name, null, false)">
-          </q-select>
+            <q-select borderless v-model="participantRole" :options="applicableRoles"
+                      option-value="id" :option-label="item => $tr(item.name, null, false)">
+            </q-select>
           </q-td>
         </template>
         <template v-slot:body-cell-note="props">
@@ -95,7 +96,8 @@ import { Event, EventRegistration } from 'src/types/event';
 import { Role } from 'src/types/role';
 import { defineComponent } from 'vue';
 import { $tr } from 'boot/custom';
-import i18nConfig from '../../translation/config';
+import { getAllTranslations, TranslatedString } from 'boot/i18n';
+import i18nConfig, { langs } from '../../translation/config';
 
 const booleanFilterOptions = [$tr('admin.eventRegistrations.all'), $tr('admin.eventRegistrations.yes'), $tr('admin.eventRegistrations.no')];
 
@@ -112,7 +114,6 @@ export default defineComponent({
       'eventRegistrations',
     ]),
     registrations(): EventRegistration[] {
-      console.log(this.$store.getters['eventsRegistrations/eventRegistrations'](this.eventId));
       // eslint-disable-next-line max-len
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       return <EventRegistration[]> this.$store.getters['eventsRegistrations/eventRegistrations'](this.eventId);
@@ -131,25 +132,9 @@ export default defineComponent({
         .map((item) => item.role);
       const idsOnly = roles.map((item) => item.id);
 
-      const itemOrganizer = {
-        id: 4,
-        icon: '',
-        name: {
-          id: 4,
-          created_at: '',
-          updated_at: '',
-        },
-        created_at: '',
-        updated_at: '',
-      };
-        // 'Organizer' in different languages
-      for (const lang in i18nConfig.languages) {
-        itemOrganizer.name[lang] = this.$tr('tournament.types.organizer', null, false, lang);
-      }
-
       return [
+        this.fakeRoleObject('event.types.organizer'),
         ...roles.filter((item, index) => idsOnly.indexOf(item.id) === index),
-        itemOrganizer
       ];
     },
     uniqueRoles(): Role[] {
@@ -160,29 +145,8 @@ export default defineComponent({
       const roles: Role[] = (Object.values(this.registrations))
         .map((item) => item.role);
       const idsOnly = roles.map((item) => item.id);
-
-      // Filter out only unique roles
-      const itemAll = {
-        id: 0,
-        icon: '',
-        name: {
-          id: 0,
-          created_at: '',
-          updated_at: '',
-        },
-        slug: {
-          cs: '',
-          en: '',
-        },
-        created_at: '',
-        updated_at: '',
-      };
-        // 'All' keyword in different languages
-      for (const lang in i18nConfig.languages) {
-        itemAll.name[lang] = this.$tr('all', null, true, lang);
-      }
       return [
-        itemAll,
+        this.fakeRoleObject('admin.eventRegistrations.all'),
         ...roles.filter((item, index) => idsOnly.indexOf(item.id) === index),
       ];
     },
@@ -239,16 +203,30 @@ export default defineComponent({
     };
   },
   methods: {
-    filterTableRows: (rows: EventRegistration[], terms: FilterObject): EventRegistration[] => (
-      rows.filter((item) => (
+    filterTableRows(rows: EventRegistration[], terms: FilterObject): EventRegistration[] {
+      return rows.filter((item) => (
         (terms.role == null || terms.role.id === 0 || terms.role.id === item.role.id)
         && (terms.accommodation == null || terms.accommodation === this.$tr('all') || ((terms.accommodation === this.$tr('yes')) === item.accommodation))
         && (terms.meals == null || terms.meals === this.$tr('all') || ((terms.meals === this.$tr('yes')) === item.meals))
-      ))
-    ),
+      ));
+    },
     roleRegistrationsCount(role: Role): number {
       return this.registrations.filter((item) => role.id === 0 || role.id === item.role.id).length;
     },
+    fakeRoleObject: (nameTrKey: string): Role => ({
+      id: 0,
+      icon: '',
+      name: {
+        id: 0,
+        created_at: '',
+        updated_at: '',
+        ...getAllTranslations(nameTrKey),
+      },
+      slug: <TranslatedString><unknown> new Map(langs.map((lang) => ([lang, '']))),
+      created_at: '',
+      updated_at: '',
+    }
+    ),
   },
 });
 </script>
