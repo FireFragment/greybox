@@ -10,22 +10,23 @@
       stack
       :color="color"
       :no-caps="true"
-      @click="$emit('click')"
+      :to="to"
     />
   </div>
 </template>
 
 <script lang="ts">
 import { TranslatedString } from 'boot/i18n';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   props: {
     label: [String, Object as () => TranslatedString],
     icon: String,
     color: String,
     autoSize: Boolean,
+    to: Object,
   },
-  emits: ['click'],
   name: 'PickingButton',
-};
+});
 </script>

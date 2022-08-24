@@ -63,7 +63,7 @@ export default {
   emits: ['selected'],
   data() {
     return {
-      translationPrefix: 'tournament.checkout.billing.',
+      translationPrefix: 'event.checkout.billing.',
       loading: false,
       clients: null,
       editedClient: null,

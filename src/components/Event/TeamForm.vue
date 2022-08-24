@@ -118,7 +118,7 @@ export default {
     return {
       pastTeams: [],
       teamsAutofill: [],
-      translationPrefix: 'tournament.',
+      translationPrefix: 'event.',
       people: {},
       visibleId: null,
       teamName: null,
@@ -146,7 +146,7 @@ export default {
   },
 
   computed: {
-    // Teams in autofill already registered for this tournament
+    // Teams in autofill already registered for this event
     registeredTeams() {
       return this.pastTeams.filter((item) => item.registered);
     },

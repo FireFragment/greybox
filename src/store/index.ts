@@ -1,5 +1,6 @@
 import { createStore } from 'vuex';
 import { RolesState } from 'src/store/roles/state';
+import eventRegistrationForm from 'src/store/eventRegistrationForm';
 import { EventsRegistrationsState } from './eventsRegistrations/state';
 import config from '../config';
 import events from './events';
@@ -15,6 +16,7 @@ export interface State {
 
 export default () => createStore({
   modules: {
+    eventRegistrationForm,
     events,
     eventsRegistrations,
     roles,

@@ -1,8 +1,22 @@
 {
   "home": "en",
   "about": "about",
-  "tournament": "tournaments",
   "myDebates": "my-debates",
+  "event": "events",
+  "eventParams": {
+    "type": {
+      "group": "group",
+      "individual": "individual"
+    },
+    "role": {
+      "team": "team",
+      "debater": "debater",
+      "judge": "judge",
+      "volunteer": "volunteer"
+    },
+    "checkout": "checkout",
+    "confirmation": "confirmation"
+  },
   "auth": {
     "login": "login",
     "signUp": "sign-up",

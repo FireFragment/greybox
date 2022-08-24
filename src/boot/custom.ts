@@ -13,6 +13,7 @@ import { i18n, TranslatedString } from 'boot/i18n';
 import i18nConfig from '../translation/config';
 import store, { State } from '../store';
 import { Store } from 'vuex';
+import assert from 'assert';
 
 export type TranslationValue = TranslateResult | LocaleMessageValue<VueMessageType> | {};
 
@@ -95,6 +96,32 @@ export const $flash = function (message: string | TranslationValue, type: string
     closeBtn: '-',
   });
 };
+
+export const $slug = (original: string): string => {
+  const a =
+    'àáäâãåăæąçćčđďèéěėëêęğǵḧìíïîįłḿǹńňñòóöôœøṕŕřßşśšșťțùúüûǘůűūųẃẍÿýźžż·/_,:;';
+  const b =
+    'aaaaaaaaacccddeeeeeeegghiiiiilmnnnnooooooprrsssssttuuuuuuuuuwxyyzzz------';
+  const p = new RegExp(a.split('')
+    .join('|'), 'g');
+
+  return original
+    .toString()
+    .toLowerCase()
+    .replace(/\s+/g, '-') // Replace spaces with -
+    .replace(p, (c: string) => b.charAt(a.indexOf(c))) // Replace special characters
+    .replace(/&/g, '-and-') // Replace & with 'and'
+    .replace(/[^\w-]+/g, '') // Remove all non-word characters
+    .replace(/--+/g, '-') // Replace multiple - with single -
+    .replace(/^-+/, '') // Trim - from start of text
+    .replace(/-+$/, ''); // Trim - from end of text
+};
+
+export const $slugTranslation = (original: TranslatedString): TranslatedString => ({
+  ...(original as object),
+  cs: $slug(original.cs),
+  en: $slug(original.en),
+});
 
 export const $isPDS = process.env.IS_PDS === 'true';
 
@@ -194,25 +221,9 @@ export default boot(({ app }) => {
 
       // Create slug from string
       // Source: https://codepen.io/tatthien/pen/xVBxZQ
-      $slug: function (original: string) {
-        const a =
-          'àáäâãåăæąçćčđďèéěėëêęğǵḧìíïîįłḿǹńňñòóöôœøṕŕřßşśšșťțùúüûǘůűūųẃẍÿýźžż·/_,:;';
-        const b =
-          'aaaaaaaaacccddeeeeeeegghiiiiilmnnnnooooooprrsssssttuuuuuuuuuwxyyzzz------';
-        const p = new RegExp(a.split('')
-          .join('|'), 'g');
+      $slug,
 
-        return original
-          .toString()
-          .toLowerCase()
-          .replace(/\s+/g, '-') // Replace spaces with -
-          .replace(p, (c: string) => b.charAt(a.indexOf(c))) // Replace special characters
-          .replace(/&/g, '-and-') // Replace & with 'and'
-          .replace(/[^\w-]+/g, '') // Remove all non-word characters
-          .replace(/--+/g, '-') // Replace multiple - with single -
-          .replace(/^-+/, '') // Trim - from start of text
-          .replace(/-+$/, ''); // Trim - from end of text
-      },
+      $slugTranslation,
 
       $makeIdObject,
 

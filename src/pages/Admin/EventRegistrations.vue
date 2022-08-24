@@ -135,6 +135,10 @@ export default defineComponent({
           created_at: '',
           updated_at: '',
         },
+        slug: {
+          cs: '',
+          en: '',
+        },
         created_at: '',
         updated_at: '',
       };

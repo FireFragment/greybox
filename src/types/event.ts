@@ -16,6 +16,16 @@ export interface EventRole {
   updated_at: DateTime;
 }
 
+export interface DietaryRequirement {
+  id: number;
+  name: TranslatedDatabaseString;
+  order: number;
+  // eslint-disable-next-line camelcase
+  created_at: DateTime;
+  // eslint-disable-next-line camelcase
+  updated_at: DateTime;
+}
+
 export interface EventPrice {
   amount: string;
   // eslint-disable-next-line camelcase
@@ -57,7 +67,7 @@ export interface Event {
 }
 
 export interface EventFull extends Event {
-  dietaryRequirements: string[];
+  dietaryRequirements: DietaryRequirement[];
   prices: EventPrice[];
 }
 

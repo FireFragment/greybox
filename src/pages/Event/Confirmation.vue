@@ -1,5 +1,5 @@
 <template>
-  <div class="row justify-center">
+  <div class="row justify-center" v-if="data">
     <div class="col-12 col-md-6">
       <q-banner class="bg-primary text-white q-mt-md">
         <template v-slot:avatar>
@@ -32,10 +32,10 @@
 
                 <q-item-section>
                   <q-item-label caption>{{
-                    $tr("invoice.total")
-                  }}</q-item-label>
+                      $tr("invoice.total")
+                    }}</q-item-label>
                   <q-item-label
-                    >{{
+                  >{{
                       data.invoice.total
                         .replace(/\d(?=(\d{3})+\.)/g, "$& ")
                         .replace(/\./g, ",")
@@ -52,8 +52,8 @@
 
                 <q-item-section>
                   <q-item-label caption>{{
-                    $tr("invoice.dueOn")
-                  }}</q-item-label>
+                      $tr("invoice.dueOn")
+                    }}</q-item-label>
                   <q-item-label>
                     {{ getDate(data.invoice.due_on, "D. M. YYYY") }}
                   </q-item-label>
@@ -73,8 +73,8 @@
 
                 <q-item-section>
                   <q-item-label class="text-black">{{
-                    $tr("invoice.download")
-                  }}</q-item-label>
+                      $tr("invoice.download")
+                    }}</q-item-label>
                 </q-item-section>
               </q-item>
             </q-list>
@@ -101,12 +101,9 @@ import { date } from "quasar";
 
 export default {
   name: 'CheckoutConfirm',
-  props: {
-    data: Object,
-  },
   data() {
     return {
-      translationPrefix: 'tournament.checkout.confirm.',
+      translationPrefix: 'event.checkout.confirm.',
     };
   },
   methods: {
@@ -137,6 +134,9 @@ export default {
               : 'CZK'}`, // to možná nestačí
         },
       ];
+    },
+    data() {
+      return this.$store.state.eventRegistrationForm.confirmation;
     },
   },
 };

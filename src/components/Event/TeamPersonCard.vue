@@ -85,8 +85,8 @@ export default {
   ],
   data() {
     return {
-      translationPrefix: 'tournament.',
-      formData: {}
+      translationPrefix: 'event.',
+      formData: {},
     };
   },
   methods: {

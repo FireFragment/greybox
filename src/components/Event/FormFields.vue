@@ -374,7 +374,7 @@
       </q-select>
     </div>
 
-    <!-- International tournament (PDS) option: -->
+    <!-- International event (PDS) option: -->
     <template v-if="requireSpeakerStatus">
       <q-select
         outlined
@@ -551,7 +551,7 @@ export default {
 
   data() {
     return {
-      translationPrefix: 'tournament.',
+      translationPrefix: 'event.',
       values: {
         name: null,
         surname: null,
@@ -594,15 +594,15 @@ export default {
       requireJudingExperience: this.$isPDS && this.role === 2, // show "Judging experience" instead of note (only for PDS judges)
       speakerOptions: [
         {
-          label: this.$tr('tournament.fields.EFL'),
+          label: this.$tr('event.fields.EFL'),
           value: 'efl',
         },
         {
-          label: this.$tr('tournament.fields.ESL'),
+          label: this.$tr('event.fields.ESL'),
           value: 'esl',
         },
         {
-          label: this.$tr('tournament.fields.ENL'),
+          label: this.$tr('event.fields.ENL'),
           value: 'enl',
         },
       ],

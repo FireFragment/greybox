@@ -146,7 +146,7 @@ export default {
   emits: ['remove'],
   data() {
     return {
-      translationPrefix: 'tournament.',
+      translationPrefix: 'event.',
       roles: {},
       showRegistrationFields: ['teamName', 'accommodation', 'role'],
       ignorePersonFields: ['dietary_requirement', 'email', 'id', 'created_at', 'updated_at', 'old_greybox_id', 'school_year'],

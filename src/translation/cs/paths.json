@@ -1,8 +1,22 @@
 {
   "home": "",
   "about": "o-webu",
-  "tournament": "turnaje",
   "myDebates": "moje-debaty",
+  "event": "turnaje",
+  "eventParams": {
+    "type": {
+      "group": "skupina",
+      "individual": "jednotlivec"
+    },
+    "role": {
+      "team": "tym",
+      "debater": "debater",
+      "judge": "rozhodci",
+      "volunteer": "dobrovolnik"
+    },
+    "checkout": "prehled",
+    "confirmation": "potvrzeni"
+  },
   "auth": {
     "login": "prihlaseni",
     "signUp": "registrace",

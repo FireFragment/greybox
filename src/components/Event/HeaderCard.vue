@@ -1,5 +1,9 @@
 <template>
   <div class="text-center">
+    <q-btn color="white" text-color="black" class="float-left q-mb-md go-back-button"
+      @click="goBack()" v-if="!['event-pick-type', 'event-confirmation'].includes($route.name)">
+      <q-icon size="1em" name="fas fa-arrow-left " />
+    </q-btn>
     <q-card
       class="inline-block event-header"
       :class="{ smaller }"
@@ -88,11 +92,12 @@ export default defineComponent({
   props: HeaderCardProps,
   data(): TranslationPrefixData {
     return {
-      translationPrefix: 'tournament.',
+      translationPrefix: 'event.',
     };
   },
   methods: {
     getDate: date.formatDate,
+    goBack: () => window.history.back(),
   },
 });
 </script>
