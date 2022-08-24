@@ -13,12 +13,12 @@
         :possibleDiets="event.dietaryRequirements"
         :role="role.id"
         :requireEmail="event.email_required"
-        @goToRolePick="goTo('role')"
+        @goToRolePick="goToRolePick()"
       />
       <team-form
         v-else
         @submit="submitTeamForm"
-        @goToRolePick="goTo('role')"
+        @goToRolePick="goToRolePick()"
         @autofillPerson="debaterSelected"
         :autofill="autofillData"
         :accommodationType="event.accommodation"
@@ -49,7 +49,7 @@
             :label="$tr('groupModal.anotherPerson')"
             color="primary"
             v-close-popup
-            @click="goTo('role')"
+            :to="rolePickRoute"
           />
           <q-btn
             flat
@@ -108,7 +108,17 @@ export default defineComponent({
     },
     event(): EventFull {
       return <Event> this.$store.getters['events/fullEvent'](this.eventId);
-    }
+    },
+    rolePickRoute() {
+      return {
+        /* TODO - translate route to use alias ($tr() on paths maybe) */
+        name: 'event-pick-role',
+        params: {
+          ...this.$route.params,
+          type: this.$tr('paths.eventParams.type.group', null, false),
+        },
+      };
+    },
   },
 
   methods: {
@@ -185,7 +195,11 @@ export default defineComponent({
 
     goTo(phase: string) {
       window.alert(`GO TO ${phase}`);
-    }
+    },
+
+    goToRolePick(): void {
+      this.$router.push(this.rolePickRoute);
+    },
   },
 });
 </script>

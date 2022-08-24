@@ -1,11 +1,21 @@
 <template>
-  <!-- Individual or group -->
-  <picking-buttons
-    next-route="event-register-form"
-    class="picking-role"
-    name="role"
-    :values="values"
-  />
+  <div>
+    <!-- Individual or group -->
+    <picking-buttons
+      next-route="event-register-form"
+      class="picking-role"
+      name="role"
+      :values="values"
+    />
+    <q-btn
+      v-if="$store.state.eventRegistrationForm.dataToSubmit.length"
+      :label="$tr('event.buttons.goToCheckout')"
+      type="reset"
+      color="blue-9"
+      class="q-mt-xl float-right"
+    />
+    <!-- TODO - go to checkout -->
+  </div>
 </template>
 
 <script lang="ts">

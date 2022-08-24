@@ -10,10 +10,10 @@
       :auto-size="values.length > 4"
       :to="{
         /* TODO - translate route to use alias ($tr() on paths maybe) */
-        name: this.nextRoute,
+        name: nextRoute,
         params: {
-          ...this.$route.params,
-          [this.name]: btn.routeParam ?? $tr(`paths.eventParams.${name}.${btn.value}`),
+          ...$route.params,
+          [name]: btn.routeParam ?? $tr(`paths.eventParams.${name}.${btn.value}`),
         }
       }"
     />
