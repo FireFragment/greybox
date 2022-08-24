@@ -4,6 +4,7 @@
 namespace App\Http\Controllers;
 
 use App\Person;
+use App\Repositories\PersonRepository;
 use Illuminate\Http\Request;
 
 class PersonController extends Controller
@@ -52,6 +53,8 @@ class PersonController extends Controller
                 @$requestData['institution'] = $userPerson->institution()->first()->id;
             }
         }
+
+        if (null !== $duplicate = PersonRepository::findDuplicate($request)) return response()->json($duplicate, 200);
 
         try {
             $person = Person::create($requestData);
