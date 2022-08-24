@@ -14,21 +14,17 @@
 
     <!-- Individual or group -->
     <pick-type
+      next-route="event-pick-role"
       name="type"
-      :values="[
-        {
-          label: 'event.types.individual',
+      :values="[{
           icon: 'user',
           color: 'btn-2',
-          value: 'single'
-        },
-        {
-          label: 'event.types.group',
+          value: 'individual'
+        },{
           icon: 'users',
           color: 'btn-3',
           value: 'group'
-        }
-      ]"
+        }]"
     />
   </div>
 </template>

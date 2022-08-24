@@ -10,6 +10,7 @@
       stack
       :color="color"
       :no-caps="true"
+      :to="to"
     />
   </div>
 </template>
@@ -24,6 +25,7 @@ export default defineComponent({
     icon: String,
     color: String,
     autoSize: Boolean,
+    to: Object,
   },
   name: 'PickingButton',
 });

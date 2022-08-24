@@ -4,11 +4,18 @@
     <picking-button
       v-for="btn in options"
       v-bind:key="btn.value"
-      :label="btn.label"
+      :label="`event.${name}s.${btn.value}`"
       :icon="btn.icon"
       :color="btn.color"
-      @click="selectType(btn.value)"
       :auto-size="options.length > 4"
+      :to="{
+        /* TODO - translate route to use alias ($tr() on paths maybe) */
+        name: this.nextRoute,
+        params: {
+          ...this.$route.params,
+          [this.name]: $tr(`paths.eventParams.${name}.${btn.value}`),
+        }
+      }"
     />
     <div class="col" v-if="values.length < 4"></div>
   </div>
@@ -21,7 +28,14 @@ import pickingButton from './PickingButton.vue';
 export default defineComponent({
   props: {
     values: [Array, Object],
-    name: String,
+    name: {
+      type: String,
+      required: true,
+    },
+    nextRoute: {
+      type: String,
+      required: true,
+    },
     hideFirst: Boolean,
   },
   components: {
@@ -33,19 +47,5 @@ export default defineComponent({
     },
   },
   name: 'PickType',
-  methods: {
-    selectType(type: string) {
-      // TODO - redirect to event-pick-role
-      console.log(type, this.name, this.$route);
-
-      void this.$router.push({
-        name: 'event-pick-role',
-        params: {
-          ...this.$route.params,
-          type,
-        },
-      });
-    },
-  },
 });
 </script>
