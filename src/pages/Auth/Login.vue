@@ -128,7 +128,7 @@ export default {
         .finally(() => {
           this.loading = false;
           if(this.$auth.user().preferred_locale !== this.$i18n.locale) {
-            switchLocale(this.$i18n.locale);
+            switchLocale(this.$auth.user().preferred_locale);
           }
         });
     },
