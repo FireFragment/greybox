@@ -124,17 +124,11 @@ export default defineComponent({
       return <Event> this.$store.getters['events/event'](this.eventId);
     },
     applicableRoles(): Role[] {
-      if (!this.registrations) {
-        return [];
-      }
-
-      const roles: Role[] = (Object.values(this.registrations))
-        .map((item) => item.role);
-      const idsOnly = roles.map((item) => item.id);
-
       return [
         this.fakeRoleObject('event.types.organizer'),
-        ...roles.filter((item, index) => idsOnly.indexOf(item.id) === index),
+        // eslint-disable-next-line max-len
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+        ...<Role[]> this.$store.getters['roles/eventRoles'](this.eventId),
       ];
     },
     uniqueRoles(): Role[] {
