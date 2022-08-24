@@ -173,8 +173,10 @@ export default defineComponent({
 
           createPerson
             .then((person_id) => {
-              person.registration.person = person_id;
-              this.formData[index].registration.person = person_id;
+              this.$store.commit('eventRegistrationForm/setRegistrationPersonId', {
+                registrationIndex: index,
+                personId: person_id,
+              });
 
               if (person.registered_data) {
                 registered++;
@@ -189,7 +191,10 @@ export default defineComponent({
               })
                 .then((data) => {
                   registered++;
-                  this.formData[index].registered_data = data;
+                  this.$store.commit('eventRegistrationForm/setRegisteredData', {
+                    registrationIndex: index,
+                    data,
+                  });
                   if (registerCount <= registered) return resolve(data);
                 })
                 .catch((data) => {

@@ -38,6 +38,8 @@ export interface EventRegistrationItem {
   person: EventRegistrationPerson;
   registration: EventRegistrationRegistration;
   autofill: EventRegistrationAutofillState | false;
+  // eslint-disable-next-line camelcase
+  registered_data?: Record<string, never>;
 }
 
 export interface InvoiceLine {

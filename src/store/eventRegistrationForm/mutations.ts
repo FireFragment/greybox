@@ -11,6 +11,24 @@ export const addEventRegistration: Mutation<EventRegistrationFormState> = (
   state.dataToSubmit.push(value);
 };
 
+export const setRegistrationPersonId: Mutation<EventRegistrationFormState> = (
+  state, value: {
+    registrationIndex: number,
+    personId: number,
+  },
+) => {
+  state.dataToSubmit[value.registrationIndex].registration.person = value.personId;
+};
+
+export const setRegisteredData: Mutation<EventRegistrationFormState> = (
+  state, value: {
+    registrationIndex: number,
+    data: Record<string, never>,
+  },
+) => {
+  state.dataToSubmit[value.registrationIndex].registered_data = value.data;
+};
+
 export const removeEventRegistration: Mutation<EventRegistrationFormState> = (
   state, index: number,
 ) => {
