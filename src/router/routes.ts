@@ -6,8 +6,11 @@ interface Routes {
 }
 
 // Translations
-import CZroutes from '../translation/cs/paths.json';
-import ENroutes from '../translation/en/paths.json';
+import CZroutesJson from '../translation/cs/paths.json';
+import ENroutesJson from '../translation/en/paths.json';
+
+const CZroutes: Routes = <Routes>CZroutesJson;
+const ENroutes: Routes = <Routes>ENroutesJson;
 
 const eventTypes = (routes: Routes) => Object.values((<Routes>routes.eventParams).type).join('|');
 const eventRoles = (routes: Routes) => Object.values((<Routes>routes.eventParams).role).join('|');
@@ -18,24 +21,22 @@ const routes: RouteRecordRaw[] = [
     component: () => import('layouts/Default.vue'),
     children: [
       {
-        path: CZroutes.home,
-        alias: ENroutes.home,
+        path: <string>CZroutes.home,
+        alias: <string>ENroutes.home,
         name: 'home',
         component: () => import('pages/Home.vue'),
       },
       {
-        path: CZroutes.about,
-        alias: ENroutes.about,
+        path: <string>CZroutes.about,
+        alias: <string>ENroutes.about,
         name: 'about',
         component: () => import('pages/About.vue'),
       },
       {
-        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-        path: `${CZroutes.event}/:id-:slug`,
-        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-        alias: `${ENroutes.event}/:id-:slug`,
+        path: `${<string>CZroutes.event}/:id-:slug`,
+        alias: `${<string>ENroutes.event}/:id-:slug`,
         name: 'event',
-        component: RouterView,
+        component: () => import('pages/Event.vue'),
         children: [{
           path: '',
           alias: '',
@@ -52,21 +53,13 @@ const routes: RouteRecordRaw[] = [
           name: 'event-register-form',
           component: () => import('pages/Event/Debater.vue'),
         }, {
-          // eslint-disable-next-line max-len
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/restrict-template-expressions
-          path: `:type(${eventTypes(CZroutes)})/${CZroutes.eventParams.checkout}`,
-          // eslint-disable-next-line max-len
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/restrict-template-expressions
-          alias: `:type(${eventTypes(ENroutes)})/${ENroutes.eventParams.checkout}`,
+          path: `:type(${eventTypes(CZroutes)})/${<string>(<Routes>CZroutes.eventParams).checkout}`,
+          alias: `:type(${eventTypes(ENroutes)})/${<string>(<Routes>ENroutes.eventParams).checkout}`,
           name: 'event-checkout',
           component: () => import('pages/Event/Debater.vue'),
         }, {
-          // eslint-disable-next-line max-len
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/restrict-template-expressions
-          path: `:type(${eventTypes(CZroutes)})/${CZroutes.eventParams.registered}`,
-          // eslint-disable-next-line max-len
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/restrict-template-expressions
-          alias: `:type(${eventTypes(ENroutes)})/${ENroutes.eventParams.registered}`,
+          path: `:type(${eventTypes(CZroutes)})/${<string>(<Routes>CZroutes.eventParams).registered}`,
+          alias: `:type(${eventTypes(ENroutes)})/${<string>(<Routes>ENroutes.eventParams).registered}`,
           name: 'event-registered',
           component: () => import('pages/Event/Debater.vue'),
         }],
@@ -75,10 +68,8 @@ const routes: RouteRecordRaw[] = [
       // My debates
       {
         // TODO - type routes & therefore fix weird errors below
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        path: `${CZroutes.myDebates}/:page?`,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        alias: `${ENroutes.myDebates}/:page?`,
+        path: `${<string>CZroutes.myDebates}/:page?`,
+        alias: `${<string>ENroutes.myDebates}/:page?`,
         name: 'myDebates',
         component: () => import('pages/MyDebates.vue'),
         beforeEnter: loggedInMiddleware,
@@ -86,11 +77,9 @@ const routes: RouteRecordRaw[] = [
 
       // Admin
       {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        path: CZroutes.admin.events,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        alias: ENroutes.admin.events,
-        component: () => import('components/EmptyNestedRouteParent.vue'),
+        path: <string>(<Routes>CZroutes.admin).events,
+        alias: <string>(<Routes>ENroutes.admin).events,
+        component: RouterView,
         beforeEnter: adminMiddleware,
         children: [{
           path: '',
@@ -110,54 +99,50 @@ const routes: RouteRecordRaw[] = [
       },
       // Auth
       {
-        path: CZroutes.auth.login,
-        alias: ENroutes.auth.login,
+        path: <string>(<Routes>CZroutes.auth).login,
+        alias: <string>(<Routes> ENroutes.auth).login,
         name: 'auth.login',
         component: () => import('pages/Auth/Login.vue'),
         beforeEnter: notLoggedInMiddleware,
       },
       {
-        path: CZroutes.auth.signUp,
-        alias: ENroutes.auth.signUp,
+        path: <string>(<Routes>CZroutes.auth).signUp,
+        alias: <string>(<Routes> ENroutes.auth).signUp,
         name: 'auth.signUp',
         component: () => import('pages/Auth/SignUp.vue'),
         beforeEnter: notLoggedInMiddleware,
       },
       {
-        path: CZroutes.auth.logout,
-        alias: ENroutes.auth.logout,
+        path: <string>(<Routes>CZroutes.auth).logout,
+        alias: <string>(<Routes> ENroutes.auth).logout,
         name: 'auth.logout',
         component: () => import('pages/Auth/Logout.vue'),
         beforeEnter: loggedInMiddleware,
       },
       {
-        path: CZroutes.auth.passwordReset,
-        alias: ENroutes.auth.passwordReset,
+        path: <string>(<Routes>CZroutes.auth).passwordReset,
+        alias: <string>(<Routes> ENroutes.auth).passwordReset,
         name: 'auth.passwordReset',
         component: () => import('pages/Auth/PasswordReset.vue'),
         beforeEnter: notLoggedInMiddleware,
       },
       {
-        path: `${CZroutes.auth.passwordReset}/:token`,
-        alias: `${ENroutes.auth.passwordReset}/:token`,
+        path: `${<string>(<Routes>CZroutes.auth).passwordReset}/:token`,
+        alias: `${<string>(<Routes>ENroutes.auth).passwordReset}/:token`,
         name: 'auth.newPassword',
         component: () => import('pages/Auth/NewPassword.vue'),
         beforeEnter: notLoggedInMiddleware,
       },
       {
-        path: CZroutes.auth.accountSettings,
-        alias: ENroutes.auth.accountSettings,
+        path: <string>(<Routes>CZroutes.auth).accountSettings,
+        alias: <string>(<Routes> ENroutes.auth).accountSettings,
         name: 'auth.accountSettings',
         component: () => import('pages/Auth/AccountSettings.vue'),
         beforeEnter: loggedInMiddleware,
       },
       {
-        // eslint-disable-next-line max-len
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
-        path: CZroutes.user.currentRegistrations,
-        // eslint-disable-next-line max-len
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
-        alias: ENroutes.user.currentRegistrations,
+        path: <string>(<Routes>CZroutes.user).currentRegistrations,
+        alias: <string>(<Routes> ENroutes.user).currentRegistrations,
         name: 'user.currentRegistrations',
         component: () => import('pages/User/CurrentRegistrations.vue'),
         beforeEnter: loggedInMiddleware,
