@@ -68,6 +68,10 @@ class OldGreyboxService
         return $this->getDataFromOldGreybox($url);
     }
 
+    /**
+     * @param int $personId
+     * @return array|false
+     */
     public function getPastDebates(int $personId)
     {
         $url = $this->baseUrl;

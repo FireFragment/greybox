@@ -61,7 +61,7 @@ class Debate extends BaseModel
             else
             {
                 $role = strtoupper($line->role);
-                $win = ('A' === substr($role,0,1)) ? $line->vitez : !$line->vitez;
+                $win = ('A' === substr($role,0,1)) ? (bool) $line->vitez : !$line->vitez;
             }
             $result = ($line->vitez ? 'AFF ' : 'NEG ') . ($line->debata_presvedcive ? '3:0' : '2:1');
 
