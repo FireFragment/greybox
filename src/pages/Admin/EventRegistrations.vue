@@ -76,7 +76,7 @@
               {{ props.value }}
             </q-tooltip>
           </q-td>
-        </template> 
+        </template>
       </q-table>
     </div>
   </q-page>
@@ -89,9 +89,9 @@ import { Event, EventRegistration } from 'src/types/event';
 import { Role } from 'src/types/role';
 import { defineComponent } from 'vue';
 import { $tr } from 'boot/custom';
-import i18nConfig from '../../translation/config'
+import i18nConfig from '../../translation/config';
 
-const booleanFilterOptions = [$tr("admin.eventRegistrations.all"), $tr("admin.eventRegistrations.yes"), $tr("admin.eventRegistrations.no")];
+const booleanFilterOptions = [$tr('admin.eventRegistrations.all'), $tr('admin.eventRegistrations.yes'), $tr('admin.eventRegistrations.no')];
 
 interface FilterObject {
   role: Role | null;
@@ -125,23 +125,23 @@ export default defineComponent({
       const idsOnly = roles.map((item) => item.id);
 
       // Filter out only unique roles
-      let returnObj = {
+      const returnObj = {
+        id: 0,
+        icon: '',
+        name: {
           id: 0,
-          icon: '',
-          name: {
-            id: 0,
-            cs: 'Vše',
-            en: 'All',
-            created_at: '',
-            updated_at: '',
-          },
+          cs: 'Vše',
+          en: 'All',
           created_at: '',
           updated_at: '',
-        };
+        },
+        created_at: '',
+        updated_at: '',
+      };
         // 'All' keyword in different languages
-        for (const lang in i18nConfig.languages) {
-          returnObj.name[lang] = this.$tr("all", null, true, lang);
-        }
+      for (const lang in i18nConfig.languages) {
+        returnObj.name[lang] = this.$tr('all', null, true, lang);
+      }
 
       return [
         returnObj,

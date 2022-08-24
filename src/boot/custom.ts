@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { TranslateResult, VueMessageType } from 'vue-i18n';
+import { Locale, TranslateResult, VueMessageType } from 'vue-i18n';
 import { LocaleMessageValue } from '@intlify/core-base';
 
 const Bugsnag = require('@bugsnag/js');
