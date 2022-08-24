@@ -71,7 +71,6 @@
         </template>
         <template v-slot:body-cell-role="props">
           <q-td :props="props">
-          <!-- add organizer to roles -->
           <q-select borderless v-model="participantRole" :options="applicableRoles" option-value="id" :option-label="item => $tr(item.name, null, false)">
           </q-select>
           </q-td>
@@ -83,7 +82,7 @@
               {{ props.value }}
             </q-tooltip>
           </q-td>
-        </template> 
+        </template>
       </q-table>
     </div>
   </q-page>
@@ -96,9 +95,9 @@ import { Event, EventRegistration } from 'src/types/event';
 import { Role } from 'src/types/role';
 import { defineComponent } from 'vue';
 import { $tr } from 'boot/custom';
-import i18nConfig from '../../translation/config'
+import i18nConfig from '../../translation/config';
 
-const booleanFilterOptions = [$tr("admin.eventRegistrations.all"), $tr("admin.eventRegistrations.yes"), $tr("admin.eventRegistrations.no")];
+const booleanFilterOptions = [$tr('admin.eventRegistrations.all'), $tr('admin.eventRegistrations.yes'), $tr('admin.eventRegistrations.no')];
 
 interface FilterObject {
   role: Role | null;
@@ -113,6 +112,7 @@ export default defineComponent({
       'eventRegistrations',
     ]),
     registrations(): EventRegistration[] {
+      console.log(this.$store.getters['eventsRegistrations/eventRegistrations'](this.eventId));
       // eslint-disable-next-line max-len
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       return <EventRegistration[]> this.$store.getters['eventsRegistrations/eventRegistrations'](this.eventId);
@@ -122,66 +122,62 @@ export default defineComponent({
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       return <Event> this.$store.getters['events/event'](this.eventId);
     },
-    roles(): Role[] {
-      const roles: Role[] = (Object.values(this.registrations))
-        .map((item) => item.role);
-      const idsOnly = roles.map((item) => item.id);
-
-      return [
-        ...roles.filter((item, index) => idsOnly.indexOf(item.id) === index),
-      ];
-    }
     applicableRoles(): Role[] {
       if (!this.registrations) {
         return [];
       }
 
-      let itemOrganizer = {
+      const roles: Role[] = (Object.values(this.registrations))
+        .map((item) => item.role);
+      const idsOnly = roles.map((item) => item.id);
+
+      const itemOrganizer = {
+        id: 4,
+        icon: '',
+        name: {
           id: 4,
-          icon: '',
-          name: {
-            id: 4,
-            created_at: '',
-            updated_at: '',
-          },
           created_at: '',
           updated_at: '',
-        };
+        },
+        created_at: '',
+        updated_at: '',
+      };
         // 'Organizer' in different languages
-        for (const lang in i18nConfig.languages) {
-          itemOrganizer.name[lang] = this.$tr("tournament.types.organizer", null, false, lang);
-        }
+      for (const lang in i18nConfig.languages) {
+        itemOrganizer.name[lang] = this.$tr('tournament.types.organizer', null, false, lang);
+      }
 
-        return [
-          itemOrganizer,
-          ...roles()
-        ]
-
+      return [
+        ...roles.filter((item, index) => idsOnly.indexOf(item.id) === index),
+        itemOrganizer
+      ];
     },
     uniqueRoles(): Role[] {
       if (!this.registrations) {
         return [];
       }
 
+      const roles: Role[] = (Object.values(this.registrations))
+        .map((item) => item.role);
+      const idsOnly = roles.map((item) => item.id);
+
       // Filter out only unique roles
-      let itemAll = {
+      const itemAll = {
+        id: 0,
+        icon: '',
+        name: {
           id: 0,
-          icon: '',
-          name: {
-            id: 0,
-            created_at: '',
-            updated_at: '',
-          },
           created_at: '',
           updated_at: '',
-        };
+        },
+      };
         // 'All' keyword in different languages
-        for (const lang in i18nConfig.languages) {
-          itemAll.name[lang] = this.$tr("all", null, true, lang);
-        }
+      for (const lang in i18nConfig.languages) {
+        itemAll.name[lang] = this.$tr('all', null, true, lang);
+      }
       return [
         itemAll,
-        ...roles()
+        ...roles.filter((item, index) => idsOnly.indexOf(item.id) === index),
       ];
     },
     eventId(): number {
@@ -210,6 +206,7 @@ export default defineComponent({
       roleFilterModel: null,
       accommodationFilterModel: null,
       mealsFilterModel: null,
+      participantRole: null,
       booleanFilterOptions,
       columns: [{
         name: 'surname', label: this.$tr('admin.eventRegistrations.labels.surname'), field: (row: EventRegistration) => row.person.surname, sortable: true, align: 'left',
