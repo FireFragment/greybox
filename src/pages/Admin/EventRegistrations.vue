@@ -76,7 +76,7 @@
               {{ props.value }}
             </q-tooltip>
           </q-td>
-        </template>
+        </template> 
       </q-table>
     </div>
   </q-page>
@@ -88,8 +88,10 @@ import { mapState } from 'vuex';
 import { Event, EventRegistration } from 'src/types/event';
 import { Role } from 'src/types/role';
 import { defineComponent } from 'vue';
+import { $tr } from 'boot/custom';
+import i18nConfig from '../../translation/config'
 
-const booleanFilterOptions = ['Vše', 'Ano', 'Ne'];
+const booleanFilterOptions = [$tr("admin.eventRegistrations.all"), $tr("admin.eventRegistrations.yes"), $tr("admin.eventRegistrations.no")];
 
 interface FilterObject {
   role: Role | null;
@@ -123,8 +125,7 @@ export default defineComponent({
       const idsOnly = roles.map((item) => item.id);
 
       // Filter out only unique roles
-      return [
-        {
+      let returnObj = {
           id: 0,
           icon: '',
           name: {
@@ -136,7 +137,14 @@ export default defineComponent({
           },
           created_at: '',
           updated_at: '',
-        },
+        };
+        // 'All' keyword in different languages
+        for (const lang in i18nConfig.languages) {
+          returnObj.name[lang] = this.$tr("all", null, true, lang);
+        }
+
+      return [
+        returnObj,
         ...roles.filter((item, index) => idsOnly.indexOf(item.id) === index),
       ];
     },
@@ -180,7 +188,7 @@ export default defineComponent({
       }, {
         name: 'accommodation', label: this.$tr('admin.eventRegistrations.labels.accommodation'), field: 'accommodation', format: outputBoolean, sortable: false, align: 'center',
       }, {
-        name: 'meals', label: this.$tr('admin.eventRegistrations.labels.sumealsrname'), field: 'meals', format: outputBoolean, sortable: false, align: 'center',
+        name: 'meals', label: this.$tr('admin.eventRegistrations.labels.meals'), field: 'meals', format: outputBoolean, sortable: false, align: 'center',
       }, {
         name: 'dietary_requirements', label: this.$tr('admin.eventRegistrations.labels.dietaryRequirements'), field: (row: EventRegistration) => row.person.dietary_requirement, format: emptyToHyphen, sortable: true, align: 'center',
       }],
@@ -195,8 +203,8 @@ export default defineComponent({
     filterTableRows: (rows: EventRegistration[], terms: FilterObject): EventRegistration[] => (
       rows.filter((item) => (
         (terms.role == null || terms.role.id === 0 || terms.role.id === item.role.id)
-        && (terms.accommodation == null || terms.accommodation === 'Vše' || ((terms.accommodation === 'Ano') === item.accommodation))
-        && (terms.meals == null || terms.meals === 'Vše' || ((terms.meals === 'Ano') === item.meals))
+        && (terms.accommodation == null || terms.accommodation === this.$tr('all') || ((terms.accommodation === this.$tr('yes')) === item.accommodation))
+        && (terms.meals == null || terms.meals === this.$tr('all') || ((terms.meals === this.$tr('yes')) === item.meals))
       ))
     ),
     roleRegistrationsCount(role: Role): number {
