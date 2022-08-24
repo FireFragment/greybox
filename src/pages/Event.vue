@@ -83,10 +83,6 @@ export default defineComponent({
       confirmData: null,
       showGroupModal: false,
       autofillData: null,
-      accommodationType: 'opt-out',
-      mealType: 'opt-out',
-      possibleDiets: [],
-
       dataToSubmit: [],
     };
   },
@@ -122,9 +118,6 @@ export default defineComponent({
       const event: Event = this.fullEvent(eventId);
 
       this.event = event;
-      this.accommodationType = event.accommodation;
-      this.mealType = event.meals;
-      this.possibleDiets = event.dietaryRequirements;
 
       // Can't register to event -> don't even load roles
       if (event.hard_deadline < this.now || !this.$auth.isLoggedIn()) {
