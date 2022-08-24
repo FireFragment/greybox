@@ -1,6 +1,6 @@
 <template>
   <!-- Individual or group -->
-  <pick-type
+  <picking-buttons
     next-route="event-pick-role"
     name="type"
     :values="[{
@@ -15,15 +15,15 @@
   />
 </template>
 
-<script type="ts">
+<script lang="ts">
 import { defineComponent } from 'vue';
-import pickType from '../../components/Event/PickingButtons.vue';
+import pickingButtons from '../../components/Event/PickingButtons.vue';
 
 export default defineComponent({
-  name: 'PickTypePage',
+  name: 'PickType',
 
   components: {
-    pickType,
+    pickingButtons,
   },
 });
 </script>

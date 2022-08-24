@@ -52,7 +52,7 @@ const routes: RouteRecordRaw[] = [
           meta: {
             translationName: 'event',
           },
-          component: () => import('pages/Event/PickType.vue'),
+          component: () => import('pages/Event/PickRole.vue'),
           children: [
             {
               path: `:role(${eventRoles(CZroutes)})`,

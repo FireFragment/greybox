@@ -41,7 +41,7 @@
       </div>
     </div>
 
-    <router-view v-else />
+    <router-view v-else :event-id="event?.id" />
   </q-page>
 </template>
 
@@ -134,9 +134,6 @@ export default defineComponent({
       await this.$store.dispatch('roles/load');
 
       this.$bus.$emit('fullLoader', false)
-
-      // TODO - hodit do pick roles a přemapovat tam
-      // console.log(this.$store.getters['roles/eventRoles'](eventId));
     },
 
     submitTeamForm(people, teamName, teamId) {
