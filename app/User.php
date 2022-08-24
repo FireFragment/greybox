@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 
+const ORGANIZER_ROLE_ID = 4; // TODO: vyřešit lépe
+
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
     use Authenticatable, Authorizable, HasFactory;
@@ -73,7 +75,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $this->hasMany(\App\Models\Token::class, 'user', 'id');
     }
 
-    public function setRole() {
+    public function setRole()
+    {
         $this->role = 'none';
         if ($this->isAdmin()) $this->role = 'admin';
         return $this->role;
@@ -91,6 +94,23 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'valid_until' => new \DateTime('+ 24 hours')
         ]);
         return $apiToken;
+    }
+
+    public function getOrganizedEventsIds(): array
+    {
+        $person = $this->person()->first();
+        if (empty($person))
+        {
+            return [];
+        }
+        $registrations = $person->registrations()->where('role', ORGANIZER_ROLE_ID)->get();
+
+        $organizedEventsIds = array();
+        foreach ($registrations as $registration)
+        {
+            $organizedEventsIds[] = $registration->event()->first()->id;
+        }
+        return $organizedEventsIds;
     }
 
     /**

@@ -51,6 +51,7 @@ class UserController extends Controller
             $apiToken = $user->setApiToken();
             $user->setRole(); // TODO: vyřešit elegantněji
             $user->apiToken = $apiToken;
+            $user->organizedEventsIds = $user->getOrganizedEventsIds();
 
             return response()->json($user, 200)
                 ->header('Authorization', 'Bearer '.$apiToken)
