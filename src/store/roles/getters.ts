@@ -30,4 +30,4 @@ export const eventRoles: Getter<RolesState, State> = (
 
 export const roleFromSlug = (state: RolesState) => (
   slug: string,
-): Role | undefined => state.roles.find((r: Role) => $tr(r.slug) === slug);
+): Role | undefined => state.roles.find((r: Role) => $tr(r.slug, null, false, 'cs') === slug || $tr(r.slug, null, false, 'en') === slug);

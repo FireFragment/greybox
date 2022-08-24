@@ -45,7 +45,7 @@ export const $tr = function (
     tm,
   } = i18n.global;
   if (typeof key === 'object') {
-    let activeLocale = <keyof TranslatedString>(locale || i18nConfig.default);
+    let activeLocale = <keyof TranslatedString>(lang ?? (locale || i18nConfig.default));
 
     if (!key || !key[activeLocale]) return '';
 
