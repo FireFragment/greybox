@@ -3,7 +3,7 @@ import { RolesState } from 'src/store/roles/state';
 import { Getter } from 'vuex';
 import { State } from 'src/store';
 import { EventFull, EventPrice } from 'src/types/event';
-import { $isPDS, $tr } from 'boot/custom';
+import { $isPDS, $slugTranslation, $tr } from 'boot/custom';
 
 export const role = (state: RolesState) => (id: number): Role | undefined => state.roles
   .find((item) => (item.id === id));
@@ -23,15 +23,18 @@ export const eventRoles: Getter<RolesState, State> = (
 
   // Debater role is present -> push team role
   if (!isIndividual && result.find((r: Role) => r.id === 1)) {
+    const teamName = {
+      id: Infinity,
+      created_at: '',
+      updated_at: '',
+      cs: <string>$tr('event.types.team', null, false, 'cs'),
+      en: <string>$tr('event.types.team', null, false, 'en'),
+    };
+
     result.unshift({
       id: Infinity,
-      name: {
-        id: Infinity,
-        created_at: '',
-        updated_at: '',
-        cs: <string>$tr('event.types.team', null, false, 'cs'),
-        en: <string>$tr('event.types.team', null, false, 'en'),
-      },
+      name: teamName,
+      slug: $slugTranslation(teamName),
       icon: 'users',
       created_at: '',
       updated_at: '',

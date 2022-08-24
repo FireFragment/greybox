@@ -1,6 +1,6 @@
 import { Mutation } from 'vuex';
 import { RoleRaw } from 'src/types/role';
-import { $slug } from 'boot/custom';
+import { $slugTranslation } from 'boot/custom';
 import { RolesState } from './state';
 
 export const startLoadingRoles: Mutation<RolesState> = (state) => {
@@ -10,10 +10,7 @@ export const startLoadingRoles: Mutation<RolesState> = (state) => {
 export const setRoles: Mutation<RolesState> = (state, value: RoleRaw[]) => {
   state.roles = value.map((role) => ({
     ...role,
-    slug: {
-      cs: $slug(role.name.cs),
-      en: $slug(role.name.en),
-    },
+    slug: $slugTranslation(role.name),
   }));
   state.loaded = true;
   state.loading = false;

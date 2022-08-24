@@ -13,6 +13,7 @@ import { i18n, TranslatedString } from 'boot/i18n';
 import i18nConfig from '../translation/config';
 import store, { State } from '../store';
 import { Store } from 'vuex';
+import assert from 'assert';
 
 export type TranslationValue = TranslateResult | LocaleMessageValue<VueMessageType> | {};
 
@@ -117,6 +118,12 @@ export const $slug = (original: string): string => {
     .replace(/-+$/, ''); // Trim - from end of text
 };
 
+export const $slugTranslation = (original: TranslatedString): TranslatedString => ({
+  ...(original as object),
+  cs: $slug(original.cs),
+  en: $slug(original.en),
+});
+
 export const $isPDS = process.env.IS_PDS === 'true';
 
 export const $isPride = (new Date()).getMonth() == 5;
@@ -216,6 +223,8 @@ export default boot(({ app }) => {
       // Create slug from string
       // Source: https://codepen.io/tatthien/pen/xVBxZQ
       $slug,
+
+      $slugTranslation,
 
       $makeIdObject,
 
