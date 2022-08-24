@@ -92,12 +92,12 @@
 <script lang="ts">
 
 import { mapState } from 'vuex';
-import { Event, EventRegistration } from 'src/types/event';
+import { EventFull, EventRegistration } from 'src/types/event';
 import { Role } from 'src/types/role';
 import { defineComponent } from 'vue';
 import { $tr } from 'boot/custom';
 import { getAllTranslations, TranslatedString } from 'boot/i18n';
-import i18nConfig, { langs } from '../../translation/config';
+import { langs } from '../../translation/config';
 
 const booleanFilterOptions = [$tr('admin.eventRegistrations.all'), $tr('admin.eventRegistrations.yes'), $tr('admin.eventRegistrations.no')];
 
@@ -118,10 +118,10 @@ export default defineComponent({
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       return <EventRegistration[]> this.$store.getters['eventsRegistrations/eventRegistrations'](this.eventId);
     },
-    event(): Event {
+    event(): EventFull {
       // eslint-disable-next-line max-len
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      return <Event> this.$store.getters['events/event'](this.eventId);
+      return <EventFull> this.$store.getters['events/fullEvent'](this.eventId);
     },
     applicableRoles(): Role[] {
       return [
@@ -160,7 +160,14 @@ export default defineComponent({
     },
   },
   async created() {
+    // Not cached -> load from API
+    this.$bus.$emit('fullLoader', true);
+
+    await this.$store.dispatch('events/loadFull', this.eventId);
+    await this.$store.dispatch('roles/load');
     await this.$store.dispatch('eventsRegistrations/load', this.eventId);
+
+    this.$bus.$emit('fullLoader', false);
   },
   data() {
     const outputBoolean = (val: boolean) => (val ? '✅' : '❌');
