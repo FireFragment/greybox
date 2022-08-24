@@ -55,6 +55,11 @@ class Person extends Model implements AuthenticatableContract, AuthorizableContr
         return $this->hasMany(Registration::class, 'person', 'id');
     }
 
+    public function dietaryRequirement()
+    {
+        return $this->belongsTo(DietaryRequirement::class, 'dietary_requirement', 'id');
+    }
+
     /**
      * @return string
      */
