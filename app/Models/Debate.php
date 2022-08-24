@@ -47,61 +47,40 @@ class Debate extends BaseModel
         return $this->teams()->where(['side' => 'n'])->first();
     }
 
-    public static function parseOldGreybox(string $text, bool $adjudicator): array
+    public static function prepareOldGreyboxData(array $lines, bool $adjudicator): array
     {
-        $text = preg_split('/<table>/m', $text);
-        $lines = preg_split('/\<tr\>/', $text[1]);
-        array_shift($lines);
-        array_shift($lines);
-
         $debates = array();
         foreach ($lines as $line)
         {
-            $fields = preg_split('/<\/td>/m', $line);
-            $id = substr(substr($fields[5], 42), 0, -13);
-            $result = ucfirst(substr($fields[4], 4));
-            $win = null;
-            $canUploadBallot = false;
-            switch (substr($result, 0, 3))
+            $canUploadBallot = ('r' === $line->role && $adjudicator); // if adjudicator in debate and logged in
+            if ('r' === $line->role)
             {
-                case 'Aff':
-                case 'Neg':
-                    $result = strtoupper($result);
-                    $canUploadBallot = $adjudicator;
-                    break;
-                case 'Vyh':
-                    $win = true;
-                    break;
-                case 'Pro':
-                    $win = false;
-                    break;
+                $role = 'rozhodčí';
+                $win = null;
             }
-            $role = substr($fields[6], 4);
-            if ('organizátor' !== $role) {
-                $debates[] = array(
-                    'oldGreyboxId' => $id,
-                    'date' => substr($fields[0], 4),
-                    'affirmativeTeam' => self::removeLink($fields[1]),
-                    'negativeTeam' => self::removeLink($fields[2]),
-                    'motion' => ucfirst(self::removeLink($fields[3])),
-                    'result' => $result,
-                    'link' => 'https://debatovani.cz/greybox/?page=debata&debata_id=' . $id,
-                    'role' => $role,
-                    'score' => substr($fields[7], 4),
-                    'win' => $win,
-                    'ballots' => self::addBallots($id),
-                    'canUploadBallot' => $canUploadBallot
-                );
+            else
+            {
+                $role = strtoupper($line->role);
+                $win = ('A' === substr($role,0,1)) ? $line->vitez : !$line->vitez;
             }
+            $result = ($line->vitez ? 'AFF ' : 'NEG ') . ($line->debata_presvedcive ? '3:0' : '2:1');
+
+            $debates[] = array(
+                'oldGreyboxId' => $line->debata_ID,
+                'date' => $line->datum,
+                'affirmativeTeam' => $line->afirmace,
+                'negativeTeam' => $line->negace,
+                'motion' => $line->tx_short,
+                'result' => $result,
+                'link' => 'https://debatovani.cz/greybox/?page=debata&debata_id=' . $line->debata_ID,
+                'role' => $role,
+                'win' => $win,
+                'ballots' => self::addBallots($line->debata_ID),
+                'canUploadBallot' => $canUploadBallot
+            );
         }
 
         return $debates;
-    }
-
-    private static function removeLink(string $text): string
-    {
-        $text = preg_split('/>/m', $text);
-        return htmlspecialchars_decode(substr($text[2], 0, -3));
     }
 
     public static function groupByMonth(array $debates): array
@@ -145,7 +124,7 @@ class Debate extends BaseModel
                 return ['cs' => 'říjen', 'en' => 'October'];
             case 11:
                 return ['cs' => 'listopad', 'en' => 'November'];
-            case 12:
+            default:
                 return ['cs' => 'prosinec', 'en' => 'December'];
         }
     }

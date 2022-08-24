@@ -68,4 +68,12 @@ class OldGreyboxService
         return $this->getDataFromOldGreybox($url);
     }
 
+    public function getPastDebates(int $personId)
+    {
+        $url = $this->baseUrl;
+        $url .= '&past_debates=1';
+        $url .= '&person_id=' . $personId;
+
+        return $this->getDataFromOldGreybox($url);
+    }
 }
