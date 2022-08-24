@@ -179,7 +179,7 @@ class RegistrationController extends FakturoidController
                 $invoice = null;
             }
 
-            if (0 < $registration->countTeams()) {
+            if (0 < $registration->countTeams() && isset($event->competition)) {
                 $debatersInTeams = $registration->getDebatersInTeamsRegistrations();
                 event(new TeamsRegisteredEvent($event->competition, $debatersInTeams, $event->finals));
             }
