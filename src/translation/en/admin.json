@@ -2,6 +2,23 @@
   "title": "Admin",
   "eventRegistrations": {
     "link": "Tournaments registrations",
-    "chooseEvent" : "Choose event"
+    "chooseEvent" : "Choose event",
+    "overview": {
+      "title": "Number of registrations"
+    },
+    "noData": "No registrations found",
+    "all": "All",
+    "yes": "Yes",
+    "no": "No",
+    "labels": {
+        "surname": "Surname",
+        "name": "Name",
+        "role": "Role",
+        "team": "Team",
+        "note": "Note",
+        "accommodation": "Accommodation",
+        "meals": "Meals",
+        "dietaryRequirements": "Dietary Requirements"
+    }
   }
 }

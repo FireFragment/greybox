@@ -1,10 +1,10 @@
 <template>
   <q-page padding>
-    <h1 class="text-center text-h4">{{ event ? $tr(event.name) : '-' }}</h1>
+    <h1 class="text-center text-h4">{{ event ? $tr(event.name, null, false) : '-' }}</h1>
     <div class="q-pa-md" style="max-width: 350px">
       <q-card>
         <q-card-section>
-          <div class="text-subtitle2">Počet přihlášek</div>
+          <div class="text-subtitle2">{{ $tr("overview.title") }}</div>
         </q-card-section>
         <q-card-section class="q-pa-none">
           <q-list bordered separator>
@@ -13,7 +13,7 @@
               :key="role.id"
             >
               <q-item-section>
-                <q-item-label caption>{{ $tr(role.name) }}</q-item-label>
+                <q-item-label caption>{{ $tr(role.name, null, false) }}</q-item-label>
                 <q-item-label>{{ roleRegistrationsCount(role) }}</q-item-label>
               </q-item-section>
             </q-item>
@@ -28,7 +28,7 @@
         :binary-state-sort="true"
         sort-by="surname"
         :pagination="initialPagination"
-        no-data-label="Žádné přihlášky nenalezeny"
+        :no-data-label="$tr('noData')"
         row-key="id"
         :filter="filterObject"
         :filter-method="filterTableRows"
@@ -38,7 +38,7 @@
             <q-select borderless v-model="roleFilterModel"
                       :options="uniqueRoles"
                       option-value="id"
-                      :option-label="item => $tr(item.name)"
+                      :option-label="item => $tr(item.name, null, false)"
                       :label="props.col.label" :dense="true" :options-dense="true"
                       class="roles-filter" popup-content-class="table-filter-options">
               <template v-slot:prepend>
@@ -161,29 +161,28 @@ export default defineComponent({
   data() {
     const outputBoolean = (val: boolean) => (val ? '✅' : '❌');
     const emptyToHyphen = (val: string | null) => (val ?? '-');
-
     return {
+      translationPrefix: 'admin.eventRegistrations.',
       roleFilterModel: null,
       accommodationFilterModel: null,
       mealsFilterModel: null,
       booleanFilterOptions,
-      // TODO - translate labels
       columns: [{
-        name: 'surname', label: 'Příjmení', field: (row: EventRegistration) => row.person.surname, sortable: true, align: 'left',
+        name: 'surname', label: this.$tr('admin.eventRegistrations.labels.surname'), field: (row: EventRegistration) => row.person.surname, sortable: true, align: 'left',
       }, {
-        name: 'name', label: 'Jméno', field: (row: EventRegistration) => row.person.name, sortable: true, align: 'left',
+        name: 'name', label: this.$tr('admin.eventRegistrations.labels.name'), field: (row: EventRegistration) => row.person.name, sortable: true, align: 'left',
       }, {
-        name: 'role', label: 'Role', field: (row: EventRegistration) => row.role.name, format: this.$tr, sortable: false, align: 'center',
+        name: 'role', label: this.$tr('admin.eventRegistrations.labels.role'), field: (row: EventRegistration) => row.role.name, format: this.$tr, sortable: false, align: 'center',
       }, {
-        name: 'team', label: 'Tým', field: (row: EventRegistration) => row.team?.name ?? '-', sortable: true, align: 'left',
+        name: 'team', label: this.$tr('admin.eventRegistrations.labels.team'), field: (row: EventRegistration) => row.team?.name ?? '-', sortable: true, align: 'left',
       }, {
-        name: 'note', label: 'Poznámka', field: 'note', format: emptyToHyphen, sortable: true, align: 'left',
+        name: 'note', label: this.$tr('admin.eventRegistrations.labels.note'), field: 'note', format: emptyToHyphen, sortable: true, align: 'left',
       }, {
-        name: 'accommodation', label: 'Ubytování', field: 'accommodation', format: outputBoolean, sortable: false, align: 'center',
+        name: 'accommodation', label: this.$tr('admin.eventRegistrations.labels.accommodation'), field: 'accommodation', format: outputBoolean, sortable: false, align: 'center',
       }, {
-        name: 'meals', label: 'Jídlo', field: 'meals', format: outputBoolean, sortable: false, align: 'center',
+        name: 'meals', label: this.$tr('admin.eventRegistrations.labels.sumealsrname'), field: 'meals', format: outputBoolean, sortable: false, align: 'center',
       }, {
-        name: 'dietary_requirements', label: 'Jídlo - omezení', field: (row: EventRegistration) => row.person.dietary_requirement, format: emptyToHyphen, sortable: true, align: 'center',
+        name: 'dietary_requirements', label: this.$tr('admin.eventRegistrations.labels.dietaryRequirements'), field: (row: EventRegistration) => row.person.dietary_requirement, format: emptyToHyphen, sortable: true, align: 'center',
       }],
       initialPagination: {
         sortBy: 'surname',

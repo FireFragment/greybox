@@ -1,4 +1,5 @@
 import { boot } from 'quasar/wrappers';
+import { Quasar } from 'quasar';
 import { createI18n } from 'vue-i18n';
 import { DateTime } from 'src/types/general';
 import {
@@ -53,6 +54,18 @@ export const switchLocale = async (locale: string): Promise<void> => {
         preferred_locale: locale,
       },
     });
+  }
+
+  // change quasar language (for components labels etc)
+  const langIso = locale === 'en' ? `${locale}-US` : locale;
+  try {
+    await import(
+      `quasar/lang/${langIso}`
+    ).then((lang) => {
+      Quasar.lang.set(lang.default);
+    });
+  } catch (err) {
+    console.error('Quasar language not found');
   }
 
   // current URL
