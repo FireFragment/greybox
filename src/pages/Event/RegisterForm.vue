@@ -1,0 +1,15 @@
+<template>
+  <div>
+    Register
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent } from 'vue';
+
+export default defineComponent({
+  name: 'RegisterForm',
+
+  components: {},
+});
+</script>

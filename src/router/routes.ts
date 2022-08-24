@@ -47,38 +47,40 @@ const routes: RouteRecordRaw[] = [
         }, {
           path: `:type(${eventTypes(CZroutes)})`,
           alias: `:type(${eventTypes(ENroutes)})`,
-          name: 'event-pick-role',
-          meta: {
-            translationName: 'event',
-          },
-          component: () => import('pages/Event/PickRole.vue'),
-          children: [
-            {
-              path: ':role',
-              alias: ':role',
-              name: 'event-register-form',
-              meta: {
-                translationName: 'event',
-              },
-              component: () => import('pages/Event/PickType.vue'),
-            }, {
-              path: `${<string>(<Routes>CZroutes.eventParams).checkout}`,
-              alias: `${<string>(<Routes>ENroutes.eventParams).checkout}`,
-              name: 'event-checkout',
-              meta: {
-                translationName: 'event',
-              },
-              component: () => import('pages/Event/PickType.vue'),
-            }, {
-              path: `${<string>(<Routes>CZroutes.eventParams).registered}`,
-              alias: `${<string>(<Routes>ENroutes.eventParams).registered}`,
-              name: 'event-registered',
-              meta: {
-                translationName: 'event',
-              },
-              component: () => import('pages/Event/PickType.vue'),
+          component: RouterView,
+          children: [{
+            path: '',
+            alias: '',
+            name: 'event-pick-role',
+            meta: {
+              translationName: 'event',
             },
-          ],
+            component: () => import('pages/Event/PickRole.vue'),
+          }, {
+            path: ':role',
+            alias: ':role',
+            name: 'event-register-form',
+            meta: {
+              translationName: 'event',
+            },
+            component: () => import('pages/Event/RegisterForm.vue'),
+          }, {
+            path: `${<string>(<Routes>CZroutes.eventParams).checkout}`,
+            alias: `${<string>(<Routes>ENroutes.eventParams).checkout}`,
+            name: 'event-checkout',
+            meta: {
+              translationName: 'event',
+            },
+            component: () => import('pages/Event/PickType.vue'),
+          }, {
+            path: `${<string>(<Routes>CZroutes.eventParams).registered}`,
+            alias: `${<string>(<Routes>ENroutes.eventParams).registered}`,
+            name: 'event-registered',
+            meta: {
+              translationName: 'event',
+            },
+            component: () => import('pages/Event/PickType.vue'),
+          }],
         }],
       },
 
