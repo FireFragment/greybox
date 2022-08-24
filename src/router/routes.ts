@@ -41,27 +41,45 @@ const routes: RouteRecordRaw[] = [
           path: '',
           alias: '',
           name: 'event-pick-type',
+          meta: {
+            translationName: 'event',
+          },
           component: () => import('pages/Event/PickType.vue'),
         }, {
           path: `:type(${eventTypes(CZroutes)})`,
           alias: `:type(${eventTypes(ENroutes)})`,
           name: 'event-pick-role',
+          meta: {
+            translationName: 'event',
+          },
           component: () => import('pages/Event/Debater.vue'),
-        }, {
-          path: `:type(${eventTypes(CZroutes)})/:role(${eventRoles(CZroutes)})`,
-          alias: `:type(${eventTypes(ENroutes)})/:role(${eventRoles(ENroutes)})`,
-          name: 'event-register-form',
-          component: () => import('pages/Event/Debater.vue'),
-        }, {
-          path: `:type(${eventTypes(CZroutes)})/${<string>(<Routes>CZroutes.eventParams).checkout}`,
-          alias: `:type(${eventTypes(ENroutes)})/${<string>(<Routes>ENroutes.eventParams).checkout}`,
-          name: 'event-checkout',
-          component: () => import('pages/Event/Debater.vue'),
-        }, {
-          path: `:type(${eventTypes(CZroutes)})/${<string>(<Routes>CZroutes.eventParams).registered}`,
-          alias: `:type(${eventTypes(ENroutes)})/${<string>(<Routes>ENroutes.eventParams).registered}`,
-          name: 'event-registered',
-          component: () => import('pages/Event/Debater.vue'),
+          children: [
+            {
+              path: `:role(${eventRoles(CZroutes)})`,
+              alias: `:role(${eventRoles(ENroutes)})`,
+              name: 'event-register-form',
+              meta: {
+                translationName: 'event',
+              },
+              component: () => import('pages/Event/Debater.vue'),
+            }, {
+              path: `${<string>(<Routes>CZroutes.eventParams).checkout}`,
+              alias: `${<string>(<Routes>ENroutes.eventParams).checkout}`,
+              name: 'event-checkout',
+              meta: {
+                translationName: 'event',
+              },
+              component: () => import('pages/Event/Debater.vue'),
+            }, {
+              path: `${<string>(<Routes>CZroutes.eventParams).registered}`,
+              alias: `${<string>(<Routes>ENroutes.eventParams).registered}`,
+              name: 'event-registered',
+              meta: {
+                translationName: 'event',
+              },
+              component: () => import('pages/Event/Debater.vue'),
+            },
+          ],
         }],
       },
 

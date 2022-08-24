@@ -1,5 +1,5 @@
 <template>
-  <q-page padding v-if="event">
+  <q-page padding v-if="event" class="page-event">
     <!-- Header card -->
     <HeaderCard :event="event" :smaller="typeof role === 'number'" />
 
@@ -245,10 +245,6 @@ export default defineComponent({
       if (phase === 'role') {
         this.role = this.autofillData = this.checkout = null;
       } else if (phase === 'checkout') this.role = this.checkout = true;
-    },
-
-    goBack() {
-      window.history.back();
     },
 
     // Registration sent

@@ -7,18 +7,18 @@
       :label="btn.label"
       :icon="btn.icon"
       :color="btn.color"
-      @click="$emit('selected', name, btn.value)"
+      @click="selectType(btn.value)"
       :auto-size="options.length > 4"
     />
     <div class="col" v-if="values.length < 4"></div>
   </div>
 </template>
 
-<script>
-/* eslint-disable */
-import pickingButton from './PickingButton';
+<script lang="ts">
+import { defineComponent } from 'vue';
+import pickingButton from './PickingButton.vue';
 
-export default {
+export default defineComponent({
   props: {
     values: [Array, Object],
     name: String,
@@ -33,5 +33,19 @@ export default {
     },
   },
   name: 'PickType',
-};
+  methods: {
+    selectType(type: string) {
+      // TODO - redirect to event-pick-role
+      console.log(type, this.name, this.$route);
+
+      void this.$router.push({
+        name: 'event-pick-role',
+        params: {
+          ...this.$route.params,
+          type,
+        },
+      });
+    },
+  },
+});
 </script>

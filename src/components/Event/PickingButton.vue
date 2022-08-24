@@ -16,8 +16,9 @@
 
 <script lang="ts">
 import { TranslatedString } from 'boot/i18n';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   props: {
     label: [String, Object as () => TranslatedString],
     icon: String,
@@ -25,5 +26,5 @@ export default {
     autoSize: Boolean,
   },
   name: 'PickingButton',
-};
+});
 </script>

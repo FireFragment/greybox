@@ -1,5 +1,5 @@
 <template>
-  <q-page padding v-if="event" class="page-event">
+  <div v-if="event">
     <!-- After deadline -->
     <div v-if="event.hard_deadline < now" class="row justify-center">
       <div class="col-12 col-md-4">
@@ -12,37 +12,8 @@
       </div>
     </div>
 
-    <!-- User not logged in -->
-    <div v-else-if="!$auth.isLoggedIn()" class="row justify-center">
-      <div class="col-12 col-md-6">
-        <q-banner class="bg-primary text-white q-mt-xl">
-          <template v-slot:avatar>
-            <q-icon name="fas fa-info" color="white" />
-          </template>
-          {{ $tr('errors.auth') }}
-          <template v-slot:action>
-            <q-btn
-              flat
-              color="white"
-              class="hidden-link"
-              :label="$tr('auth.login.link', null, false)"
-              :to="$path('auth.login')"
-            />
-            <q-btn
-              flat
-              color="white"
-              class="hidden-link"
-              :label="$tr('auth.signUp.link', null, false)"
-              :to="$path('auth.signUp')"
-            />
-          </template>
-        </q-banner>
-      </div>
-    </div>
-
     <!-- Individual or group -->
     <pick-type
-      v-else-if="!type"
       name="type"
       :values="[
         {
@@ -59,7 +30,7 @@
         }
       ]"
     />
-  </q-page>
+  </div>
 </template>
 
 <script>

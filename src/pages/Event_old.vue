@@ -363,10 +363,6 @@ export default defineComponent({
       } else if (phase === 'checkout') this.role = this.checkout = true;
     },
 
-    goBack() {
-      window.history.back();
-    },
-
     // Registration sent
     checkoutConfirmed(data) {
       this.confirmData = data;
