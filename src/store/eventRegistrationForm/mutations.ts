@@ -9,3 +9,9 @@ export const addEventRegistration: Mutation<EventRegistrationFormState> = (
 ) => {
   state.dataToSubmit.push(value);
 };
+
+export const removeEventRegistration: Mutation<EventRegistrationFormState> = (
+  state, index: number,
+) => {
+  state.dataToSubmit.splice(index, 1);
+};

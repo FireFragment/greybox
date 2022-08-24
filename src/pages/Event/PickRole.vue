@@ -13,8 +13,12 @@
       type="reset"
       color="blue-9"
       class="q-mt-xl float-right"
+      :to="{
+        /* TODO - translate route to use alias ($tr() on paths maybe) */
+        name: 'event-checkout',
+        params: this.$route.params,
+      }"
     />
-    <!-- TODO - go to checkout -->
   </div>
 </template>
 
