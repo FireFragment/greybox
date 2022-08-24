@@ -1,9 +1,9 @@
 <template>
   <!-- Individual or group -->
   <picking-buttons
-    next-route="event-pick-role"
+    next-route="event-register-form"
     class="picking-role"
-    name="type"
+    name="role"
     :values="values"
   />
 </template>
@@ -32,12 +32,13 @@ export default defineComponent({
     values(): PickingButtonOptions[] {
       // eslint-disable-next-line max-len
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      return (<Role[]> this.$store.getters['roles/eventRoles'](this.eventId))
-        .map((role: Role) => ({
-          icon: role.icon,
-          value: role.id,
-          label: role.name,
-        }));
+      return (<Role[]> this.$store.getters['roles/eventRoles'](
+        this.eventId, this.$route.params.type === this.$tr('paths.eventParams.type.individual'),
+      )).map((role: Role) => ({
+        icon: role.icon,
+        value: role.id,
+        label: role.name,
+      }));
     },
   },
 });

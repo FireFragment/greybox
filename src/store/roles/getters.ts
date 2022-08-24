@@ -10,7 +10,7 @@ export const role = (state: RolesState) => (id: number): Role | undefined => sta
 
 export const eventRoles: Getter<RolesState, State> = (
   state: RolesState, _, __, rootGetters,
-) => (eventId: number): Role[] => {
+) => (eventId: number, isIndividual: boolean = true): Role[] => {
   // eslint-disable-next-line max-len
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
   const event: EventFull = rootGetters['events/fullEvent'](eventId);
@@ -22,7 +22,7 @@ export const eventRoles: Getter<RolesState, State> = (
   ));
 
   // Debater role is present -> push team role
-  if (result.find((r: Role) => r.id === 1)) {
+  if (!isIndividual && result.find((r: Role) => r.id === 1)) {
     result.unshift({
       id: Infinity,
       name: {
