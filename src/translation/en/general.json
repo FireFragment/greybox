@@ -9,6 +9,8 @@
   "downloadPersonalData": "Download personal data",
   "save": "Save",
   "error": "An error has occured, please try again later",
+  "loginNeeded": "To register for a debating event, you need to login to the registration system first.",
+  "noAccountYet": "Don't have an account yet? Sign up!",
   "confirmModal": {
     "title": "Confirm action",
     "confirm": "Confirm",

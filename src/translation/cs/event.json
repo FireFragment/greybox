@@ -76,16 +76,17 @@
     "ESL": "ESF (English as a Second Language)",
     "ENL": "ENL (English as a Native Language)",
     "schoolYear": "Školní rok",
-    "schoolYears": [
-      "6. třída / prima",
-      "7. třída / sekunda",
-      "8. třída / tercie",
-      "9. třída / kvarta",
-      "1. ročník SŠ / kvinta",
-      "2. ročník SŠ / sexta",
-      "3. ročník SŠ / septima",
-      "4. ročník SŠ / oktáva"
-    ]
+    "school_year": "Školní rok",
+    "schoolYears": {
+      "6": "6. třída / prima",
+      "7": "7. třída / sekunda",
+      "8": "8. třída / tercie",
+      "9": "9. třída / kvarta",
+      "10": "1. ročník SŠ / kvinta",
+      "11": "2. ročník SŠ / sexta",
+      "12": "3. ročník SŠ / septima",
+      "13": "4. ročník SŠ / oktáva"
+    }
   },
   "fieldNotes": {
     "id_number": "Vyplňte prosím, pokud již občanský průkaz máte.",

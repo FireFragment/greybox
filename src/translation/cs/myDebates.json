@@ -1,0 +1,22 @@
+{
+  "link": "Moje debaty",
+  "title": "Moje debaty",
+  "empty": "Prozatím nemáte žádné debaty. Pokud jste se nedávno registrovali, brzo se tady objeví.",
+  "cardRows": {
+    "date": "Datum",
+    "affirmatives": "Afirmace",
+    "negatives": "Negace",
+    "result": "Výsledek",
+    "showDetail": "Zobrazit detail debaty"
+  },
+  "cardButtons": {
+    "downloadBallot": "Stáhnout ballot",
+    "uploadBallot": "Nahrát ballot"
+  },
+  "uploadBallot": {
+    "uploading": "Ballot se nahrává",
+    "error": "Ballot se nepodařilo nahrát, zkuste to znovu",
+    "errorTooLarge": "Nahraný ballot je příliš velký, maximální velikost je {size}",
+    "success": "Ballot úspěšně nahrán"
+  }
+}

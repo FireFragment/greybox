@@ -1,3 +1,7 @@
+@media (min-width: $breakpoint-lg-min)
+	.q-layout-padding
+		padding: 16px
+
 .full-page-loader
 	position: fixed
 	left: 0
@@ -27,12 +31,15 @@
 .fade-enter, .fade-leave-to
 	opacity: 0
 
-main.q-page a
+main.q-page a:not(.q-item):not(.q-btn-item)
 	color: $primary
 	text-decoration: underline
 
 	&:hover
 		text-decoration: none
+
+.q-pagination a.q-btn[type=button]
+	text-decoration: none
 
 .dialog-medium
 	width: 1000px
@@ -65,6 +72,10 @@ main.q-page a
 
 .margin-center
 	margin: 0 auto
+
+.-q-mx-sm
+	margin-left: -8px
+	margin-right: -8px
 
 .hidden-link
 	text-decoration: none !important

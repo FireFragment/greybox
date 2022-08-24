@@ -1,16 +1,41 @@
 /* eslint-disable */
+import { TranslateResult, VueMessageType } from 'vue-i18n';
+import { LocaleMessageValue } from '@intlify/core-base';
+
 const Bugsnag = require('@bugsnag/js');
 const BugsnagPluginVue = require('@bugsnag/plugin-vue');
-import apiCall from '../api';
 import config from '../config';
+import { Notify } from 'quasar';
 
 const smartformModule = require('@smartform.cz/smartform');
 import { boot } from 'quasar/wrappers';
-import { i18n } from 'boot/i18n';
-import i18nConfig from '../translation/config.json';
+import { i18n, TranslatedString } from 'boot/i18n';
+import i18nConfig from '../translation/config';
+import store, { State } from '../store';
+import { Store } from 'vuex';
 
-export const $tr = function (key: string, options: Record<string, unknown> | null = null, usePrefix = true) {
-  // Translate object received from API
+export type TranslationValue = TranslateResult | LocaleMessageValue<VueMessageType> | {};
+
+export type InfiniteObject = {
+  [key: string]: string | number | undefined | null | InfiniteObject
+};
+
+export type DBValue = undefined | string | number | boolean | null | InfiniteObject | DBValue[];
+
+// Required for TypeScript to work with global properties
+declare module '@vue/runtime-core' {
+  interface ComponentCustomProperties {
+    $db: (key: any, value?: DBValue, personal?: boolean) => DBValue;
+    $flash: (message: string | TranslationValue, type?: string, icon?: string | undefined, timeout?: number) => Function;
+    $isPDS: boolean;
+    $path: (route: string) => string;
+    $tr: (key: string | TranslatedString, options?: Record<string, unknown> | null, usePrefix?: boolean) => TranslationValue;
+    $store: Store<State>
+  }
+}
+
+export const $tr = function (key: string, options: Record<string, unknown> | null = null, usePrefix: boolean = true): TranslationValue {
+  // Translate object received from APIimport { LocaleMessageValue } from '@intlify/core-base';
   const {
     locale,
     t,
@@ -18,7 +43,7 @@ export const $tr = function (key: string, options: Record<string, unknown> | nul
   } = i18n.global;
   if (typeof key === 'object') {
     // @ts-ignore
-    let activeLocale: string = locale || i18nConfig.default;
+    let activeLocale: cs | en = locale || i18nConfig.default;
 
     if (!key || !key[activeLocale]) return '';
 
@@ -38,11 +63,15 @@ export const $tr = function (key: string, options: Record<string, unknown> | nul
   return tm(key);
 };
 
-export const $path = function (route: string) {
+export const $path = function (route: string): string {
   return '/' + $tr(`paths.${route}`, null, false);
 };
 
-export const $flash = function (message: string, type: string = 'info', icon: string | null = null, timeout: number = 3500) {
+export const $flash = function (message: string | TranslationValue, type: string = 'info', icon: string | undefined = undefined, timeout: number = 3500): Function | undefined {
+  if (typeof message !== 'string') {
+    return;
+  }
+
   let color: string | undefined = undefined;
   if (type === 'success' || type === 'done') {
     color = 'green';
@@ -52,21 +81,42 @@ export const $flash = function (message: string, type: string = 'info', icon: st
     if (!icon) icon = 'times';
   }
 
-  // @ts-ignore
-  return this.$q.notify({
+  return Notify.create({
     color,
-    icon: icon ? 'fas fa-' + icon : null,
+    icon: icon ? 'fas fa-' + icon : undefined,
     message: message,
     html: true,
     position: 'top-right',
     timeout,
     closeBtn: '-',
   });
-}
+};
+
+export const $isPDS = process.env.IS_PDS === 'true';
+
+export const $isPride = (new Date()).getMonth() == 5;
+
+// A bit dirty
+if ($isPDS)
+  document.title = 'Prague Debate Spring';
+
+// Convert array of objects into object of objects (with IDs as keys)
+export const $makeIdObject = (array: any) => {
+  let result: Record<string | number, any> = {};
+
+  array.map((item: Record<string, string | number>) => {
+    result[item.id] = item;
+  });
+
+  return result;
+};
 
 export default boot(({ app }) => {
+  app.use(store);
+
   // $isPDS bool
-  app.config.globalProperties.$isPDS = process.env.IS_PDS === 'true';
+  app.config.globalProperties.$isPDS = $isPDS;
+  app.config.globalProperties.$isPride = $isPride;
 
   // Initialize SmartForms
   smartformModule.load();
@@ -90,6 +140,7 @@ export default boot(({ app }) => {
 
   // Mixins
   const DB_DELETION_CONSTANT = 'DELETE-THIS-DATABASE-ITEM'; // when DB item is set to this value, it will be deleted
+  let uuid = 0;
   app.mixin({
     data() {
       return {
@@ -97,6 +148,11 @@ export default boot(({ app }) => {
         env: process.env.FULL_ENV,
         DB_DEL: DB_DELETION_CONSTANT,
       };
+    },
+    // Generate unique ID for every component
+    beforeCreate: function () {
+      this.uuid = uuid.toString();
+      uuid += 1;
     },
     methods: {
       // Translation simplification
@@ -129,9 +185,6 @@ export default boot(({ app }) => {
         return 'hsl(' + h + ', ' + s + '%, ' + l + '%)';
       },
 
-      // API
-      $api: apiCall,
-
       // Flash
       $flash,
 
@@ -157,23 +210,14 @@ export default boot(({ app }) => {
           .replace(/-+$/, ''); // Trim - from end of text
       },
 
-      // Convert array of objects into object of objects (with IDs as keys)
-      $makeIdObject(array: any) {
-        let result: Record<string | number, any> = {};
-
-        array.map((item: Record<string, string | number>) => {
-          result[item.id] = item;
-        });
-
-        return result;
-      },
+      $makeIdObject,
 
       // Simple global database interface
 
       // @key: Index for the value to be stored under
       // @value: null = read value; undefined = delete value; other = set value
       // @personal: true = value will be uncached on logout
-      $db(key: any, value = null, personal: boolean = false) {
+      $db(key: string, value: DBValue = null, personal: boolean = false): DBValue {
         let dbKey = personal ? 'dbPersonal' : 'db';
 
         // Workaround for personal GET and DELETE
@@ -189,11 +233,16 @@ export default boot(({ app }) => {
 
         // Delete request
         if (value === DB_DELETION_CONSTANT) {
-          return delete app.config.globalProperties[dbKey][key];
+          delete app.config.globalProperties[dbKey][key];
+          return;
         }
 
         // Insert/update request
         return app.config.globalProperties[dbKey][key] = value;
+      },
+
+      $dbFlushPersonal(): void {
+        app.config.globalProperties['dbPersonal'] = {};
       },
 
       // Show basic confirm dialog
@@ -216,30 +265,6 @@ export default boot(({ app }) => {
       },
     },
   });
-
-  /*
-  app.config.globalProperties.$auth = {
-    check: () => true,
-    user: () => ({
-      id: 5,
-      username: 'kuxik009@gmail.com',
-    }),
-    token: () => {},
-  };
-  */
-  // Auth
-  /*
-  app.use(VueAuth, {
-    loginData: {
-      headerToken: 'Authorization',
-    },
-    fetchData: {
-      url: config.api.baseURL + 'user',
-      method: 'GET',
-    },
-    authRedirect: () => $path('auth.login'),
-  });
-  */
 
   // Custom cache DB mechanism
   app.config.globalProperties.db = {};

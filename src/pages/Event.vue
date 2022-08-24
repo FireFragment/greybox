@@ -1,62 +1,7 @@
 <template>
   <q-page padding v-if="event">
     <!-- Header card -->
-    <div class="text-center">
-      <q-btn color="white" text-color="black" class="float-left q-mb-md go-back-button" @click="goBack" v-if="type">
-        <q-icon size="2em" name="fas fa-arrow-left " />
-      </q-btn>
-      <q-card
-        class="inline-block event-header"
-        :class="{ smaller: role || role === 0 }"
-      >
-        <h1 class="text-center text-h4">
-          {{ $tr('title') }} {{ $tr(event.name) }}
-        </h1>
-        <div
-          class="text-center close-paragraphs q-p-1"
-          v-if="!role && role !== 0"
-        >
-          <p>
-            <q-icon name="far fa-calendar-alt" class="text-primary" />
-            <template
-              v-if="event.beginning.substr(0, 4) !== event.end.substr(0, 4)"
-            >
-              <!-- Year is different -->
-              {{ getDate(event.beginning, 'D. M. YYYY') }} - {{ getDate(event.end, 'D. M. YYYY') }}
-            </template>
-            <template
-              v-else-if="
-                event.beginning.substr(0, 7) !== event.end.substr(0, 7)
-              "
-            >
-              <!-- Month is different -->
-              {{ getDate(event.beginning, 'D. M.') }} - {{ getDate(event.end, 'D. M. YYYY') }}
-            </template>
-            <template v-else-if="event.beginning !== event.end">
-              <!-- Just day is different-->
-              {{ getDate(event.beginning, 'D. M. YYYY') }}
-              -
-            </template
-            >
-            {{ getDate(event.end, 'D. M. YYYY') }}
-            <!-- else - One day event -->
-          </p>
-          <p>
-            <q-icon name="fas fa-landmark" class="text-primary" />
-            {{ event.place }}
-          </p>
-          <p>
-            <q-icon name="far fa-bell" class="text-negative" />
-            {{ $tr('deadline') }}:
-            {{ getDate(event.soft_deadline, 'D. M. YYYY H:mm') }}
-          </p>
-          <p v-if="event.note">
-            <q-icon name="fas fa-info" class="text-primary" />
-            {{ $tr(event.note) }}
-          </p>
-        </div>
-      </q-card>
-    </div>
+    <HeaderCard :event="event" :smaller="typeof role === 'number'" />
 
     <!-- After deadline -->
     <div v-if="event.hard_deadline < now" class="row justify-center">
@@ -69,9 +14,7 @@
         </q-banner>
       </div>
     </div>
-
-    <!-- User not logged in -->
-    <div v-else-if="!$auth.isLoggedIn()" class="row justify-center">
+    <div v-else-if="!event.fullyLoaded" class="row justify-center">
       <div class="col-12 col-md-6">
         <q-banner class="bg-primary text-white q-mt-xl">
           <template v-slot:avatar>
@@ -218,28 +161,32 @@
   </q-page>
 </template>
 
-<script>
+<script lang="ts">
 /* eslint-disable */
-import autofillCard from '../components/Event/AutofillCard';
-import formFields from '../components/Event/FormFields';
-import pickType from '../components/Event/PickType';
-import checkout from '../components/Event/Checkout';
-import teamForm from '../components/Event/TeamForm';
-import checkoutConfirm from '../components/Event/CheckoutConfirm';
-import { EventBus } from '../event-bus';
-import { date } from 'quasar';
+// @ts-nocheck
+import autofillCard from '../components/Event/AutofillCard.vue';
+import formFields from '../components/Event/FormFields.vue';
+import pickType from '../components/Event/PickType.vue';
+import checkout from '../components/Event/Checkout.vue';
+import teamForm from '../components/Event/TeamForm.vue';
+import checkoutConfirm from '../components/Event/CheckoutConfirm.vue';
+import { mapGetters, mapState } from 'vuex';
+import { Role } from 'src/store/roles/state';
+import { defineComponent } from 'vue';
+import HeaderCard from 'components/Event/HeaderCard.vue';
+import { DBkey as CurrentRegistrationsDBKey } from './User/CurrentRegistrations';
 
-export default {
+export default defineComponent({
   name: 'Event',
 
   components: {
+    HeaderCard,
     autofillCard,
     formFields,
     pickType,
     checkout,
     teamForm,
     checkoutConfirm,
-    date
   },
 
   data() {
@@ -261,31 +208,36 @@ export default {
     };
   },
 
-  created() {
-    // Promise to return object with event details
-    const eventPromise = new Promise((resolve, reject) => {
+  async created() {
+    await this.loadEvent();
+  },
+
+  beforeUnmount() {
+    if (!this.event) {
+      return;
+    }
+
+    // Invalidate autofill cache
+    this.$db(`autofillDebaters-event${this.event.id}`, this.DB_DEL);
+    this.$db(`autofillTeams-event${this.event.id}`, this.DB_DEL);
+  },
+
+  methods: {
+    async loadEvent() {
       const eventId = this.$route.params.id;
 
-      // Try to load event from cache
-      const cached = this.$db(`event-${eventId}`);
-
-      if (cached) return resolve([cached, false]);
+      if (!this.$auth.isLoggedIn()) {
+        this.event = this.simpleEvent(eventId);
+        return;
+      }
 
       // Not cached -> load from API
       this.$bus.$emit('fullLoader', true);
-      this.$api({
-        url: `event/${eventId}`,
-        method: 'get',
-      })
-        .then((d) => {
-          const event = d.data;
-          this.$db(`event-${eventId}`, event);
-          resolve([event, true]);
-        })
-        .catch(reject);
-    });
 
-    eventPromise.then(([event, isLoading]) => {
+      await this.$store.dispatch('events/loadFull', eventId);
+
+      const event: Event = this.fullEvent(eventId);
+
       this.event = event;
       this.accommodationType = event.accommodation;
       this.mealType = event.meals;
@@ -293,76 +245,42 @@ export default {
 
       // Can't register to event -> don't even load roles
       if (event.hard_deadline < this.now || !this.$auth.isLoggedIn()) {
-        if (isLoading) return this.$bus.$emit('fullLoader', false);
-        return;
+        return this.$bus.$emit('fullLoader', false);
       }
 
-      // Promise to return all roles
-      const rolesPromise = new Promise((resolve, reject) => {
-        // Load roles from cache if available
-        const cached = this.$db('rolesList');
-        if (cached) return resolve([cached, isLoading]);
+      await this.$store.dispatch('roles/load');
 
-        if (!isLoading) this.$bus.$emit('fullLoader', true);
-
-        // Not cached -> load from API
-        this.$api({
-          url: 'role',
-          method: 'get',
-        })
-          .then((d) => {
-            this.$db('rolesList', d.data);
-            resolve([d.data, true]);
-          })
-          .catch(reject);
-      });
-
-      rolesPromise.then(([roles, isLoading]) => {
-        // Check if roles are present in event's prices
-        for (const role of roles) {
-          let isPresent = false;
-          for (const price of event.prices) {
-            if (price.role.id === role.id) {
-              isPresent = true;
-              break;
-            }
-          }
-
-          if (isPresent) {
-            // Debater role is present -> push team role
-            if (role.id === 1) {
-              this.roles[0] = {
-                value: 0,
-                label: 'event.types.team',
-                icon: 'users',
-              };
-            }
-
-            // Individual debater should be hidden on PDS
-            if (role.id !== 1 || !this.$isPDS)
-              // Push role to role list
-            {
-              this.roles[role.id] = {
-                value: role.id,
-                label: role.name,
-                icon: role.icon,
-              };
-            }
-          }
+      // Check if roles are present in event's prices
+      this.allRoles.forEach((role: Role) => {
+        let isPresent = event.prices.find((price) => price.role.id === role.id);
+        if (!isPresent) {
+          return;
         }
 
-        if (isLoading) return this.$bus.$emit('fullLoader', false);
+        // Debater role is present -> push team role
+        if (role.id === 1) {
+          this.roles[0] = {
+            value: 0,
+            label: 'event.types.team',
+            icon: 'users',
+          };
+        }
+
+        // Individual debater should be hidden on PDS
+        if (role.id === 1 && this.$isPDS) {
+          return;
+        }
+
+        this.roles[role.id] = {
+          value: role.id,
+          label: role.name,
+          icon: role.icon,
+        };
       });
-    });
-  },
 
-  beforeUnmount() {
-    // Invalidate autofill cache
-    this.$db(`autofillDebaters-event${this.event.id}`, this.DB_DEL);
-    this.$db(`autofillTeams-event${this.event.id}`, this.DB_DEL);
-  },
+      this.$bus.$emit('fullLoader', false);
+    },
 
-  methods: {
     submitTeamForm(people, teamName, teamId) {
       // Function to call after team ID is known
       const doneCallback = (id, name) => {
@@ -395,8 +313,6 @@ export default {
           this.$bus.$emit('fullLoader', false);
         });
     },
-
-    getDate: date.formatDate,
 
     sendForm(data, autofill) {
       const personData = data;
@@ -458,6 +374,7 @@ export default {
       // Remove autofill data to include newly added people later
       this.$db(`autofillDebaters-event${this.event.id}`, this.DB_DEL);
       this.$db(`autofillTeams-event${this.event.id}`, this.DB_DEL);
+      this.$db(CurrentRegistrationsDBKey, this.DB_DEL);
     },
 
     removePerson(index) {
@@ -485,6 +402,22 @@ export default {
           ].join(':')}`
       );
     },
+    ...mapGetters('events', {
+      simpleEvent: 'event',
+      fullEvent: 'fullEvent',
+    }),
+    ...mapState('events', [
+      'events',
+    ]),
+    ...mapState('roles', {
+      allRoles: 'roles',
+    }),
   },
-};
+
+  watch: {
+    events() {
+      void this.loadEvent();
+    },
+  },
+});
 </script>

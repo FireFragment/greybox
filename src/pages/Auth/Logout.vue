@@ -15,7 +15,7 @@ export default {
     this.$flash(this.$tr('auth.logout.success'));
 
     // Remove cached personal data on logout
-    this.dbPersonal = {};
+    this.$dbFlushPersonal();
   },
 };
 </script>

@@ -49,10 +49,10 @@
 
     <q-select
       outlined
-      v-if="role === 1"
+      v-if="requireSchoolYear"
       v-model="values.schoolYear"
       :options="schoolYears"
-      :label="$tr('fields.schoolYear')"
+      :label="`${$tr('fields.schoolYear')} *`"
       class="q-pt-sm q-mb-sm col-12 col-md-4"
       lazy-rules
       use-input
@@ -70,17 +70,17 @@
     >
       <q-checkbox
         v-model="values.accommodation"
-        v-if="accommodationType !== 'opt-in'"
-        :true-value="false"
-        :false-value="true"
-        :label="$tr('fields.accommodation')"
+        v-if="accommodationType === 'opt-in'"
+        :true-value="true"
+        :false-value="false"
+        :label="$tr('fields.accommodationOptIn')"
       />
       <q-checkbox
         v-model="values.accommodation"
         v-else
-        :true-value="true"
-        :false-value="false"
-        :label="$tr('fields.accommodationOptIn')"
+        :true-value="false"
+        :false-value="true"
+        :label="$tr('fields.accommodation')"
       />
       <q-icon name="fas fa-info-circle" class="q-pl-sm">
         <q-tooltip anchor="top middle" self="bottom middle" :offset="[0, 0]">
@@ -91,9 +91,8 @@
 
     <!-- details needed for accommodation -->
     <div
-      class="block"
       :class="{ 'form-conditional-block': accommodationType !== 'required' }"
-      v-if="accommodationType !== 'none' && values.accommodation === true"
+      v-show="accommodationType !== 'none' && values.accommodation === true"
     >
       <div class="row q-col-gutter-sm">
         <div class="col-12 q-field" style="color: rgba(0,0,0,0.54);">
@@ -112,7 +111,11 @@
           use-input
           @filter="filterDaySelect"
           input-debounce="0"
-          :rules="[val => val || $tr('general.form.fieldError', null, false)]"
+          :rules="[val =>
+            values.accommodation === false ||
+            val ||
+            $tr('general.form.fieldError', null, false)
+          ]"
         >
           <template v-slot:prepend>
             <q-icon name="fas fa-calendar-alt" />
@@ -133,7 +136,11 @@
           use-input
           @filter="filterMonthSelect"
           input-debounce="0"
-          :rules="[val => val || $tr('general.form.fieldError', null, false)]"
+          :rules="[val =>
+            values.accommodation === false ||
+            val ||
+            $tr('general.form.fieldError', null, false)
+          ]"
         >
           <template v-slot:prepend>
             <q-icon name="fas fa-calendar-alt" />
@@ -152,7 +159,11 @@
           use-input
           @filter="filterYearSelect"
           input-debounce="0"
-          :rules="[val => val || $tr('general.form.fieldError', null, false)]"
+          :rules="[val =>
+            values.accommodation === false ||
+            val ||
+            $tr('general.form.fieldError', null, false)
+          ]"
         >
           <template v-slot:prepend>
             <q-icon name="fas fa-calendar-alt" />
@@ -171,8 +182,10 @@
         lazy-rules
         :rules="[
           val =>
-            !val ||
+            values.accommodation === false ||
+            val === '_________' ||
             val === '#########' ||
+            !val ||
             val.toString().match(/\d{9}/) ||
             $tr('general.form.fieldError', null, false)
         ]"
@@ -198,11 +211,12 @@
         :label="$tr('fields.street') + ' *'"
         class="q-pt-sm"
         :input-class="
-          'smartform-street-and-number ' + 'smartform-instance-' + _uid
+          'smartform-street-and-number ' + 'smartform-instance-' + uuid
         "
         lazy-rules
         :rules="[
           val =>
+            values.accommodation === false ||
             (val && val.length > 0) ||
             $tr('general.form.fieldError', null, false)
         ]"
@@ -217,10 +231,11 @@
         v-model="values.city"
         :label="$tr('fields.city') + ' *'"
         class="q-pt-sm"
-        :input-class="'smartform-city ' + 'smartform-instance-' + _uid"
+        :input-class="'smartform-city ' + 'smartform-instance-' + uuid"
         lazy-rules
         :rules="[
           val =>
+            values.accommodation === false ||
             (val && val.length > 0) ||
             $tr('general.form.fieldError', null, false)
         ]"
@@ -230,26 +245,46 @@
         </template>
       </q-input>
 
-      <mask-input
-        outlined
-        v-model="values.zip"
-        :label="$tr('fields.zip') + ' *'"
-        class="q-pt-sm"
-        :input-class="'smartform-zip ' + 'smartform-instance-' + _uid"
-        mask="### ##"
-        fill-mask="_"
-        :hint="$tr('fieldNotes.example') + ' 796 01'"
-        lazy-rules
-        :rules="[
+      <template v-if="$isPDS">
+        <mask-input
+            outlined
+            v-model="values.zip"
+            :label="$tr('fields.zip') + ' *'"
+            class="q-pt-sm"
+            :input-class="'smartform-zip ' + 'smartform-instance-' + uuid"
+            mask="### ##"
+            fill-mask="_"
+            :hint="$tr('fieldNotes.example') + ' 796 01'"
+        >
+          <template v-slot:prepend>
+            <q-icon name="fas fa-file-archive" />
+          </template>
+        </mask-input>
+      </template>
+      <template v-else>
+        <mask-input
+            outlined
+            v-model="values.zip"
+            :label="$tr('fields.zip') + ' *'"
+            class="q-pt-sm"
+            :input-class="'smartform-zip ' + 'smartform-instance-' + uuid"
+            mask="### ##"
+            fill-mask="_"
+            :hint="$tr('fieldNotes.example') + ' 796 01'"
+            lazy-rules
+            :rules="[
           val =>
+            values.accommodation === false ||
             (val && val.toString().match(/\d{3} ?\d{2}/)) ||
             $tr('general.form.fieldError', null, false)
         ]"
-      >
-        <template v-slot:prepend>
-          <q-icon name="fas fa-file-archive" />
-        </template>
-      </mask-input>
+        >
+          <template v-slot:prepend>
+            <q-icon name="fas fa-file-archive" />
+          </template>
+        </mask-input>
+      </template>
+
     </div>
 
     <!-- -SCHOOL FIELD-
@@ -291,17 +326,17 @@
     >
       <q-checkbox
         v-model="values.meals"
-        v-if="mealType !== 'opt-in'"
-        :true-value="false"
-        :false-value="true"
-        :label="$tr('fields.meals')"
+        v-if="mealType === 'opt-in'"
+        :true-value="true"
+        :false-value="false"
+        :label="$tr('fields.mealsOptIn')"
       />
       <q-checkbox
         v-model="values.meals"
         v-else
-        :true-value="true"
-        :false-value="false"
-        :label="$tr('fields.mealsOptIn')"
+        :true-value="false"
+        :false-value="true"
+        :label="$tr('fields.meals')"
       />
       <!--
       <q-icon name="fas fa-info-circle" class="q-pl-sm">
@@ -554,6 +589,7 @@ export default {
       schoolYears: [],
       possibleDietsOptions: [],
       showSpeakerStatusModal: false,
+      requireSchoolYear: !this.$isPDS && this.role === 1, // only for non-PDS debaters
       requireSpeakerStatus: this.$isPDS && this.role === 1, // only for PDS debaters
       requireJudingExperience: this.$isPDS && this.role === 2, // show "Judging experience" instead of note (only for PDS judges)
       speakerOptions: [
@@ -594,7 +630,7 @@ export default {
 
     const schoolYearsObject = this.$tr('fields.schoolYears');
     this.schoolYears = Object.keys(schoolYearsObject).map((year) => ({
-      value: year,
+      value: parseInt(year),
       label: schoolYearsObject[year]
     }));
 
@@ -619,43 +655,12 @@ export default {
     // Smartform autocomplete select
     this.$bus.$on('smartform', (data) => {
       // If instance ID is this form
-      if (data.instance.substr(-(`${this._uid}`).length) == this._uid) this.values[data.field] = data.value;
+      if (data.instance.substr(-(this.uuid.length)) == this.uuid) this.values[data.field] = data.value;
     });
   },
 
   mounted() {
-    // Renitialize smartform
-    window.smartform.rebindAllForms(true, () => {
-      // Loop through instances
-      window.smartform.getInstanceIds()
-        .forEach((id) => {
-          const instance = window.smartform.getInstance(id);
-
-          // Set limit to 3 results for every field
-          [
-            'smartform-street-and-number',
-            'smartform-city',
-            'smartform-zip',
-          ].forEach((input) => {
-            instance.getBox(input)
-              .setLimit(3);
-          });
-
-          // Run this callback on selection
-          instance.setSelectionCallback((element, value, fieldType) => {
-            const field = fieldType.substr('10');
-
-            const varName = field !== 'street-and-number' ? field : 'street';
-
-            // Emit global event so other form instances can receive it
-            this.$bus.$emit('smartform', {
-              instance: id,
-              field: varName,
-              value,
-            });
-          });
-        });
-    });
+    this._initSmartform();
   },
 
   emits: [
@@ -665,6 +670,45 @@ export default {
   ],
 
   methods: {
+    _initSmartform() {
+      // Disable Smart Form Autocomplete for PDS
+      if (this.$isPDS)
+        return;
+
+      // Renitialize smartform
+      window.smartform.rebindAllForms(true, () => {
+        // Loop through instances
+        window.smartform.getInstanceIds()
+          .forEach((id) => {
+            const instance = window.smartform.getInstance(id);
+
+            // Set limit to 3 results for every field
+            [
+              'smartform-street-and-number',
+              'smartform-city',
+              'smartform-zip',
+            ].forEach((input) => {
+              instance.getBox(input)
+                .setLimit(3);
+            });
+
+            // Run this callback on selection
+            instance.setSelectionCallback((element, value, fieldType) => {
+              const field = fieldType.substr('10');
+
+              const varName = field !== 'street-and-number' ? field : 'street';
+
+              // Emit global event so other form instances can receive it
+              this.$bus.$emit('smartform', {
+                instance: id,
+                field: varName,
+                value,
+              });
+            });
+          });
+      });
+    },
+
     sendForm() {
       if (!this.isTeam && !this.values.accept) return !(this.acceptError = true);
 
@@ -799,6 +843,10 @@ export default {
           this.values[key] = this.speakerOptions.filter(
             (item) => item.value === data[key],
           )[0];
+        } else if (key === 'school_year') {
+          this.values['schoolYear'] = this.schoolYears.find(
+            (item) => item.value === data[key]
+          );
         }
         // Any other field -> pass raw value
         else {
@@ -821,19 +869,23 @@ export default {
         name: this.values.name ? this.values.name.trim() : null,
         surname: this.values.surname ? this.values.surname.trim() : null,
         note: this.values.note,
-        email: this.values.email,
         meals: this.values.meals,
-        school_year: this.values.schoolYear?.value ?? null,
         dietary_requirement: this.values.dietary_requirement
           ? this.values.dietary_requirement.value
           : null,
       };
 
-      // Include accommodation data if it is requred or user wants it
+      if (this.values.email || this.requireEmail) {
+        returnObject.email = this.values.email;
+      }
+
+      if (this.values.schoolYear && this.requireSchoolYear) {
+        returnObject.school_year = this.values.schoolYear.value;
+      }
+
+      // Include accommodation data if it is required or user wants it
       if (
-        this.accommodationType === 'required'
-        || (this.accommodationType !== 'none'
-        && this.values.accommodation === (this.accommodationType === 'opt-in'))
+        this.accommodationType === 'required' || (this.accommodationType !== 'none' && this.values.accommodation)
       ) {
         returnObject.accommodation = true;
         returnObject.birthdate = this.birthdateFormatter(
@@ -841,7 +893,7 @@ export default {
           this.values.birthMonth,
           this.values.birthDay,
         );
-        returnObject.id_number = this.values.id_number === '_________' ? null : this.values.id_number;
+        returnObject.id_number = (this.values.id_number !== '_________' && this.values.accommodation !== false) ? this.values.id_number : null;
         returnObject.street = this.values.street;
         returnObject.city = this.values.city;
         returnObject.zip = this.values.zip

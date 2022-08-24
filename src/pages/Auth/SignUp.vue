@@ -31,75 +31,77 @@
 
     <div class="row q-col-gutter-md">
       <q-form @submit="signUp" class="col-12 col-sm-6 q-mt-lg offset-sm-3">
-        <q-input
-          outlined
-          type="email"
-          v-model="email"
-          :label="$tr('fields.email')"
-          lazy-rules
-          :rules="[val => (val !== null && val !== '') || $tr(`errors.email`),
-                  val => $validators.validateEmail(val) || $tr('errors.emailFormat') ]"
-        >
-          <template v-slot:prepend>
-            <q-icon name="fas fa-at" />
-          </template>
-        </q-input>
-
-        <q-input
-          v-model="password"
-          outlined
-          :type="isPwd ? 'password' : 'text'"
-          :label="$tr('fields.password')"
-          class="q-mt-sm"
-          lazy-rules
-          :rules="[
-            val => (val !== null && val !== '') || $tr(`errors.password`)
-          ]"
-        >
-          <template v-slot:prepend>
-            <q-icon name="fas fa-key" />
-          </template>
-          <template v-slot:append>
-            <q-icon
-              :name="isPwd ? 'fas fa-eye-slash' : 'fas fa-eye'"
-              class="cursor-pointer q-pr-sm"
-              @click="isPwd = !isPwd"
-            />
-          </template>
-        </q-input>
-
-        <q-input
-          v-model="passwordConfirmation"
-          outlined
-          :type="isPwd2 ? 'password' : 'text'"
-          :label="$tr('fields.passwordConfirm')"
-          class="q-mt-sm"
-          lazy-rules
-          :rules="[
-            val => (val !== null && val !== '') || $tr(`errors.passwordConfirm`)
-          ]"
-        >
-          <template v-slot:prepend>
-            <q-icon name="fas fa-key" />
-          </template>
-          <template v-slot:append>
-            <q-icon
-              :name="isPwd2 ? 'fas fa-eye-slash' : 'fas fa-eye'"
-              class="cursor-pointer q-pr-sm"
-              @click="isPwd2 = !isPwd2"
-            />
-          </template>
-        </q-input>
-
-        <div class="text-center">
-          <q-btn type="submit" color="primary" :loading="loading">
-            {{ $tr("signUp.submit") }}
-            <template v-slot:loading>
-              <q-spinner-hourglass class="on-left" />
-              {{ $tr("signUp.loading") }}
+        <q-card class="q-pa-md q-ma-sm">
+          <q-input
+            outlined
+            type="email"
+            v-model="email"
+            :label="$tr('fields.email')"
+            lazy-rules
+            :rules="[val => (val !== null && val !== '') || $tr(`errors.email`),
+                    val => $validators.validateEmail(val) || $tr('errors.emailFormat') ]"
+          >
+            <template v-slot:prepend>
+              <q-icon name="fas fa-at" />
             </template>
-          </q-btn>
-        </div>
+          </q-input>
+
+          <q-input
+            v-model="password"
+            outlined
+            :type="isPwd ? 'password' : 'text'"
+            :label="$tr('fields.password')"
+            class="q-mt-sm"
+            lazy-rules
+            :rules="[
+              val => (val !== null && val !== '') || $tr(`errors.password`)
+            ]"
+          >
+            <template v-slot:prepend>
+              <q-icon name="fas fa-key" />
+            </template>
+            <template v-slot:append>
+              <q-icon
+                :name="isPwd ? 'fas fa-eye-slash' : 'fas fa-eye'"
+                class="cursor-pointer q-pr-sm"
+                @click="isPwd = !isPwd"
+              />
+            </template>
+          </q-input>
+
+          <q-input
+            v-model="passwordConfirmation"
+            outlined
+            :type="isPwd2 ? 'password' : 'text'"
+            :label="$tr('fields.passwordConfirm')"
+            class="q-mt-sm"
+            lazy-rules
+            :rules="[
+              val => (val !== null && val !== '') || $tr(`errors.passwordConfirm`)
+            ]"
+          >
+            <template v-slot:prepend>
+              <q-icon name="fas fa-key" />
+            </template>
+            <template v-slot:append>
+              <q-icon
+                :name="isPwd2 ? 'fas fa-eye-slash' : 'fas fa-eye'"
+                class="cursor-pointer q-pr-sm"
+                @click="isPwd2 = !isPwd2"
+              />
+            </template>
+          </q-input>
+
+          <div class="text-center">
+            <q-btn type="submit" color="primary" :loading="loading">
+              {{ $tr("signUp.submit") }}
+              <template v-slot:loading>
+                <q-spinner-hourglass class="on-left" />
+                {{ $tr("signUp.loading") }}
+              </template>
+            </q-btn>
+          </div>
+        </q-card>
       </q-form>
     </div>
   </q-page>
@@ -107,6 +109,40 @@
 
 <script>
 /* eslint-disable */
+import { $tr, $flash } from '../../boot/custom';
+import { switchLocale } from '../../boot/i18n';
+
+export const outputValidationErrors = (data) => {
+  if (!data) {
+    $flash($tr('general.error', null, false), 'error');
+    return;
+  }
+
+  for (const index in data) {
+    let messages = data[index];
+    if (typeof messages === 'string') {
+      messages = [messages];
+    }
+
+    messages.forEach((message) => {
+      $flash(
+        $tr(
+          `auth.signUp.validation.${
+            index
+          }.${
+            message.includes('validation.')
+              ? message.substr(11).replace('.', '-')
+              : message
+          }`,
+          null, false,
+        ),
+        'error',
+        false,
+        9000,
+      );
+    });
+  }
+};
 
 export default {
   name: 'PageSignUp',
@@ -134,43 +170,25 @@ export default {
           username: this.email,
           password: this.password,
           password_confirmation: this.passwordConfirmation,
+          preferred_locale: this.$i18n.locale,
         },
         alerts: false,
       })
         .then(() => {
+          localStorage.setItem('loginData', JSON.stringify({
+            username: this.email,
+            password: this.password,
+            isSignUp: true,
+          }));
           this.$bus.$emit('fullLoader', true);
-          this.$router.push({
-            name: 'login',
-            params: {
-              loginData: JSON.stringify({
-                username: this.email,
-                password: this.password,
-                isSignUp: true,
-              }),
-            },
-          });
+          this.$router.push(this.$path('auth.login'));
         })
-        .catch((data) => {
-          if (data.response.data) {
-            for (const index in data.response.data) {
-              data.response.data[index].forEach((message) => {
-                this.$flash(
-                  this.$tr(
-                    `signUp.validation.${
-                      index
-                    }.${
-                      message.substr(11).replace('.', '-')}`,
-                  ),
-                  'error',
-                  false,
-                  9000,
-                );
-              });
-            }
-          } else this.$flash(this.$tr('general.error', null, false), 'error');
-        })
+        .catch((data) => outputValidationErrors(data.response.data))
         .finally(() => {
           this.loading = false;
+          if (this.$auth.user().preferred_locale !== this.$i18n.locale) {
+            switchLocale(this.$i18n.locale);
+          }
         });
     },
   },

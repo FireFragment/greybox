@@ -1,38 +1,43 @@
 import { boot } from 'quasar/wrappers';
-import { useRouter } from 'vue-router';
-import apiCall from 'src/api';
 import { AxiosResponse } from 'axios';
+import { Router } from 'src/router';
+import { $path } from 'boot/custom';
+import { Date, DateTime } from 'src/types/general';
+import { apiCall } from './api';
 
 type UserRole = 'admin' | 'none';
 
-interface Person {
-  name: string
-  surname: string
-  email: string
+export interface Person {
+  id: number;
+  name: string;
+  surname: string;
+  email: string;
+  institution: string;
   // eslint-disable-next-line camelcase
-  school_year: number
-  birthdate: string
+  old_greybox_id: number;
+  birthdate: Date;
   // eslint-disable-next-line camelcase
-  id_number: string
-  street: string
-  city: string
-  zip: string
+  dietary_requirement: string;
   // eslint-disable-next-line camelcase
-  dietary_requirement: number
+  id_number: string;
+  street: string;
+  city: string;
+  zip: string;
+  school: string;
   // eslint-disable-next-line camelcase
-  speaker_status: string
-  note: string
+  school_year: number;
   // eslint-disable-next-line camelcase
-  updated_at: string
+  speaker_status: string;
+  note: string;
   // eslint-disable-next-line camelcase
-  created_at: string
-  id: number
+  created_at: DateTime;
+  // eslint-disable-next-line camelcase
+  updated_at: DateTime;
 }
 
 interface User {
   admin: boolean
-  // eslint-disable-next-line camelcase
-  api_token: string
+  apiToken: string
   // eslint-disable-next-line camelcase
   created_at: string
   id: 292
@@ -57,7 +62,7 @@ export interface LoginData {
 
 interface Auth {
   login: (data: LoginData) => Promise<User | null>
-  logout: () => void
+  logout: (redirectHome?: boolean) => void
   user: () => User | null,
   getToken: () => string | null
   isLoggedIn: () => boolean
@@ -65,6 +70,10 @@ interface Auth {
 }
 
 const localStorageKey = 'greyboxAuthData';
+
+const saveUserData = (data: User) => {
+  localStorage.setItem(localStorageKey, JSON.stringify(data));
+};
 
 const login = (credentials: LoginData): Promise<User | null> => new Promise(
   (resolve, reject) => {
@@ -79,33 +88,45 @@ const login = (credentials: LoginData): Promise<User | null> => new Promise(
         username,
         password,
       },
+      alerts: false,
     })
-      .then((response: AxiosResponse<User>) => {
-        const { data } = response;
-        localStorage.setItem(localStorageKey, JSON.stringify(data));
+      .then(({ data }: AxiosResponse<User>) => {
+        saveUserData(data);
         resolve(data);
       })
       .catch(reject);
   },
 );
 
-const logout = async () => {
+export const logout = async (redirectHome: boolean = true) => {
   localStorage.removeItem(localStorageKey);
-  const router = useRouter();
-  await router.replace({ name: 'home' });
+
+  // TODO - flush personal DB once it is connected to Vuex
+
+  if (redirectHome) {
+    await Router.replace($path('home'));
+  } else {
+    // Soft reload current page
+    const currentPath = Router.currentRoute.value;
+
+    // Redirect here before route switch to avoid redundant redirect error
+    const midRedirect = currentPath.name === 'home' ? 'about' : 'home';
+    await Router.push($path(midRedirect));
+    await Router.replace({ path: currentPath.path });
+  }
 };
 
-const user = (): User | null => {
+export const user = (): User | null => {
   const data = localStorage.getItem(localStorageKey);
   if (!data) return null;
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return JSON.parse(data);
 };
 
-const getToken = (): string | null => user()?.api_token ?? null;
+export const getToken = (): string | null => user()?.apiToken ?? null;
 
 export const isLoggedIn = (): boolean => getToken() !== null;
-export const isAdmin = (): boolean => isLoggedIn() && user()?.role === 'admin';
+export const isAdmin = (): boolean => isLoggedIn() && (user()?.role === 'admin' || !!user()?.admin);
 
 const auth: Auth = {
   login,
@@ -118,6 +139,29 @@ const auth: Auth = {
 
 export default boot(({ app }) => {
   app.config.globalProperties.$auth = auth;
+
+  if (!auth.isLoggedIn()) {
+    return;
+  }
+
+  // Check if saved token is valid
+  apiCall({
+    url: 'user/logged',
+    method: 'get',
+  })
+    .then(({ data }: AxiosResponse<User>) => {
+      saveUserData(data);
+    })
+    .catch(async () => {
+      await logout(false);
+    });
 });
+
+// Required for TypeScript to work with global properties
+declare module '@vue/runtime-core' {
+  export interface ComponentCustomProperties {
+    $auth: Auth
+  }
+}
 
 export { auth };

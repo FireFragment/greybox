@@ -39,19 +39,21 @@
           </div>
         </div>
       </q-card-section>
-      <q-card-section v-show="visible">
-        <form-fields
-          ref="form-fields"
-          @update:model-value="catchInput"
-          :autofill="autofill"
-          :is-team="true"
-          :accommodationType="accommodationType"
-          :mealType="mealType"
-          :possibleDiets="possibleDiets"
-          :role="1"
-          :requireEmail="requireEmail"
-        />
-      </q-card-section>
+      <div class="q-card-section-wrapper" :class="{ hiddenCard: !visible }">
+        <q-card-section class="" >
+          <form-fields
+              ref="form-fields"
+              @update:model-value="catchInput"
+              :autofill="autofill"
+              :is-team="true"
+              :accommodationType="accommodationType"
+              :mealType="mealType"
+              :possibleDiets="possibleDiets"
+              :role="1"
+              :requireEmail="requireEmail"
+          />
+        </q-card-section>
+      </div>
     </q-card>
   </div>
 </template>
@@ -92,6 +94,25 @@ export default {
       this.formData = data;
       this.$emit('update:model-value', data, this.id);
     },
+    updateHeight() {
+      /* TODO
+      console.log("cs");
+      //console.log(elem);
+      //let el = document.querySelectorAll('.q-card-section-wrapper');
+      let height = this.$el.scrollHeight;
+      this.$el.style('height', height + 'px')
+      setTimeout(() => {
+        //this.$el.style('height', 'auto')
+        console.log(this.$el);
+      }, 500);
+       */
+    }
   },
+  watch: {
+    visible: function (val) {
+      this.updateHeight()
+    }
+  }
+
 };
 </script>

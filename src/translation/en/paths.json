@@ -1,6 +1,7 @@
 {
   "home": "en",
   "about": "about",
+  "myDebates": "my-debates",
   "event": "events",
   "eventParams": {
     "type": {
@@ -23,7 +24,10 @@
     "passwordReset": "password-reset",
     "accountSettings": "account-settings"
   },
+  "user": {
+    "currentRegistrations": "current-registrations"
+  },
   "admin": {
-    "eventRegistrations": "events-registrations"
+    "events": "admin-tournaments"
   }
 }

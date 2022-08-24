@@ -12,45 +12,48 @@
           @click="toggleDrawerMenu"
           aria-label="Menu"
           icon="fas fa-bars"
+          class="lt-md"
+          ref="toggleDrawerMenuButton"
         />
 
         <q-toolbar-title>
           <span>
             <q-avatar size="35px">
-              <img src="../assets/logo.svg" alt="logo" />
+              <!-- Template strings cannot be used in [src] attributes -->
+              <img src="../assets/pride_logo.png" alt="logo" v-if="$isPride && !$isPDS" />
+              <img src="../assets/logo.svg" alt="logo" v-else-if="!$isPDS" />
+              <img src="../assets/logo_pds.svg" alt="logo" v-else />
             </q-avatar>
-            greybox 2.0
-            <template v-if="env.STAGE === 'pds'">PDS</template>
-            <span v-if="env.MODE !== 'production'" class="mode-flag">
-              <template v-if="env.STAGE === 'debug'">
-                debug
-              </template>
-              <template v-else-if="env.STAGE === 'local'">
-                dev
-              </template>
-              <template v-else>
-                pds
-              </template>
-            </span>
+
+            <template v-if="$isPDS">
+              Prague Debate Spring
+            </template>
+            <template v-else>
+              greybox 2.0
+              <span v-if="env.MODE !== 'production'" class="mode-flag">
+                <template v-if="env.STAGE === 'debug'">
+                  debug
+                </template>
+                <template v-else-if="env.STAGE === 'local'">
+                  dev
+                </template>
+              </span>
+            </template>
           </span>
         </q-toolbar-title>
 
-        <q-avatar size="25px" class="lang-switch">
+        <q-avatar
+          size="25px"
+          class="lang-switch"
+          v-for="(lang, locale) in languages"
+          v-bind:key="locale"
+        >
           <img
-            src="../assets/en_flag.png"
-            alt="English"
-            title="English"
-            :class="{ 'flag-dimmed': $i18n.locale === 'cs' }"
-            @click="switchLocale('en')"
-          />
-        </q-avatar>
-        <q-avatar size="25px" class="lang-switch">
-          <img
-            src="../assets/cs_flag.png"
-            alt="Čeština"
-            title="Čeština"
-            :class="{ 'flag-dimmed': $i18n.locale === 'en' }"
-            @click="switchLocale('cs')"
+            :src="require(`../assets/${locale}_flag.png`)"
+            :alt="lang.native"
+            :title="lang.native"
+            :class="{ 'flag-dimmed': $i18n.locale !== locale }"
+            @click="switchLocale(locale)"
           />
         </q-avatar>
 
@@ -142,92 +145,71 @@
 </template>
 
 <script>
-/* eslint-disable */
+import { defineComponent } from 'vue';
 import Sidenav from './components/Sidenav';
-import { EventBus } from '../event-bus';
+import i18nConfig from '../translation/config';
+import { switchLocale } from '../boot/i18n';
 
-export default {
+export default defineComponent({
   name: 'LayoutDefault',
 
   components: {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     Sidenav,
   },
 
   data() {
     return {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       leftDrawerOpen:
         this.$q.platform.is.desktop
         && localStorage.getItem('leftDrawerOpen') !== 'false',
       user: null,
       fullLoader: 0, // number of active loadings
+      languages: i18nConfig.languages,
     };
   },
   methods: {
+    switchLocale,
     toggleDrawerMenu() {
       this.leftDrawerOpen = !this.leftDrawerOpen;
       localStorage.setItem('leftDrawerOpen', this.leftDrawerOpen);
     },
-    async switchLocale(locale) {
-      if (this.$i18n.locale === locale) return;
+    checkDrawerOpened() {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      const toggleButtonVisible = this.$refs.toggleDrawerMenuButton.$el.offsetParent !== null;
 
-      // current URL
-      const originalPath = this.$tr(
-        `paths.${this.$route.name}`,
-      );
-
-      // change locale
-      this.$i18n.locale = locale;
-
-      // new URL
-      const newPath = this.$tr(`paths.${this.$route.name}`);
-
-      // get URL from router
-      let url = { ...this.$route };
-
-      // Redirect here before route switch to avoid redundant redirect error
-      let midRedirect = 'about';
-      // Homepage cases
-      if (originalPath === '') {
-        url.path = '/en/';
-      } else if (newPath === '') {
-        url.path = '/';
-      }// replace url in router with localized one
-      else {
-        url.path = url.path.replace(originalPath, newPath);
-        midRedirect = 'home';
+      // Desktop
+      if (!toggleButtonVisible) {
+        this.leftDrawerOpen = true;
+        localStorage.setItem('leftDrawerOpen', true);
       }
-
-      await this.$router.push({
-        name: midRedirect
-      });
-
-      // go to new url
-      await this.$router.replace({
-        path: url.path
-      });
     },
   },
 
   created() {
-    // Show loading until events load
-    this.fullLoader = 1;
-    let self = this;
-
-    window.addEventListener('keydown', function (e) {
-      if (document.activeElement === document.body && e.code === 'KeyM') {
-        self.toggleDrawerMenu();
-      }
-    });
+    if (this.$auth.user() && this.$auth.user().preferred_locale !== this.$i18n.locale) {
+      void switchLocale(this.$auth.user().preferred_locale);
+    }
 
     this.$bus.$on('fullLoader', (value) => {
       if (value) {
-        this.fullLoader++;
+        this.fullLoader += 1;
       } else {
-        this.fullLoader--;
+        this.fullLoader -= 1;
       }
 
       if (this.fullLoader < 0) this.fullLoader = 0;
     });
-  }
-};
+  },
+
+  mounted() {
+    this.checkDrawerOpened();
+    window.addEventListener('resize', () => this.checkDrawerOpened(), true);
+  },
+
+  unmounted() {
+    window.removeEventListener('resize', () => this.checkDrawerOpened(), true);
+  },
+});
 </script>

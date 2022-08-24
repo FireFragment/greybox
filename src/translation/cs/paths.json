@@ -1,6 +1,7 @@
 {
   "home": "",
   "about": "o-webu",
+  "myDebates": "moje-debaty",
   "event": "turnaje",
   "eventParams": {
     "type": {
@@ -23,7 +24,10 @@
     "passwordReset": "obnovit-heslo",
     "accountSettings": "nastaveni-uctu"
   },
+  "user": {
+    "currentRegistrations": "stavajici-prihlasky"
+  },
   "admin": {
-    "eventRegistrations": "prihlaseni-na-turnaje"
+    "events": "admin-turnaje"
   }
 }

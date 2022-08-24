@@ -1,0 +1,22 @@
+{
+  "link": "My debates",
+  "title": "My debates",
+  "empty": "You have no debates yet. If you have signed up just recently, they will appear soon.",
+  "cardRows": {
+    "date": "Date",
+    "affirmatives": "Affirmatives",
+    "negatives": "Negatives",
+    "result": "Result",
+    "showDetail": "Show debate detail"
+  },
+  "cardButtons": {
+    "downloadBallot": "Download ballot",
+    "uploadBallot": "Upload ballot"
+  },
+  "uploadBallot": {
+    "uploading": "Uploading ballot",
+    "error": "Uploading ballot failed, please try again",
+    "errorTooLarge": "The uploaded file is too big, max file size is {size}",
+    "success": "Ballot was successfully uploaded"
+  }
+}

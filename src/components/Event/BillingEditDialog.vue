@@ -9,7 +9,7 @@
         <q-btn icon="fas fa-times" flat round dense v-close-popup />
       </q-card-section>
 
-      <q-form ref="q-form" @submit="submitForm" v-if="initialized">
+      <q-form ref="q-form" @submit="submitForm" v-show="initialized">
         <q-card-section>
           <div class="row q-col-gutter-md q-pb-sm">
             <q-input
@@ -55,7 +55,7 @@
               :label="$tr('fields.street')"
               class="col-12"
               :input-class="
-                'smartform-street-and-number ' + 'smartform-instance-' + _uid
+                'smartform-street-and-number ' + 'smartform-instance-' + uuid
               "
               lazy-rules
             >
@@ -69,7 +69,7 @@
               outlined
               :label="$tr('fields.city')"
               class="col-7"
-              :input-class="'smartform-city ' + 'smartform-instance-' + _uid"
+              :input-class="'smartform-city ' + 'smartform-instance-' + uuid"
               lazy-rules
               hint=""
             >
@@ -78,21 +78,40 @@
               </template>
             </q-input>
 
-            <mask-input
-              v-model="values.zip"
-              outlined
-              :label="$tr('fields.zip')"
-              class="col-5"
-              :input-class="'smartform-zip ' + 'smartform-instance-' + _uid"
-              :mask="validateZip ? '### ##' : ''"
-              fill-mask="_"
-              :hint="validateZip ? $tr('fieldNotes.example') + ' 796 01' : null"
-              lazy-rules
-            >
-              <template v-slot:prepend>
-                <q-icon name="fas fa-file-archive" />
-              </template>
-            </mask-input>
+            <template v-if="$isPDS">
+              <mask-input
+                  v-model="values.zip"
+                  outlined
+                  :label="$tr('fields.zip')"
+                  class="col-5"
+                  :input-class="'smartform-zip ' + 'smartform-instance-' + uuid"
+                  :mask="validateZip ? '### ##' : ''"
+                  fill-mask="_"
+                  :hint="validateZip ? $tr('fieldNotes.example') + ' 796 01' : null"
+              >
+                <template v-slot:prepend>
+                  <q-icon name="fas fa-file-archive" />
+                </template>
+              </mask-input>
+            </template>
+            <template v-else>
+              <mask-input
+                  v-model="values.zip"
+                  outlined
+                  :label="$tr('fields.zip')"
+                  class="col-5"
+                  :input-class="'smartform-zip ' + 'smartform-instance-' + uuid"
+                  :mask="validateZip ? '### ##' : ''"
+                  fill-mask="_"
+                  :hint="validateZip ? $tr('fieldNotes.example') + ' 796 01' : null"
+                  lazy-rules
+              >
+                <template v-slot:prepend>
+                  <q-icon name="fas fa-file-archive" />
+                </template>
+              </mask-input>
+            </template>
+
           </div>
           <country-select v-if="$isPDS" v-model="values.country" />
         </q-card-section>
@@ -153,7 +172,7 @@ export default {
     // Smartform autocomplete select
     this.$bus.$on('smartform', (data) => {
       // If instance ID is this form
-      if (data.instance.substr(-(`${this._uid}`).length) == this._uid) this.values[data.field] = data.value;
+      if (data.instance.substr(-(this.uuid.length)) == this.uuid) this.values[data.field] = data.value;
     });
 
     this.stateChange(this.visible);
@@ -179,11 +198,15 @@ export default {
           this.values[key] = this.client && this.client[key] ? this.client[key] : null;
         });
 
-      this._initSmartform();
+      this.$nextTick(this._initSmartform);
       this.initialized = true;
     },
 
     _initSmartform() {
+      // Disable Smart Form Autocomplete for PDS
+      if (this.$isPDS)
+        return;
+
       // Renitialize smartform
       window.smartform.rebindAllForms(true, () => {
         // Loop through instances

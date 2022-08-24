@@ -1,71 +1,108 @@
-/* eslint-disable */
 import { boot } from 'quasar/wrappers';
 import { createI18n } from 'vue-i18n';
-import { setLocaleToRoute } from 'src/router';
+import { DateTime } from 'src/types/general';
+import {
+  $isPDS, $tr, $path, TranslationValue,
+} from 'boot/custom';
+import { Router } from 'src/router';
+import { user } from 'src/boot/auth';
 import config from '../config';
-
 // Import localization data from JSONs
-import i18nConfig from '../translation/config.json';
+import i18nConfig from '../translation/config';
+import { apiCall } from './api';
 
-const translationFiles = i18nConfig.files;
-const languageData = i18nConfig.languages;
-
-let translations: Record<string, any> = {};
-
-for (let locale in languageData) {
-  //let item = languageData[locale];
-  let languageObject: Record<string, any> = {};
-
-  for (let index in translationFiles) {
-    // Dot notation file path
-    let file = translationFiles[index];
-
-    // Path to file (containing slashes)
-    let filePath = file.replace(/\./g, '/');
-
-    // Actual translation object
-    let content = require(`../translation/${locale}/${filePath}.json`);
-
-    // Convert deep paths intohttps://github.com/gruntjs/grunt-contrib-sass actual objects
-    let depth = file.split('.');
-
-    if (depth.length > 1) {
-      for (let i = depth.length - 1; i > 0; i--) {
-        content = {
-          [depth[i]]: content,
-        };
-      }
-    }
-
-    if (!languageObject[depth[0]]) languageObject[depth[0]] = {};
-
-    for (let index in content) languageObject[depth[0]][index] = content[index];
-  }
-
-  translations[locale] = languageObject;
+export interface TranslationPrefixData {
+  translationPrefix: string
 }
 
-// EN is default with PDS
-if (process.env.IS_PDS === 'true') i18nConfig.default = 'en';
+export interface TranslatedString {
+  cs: string;
+  en: string;
+}
+
+export interface TranslatedDatabaseString extends TranslatedString {
+  id: number;
+  // eslint-disable-next-line camelcase
+  created_at: DateTime;
+  // eslint-disable-next-line camelcase
+  updated_at: DateTime;
+}
 
 const i18n = createI18n({
   locale: i18nConfig.default,
   fallbackLocale: i18nConfig.fallback,
-  messages: translations,
+  messages: i18nConfig.messages,
   silentFallbackWarn: !config.debug,
   silentTranslationWarn: !config.debug,
 });
 
-export default boot(async ({
+export const getCurrentRouteTranslatedPath = (): TranslationValue => $tr(
+  `paths.${String(Router.currentRoute.value.meta.translationName ?? Router.currentRoute.value.name)}`,
+);
+
+export const switchLocale = async (locale: string): Promise<void> => {
+  // update preference
+  const userObj = user();
+  if (userObj) {
+    userObj.preferred_locale = locale;
+    void apiCall({
+      url: `user/${userObj.id}`,
+      sendToken: true,
+      method: 'put',
+      data: {
+        preferred_locale: locale,
+      },
+    });
+  }
+
+  // current URL
+  const originalPath = getCurrentRouteTranslatedPath();
+
+  // change locale
+  i18n.global.locale = locale;
+
+  // new URL
+  const newPath = getCurrentRouteTranslatedPath();
+
+  // get URL from router
+  const url = { ...Router.currentRoute.value };
+
+  // Redirect here before route switch to avoid redundant redirect error
+  let midRedirect = 'about';
+  // Homepage cases
+  if (originalPath === '') {
+    url.path = '/en/';
+  } else if (newPath === '') {
+    url.path = '/';
+  } else {
+    // replace url in router with localized one
+    url.path = url.path.replace(String(originalPath), String(newPath));
+    midRedirect = 'home';
+  }
+
+  await Router.push(
+    $path(midRedirect),
+  );
+
+  // go to new url
+  await Router.replace({
+    path: url.path,
+  });
+};
+
+export default boot(({
   app,
   router,
 }) => {
   // Set i18n instance on app
   app.use(i18n);
 
-  router.isReady()
+  void router.isReady()
     .then(() => {
-      setLocaleToRoute(router.currentRoute.value);
+      // PDS mode, homepage -> switch language to EN (without changing route)
+      if ($isPDS && router.currentRoute.value.name === 'home') {
+        i18n.global.locale = 'en';
+      }
     });
 });
 

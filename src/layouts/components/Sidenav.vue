@@ -1,40 +1,45 @@
 <template>
-  <q-drawer :model-value="modelValue" bordered>
+  <q-drawer
+      :model-value="modelValue"
+      @update:model-value="$emit('update:model-value', $event)"
+      bordered
+  >
     <q-list>
+      <q-scroll-area>
       <q-item :to="$path('home')" exact>
         <q-item-section avatar>
           <q-icon name="fas fa-home" />
         </q-item-section>
         <q-item-section>
-          <q-item-label>{{ $tr("general.homepage") }}</q-item-label>
+          <q-item-label>{{ $tr('general.homepage') }}</q-item-label>
         </q-item-section>
       </q-item>
 
-      <q-item-label header>{{ $tr("event.link") }}</q-item-label>
+      <q-item-label header>{{ $tr('event.link') }}</q-item-label>
       <q-item
-        v-for="event in events"
-        v-bind:key="event.id"
-        @mouseup="
-          eventLinkClicked(
-            $path('event') +
-              '/' +
-              event.id +
-              '-' +
-              $slug($tr(event.name) + ' ' + event.place)
-          )
-        "
-        :class="`${
-          $route.name === 'event' && parseInt($route.params.id) === event.id
-            ? 'q-router-link--active'
-            : ''
-        }`"
-        :to="
+          v-for="event in events"
+          v-bind:key="event.id"
+          @mouseup="
+        eventLinkClicked(
           $path('event') +
             '/' +
             event.id +
             '-' +
             $slug($tr(event.name) + ' ' + event.place)
-        ">
+        )
+      "
+          :class="`${
+        $route.name === 'event' && parseInt($route.params.id) === event.id
+          ? 'q-router-link--active'
+          : ''
+      }`"
+          :to="
+        $path('event') +
+          '/' +
+          event.id +
+          '-' +
+          $slug($tr(event.name) + ' ' + event.place)
+      ">
         <q-item-section avatar>
           <q-icon name="fas fa-trophy" />
         </q-item-section>
@@ -43,34 +48,61 @@
         </q-item-section>
       </q-item>
       <div v-if="!Object.keys(events).length" class="empty-info">
-        {{ $tr("event.empty") }}
+        {{ $tr('event.empty') }}
       </div>
 
       <template v-if="$auth.isAdmin()">
-        <q-item-label header>{{ $tr("admin.title") }}</q-item-label>
-        <q-item :to="$path('admin.eventRegistrations')">
+        <q-item-label header>{{ $tr('admin.title') }}</q-item-label>
+        <!-- TODO - keep link active even when a detail of an event is the current URL -->
+        <q-item :to="$path('admin.events')">
           <q-item-section avatar>
             <q-icon name="fas fa-trophy" />
           </q-item-section>
           <q-item-section>
             <q-item-label>{{
-              $tr("admin.eventRegistrations.link")
-            }}</q-item-label>
+                $tr('admin.eventRegistrations.link')
+              }}
+            </q-item-label>
           </q-item-section>
         </q-item>
       </template>
 
-      <q-item-label header>{{ $tr("general.user") }}</q-item-label>
+      <q-item-label header>{{ $tr('general.user') }}</q-item-label>
       <template v-if="$auth.isLoggedIn() && $auth.user()">
+
+        <q-item :to="$path('user.currentRegistrations')" clickable>
+          <q-item-section avatar>
+            <q-icon name="fas fa-list-alt" />
+          </q-item-section>
+
+          <q-item-section>{{
+              $tr('user.currentRegistrations.link')
+            }}
+          </q-item-section>
+        </q-item>
+
+        <q-item :to="$path('myDebates')" clickable v-if="!$isPDS">
+          <q-item-section avatar>
+            <q-icon name="fas fa-user-tie" />
+          </q-item-section>
+
+          <q-item-section>{{
+              $tr('myDebates.link')
+            }}
+          </q-item-section>
+        </q-item>
+
         <q-item :to="$path('auth.accountSettings')" clickable>
           <q-item-section avatar>
             <q-icon name="fas fa-cog" />
           </q-item-section>
 
           <q-item-section>{{
-            $tr("auth.accountSettings.link")
-          }}</q-item-section>
+              $tr('auth.accountSettings.link')
+            }}
+          </q-item-section>
         </q-item>
+
         <!--
                 TODO - implement link to server to download personal data
                 <q-item clickable>
@@ -89,7 +121,7 @@
             <q-icon name="fas fa-sign-out-alt" />
           </q-item-section>
 
-          <q-item-section>{{ $tr("auth.logout.link") }}</q-item-section>
+          <q-item-section>{{ $tr('auth.logout.link') }}</q-item-section>
         </q-item>
       </template>
       <template v-else>
@@ -98,7 +130,7 @@
             <q-icon name="fas fa-sign-in-alt" />
           </q-item-section>
 
-          <q-item-section>{{ $tr("auth.login.link") }}</q-item-section>
+          <q-item-section>{{ $tr('auth.login.link') }}</q-item-section>
         </q-item>
 
         <q-item clickable :to="$path('auth.signUp')">
@@ -106,7 +138,7 @@
             <q-icon name="fas fa-user-plus" />
           </q-item-section>
 
-          <q-item-section>{{ $tr("auth.signUp.link") }}</q-item-section>
+          <q-item-section>{{ $tr('auth.signUp.link') }}</q-item-section>
         </q-item>
 
         <q-item clickable :to="$path('auth.passwordReset')">
@@ -114,24 +146,24 @@
             <q-icon name="fas fa-undo" />
           </q-item-section>
 
-          <q-item-section>{{ $tr("auth.passwordReset.link") }}</q-item-section>
+          <q-item-section>{{ $tr('auth.passwordReset.link') }}</q-item-section>
         </q-item>
       </template>
 
-      <q-item-label header>{{ $tr("general.essentialLinks") }}</q-item-label>
+      <q-item-label header>{{ $tr('general.essentialLinks') }}</q-item-label>
       <q-item
-        clickable
-        tag="a"
-        rel="noopener"
-        target="_blank"
-        href="https://debatovani.cz/greybox/"
-        v-if="!$isPDS"
+          clickable
+          tag="a"
+          rel="noopener"
+          target="_blank"
+          href="https://debatovani.cz/greybox/"
+          v-if="!$isPDS"
       >
         <q-item-section avatar>
           <q-icon name="fas fa-chart-bar" />
         </q-item-section>
         <q-item-section>
-          <q-item-label>{{ $tr("general.statistics") }}</q-item-label>
+          <q-item-label>{{ $tr('general.statistics') }}</q-item-label>
           <q-item-label caption>greybox v1.0</q-item-label>
         </q-item-section>
       </q-item>
@@ -140,62 +172,44 @@
           <q-icon name="fas fa-info-circle" />
         </q-item-section>
         <q-item-section>
-          <q-item-label>{{ $tr("general.aboutUs") }}</q-item-label>
+          <q-item-label>{{ $tr('general.aboutUs') }}</q-item-label>
         </q-item-section>
-      </q-item>
+        </q-item>
+      </q-scroll-area>
     </q-list>
   </q-drawer>
 </template>
 
 <script>
-/* eslint-disable */
+import { mapState } from 'vuex';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'Sidenav',
-  data() {
-    return {
-      events: [],
-    };
-  },
   props: {
     modelValue: Boolean,
   },
-  created() {
-    if (this.events.length) return;
-
-    // Load events from cache if available
-    const cached = this.$db('eventsList');
-    if (cached) {
-      this.$bus.$emit('fullLoader', false);
-      return (this.events = cached);
-    }
-
-    this.$api({
-      url: 'event',
-      sendToken: false,
-      method: 'get',
-    })
-      .then((d) => {
-        // PDS has custom events (1 event = accommodation level)
-        this.events = d.data.filter((event) => event.pds === this.$isPDS);
-        this.$db('eventsList', this.$makeIdObject(this.events));
-      })
-      .finally(() => {
-        this.$bus.$emit('fullLoader', false);
-      });
+  computed: {
+    ...mapState('events', [
+      'events',
+    ]),
+  },
+  async created() {
+    await this.$store.dispatch('events/load');
   },
   emits: [
-    'update:model-value'
+    'update:model-value',
   ],
   methods: {
     eventLinkClicked(eventUrl) {
       // Trying to go to same URL again -> go home before that so vue "reloads" page
       if (this.$route.path === eventUrl) {
-        this.$router.push({
-          path: `/${this.$tr('paths.home')}`,
+        const homePath = String(this.$tr('paths.home'));
+        void this.$router.push({
+          path: `/${homePath}`,
         });
       }
     },
   },
-};
+});
 </script>

@@ -70,22 +70,48 @@ const routes: RouteRecordRaw[] = [
         }],
       },
 
-      // Admin
+      // My debates
       {
-        path: CZroutes.admin.eventRegistrations,
-        alias: ENroutes.admin.eventRegistrations,
-        name: 'admin.eventRegistrations',
-        component: () => import('pages/Admin/EventRegistrations.vue'),
-        beforeEnter: adminMiddleware,
+        // TODO - type routes & therefore fix weird errors below
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        path: `${CZroutes.myDebates}/:page?`,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        alias: `${ENroutes.myDebates}/:page?`,
+        name: 'myDebates',
+        component: () => import('pages/MyDebates.vue'),
+        beforeEnter: loggedInMiddleware,
       },
 
+      // Admin
+      {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        path: CZroutes.admin.events,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        alias: ENroutes.admin.events,
+        component: () => import('components/EmptyNestedRouteParent.vue'),
+        beforeEnter: adminMiddleware,
+        children: [{
+          path: '',
+          alias: '',
+          name: 'admin.events',
+          component: () => import('pages/Admin/Events.vue'),
+        }, {
+          // TODO - check if has admin access to this specific event
+          path: ':id-:slug',
+          alias: ':id-:slug',
+          name: 'admin.eventRegistrations',
+          meta: {
+            translationName: 'admin.events',
+          },
+          component: () => import('pages/Admin/EventRegistrations.vue'),
+        }],
+      },
       // Auth
       {
         path: CZroutes.auth.login,
         alias: ENroutes.auth.login,
         name: 'auth.login',
         component: () => import('pages/Auth/Login.vue'),
-        props: true,
         beforeEnter: notLoggedInMiddleware,
       },
       {
@@ -121,6 +147,17 @@ const routes: RouteRecordRaw[] = [
         alias: ENroutes.auth.accountSettings,
         name: 'auth.accountSettings',
         component: () => import('pages/Auth/AccountSettings.vue'),
+        beforeEnter: loggedInMiddleware,
+      },
+      {
+        // eslint-disable-next-line max-len
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
+        path: CZroutes.user.currentRegistrations,
+        // eslint-disable-next-line max-len
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
+        alias: ENroutes.user.currentRegistrations,
+        name: 'user.currentRegistrations',
+        component: () => import('pages/User/CurrentRegistrations.vue'),
         beforeEnter: loggedInMiddleware,
       },
     ],
