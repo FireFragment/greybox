@@ -7,6 +7,7 @@ import {
 } from 'boot/custom';
 import { Router } from 'src/router';
 import { user } from 'src/boot/auth';
+import { translateLink } from 'src/router/helpers';
 import config from '../config';
 // Import localization data from JSONs
 import i18nConfig, { Lang, langs } from '../translation/config';
@@ -83,37 +84,23 @@ export const switchLocale = async (locale: Lang): Promise<void> => {
   void switchQuasarLanguage(locale);
 
   // current URL
-  const originalPath = getCurrentRouteTranslatedPath();
+  const originalPath = <string>getCurrentRouteTranslatedPath();
 
   // change locale
   i18n.global.locale = locale;
 
   // new URL
-  const newPath = getCurrentRouteTranslatedPath();
-
-  // get URL from router
-  const url = { ...Router.currentRoute.value };
+  const newPath = <string>getCurrentRouteTranslatedPath();
+  const currentPath = Router.currentRoute.value.path;
 
   // Redirect here before route switch to avoid redundant redirect error
-  let midRedirect = 'about';
-  // Homepage cases
-  if (originalPath === '') {
-    url.path = '/en/';
-  } else if (newPath === '') {
-    url.path = '/';
-  } else {
-    // replace url in router with localized one
-    url.path = url.path.replace(String(originalPath), String(newPath));
-    midRedirect = 'home';
-  }
-
   await Router.push(
-    $path(midRedirect),
+    $path(originalPath === '' || newPath === '' ? 'about' : 'home'),
   );
 
   // go to new url
   await Router.replace({
-    path: url.path,
+    path: translateLink(originalPath, newPath, currentPath),
   });
 };
 

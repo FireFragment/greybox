@@ -11,10 +11,27 @@ export const getRouteTranslatedPath = (name: string, locale: Lang): TranslationV
   locale,
 );
 
+// Replace path in primary translation language for an alias
+export const translateLink = (
+  primaryPath: string,
+  aliasPath: string,
+  originalLink: string,
+): string => {
+  // Homepage cases
+  if (primaryPath === '') {
+    return `/${aliasRouteLang}/`;
+  }
+  if (aliasPath === '') {
+    return '/';
+  }
+
+  // Replace url in router with localized one
+  return originalLink.replace(String(primaryPath), String(aliasPath));
+};
+
 export const translatedRouteLink = (
   route: string | LocationAsRelativeRaw,
 ): MatcherLocationAsPath => {
-  // TODO - extract common functionality from switchLocale
   const {
     locale,
   } = i18n.global;
@@ -31,25 +48,12 @@ export const translatedRouteLink = (
   const translationKey = typeof route === 'string' ? route : <string>(linkInDefaultLang.meta?.translationName ?? route.name);
 
   // current URL
-  const originalPath = getRouteTranslatedPath(translationKey, primaryRouteLang);
+  const primaryPath = <string>getRouteTranslatedPath(translationKey, primaryRouteLang);
 
   // new URL
-  const newPath = getRouteTranslatedPath(translationKey, aliasRouteLang);
-
-  // get URL from router
-  const url = { ...linkInDefaultLang };
-
-  // Homepage cases
-  if (originalPath === '') {
-    url.path = '/en/';
-  } else if (newPath === '') {
-    url.path = '/';
-  } else {
-    // replace url in router with localized one
-    url.path = url.path.replace(String(originalPath), String(newPath));
-  }
+  const aliasPath = <string>getRouteTranslatedPath(translationKey, aliasRouteLang);
 
   return {
-    path: url.path,
+    path: translateLink(primaryPath, aliasPath, linkInDefaultLang.path),
   };
 };
