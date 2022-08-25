@@ -1,7 +1,7 @@
 <template>
   <q-page padding v-if="event" class="page-event">
     <!-- Header card -->
-    <HeaderCard :event="event" :smaller="typeof role === 'number'" />
+    <HeaderCard :event="event" :smaller="smallHeader" />
 
     <!-- After deadline -->
     <div v-if="event.hard_deadline < now" class="row justify-center">
@@ -54,6 +54,7 @@ import pickType from 'components/Event/PickingButtons.vue';
 import teamForm from '../components/Event/TeamForm.vue';
 import { mapGetters, mapState } from 'vuex';
 import { defineComponent } from 'vue';
+import type { RouteRecordName } from 'vue-router';
 import HeaderCard from 'components/Event/HeaderCard.vue';
 
 export default defineComponent({
@@ -71,13 +72,10 @@ export default defineComponent({
     return {
       translationPrefix: 'event.',
       event: null,
-      role: null,
-      roles: {},
-      checkout: false,
-      confirmData: null,
-      showGroupModal: false,
-      autofillData: null,
-      dataToSubmit: [],
+      bigHeaderRoutes: <RouteRecordName[]>[
+        'event-pick-type',
+        'event-pick-role',
+      ]
     };
   },
 
@@ -136,6 +134,9 @@ export default defineComponent({
             (`0${d.getSeconds()}`).substr(-2),
           ].join(':')}`
       );
+    },
+    smallHeader(): boolean {
+      return !this.bigHeaderRoutes.includes(this.$route.name)
     },
     ...mapGetters('events', {
       simpleEvent: 'event',
