@@ -53,6 +53,7 @@ interface User {
   // eslint-disable-next-line camelcase
   updated_at: string;
   username: string;
+  organizedEventsIds: number[];
 }
 
 export interface LoginData {

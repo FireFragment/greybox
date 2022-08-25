@@ -1,4 +1,4 @@
-import { isAdmin, isLoggedIn } from 'src/boot/auth';
+import { isAdmin, isLoggedIn, user } from 'src/boot/auth';
 import { NavigationGuardWithThis } from 'vue-router';
 
 export const adminMiddleware: NavigationGuardWithThis<undefined> = (
@@ -8,6 +8,20 @@ export const adminMiddleware: NavigationGuardWithThis<undefined> = (
     next({ name: 'home' });
   } else {
     next();
+  }
+};
+
+export const eventOrganizerMiddleware: NavigationGuardWithThis<undefined> = (
+  to, from, next,
+) => {
+  const eventId = to.params.id;
+  const isValidId = typeof eventId === 'string' && !Number.isNaN(eventId);
+
+  if (isValidId
+    && (isAdmin() || user()?.organizedEventsIds.includes(parseInt(<string>eventId, 10)))) {
+    next();
+  } else {
+    next({ name: 'home' });
   }
 };
 

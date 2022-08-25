@@ -56,7 +56,7 @@
               '-' +
               $slug($tr(event.name) + ' ' + event.place)
           "
-          v-if="$auth.isAdmin()">
+          v-if="$auth.isAdmin() || $auth.user().organizedEventsIds?.includes(event.id)">
           Admin
         </router-link>
       </div>
@@ -84,7 +84,7 @@ const HeaderCardProps = {
 export default defineComponent({
   name: 'HeaderCard',
   props: HeaderCardProps,
-  data(): TranslationPrefixData { 
+  data(): TranslationPrefixData {
     return {
       translationPrefix: 'event.',
     };
