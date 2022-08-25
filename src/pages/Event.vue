@@ -104,9 +104,6 @@ export default defineComponent({
         return;
       }
 
-      // Not cached -> load from API
-      this.$bus.$emit('fullLoader', true);
-
       await this.$store.dispatch('events/loadFull', eventId);
 
       const event: Event = this.fullEvent(eventId);
@@ -115,12 +112,10 @@ export default defineComponent({
 
       // Can't register to event -> don't even load roles
       if (event.hard_deadline < this.now || !this.$auth.isLoggedIn()) {
-        return this.$bus.$emit('fullLoader', false);
+        return;
       }
 
       await this.$store.dispatch('roles/load');
-
-      this.$bus.$emit('fullLoader', false)
     },
   },
 

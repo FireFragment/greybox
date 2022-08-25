@@ -161,13 +161,9 @@ export default defineComponent({
   },
   async created() {
     // Not cached -> load from API
-    this.$bus.$emit('fullLoader', true);
-
     await this.$store.dispatch('events/loadFull', this.eventId);
     await this.$store.dispatch('roles/load');
     await this.$store.dispatch('eventsRegistrations/load', this.eventId);
-
-    this.$bus.$emit('fullLoader', false);
   },
   data() {
     const outputBoolean = (val: boolean) => (val ? '✅' : '❌');

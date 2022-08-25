@@ -50,11 +50,16 @@ export const loadFull: Action<EventsState, never> = async ({
     return;
   }
 
+  bus.$emit('fullLoader', true);
+
   await apiCall({
     url: `event/${id}`,
     method: 'get',
   })
     .then(({ data: event }: AxiosResponse<EventFull>) => {
       commit('setFullEvent', event);
+    })
+    .finally(() => {
+      bus.$emit('fullLoader', false);
     });
 };

@@ -9,7 +9,7 @@ export const load: Action<EventsRegistrationsState, never> = async ({
   commit,
   state,
 }, eventId: number) => {
-  if (state.loading) {
+  if (state.loading || state.events[eventId]) {
     return;
   }
 
