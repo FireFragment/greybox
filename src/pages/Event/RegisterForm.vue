@@ -111,21 +111,22 @@ export default defineComponent({
       return <Event> this.$store.getters['events/fullEvent'](this.eventId);
     },
     rolePickRoute() {
-      return {
-        /* TODO - translate route to use alias ($tr() on paths maybe) */
+      return this.$translatedRouteLink({
         name: 'event-pick-role',
         params: {
           ...this.$route.params,
           type: this.$tr('paths.eventParams.type.group', null, false),
         },
-      };
+      });
     },
     checkoutRoute() {
-      return {
-        /* TODO - translate route to use alias ($tr() on paths maybe) */
+      return this.$translatedRouteLink({
         name: 'event-checkout',
-        params: this.$route.params,
-      };
+        params: {
+          ...this.$route.params,
+          checkout: this.$tr('paths.eventParams.checkout', null, false),
+        },
+      });
     }
   },
 

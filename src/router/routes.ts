@@ -70,16 +70,16 @@ const routes: RouteRecordRaw[] = [
             },
             component: () => import('pages/Event/RegisterForm.vue'),
           }, {
-            path: `${<string>(<Routes>CZroutes.eventParams).checkout}`,
-            alias: `${<string>(<Routes>ENroutes.eventParams).checkout}`,
+            path: `:checkout(${<string>(<Routes>CZroutes.eventParams).checkout})`,
+            alias: `:checkout(${<string>(<Routes>ENroutes.eventParams).checkout})`,
             name: 'event-checkout',
             meta: {
               translationName: 'event',
             },
             component: () => import('pages/Event/Checkout.vue'),
           }, {
-            path: `${<string>(<Routes>CZroutes.eventParams).confirmation}`,
-            alias: `${<string>(<Routes>ENroutes.eventParams).confirmation}`,
+            path: `:confirmation(${<string>(<Routes>CZroutes.eventParams).confirmation})`,
+            alias: `:confirmation(${<string>(<Routes>ENroutes.eventParams).confirmation})`,
             name: 'event-confirmation',
             meta: {
               translationName: 'event',
@@ -91,7 +91,6 @@ const routes: RouteRecordRaw[] = [
 
       // My debates
       {
-        // TODO - type routes & therefore fix weird errors below
         path: `${<string>CZroutes.myDebates}/:page?`,
         alias: `${<string>ENroutes.myDebates}/:page?`,
         name: 'myDebates',

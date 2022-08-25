@@ -8,14 +8,13 @@
       :icon="btn.icon"
       :color="btn.color"
       :auto-size="values.length > 4"
-      :to="{
-        /* TODO - translate route to use alias ($tr() on paths maybe) */
+      :to="$translatedRouteLink({
         name: nextRoute,
         params: {
           ...$route.params,
           [name]: btn.routeParam ?? $tr(`paths.eventParams.${name}.${btn.value}`),
         }
-      }"
+      })"
     />
     <div class="col" v-if="values.length < 4"></div>
   </div>
@@ -42,7 +41,7 @@ export default defineComponent({
       required: true,
     },
     name: {
-      type: String,
+      type: String as PropType<'type' | 'role'>,
       required: true,
     },
     nextRoute: {

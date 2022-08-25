@@ -19,27 +19,20 @@
       <q-item
           v-for="event in events"
           v-bind:key="event.id"
-          @mouseup="
-        eventLinkClicked(
-          $path('event') +
-            '/' +
-            event.id +
-            '-' +
-            $slug($tr(event.name) + ' ' + event.place)
-        )
-      "
-          :class="`${
-        $route.name === 'event' && parseInt($route.params.id) === event.id
-          ? 'q-router-link--active'
-          : ''
-      }`"
-          :to="
-        $path('event') +
-          '/' +
-          event.id +
-          '-' +
-          $slug($tr(event.name) + ' ' + event.place)
-      ">
+          :class="
+            // Needed for switching locales
+            ($route.name === 'event' || $route.meta?.translationName === 'event')
+            && parseInt($route.params.id) === event.id
+              ? 'q-router-link--active'
+              : ''
+          "
+          :to="$translatedRouteLink({
+            name: 'event',
+            params: {
+              id: event.id,
+              slug: $slug($tr(event.name) + ' ' + event.place),
+            },
+          })">
         <q-item-section avatar>
           <q-icon name="fas fa-trophy" />
         </q-item-section>
@@ -201,16 +194,5 @@ export default defineComponent({
   emits: [
     'update:model-value',
   ],
-  methods: {
-    eventLinkClicked(eventUrl) {
-      // Trying to go to same URL again -> go home before that so vue "reloads" page
-      if (this.$route.path === eventUrl) {
-        const homePath = String(this.$tr('paths.home'));
-        void this.$router.push({
-          path: `/${homePath}`,
-        });
-      }
-    },
-  },
 });
 </script>

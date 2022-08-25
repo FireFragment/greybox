@@ -108,15 +108,21 @@ export default {
   },
   methods: {
     getDate: date.formatDate,
+    enterGuard() {
+      if (!this.data) {
+        this.$router.replace(this.$translatedRouteLink({
+          name: 'event-pick-role',
+          params: this.$route.params,
+        }));
+      }
+    }
   },
   beforeMount() {
-    if (!this.data) {
-      this.$router.replace({
-        /* TODO - translate route to use alias ($tr() on paths maybe) */
-        name: 'event-pick-role',
-        params: this.$route.params,
-      });
-    }
+    this.enterGuard();
+  },
+  mounted() {
+    // Needed in case anyone accesses the route directly
+    setTimeout(() => this.enterGuard(), 200);
   },
   computed: {
     columns() {

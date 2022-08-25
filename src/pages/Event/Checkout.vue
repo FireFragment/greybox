@@ -150,11 +150,13 @@ export default defineComponent({
       return this.$store.getters['events/fullEvent'](this.eventId).dietaryRequirements;
     },
     rolePickRoute() {
-      return {
-        /* TODO - translate route to use alias ($tr() on paths maybe) */
+      return this.$translatedRouteLink({
         name: 'event-pick-role',
-        params: this.$route.params,
-      };
+        params: {
+          ...this.$route.params,
+          type: this.$tr('paths.eventParams.type.group', null, false),
+        },
+      });
     },
   },
   beforeMount() {
@@ -238,7 +240,10 @@ export default defineComponent({
 
               this.$router.push({
                 name: 'event-confirmation',
-                params: this.$route.params,
+                params: {
+                  ...this.$route.params,
+                  confirmation: this.$tr('paths.eventParams.confirmation', null, false),
+                }
               });
             })
             .catch((data) => {

@@ -7,7 +7,11 @@ import {
   RouteRecordNormalized,
 } from 'vue-router';
 import { i18n } from 'boot/i18n';
+import { Lang } from 'src/translation/config';
 import routes from './routes';
+
+export const primaryRouteLang: Lang = 'cs';
+export const aliasRouteLang: Lang = 'en';
 
 // Set app locale based on route language
 export const setLocaleToRoute = (currentRoute: RouteLocationNormalized): void => {
@@ -15,7 +19,7 @@ export const setLocaleToRoute = (currentRoute: RouteLocationNormalized): void =>
     (item: RouteRecordNormalized) => item.aliasOf,
   ) !== undefined;
 
-  i18n.global.locale = isAlias ? 'en' : 'cs';
+  i18n.global.locale = isAlias ? aliasRouteLang : primaryRouteLang;
 };
 
 const createHistory = process.env.VUE_ROUTER_MODE === 'history' ? createWebHistory : createWebHashHistory;

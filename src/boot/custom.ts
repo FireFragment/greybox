@@ -14,6 +14,8 @@ import i18nConfig from '../translation/config';
 import store, { State } from '../store';
 import { Store } from 'vuex';
 import assert from 'assert';
+import { LocationAsRelativeRaw, MatcherLocationAsPath } from 'vue-router';
+import { translatedRouteLink } from 'src/router/helpers';
 
 export type TranslationValue = TranslateResult | LocaleMessageValue<VueMessageType> | {};
 
@@ -31,7 +33,8 @@ declare module '@vue/runtime-core' {
     $isPDS: boolean;
     $path: (route: string) => string;
     $tr: (key: string | TranslatedString, options?: Record<string, unknown> | null, usePrefix?: boolean, lang?: Locale | null) => TranslationValue;
-    $store: Store<State>
+    $store: Store<State>;
+    $translatedRouteLink: (route: string | LocationAsRelativeRaw) => MatcherLocationAsPath;
   }
 }
 
@@ -203,6 +206,8 @@ export default boot(({ app }) => {
 
       // Get path to route
       $path,
+
+      $translatedRouteLink: translatedRouteLink,
 
       $stringToHslColor: function (str: string, s: number = 100) {
         let hash = 0;

@@ -13,11 +13,13 @@
       type="reset"
       color="blue-9"
       class="q-mt-xl float-right"
-      :to="{
-        /* TODO - translate route to use alias ($tr() on paths maybe) */
+      :to="$translatedRouteLink({
         name: 'event-checkout',
-        params: this.$route.params,
-      }"
+        params: {
+          ...this.$route.params,
+          checkout: this.$tr('paths.eventParams.checkout', null, false),
+        }
+      })"
     />
   </div>
 </template>
