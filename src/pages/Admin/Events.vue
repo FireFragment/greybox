@@ -9,13 +9,13 @@
         icon="fas fa-trophy"
         color="primary"
         :label="$tr(event.name)"
-        :to="
-          $path('admin.events') +
-            '/' +
-            event.id +
-            '-' +
-            $slug($tr(event.name) + ' ' + event.place)
-        "
+        :to="$translatedRouteLink({
+          name: 'admin.eventRegistrations',
+          params: {
+            id: event.id,
+            slug: $slug($tr(event.name) + ' ' + event.place),
+          },
+        })"
       />
     </div>
     <div v-if="!Object.keys(events).length" class="empty-info">

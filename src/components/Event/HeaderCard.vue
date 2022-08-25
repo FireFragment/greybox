@@ -49,13 +49,13 @@
         </p>
 
         <router-link
-          :to="
-            $path('admin.events') +
-              '/' +
-              event.id +
-              '-' +
-              $slug($tr(event.name) + ' ' + event.place)
-          "
+          :to="$translatedRouteLink({
+            name: 'admin.eventRegistrations',
+            params: {
+              id: event.id,
+              slug: $slug($tr(event.name) + ' ' + event.place),
+            },
+          })"
           v-if="$auth.organizesEvent(event.id)">
           {{ $tr('admin.eventRegistrations.button', null, false) }}
         </router-link>
