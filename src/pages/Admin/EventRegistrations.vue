@@ -78,8 +78,11 @@
                       :options="applicableRoles"
                       option-value="id" :option-label="item => $tr(item.name, null, false)"
                       :dense="true" :options-dense="true"
-                      :disable="tableLoading">
-            </q-select>
+                      :disable="tableLoading"
+                      v-if="$auth.isAdmin()" />
+            <template v-else>
+              {{ props.value }}
+            </template>
           </q-td>
         </template>
         <template v-slot:body-cell-note="props">

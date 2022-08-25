@@ -51,9 +51,8 @@
         {{ $tr('event.empty') }}
       </div>
 
-      <template v-if="$auth.isAdmin()">
+      <template v-if="$auth.isAdmin() || ($auth.user()?.organizedEventsIds ?? []).length">
         <q-item-label header>{{ $tr('admin.title') }}</q-item-label>
-        <!-- TODO - keep link active even when a detail of an event is the current URL -->
         <q-item :to="$path('admin.events')">
           <q-item-section avatar>
             <q-icon name="fas fa-trophy" />

@@ -1,5 +1,10 @@
 import { RouteRecordRaw, RouterView } from 'vue-router';
-import { adminMiddleware, loggedInMiddleware, notLoggedInMiddleware } from './middlewares';
+import {
+  anyEventOrganizerMiddleware,
+  eventOrganizerMiddleware,
+  loggedInMiddleware,
+  notLoggedInMiddleware,
+} from './middlewares';
 
 interface Routes {
   [key: string]: string | Routes
@@ -99,20 +104,20 @@ const routes: RouteRecordRaw[] = [
         path: <string>(<Routes>CZroutes.admin).events,
         alias: <string>(<Routes>ENroutes.admin).events,
         component: RouterView,
-        beforeEnter: adminMiddleware,
         children: [{
           path: '',
           alias: '',
           name: 'admin.events',
+          beforeEnter: anyEventOrganizerMiddleware,
           component: () => import('pages/Admin/Events.vue'),
         }, {
-          // TODO - check if has admin access to this specific event
           path: ':id-:slug',
           alias: ':id-:slug',
           name: 'admin.eventRegistrations',
           meta: {
             translationName: 'admin.events',
           },
+          beforeEnter: eventOrganizerMiddleware,
           component: () => import('pages/Admin/EventRegistrations.vue'),
         }],
       },

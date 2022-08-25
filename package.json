@@ -33,28 +33,30 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@bugsnag/js": "^7.10.5",
-    "@bugsnag/plugin-vue": "^7.10.0",
-    "@quasar/extras": "^1.0.0",
+    "@bugsnag/js": "^7.17.0",
+    "@bugsnag/plugin-vue": "^7.17.0",
+    "@quasar/extras": "^1.15.1",
     "@smartform.cz/smartform": "0.0.1",
-    "axios": "^0.21.1",
-    "core-js": "^3.6.5",
-    "quasar": "^2.0.0",
-    "vue-i18n": "^9.0.0-beta.0",
+    "axios": "^0.21.4",
+    "core-js": "^3.25.0",
+    "quasar": "^2.7.7",
+    "vue": "^3.2.37",
+    "vue-i18n": "^9.2.2",
+    "vue-router": "^4.1.4",
     "vuex": "^4.0.2"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^7.13.14",
-    "@quasar/app": "^3.0.0",
+    "@babel/eslint-parser": "^7.18.9",
+    "@quasar/app": "^3.3.3",
     "@types/node": "^10.17.15",
-    "@typescript-eslint/eslint-plugin": "^4.16.1",
-    "@typescript-eslint/parser": "^4.16.1",
-    "eslint": "^7.14.0",
+    "@typescript-eslint/eslint-plugin": "^4.33.0",
+    "@typescript-eslint/parser": "^4.33.0",
+    "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-plugin-import": "^2.20.1",
-    "eslint-plugin-vue": "^7.0.0",
-    "husky": "^7.0.1",
-    "lint-staged": "^11.0.1"
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-vue": "^7.20.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^11.2.6"
   },
   "browserslist": [
     "last 10 Chrome versions",
@@ -76,8 +78,7 @@
     "pre-commit": "lint-staged"
   },
   "lint-staged": {
-    "*.{js,vue}": [
-    ],
+    "*.{js,vue}": [],
     "*.{js,ts,vue}": []
   }
 }
