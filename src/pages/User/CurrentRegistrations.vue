@@ -13,10 +13,16 @@
             <h5 class="q-mt-lg q-mb-xs">{{ $tr(entry.event.name) }}</h5>
           </div>
           <checkout-person-card
-            v-for="(person, index) in entry.registrations"
-            :key="JSON.stringify(person)"
-            :person="person"
-            :registration="person"
+            v-for="(registration, index) in entry.registrations"
+            :key="JSON.stringify(registration)"
+            :person="{
+              ...registration,
+              person: {
+                ...registration.person,
+                dietary_requirement: registration.person.dietary_requirement?.id,
+              },
+            }"
+            :registration="registration"
             :person-index="index"
             :possible-diets="entry.event.dietaryRequirements"
             :menu="false"
@@ -35,52 +41,14 @@ import { AxiosResponse } from 'axios';
 import CheckoutPersonCard from 'components/Event/CheckoutPersonCard.vue';
 import { TranslationPrefixData } from 'boot/i18n';
 import { mapGetters } from 'vuex';
-import { Event } from 'src/types/event';
+import { Event, EventFull, EventRegistration } from 'src/types/event';
 import NoDataMessage from 'components/NoDataMessage.vue';
-import { Role } from 'src/types/role';
-import { fullEvent } from 'src/store/events/getters';
 
 export const DBkey = 'current-registrations';
 
-interface PersonRegistrations {
-  id: number;
-  person: {
-    id: number;
-    name: string;
-    surname: string;
-    birthdate: string;
-    // eslint-disable-next-line camelcase
-    id_number: string | null;
-    street: string;
-    city: string;
-    zip: string;
-    school: string | null;
-    note: string | null;
-    // eslint-disable-next-line camelcase
-    created_at: string;
-    // eslint-disable-next-line camelcase
-    updated_at: string;
-  },
-  note: string | null;
-  event: string;
-  // eslint-disable-next-line camelcase
-  event_id: number;
-  role: Role,
-  accommodation: number;
-  confirmed: number;
-  team: string | null;
-  // eslint-disable-next-line camelcase
-  registered_by: number;
-  invoice: string | null;
-  // eslint-disable-next-line camelcase
-  created_at: string;
-  // eslint-disable-next-line camelcase
-  updated_at: string;
-}
-
 interface EventPersonRegistrations {
-  event: Event;
-  registrations: PersonRegistrations[];
+  event: EventFull;
+  registrations: EventRegistration[];
 }
 
 type EventPersonRegistrationsData = Record<number, EventPersonRegistrations>;
@@ -132,17 +100,19 @@ export default defineComponent({
             url: `event/${event.id}/user/${this.$auth.user()!.id}/registration`,
             method: 'get',
           })
-            .then(async ({ data }: AxiosResponse<PersonRegistrations[]>) => {
+            .then(async ({ data }: AxiosResponse<EventRegistration[]>) => {
               if (!data.length) {
                 return;
               }
-              
-              await this.$store.dispatch("events/loadFull", event.id);
+
+              await this.$store.dispatch('events/loadFull', event.id);
+
               this.events[event.id] = {
-                event: this.$store.getters["events/fullEvent"](event.id),
+                // eslint-disable-next-line max-len
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+                event: <EventFull> this.$store.getters['events/fullEvent'](event.id),
                 registrations: data,
               };
-              this.events[event.id].registrations.map((registration) => registration.person.dietary_requirement = registration.person.dietary_requirement?.id);
             });
         }),
       );

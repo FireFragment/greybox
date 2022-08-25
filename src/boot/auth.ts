@@ -4,6 +4,7 @@ import { Router } from 'src/router';
 import { $path } from 'boot/custom';
 import { Date, DateTime } from 'src/types/general';
 import { Lang } from 'src/translation/config';
+import { DietaryRequirement } from 'src/types/event';
 import { apiCall } from './api';
 
 type UserRole = 'admin' | 'none';
@@ -18,7 +19,7 @@ export interface Person {
   old_greybox_id: number;
   birthdate: Date;
   // eslint-disable-next-line camelcase
-  dietary_requirement: string;
+  dietary_requirement: DietaryRequirement;
   // eslint-disable-next-line camelcase
   id_number: string;
   street: string;
