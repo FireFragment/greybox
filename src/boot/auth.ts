@@ -69,6 +69,7 @@ interface Auth {
   getToken: () => string | null;
   isLoggedIn: () => boolean;
   isAdmin: () => boolean;
+  organizesEvent: (eventId: number) => boolean;
 }
 
 const localStorageKey = 'greyboxAuthData';
@@ -129,6 +130,8 @@ export const getToken = (): string | null => user()?.apiToken ?? null;
 
 export const isLoggedIn = (): boolean => getToken() !== null;
 export const isAdmin = (): boolean => isLoggedIn() && (user()?.role === 'admin' || !!user()?.admin);
+export const organizesEvent = (eventId: number): boolean => isAdmin() || (user()?.organizedEventsIds
+  .includes(eventId) ?? false);
 
 const auth: Auth = {
   login,
@@ -137,6 +140,7 @@ const auth: Auth = {
   getToken,
   isLoggedIn,
   isAdmin,
+  organizesEvent,
 };
 
 export default boot(({ app }) => {

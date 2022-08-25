@@ -24,17 +24,19 @@
   </q-page>
 </template>
 
-<script>
+<script lang="ts">
 
-import { mapState } from 'vuex';
+import { defineComponent } from 'vue';
+import { organizesEvent } from 'boot/auth';
 
-export default {
+export default defineComponent({
   name: 'EventRegistrations',
   computed: {
-    // TODO - filter out those events that the user doesn't have admin permissions for
-    ...mapState('events', [
-      'events',
-    ]),
+    events() {
+      // eslint-disable-next-line max-len
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+      return this.$store.getters['events/filteredEvents'](organizesEvent);
+    },
   },
-};
+});
 </script>

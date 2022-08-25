@@ -56,7 +56,7 @@
               '-' +
               $slug($tr(event.name) + ' ' + event.place)
           "
-          v-if="$auth.isAdmin() || $auth.user().organizedEventsIds?.includes(event.id)">
+          v-if="$auth.organizesEvent(event.id)">
           Admin
         </router-link>
       </div>
