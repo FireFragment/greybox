@@ -148,7 +148,7 @@
 import { defineComponent } from 'vue';
 import Sidenav from './components/Sidenav';
 import i18nConfig from '../translation/config';
-import { switchLocale } from '../boot/i18n';
+import { switchLocale, switchQuasarLanguage } from '../boot/i18n';
 
 export default defineComponent({
   name: 'LayoutDefault',
@@ -188,6 +188,8 @@ export default defineComponent({
   },
 
   created() {
+    // localization
+    void switchQuasarLanguage(this.$auth.user().preferred_locale);
     if (this.$auth.user() && this.$auth.user().preferred_locale !== this.$i18n.locale) {
       void switchLocale(this.$auth.user().preferred_locale);
     }

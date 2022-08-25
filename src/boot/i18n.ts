@@ -51,6 +51,20 @@ export const getCurrentRouteTranslatedPath = (): TranslationValue => $tr(
   `paths.${String(Router.currentRoute.value.meta.translationName ?? Router.currentRoute.value.name)}`,
 );
 
+export const switchQuasarLanguage = async (locale: Lang): Promise<void> => {
+  // change quasar language (for components labels etc)
+  const langIso = locale === 'en' ? `${locale}-US` : locale;
+  try {
+    await import(
+      `quasar/lang/${langIso}`
+    ).then(({ default: lang }) => {
+      Quasar.lang.set(lang);
+    });
+  } catch (err) {
+    void (0);
+  }
+};
+
 export const switchLocale = async (locale: Lang): Promise<void> => {
   // update preference
   const userObj = user();
@@ -66,17 +80,7 @@ export const switchLocale = async (locale: Lang): Promise<void> => {
     });
   }
 
-  // change quasar language (for components labels etc)
-  const langIso = locale === 'en' ? `${locale}-US` : locale;
-  try {
-    await import(
-      `quasar/lang/${langIso}`
-    ).then(({ default: lang }) => {
-      Quasar.lang.set(lang);
-    });
-  } catch (err) {
-    void (0);
-  }
+  void switchQuasarLanguage(locale);
 
   // current URL
   const originalPath = getCurrentRouteTranslatedPath();
