@@ -219,6 +219,8 @@ class EventController extends Controller
             $registration->role = $registration->role()->first();
             $registration->role->name = $registration->role->translation()->first();
             $registration->person = $registration->person()->first();
+            $registration->person->dietary_requirement = $registration->person->dietaryRequirement()->first();
+            if (!empty($registration->person->dietary_requirement)) $registration->person->dietary_requirement->name = $registration->person->dietary_requirement->translation()->first();
             $registration->team = $registration->team()->first();
         }
 
