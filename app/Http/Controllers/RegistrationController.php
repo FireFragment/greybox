@@ -86,6 +86,7 @@ class RegistrationController extends FakturoidController
     
     public function update($id, Request $request)
     {
+        $this->authorize('update', Registration::class);
         try {
             $registration = Registration::findOrFail($id);
 
