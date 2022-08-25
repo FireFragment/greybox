@@ -30,7 +30,7 @@ export const eventOrganizerMiddleware: NavigationGuardWithThis<undefined> = (
   const isValidId = typeof eventId === 'string' && !Number.isNaN(eventId);
 
   if (isValidId
-    && organizesEvent(parseInt(<string>eventId, 10))) {
+    && organizesEvent(parseInt(eventId, 10))) {
     next();
   } else {
     next({ name: 'home' });
