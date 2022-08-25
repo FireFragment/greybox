@@ -182,6 +182,7 @@ export default defineComponent({
   data() {
     const outputBoolean = (val: boolean) => (val ? '✅' : '❌');
     const emptyToHyphen = (val: string | null) => (val ?? '-');
+    const dietOrHyphen = (diet: Object | null ) => (diet ? this.$tr(diet.name) : '-');
     return {
       translationPrefix: 'admin.eventRegistrations.',
       roleFilterModel: null,
@@ -203,7 +204,7 @@ export default defineComponent({
       }, {
         name: 'meals', label: this.$tr('admin.eventRegistrations.labels.meals'), field: 'meals', format: outputBoolean, sortable: false, align: 'center',
       }, {
-        name: 'dietary_requirements', label: this.$tr('admin.eventRegistrations.labels.dietaryRequirements'), field: (row: EventRegistration) => row.person.dietary_requirement, format: emptyToHyphen, sortable: true, align: 'center',
+        name: 'dietary_requirements', label: this.$tr('admin.eventRegistrations.labels.dietaryRequirements'), field: (row: EventRegistration) => row.person.dietary_requirement, format: dietOrHyphen, sortable: true, align: 'center',
       }],
       initialPagination: {
         sortBy: 'surname',
