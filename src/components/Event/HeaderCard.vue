@@ -17,28 +17,22 @@
       >
         <p>
           <q-icon name="far fa-calendar-alt" class="text-primary" />
-          <template
-            v-if="event.beginning.substr(0, 4) !== event.end.substr(0, 4)"
-          >
+          <template v-if="event.beginning.substr(0, 4) !== event.end.substr(0, 4)">
             <!-- Year is different -->
             {{ getDate(event.beginning, 'D. M. YYYY') }} - {{ getDate(event.end, 'D. M. YYYY') }}
           </template>
-          <template
-            v-else-if="
-                event.beginning.substr(0, 7) !== event.end.substr(0, 7)
-              "
-          >
+          <template v-else-if="event.beginning.substr(0, 7) !== event.end.substr(0, 7)">
             <!-- Month is different -->
             {{ getDate(event.beginning, 'D. M.') }} - {{ getDate(event.end, 'D. M. YYYY') }}
           </template>
           <template v-else-if="event.beginning !== event.end">
             <!-- Just day is different-->
-            {{ getDate(event.beginning, 'D. M. YYYY') }}
-            -
-          </template
-          >
-          {{ getDate(event.end, 'D. M. YYYY') }}
-          <!-- else - One day event -->
+            {{ getDate(event.beginning, 'D. M. YYYY') }} - {{ getDate(event.end, 'D. M. YYYY') }}
+          </template>
+          <template v-else>
+            <!-- else - One day event -->
+            {{ getDate(event.end, 'D. M. YYYY') }}
+          </template>
         </p>
         <p>
           <q-icon name="fas fa-landmark" class="text-primary" />
@@ -91,6 +85,7 @@ export default defineComponent({
   name: 'HeaderCard',
   props: HeaderCardProps,
   data(): TranslationPrefixData {
+    console.log("cs", this.event);
     return {
       translationPrefix: 'event.',
     };
