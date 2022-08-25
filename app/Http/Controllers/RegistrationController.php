@@ -37,10 +37,10 @@ class RegistrationController extends FakturoidController
         $registration = Registration::find($id);
         $this->authorize('showOne', $registration);
 
-        $registration->person = $registration->person()->get();
-        $registration->event = $registration->event()->get();
-        $registration->role = $registration->role()->get();
-        $registration->registered_by = $registration->registeredBy()->get();
+        $registration->person = $registration->person()->first();
+        $registration->event = $registration->event()->first();
+        $registration->role = $registration->role()->first();
+        $registration->registered_by = $registration->registeredBy()->first();
 
         return response()->json($registration);
     }
@@ -98,8 +98,8 @@ class RegistrationController extends FakturoidController
             if ($request->has('meals')) $this->updateColumn($registration, 'meals', $request->input('meals'));
             if ($request->has('team')) $this->updateColumn($registration, 'team', $request->input('team'));
 
-            $registration->person = $registration->person()->get();
-            $registration->team = $registration->team()->get();
+            $registration->person = $registration->person()->first();
+            $registration->team = $registration->team()->first();
             $registration->role = $registration->role()->first();
             $registration->role->name = $registration->role->translation()->first();
 
