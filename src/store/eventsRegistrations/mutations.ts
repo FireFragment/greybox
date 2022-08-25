@@ -15,3 +15,15 @@ export const setEventRegistrations: Mutation<EventsRegistrationsState> = (
   state.events[value.eventId] = value.data;
   state.loading = false;
 };
+
+export const updateEventRegistration: Mutation<EventsRegistrationsState> = (
+  state, value: {
+    eventId: number,
+    data: EventRegistration,
+  },
+) => {
+  state.events[value.eventId] = [
+    value.data,
+    ...state.events[value.eventId].filter((registration) => registration.id !== value.data.id),
+  ];
+};

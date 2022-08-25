@@ -32,6 +32,8 @@
         row-key="id"
         :filter="filterObject"
         :filter-method="filterTableRows"
+        :loading="tableLoading"
+        color="primary"
       >
         <template v-slot:header-cell-role="props">
           <q-th :props="props" class="filterable-table-heading">
@@ -71,9 +73,12 @@
         </template>
         <template v-slot:body-cell-role="props">
           <q-td :props="props">
-            <q-select borderless v-model="participantRole" :options="applicableRoles"
+            <q-select borderless :model-value="participantRoles[props.row.id]"
+                      @update:model-value="(role) => changeParticipantRole(role, props.row.id)"
+                      :options="applicableRoles"
                       option-value="id" :option-label="item => $tr(item.name, null, false)"
-                      :dense="true" :options-dense="true">
+                      :dense="true" :options-dense="true"
+                      :disable="tableLoading">
             </q-select>
           </q-td>
         </template>
@@ -98,7 +103,8 @@ import { Role } from 'src/types/role';
 import { defineComponent } from 'vue';
 import { $tr } from 'boot/custom';
 import { getAllTranslations, TranslatedString } from 'boot/i18n';
-import { langs } from '../../translation/config';
+import { langs } from 'src/translation/config';
+import { AxiosResponse } from 'axios';
 
 const booleanFilterOptions = [$tr('admin.eventRegistrations.all'), $tr('admin.eventRegistrations.yes'), $tr('admin.eventRegistrations.no')];
 
@@ -159,6 +165,13 @@ export default defineComponent({
         meals: this.mealsFilterModel,
       };
     },
+    participantRoles(): Record<number, Role> {
+      return Object.fromEntries(
+        new Map(this.registrations.map(
+          (registration: EventRegistration) => ([registration.id, registration.role]),
+        )),
+      );
+    },
   },
   async created() {
     // Not cached -> load from API
@@ -174,7 +187,6 @@ export default defineComponent({
       roleFilterModel: null,
       accommodationFilterModel: null,
       mealsFilterModel: null,
-      participantRole: null,
       booleanFilterOptions,
       columns: [{
         name: 'surname', label: this.$tr('admin.eventRegistrations.labels.surname'), field: (row: EventRegistration) => row.person.surname, sortable: true, align: 'left',
@@ -198,12 +210,13 @@ export default defineComponent({
         descending: false,
         rowsPerPage: 20,
       },
+      tableLoading: false,
     };
   },
   methods: {
     filterTableRows(rows: EventRegistration[], terms: FilterObject): EventRegistration[] {
       return rows.filter((item) => (
-        (terms.role == null || terms.role.id === 0 || terms.role.id === item.role.id)
+        (terms.role == null || terms.role.id === Infinity || terms.role.id === item.role.id)
         && (terms.accommodation == null || terms.accommodation === this.$tr('all') || ((terms.accommodation === this.$tr('yes')) === item.accommodation))
         && (terms.meals == null || terms.meals === this.$tr('all') || ((terms.meals === this.$tr('yes')) === item.meals))
       ));
@@ -212,10 +225,10 @@ export default defineComponent({
       return this.registrations.filter((item) => role.id === 0 || role.id === item.role.id).length;
     },
     fakeRoleObject: (nameTrKey: string): Role => ({
-      id: 0,
+      id: Infinity,
       icon: '',
       name: {
-        id: 0,
+        id: Infinity,
         created_at: '',
         updated_at: '',
         ...getAllTranslations(nameTrKey),
@@ -223,8 +236,29 @@ export default defineComponent({
       slug: <TranslatedString><unknown> new Map(langs.map((lang) => ([lang, '']))),
       created_at: '',
       updated_at: '',
-    }
-    ),
+    }),
+    changeParticipantRole(role: Role, registrationId: number) {
+      this.tableLoading = true;
+
+      this.$api({
+        url: `registration/${registrationId}`,
+        method: 'put',
+        data: {
+          role: role.id !== Infinity ? role.id : 4,
+        },
+      })
+        .then(({
+          data,
+        }: AxiosResponse<EventRegistration>) => {
+          this.$store.commit('eventsRegistrations/updateEventRegistration', {
+            eventId: this.eventId,
+            data,
+          });
+        })
+        .finally(() => {
+          this.tableLoading = false;
+        });
+    },
   },
 });
 </script>
