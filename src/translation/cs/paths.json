@@ -28,6 +28,6 @@
     "currentRegistrations": "stavajici-prihlasky"
   },
   "admin": {
-    "events": "admin-turnaje"
+    "events": "turnaje-registrace"
   }
 }

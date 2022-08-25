@@ -52,7 +52,9 @@
       </div>
 
       <template v-if="$auth.isAdmin() || ($auth.user()?.organizedEventsIds ?? []).length">
-        <q-item-label header>{{ $tr('admin.title') }}</q-item-label>
+        <q-item-label header>
+          {{ $tr($auth.isAdmin() ? 'admin.title' : 'event.types.organizer') }}
+        </q-item-label>
         <q-item :to="$path('admin.events')">
           <q-item-section avatar>
             <q-icon name="fas fa-trophy" />

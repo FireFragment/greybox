@@ -2,6 +2,7 @@
   "title": "Admin",
   "eventRegistrations": {
     "link": "Tournaments registrations",
+    "button": "Show registrations",
     "chooseEvent" : "Choose event",
     "overview": {
       "title": "Number of registrations"

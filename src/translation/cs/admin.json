@@ -2,7 +2,8 @@
   "title": "Admin",
   "eventRegistrations": {
     "link": "Registrace na turnaje",
-    "chooseEvent" : "Vyberte turnaj",
+    "button": "Zobrazit registrace",
+    "chooseEvent": "Vyberte turnaj",
     "overview": {
       "title": "Počet přihlášek"
     },
@@ -11,14 +12,14 @@
     "yes": "Ano",
     "no": "Ne",
     "labels": {
-        "surname": "Příjmení",
-        "name": "Jméno",
-        "role": "Role",
-        "team": "Tým",
-        "note": "Poznámka",
-        "accommodation": "Ubytování",
-        "meals": "Jídlo",
-        "dietaryRequirements": "Jídlo - omezení"
+      "surname": "Příjmení",
+      "name": "Jméno",
+      "role": "Role",
+      "team": "Tým",
+      "note": "Poznámka",
+      "accommodation": "Ubytování",
+      "meals": "Jídlo",
+      "dietaryRequirements": "Jídlo - omezení"
     }
   }
 }

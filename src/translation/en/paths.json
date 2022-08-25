@@ -28,6 +28,6 @@
     "currentRegistrations": "current-registrations"
   },
   "admin": {
-    "events": "admin-tournaments"
+    "events": "tournaments-registrations"
   }
 }

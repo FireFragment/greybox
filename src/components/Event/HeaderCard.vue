@@ -57,7 +57,7 @@
               $slug($tr(event.name) + ' ' + event.place)
           "
           v-if="$auth.organizesEvent(event.id)">
-          Admin
+          {{ $tr('admin.eventRegistrations.button', null, false) }}
         </router-link>
       </div>
     </q-card>
