@@ -98,6 +98,11 @@ class RegistrationController extends FakturoidController
             if ($request->has('meals')) $this->updateColumn($registration, 'meals', $request->input('meals'));
             if ($request->has('team')) $this->updateColumn($registration, 'team', $request->input('team'));
 
+            $registration->person = $registration->person()->get();
+            $registration->team = $registration->team()->get();
+            $registration->role = $registration->role()->first();
+            $registration->role->name = $registration->role->translation()->first();
+
             return response()->json($registration, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
