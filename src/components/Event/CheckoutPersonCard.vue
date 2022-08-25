@@ -78,7 +78,7 @@
             }}
           </dd>
         </div>
-
+        <template v-if="!dietaryRequirement">cs {{ dietaryRequirement }}</template>
         <div
           v-if="registration.meals && person.person.dietary_requirement && dietaryRequirement"
         >
@@ -173,7 +173,7 @@ export default {
       const id = this.person.person.dietary_requirement;
 
       const diet = this.possibleDiets.find((item) => item.id === id);
-
+      
       if (!diet) {
         return null;
       }

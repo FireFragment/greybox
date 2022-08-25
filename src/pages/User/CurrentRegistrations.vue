@@ -38,6 +38,7 @@ import { mapGetters } from 'vuex';
 import { Event } from 'src/types/event';
 import NoDataMessage from 'components/NoDataMessage.vue';
 import { Role } from 'src/types/role';
+import { fullEvent } from 'src/store/events/getters';
 
 export const DBkey = 'current-registrations';
 
@@ -131,15 +132,17 @@ export default defineComponent({
             url: `event/${event.id}/user/${this.$auth.user()!.id}/registration`,
             method: 'get',
           })
-            .then(({ data }: AxiosResponse<PersonRegistrations[]>) => {
+            .then(async ({ data }: AxiosResponse<PersonRegistrations[]>) => {
               if (!data.length) {
                 return;
               }
-
+              
+              await this.$store.dispatch("events/loadFull", event.id);
               this.events[event.id] = {
-                event,
+                event: this.$store.getters["events/fullEvent"](event.id),
                 registrations: data,
               };
+              this.events[event.id].registrations.map((registration) => registration.person.dietary_requirement = registration.person.dietary_requirement?.id);
             });
         }),
       );
