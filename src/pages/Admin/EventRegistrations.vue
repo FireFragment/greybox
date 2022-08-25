@@ -222,7 +222,8 @@ export default defineComponent({
       ));
     },
     roleRegistrationsCount(role: Role): number {
-      return this.registrations.filter((item) => role.id === 0 || role.id === item.role.id).length;
+      return this.registrations
+        .filter((item) => role.id === Infinity || role.id === item.role.id).length;
     },
     fakeRoleObject: (nameTrKey: string): Role => ({
       id: Infinity,
