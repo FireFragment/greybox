@@ -157,6 +157,11 @@ export default defineComponent({
       };
     },
   },
+  beforeMount() {
+    if (!this.formData.length) {
+      this.$router.replace(this.rolePickRoute);
+    }
+  },
   methods: {
     sendForm() {
       this.loading = !this.loading;

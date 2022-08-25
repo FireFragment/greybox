@@ -109,6 +109,15 @@ export default {
   methods: {
     getDate: date.formatDate,
   },
+  beforeMount() {
+    if (!this.data) {
+      this.$router.replace({
+        /* TODO - translate route to use alias ($tr() on paths maybe) */
+        name: 'event-pick-role',
+        params: this.$route.params,
+      });
+    }
+  },
   computed: {
     columns() {
       return [
