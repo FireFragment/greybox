@@ -3,7 +3,19 @@
   "version": "0.0.1",
   "description": "Systém pro přihlašování na turnaje Asociace Debatních Klubů. Evidence debatních soutěží a členů.",
   "productName": "Greybox 2.0",
-  "author": "Jakub Szymsza <jakub@szymsza.cz>",
+  "author": "Debatování.cz <info@debatovani.cz>",
+  "contributors": [
+    {
+      "name": "Jakub Szymsza",
+      "email": "jakub@szymsza.eu",
+      "url": "https://szymsza.eu"
+    },
+    {
+      "name": "Ladislav Burgr",
+      "email": "burgr.ladislav@gmail.com",
+      "url": "https://ladislavburgr.cz"
+    }
+  ],
   "private": true,
   "scripts": {
     "serve": "GREYBOX_ENV=development npx quasar dev",

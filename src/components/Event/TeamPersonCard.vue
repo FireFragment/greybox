@@ -96,7 +96,6 @@ export default {
     },
     updateHeight() {
       /* TODO
-      console.log("cs");
       //console.log(elem);
       //let el = document.querySelectorAll('.q-card-section-wrapper');
       let height = this.$el.scrollHeight;
