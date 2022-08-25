@@ -56,7 +56,7 @@ class Invoice extends Model implements AuthenticatableContract, AuthorizableCont
 
     public function generateQr()
     {
-        $payment = new QrPayment(getenv('ACCOUNT_CZ_NUMBER'),getenv('ACCOUNT_CZ_BANK'));
+        $payment = QrPayment::fromAccountAndBankCode(getenv('ACCOUNT_CZ_NUMBER'),getenv('ACCOUNT_CZ_BANK'));
 
         $payment->setVariableSymbol($this->number);
         $payment->setAmount($this->total);
@@ -67,11 +67,7 @@ class Invoice extends Model implements AuthenticatableContract, AuthorizableCont
         } else {
             $qrFileName = uniqid($this->number, true);
         }
-        $qrImage = $payment->getQrImage()->writeString();
-
-        $qrFile = fopen("qrs/$qrFileName.png", 'w');
-        fwrite($qrFile, $qrImage);
-        fclose($qrFile);
+        $payment->getQrCode()->writeToFile("qrs/$qrFileName.png");
 
         $this->qr_url = $qrFileName;
         return $this->qr_url;

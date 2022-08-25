@@ -13,7 +13,7 @@
         "illuminate/mail": "v8.57.0",
         "doctrine/dbal": "^3.2",
         "fakturoid/fakturoid-php": "1.0.3",
-        "rikudou/czqrpayment": "5.2.1",
+        "rikudou/czqrpayment": "^5.3",
         "endroid/qr-code": "^4.4.1",
         "bugsnag/bugsnag-laravel": "2.21.0",
         "league/flysystem-aws-s3-v3": "^1.0"
