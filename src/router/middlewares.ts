@@ -16,7 +16,7 @@ export const adminMiddleware: NavigationGuardWithThis<undefined> = (
 export const anyEventOrganizerMiddleware: NavigationGuardWithThis<undefined> = (
   to, from, next,
 ) => {
-  if (!isAdmin() && !user()?.organizedEventsIds) {
+  if (!isAdmin() && !(user()?.organizedEventsIds ?? []).length) {
     next({ name: 'home' });
   } else {
     next();

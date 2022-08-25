@@ -51,7 +51,7 @@
         {{ $tr('event.empty') }}
       </div>
 
-      <template v-if="$auth.isAdmin() || $auth.user().organizedEventsIds">
+      <template v-if="$auth.isAdmin() || ($auth.user()?.organizedEventsIds ?? []).length">
         <q-item-label header>{{ $tr('admin.title') }}</q-item-label>
         <q-item :to="$path('admin.events')">
           <q-item-section avatar>
