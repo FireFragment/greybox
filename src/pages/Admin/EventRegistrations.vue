@@ -72,7 +72,8 @@
         <template v-slot:body-cell-role="props">
           <q-td :props="props">
             <q-select borderless v-model="participantRole" :options="applicableRoles"
-                      option-value="id" :option-label="item => $tr(item.name, null, false)">
+                      option-value="id" :option-label="item => $tr(item.name, null, false)"
+                      :dense="true" :options-dense="true">
             </q-select>
           </q-td>
         </template>
