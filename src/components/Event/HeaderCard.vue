@@ -84,7 +84,7 @@ const HeaderCardProps = {
 export default defineComponent({
   name: 'HeaderCard',
   props: HeaderCardProps,
-  data(): TranslationPrefixData { 
+  data(): TranslationPrefixData {
     return {
       translationPrefix: 'event.',
     };

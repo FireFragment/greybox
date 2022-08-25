@@ -98,8 +98,9 @@
 <script lang="ts">
 
 import { mapState } from 'vuex';
-import { EventFull, EventRegistration } from 'src/types/event';
+import { EventFull, EventRegistration, DietaryRequirement } from 'src/types/event';
 import { Role } from 'src/types/role';
+
 import { defineComponent } from 'vue';
 import { $tr } from 'boot/custom';
 import { getAllTranslations, TranslatedString } from 'boot/i18n';
@@ -182,7 +183,7 @@ export default defineComponent({
   data() {
     const outputBoolean = (val: boolean) => (val ? '✅' : '❌');
     const emptyToHyphen = (val: string | null) => (val ?? '-');
-    const dietOrHyphen = (diet: Object | null ) => (diet ? this.$tr(diet.name) : '-');
+    const dietOrHyphen = (diet: DietaryRequirement | null) => (diet ? this.$tr(diet.name) : '-');
     return {
       translationPrefix: 'admin.eventRegistrations.',
       roleFilterModel: null,
