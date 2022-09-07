@@ -124,18 +124,26 @@ export const outputValidationErrors = (data) => {
       messages = [messages];
     }
 
+    // Invalid response, not an array of strings
+    if (!Array.isArray(messages) || !messages.every(i => typeof i === "string")) {
+      continue;
+    }
+
     messages.forEach((message) => {
+      // Convert message path to actual error message
+      const translated = $tr(
+        `auth.signUp.validation.${
+          index
+        }.${
+          message.includes('validation.')
+            ? message.substr(11).replace('.', '-')
+            : message
+        }`,
+        null, false,
+      );
+
       $flash(
-        $tr(
-          `auth.signUp.validation.${
-            index
-          }.${
-            message.includes('validation.')
-              ? message.substr(11).replace('.', '-')
-              : message
-          }`,
-          null, false,
-        ),
+        typeof translated === 'string' ? translated : $tr('general.error', null, false),
         'error',
         false,
         9000,
