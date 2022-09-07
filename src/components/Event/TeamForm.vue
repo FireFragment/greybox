@@ -355,7 +355,9 @@ export default {
 
   watch: {
     autofill(data) {
-      if (this.visibleId) this.people[this.visibleId].autofill = data;
+      if (this.visibleId && this.people[this.visibleId] && data) {
+        this.people[this.visibleId].autofill = data;
+      }
     },
   },
 };

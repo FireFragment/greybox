@@ -133,6 +133,13 @@ export default defineComponent({
   methods: {
     debaterSelected(data) {
       this.autofillData = data;
+
+      // Reset autofill to trigger TeamForm prop watch even if the same person is selected again later
+      this.$nextTick(() => {
+        this.$nextTick(() => {
+          this.autofillData = null;
+        });
+      });
     },
 
     sendForm(data, autofill) {
