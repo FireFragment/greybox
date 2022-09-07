@@ -110,7 +110,6 @@
 <script>
 /* eslint-disable */
 import { $tr, $flash } from '../../boot/custom';
-import { switchLocale } from '../../boot/i18n';
 
 export const outputValidationErrors = (data) => {
   if (!data) {
@@ -194,9 +193,6 @@ export default {
         .catch((data) => outputValidationErrors(data.response.data))
         .finally(() => {
           this.loading = false;
-          if (this.$auth.user().preferred_locale !== this.$i18n.locale) {
-            switchLocale(this.$i18n.locale);
-          }
         });
     },
   },

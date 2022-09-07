@@ -120,6 +120,10 @@ export default {
             this.$router.push(this.$path('home'));
             this.$flash(loginSuccess, 'done');
           }
+
+          if(this.$auth.user().preferred_locale !== this.$i18n.locale) {
+            switchLocale(this.$auth.user().preferred_locale);
+          }
         })
         .catch(() => {
           this.password = null;
@@ -127,9 +131,6 @@ export default {
         })
         .finally(() => {
           this.loading = false;
-          if(this.$auth.user().preferred_locale !== this.$i18n.locale) {
-            switchLocale(this.$auth.user().preferred_locale);
-          }
         });
     },
   },
