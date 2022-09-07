@@ -145,7 +145,7 @@ class UserController extends Controller
     public function update($id, Request $request)
     {
         try {
-            $user = User::findOrFail($id);
+            if (null === $user = User::find($id)) return response()->json(['message' => 'userNotFound'], 404);
             $this->authorize('update', $user, \Auth::user());
 
             $preferredLocale = $request->input('preferred_locale');
@@ -170,7 +170,7 @@ class UserController extends Controller
         ]);
 
         try {
-            $user = User::findOrFail($id);
+            if (null === $user = User::find($id)) return response()->json(['message' => 'userNotFound'], 404);
             $this->authorize('update', $user, \Auth::user());
             if (Hash::check($request->input('password_old'), $user->password)) {
                 try {
@@ -208,8 +208,8 @@ class UserController extends Controller
 
     public function delete($id)
     {
+        if (null === $user = User::find($id)) return response()->json(['message' => 'userNotFound'], 404);
         try {
-            $user = User::findOrFail($id);
             $user->tokens()->delete();
             $user->delete();
             return response()->json(['message' => 'Deleted successfully.'], 204);
