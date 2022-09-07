@@ -45,14 +45,14 @@ class PersonController extends Controller
 
         $requestData = $request->all();
 
-        // If institution isn't set, use the creating user's institution
-        if (!$request->has('institution'))
+        // If institution isn't set, use the creating user's institution - not used yet
+        /* if (!$request->has('institution'))
         {
             // Check if the creating User has Person
             if (!empty($userPerson = \Auth::user()->person()->first())) {
                 @$requestData['institution'] = $userPerson->institution()->first()->id;
             }
-        }
+        } */
 
         if (null !== $duplicate = PersonRepository::findDuplicate($request)) return response()->json($duplicate, 200);
 
