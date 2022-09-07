@@ -264,16 +264,15 @@ export default {
 
         if (!this.accept || !this.teamName || !this.teamName.trim().length) reject();
 
-        const cards = Object.keys(this.$refs)
-          .filter((key) => key.includes('person_card_') && this.$refs[key] !== null)
-          .map((key) => this.$refs[key]);
+        const cards = Object.keys(this.people)
+          .map((id) => this.$refs[`person_card_${id}`]);
         let validated = 0;
         let hasError = false;
 
         if (!cards.length) return reject();
 
         // Validate and submit all people
-        cards.forEach((item) => {
+        cards.forEach(([item]) => {
           const formFields = item.$refs['form-fields'];
           const form = formFields.$refs['q-form'];
           const { id } = item;
