@@ -41,3 +41,10 @@ export const confirmRegistration: Mutation<EventRegistrationFormState> = (
   state.dataToSubmit = [];
   state.confirmation = confirmation;
 };
+
+export const flushEventRegistrationForms: Mutation<EventRegistrationFormState> = (
+  state,
+) => {
+  state.dataToSubmit = [];
+  state.confirmation = null;
+};

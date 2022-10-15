@@ -14,7 +14,7 @@ export interface State {
   roles: RolesState;
 }
 
-export default () => createStore({
+const store = createStore({
   modules: {
     eventRegistrationForm,
     events,
@@ -23,3 +23,10 @@ export default () => createStore({
   },
   strict: config.debug,
 });
+
+export const flushUserData = () => {
+  store.commit('eventRegistrationForm/flushEventRegistrationForms');
+  store.commit('eventsRegistrations/flushEventRegistrations');
+};
+
+export default store;

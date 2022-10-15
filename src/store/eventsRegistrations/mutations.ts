@@ -27,3 +27,10 @@ export const updateEventRegistration: Mutation<EventsRegistrationsState> = (
     ...state.events[value.eventId].filter((registration) => registration.id !== value.data.id),
   ];
 };
+
+export const flushEventRegistrations: Mutation<EventsRegistrationsState> = (
+  state,
+) => {
+  state.events = {};
+  state.loading = false;
+};

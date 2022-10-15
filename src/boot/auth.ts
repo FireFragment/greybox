@@ -5,6 +5,7 @@ import { $path } from 'boot/custom';
 import { Date, DateTime } from 'src/types/general';
 import { Lang } from 'src/translation/config';
 import { DietaryRequirement } from 'src/types/event';
+import { flushUserData } from 'src/store';
 import { apiCall } from './api';
 
 type UserRole = 'admin' | 'none';
@@ -105,7 +106,7 @@ const login = (credentials: LoginData): Promise<User | null> => new Promise(
 export const logout = async (redirectHome: boolean = true) => {
   localStorage.removeItem(localStorageKey);
 
-  // TODO - flush personal DB once it is connected to Vuex
+  flushUserData();
 
   if (redirectHome) {
     await Router.replace($path('home'));
