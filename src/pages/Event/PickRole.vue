@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- Individual or group -->
     <picking-buttons
       next-route="event-register-form"
       class="picking-role"

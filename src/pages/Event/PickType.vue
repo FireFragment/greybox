@@ -1,9 +1,10 @@
 <template>
-  <!-- Individual or group -->
-  <picking-buttons
-    next-route="event-pick-role"
-    name="type"
-    :values="[{
+  <div>
+    <!-- Individual or group -->
+    <picking-buttons
+      next-route="event-pick-role"
+      name="type"
+      :values="[{
         icon: 'user',
         color: 'btn-2',
         value: 'individual'
@@ -12,7 +13,23 @@
         color: 'btn-3',
         value: 'group'
       }]"
-  />
+    />
+    <q-btn
+      v-if="$store.state.eventRegistrationForm.dataToSubmit.length"
+      :label="$tr('event.buttons.goToCheckout')"
+      type="reset"
+      color="blue-9"
+      class="q-mt-xl float-right"
+      :to="$translatedRouteLink({
+        name: 'event-checkout',
+        params: {
+          ...this.$route.params,
+          type: $tr(`paths.eventParams.type.group`),
+          checkout: this.$tr('paths.eventParams.checkout', null, false),
+        }
+      })"
+    />
+  </div>
 </template>
 
 <script lang="ts">
