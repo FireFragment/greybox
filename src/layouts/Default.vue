@@ -190,10 +190,12 @@ export default defineComponent({
   created() {
     // localization
     if (this.$auth.user()) {
-      void switchQuasarLanguage(this.$auth.user().preferred_locale);
-      if (this.$auth.user().preferred_locale !== this.$i18n.locale) {
-        void switchLocale(this.$auth.user().preferred_locale);
-      }
+      setTimeout(() => {
+        void switchQuasarLanguage(this.$auth.user().preferred_locale);
+        if (this.$auth.user().preferred_locale !== this.$i18n.locale) {
+          void switchLocale(this.$auth.user().preferred_locale);
+        }
+      }, 500);
     }
 
     this.$bus.$on('fullLoader', (value) => {

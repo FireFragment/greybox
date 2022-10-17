@@ -121,9 +121,12 @@ export default {
             this.$flash(loginSuccess, 'done');
           }
 
-          if(this.$auth.user().preferred_locale !== this.$i18n.locale) {
-            switchLocale(this.$auth.user().preferred_locale);
-          }
+          setTimeout(() => {
+            if(typeof this.$i18n === 'undefined' || this.$auth.user().preferred_locale !== this.$i18n.locale) {
+              switchLocale(this.$auth.user().preferred_locale);
+            }
+          }, 500);
+
         })
         .catch(() => {
           this.password = null;

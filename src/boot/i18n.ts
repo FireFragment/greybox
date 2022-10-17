@@ -70,6 +70,7 @@ export const switchLocale = async (locale: Lang): Promise<void> => {
   // update preference
   const userObj = user();
   if (userObj) {
+    console.log('asking', userObj.preferred_locale, locale);
     userObj.preferred_locale = locale;
     void apiCall({
       url: `user/${userObj.id}`,
