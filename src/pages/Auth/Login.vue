@@ -102,6 +102,7 @@ export default {
 
       // These translations don't work inside auth promises for some odd reason
       const invalidCredentials = this.$tr('login.validation.invalidCredentials');
+      const serverError = this.$tr('login.validation.serverError');
       const signupSuccess = this.$tr('signUp.success');
       const loginSuccess = this.$tr('login.success');
 
@@ -128,9 +129,10 @@ export default {
           }, 500);
 
         })
-        .catch(() => {
+        .catch((e) => {
+          if (e.response.status == 500) this.$flash(serverError, 'error');
+          else this.$flash(invalidCredentials, 'error');
           this.password = null;
-          this.$flash(invalidCredentials, 'error');
         })
         .finally(() => {
           this.loading = false;
