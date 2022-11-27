@@ -9,6 +9,8 @@ registrace.zip
 debugbox.zip
 /registration
 registration.zip
+/build-debug
+build-debug.zip
 
 # local env files
 .env.local
