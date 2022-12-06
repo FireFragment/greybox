@@ -21,14 +21,11 @@ class CreateTranslationsTable extends Migration
         });
 
         Schema::table('events', function($table) {
-            $table->unsignedInteger('name')->nullable()->change();
             $table->foreign('name')->references('id')->on('translations');
-            $table->unsignedInteger('note')->nullable()->change();
             $table->foreign('note')->references('id')->on('translations');
         });
 
         Schema::table('roles', function($table) {
-            $table->unsignedInteger('name')->nullable()->change();
             $table->foreign('name')->references('id')->on('translations');
         });
     }
@@ -42,14 +39,11 @@ class CreateTranslationsTable extends Migration
     {
 
         Schema::table('events', function($table) {
-            $table->string('name', 127)->change();
             $table->dropForeign(['name']);
-            $table->text('note')->change();
             $table->dropForeign(['note']);
         });
 
         Schema::table('roles', function($table) {
-            $table->string('name', 31)->change();
             $table->dropForeign(['name']);
         });
 
