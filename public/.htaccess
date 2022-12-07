@@ -22,12 +22,12 @@
   RewriteRule . /pds/registration/index.html [L]
 
   # Development
-  RewriteBase /debugbox
+  RewriteBase /
   RewriteRule ^index\.html$ - [L]
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteCond %{REQUEST_URI} ^/debugbox
-  RewriteRule . /debugbox/index.html [L]
+  RewriteCond %{REQUEST_URI} ^/
+  RewriteRule . /index.html [L]
 </IfModule>
 
 
