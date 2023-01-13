@@ -175,10 +175,10 @@ class Invoice extends Model implements AuthenticatableContract, AuthorizableCont
 
     public function setFullUrls(\Fakturoid\Client $fc)
     {
-        $this->qr_full_url = "https://debate-greybox.herokuapp.com/qrs/$this->qr_url.png"; // TODO: nastavovat adresu dynamicky
+        $this->qr_full_url = "https://api-prod.debata21.cz/qrs/$this->qr_url.png"; // TODO: nastavovat adresu dynamicky
         if ($this->getPdf($fc)) {
             $this->pdf_url = $this->qr_url;
-            $this->pdf_full_url = "https://debate-greybox.herokuapp.com/invoices/$this->pdf_url.pdf";
+            $this->pdf_full_url = "https://api-prod.debata21.cz/invoices/$this->pdf_url.pdf";
         }
     }
 
