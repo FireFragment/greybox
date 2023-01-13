@@ -10,7 +10,7 @@ abstract class FakturoidController extends Controller
      */
     public function getFakturoidClient()
     {
-        return new \Fakturoid\Client(getenv('FAKTUROID_SLUG'), getenv('FAKTUROID_EMAIL'), getenv('FAKTUROID_API_KEY'), getenv('FAKTUROID_USER_AGENT'));
+        return new \Fakturoid\Client(env('FAKTUROID_SLUG'), env('FAKTUROID_EMAIL'), env('FAKTUROID_API_KEY'), env('FAKTUROID_USER_AGENT'));
     }
 
     public function fillInvoiceData(array $data, $fakturoidInvoice)

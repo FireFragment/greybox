@@ -56,7 +56,7 @@ class Invoice extends Model implements AuthenticatableContract, AuthorizableCont
 
     public function generateQr()
     {
-        $payment = QrPayment::fromAccountAndBankCode(getenv('ACCOUNT_CZ_NUMBER'),getenv('ACCOUNT_CZ_BANK'));
+        $payment = QrPayment::fromAccountAndBankCode(env('ACCOUNT_CZ_NUMBER'),env('ACCOUNT_CZ_BANK'));
 
         $payment->setVariableSymbol($this->number);
         $payment->setAmount($this->total);
