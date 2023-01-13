@@ -6,6 +6,7 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\DB;
 use phpDocumentor\Reflection\Types\Integer;
+use Log;
 
 class OldGreyboxService
 {
@@ -32,6 +33,7 @@ class OldGreyboxService
         }
         catch (\Exception $e)
         {
+            Log::warning('Old greybox connection error: '.$e);
             return false;
         }
     }
@@ -46,7 +48,7 @@ class OldGreyboxService
         $url = $this->baseUrl;
         $url .= '&past_team_debaters=1';
         $url .= '&competition_id=' . $competitionId;
-        $url .= '&team_name=' . $teamName;
+        $url .= '&team_name=' . urlencode($teamName);
 
         return $this->getDataFromOldGreybox($url);
     }
