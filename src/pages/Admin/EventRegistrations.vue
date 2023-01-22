@@ -153,7 +153,7 @@ export default defineComponent({
       return [
         this.fakeRoleObject('admin.eventRegistrations.all'),
         ...roles.filter((item, index) => idsOnly.indexOf(item.id) === index),
-      ];
+      ].sort((a, b) => this.roleRegistrationsCount(b) - this.roleRegistrationsCount(a));
     },
     eventId(): number {
       const idParam: string | string[] = this.$route.params.id;
