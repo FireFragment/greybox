@@ -70,9 +70,9 @@ export const switchQuasarLanguage = async (locale: Lang): Promise<void> => {
 
 export const switchLocale = async (locale: Lang): Promise<void> => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, no-console
-  console.log(Router, '|', Router.currentRoute.value.meta.translationName, '|', Router.currentRoute.value.name);
-  console.log(`paths.${String(Router.currentRoute.value.meta.translationName ?? Router.currentRoute.value.name)}`);
-  console.log(getCurrentRouteTranslatedPath());
+  // console.log(Router);
+  // console.log(`paths.${String(Router.currentRoute.value.meta.translationName)}`);
+  // console.log(getCurrentRouteTranslatedPath());
   // update preference
   const userObj = user();
   if (userObj) {
