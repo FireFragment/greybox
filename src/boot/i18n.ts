@@ -48,6 +48,8 @@ export const translationMatchesInAnyLanguage = (
   || $tr(key, null, false, 'en') === comparison
 );
 
+// Replaces all segments by other language values in paths localization
+// (if not found, segment stays the same - e.g. for ID)
 export const getCurrentRouteTranslatedPath = (): TranslationValue => $tr(
   `paths.${String(Router.currentRoute.value.meta.translationName ?? Router.currentRoute.value.name)}`,
 );
@@ -67,6 +69,10 @@ export const switchQuasarLanguage = async (locale: Lang): Promise<void> => {
 };
 
 export const switchLocale = async (locale: Lang): Promise<void> => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, no-console
+  console.log(Router, '|', Router.currentRoute.value.meta.translationName, '|', Router.currentRoute.value.name);
+  console.log(`paths.${String(Router.currentRoute.value.meta.translationName ?? Router.currentRoute.value.name)}`);
+  console.log(getCurrentRouteTranslatedPath());
   // update preference
   const userObj = user();
   if (userObj) {
