@@ -233,7 +233,7 @@ class UserController extends Controller
                 $recovery_token = sha1($user->id.time());
                 DB::insert('insert into password_resets (email, token, created_at) values (?, ?, now())', array($username, $recovery_token));
 
-                $pds = $request->has('pds') ? $request->input('locale') : false;
+                $pds = $request->has('pds') ? $request->input('pds') : false;
 
                 $locale = $request->has('locale') ? $request->input('locale') : 'en';
                 app('translator')->setLocale($locale);
