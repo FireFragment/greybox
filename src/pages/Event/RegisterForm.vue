@@ -133,13 +133,6 @@ export default defineComponent({
   methods: {
     debaterSelected(data) {
       this.autofillData = data;
-
-      // Reset autofill to trigger TeamForm prop watch even if the same person is selected again later
-      this.$nextTick(() => {
-        this.$nextTick(() => {
-          this.autofillData = null;
-        });
-      });
     },
 
     sendForm(data, autofill) {
@@ -168,6 +161,19 @@ export default defineComponent({
         registration: registrationData,
         autofill,
       });
+
+      // Autofilled person -> remove from autofill
+      if (autofill) {
+        this.$db(
+          `autofillDebaters-event${this.eventId}`,
+          this.$db(`autofillDebaters-event${this.eventId}`)
+            .map((item) => ({
+              ...item,
+              registered: item.id === autofill.id ? true : item.registered,
+            })),
+          true,
+        );
+      }
 
       if (translationMatchesInAnyLanguage('paths.eventParams.type.individual', this.$route.params.type)) {
         this.$router.push(this.checkoutRoute);

@@ -312,6 +312,21 @@ export default defineComponent({
     },
 
     removePerson(index: number) {
+      const personAutofilled = this.formData[index].autofill;
+
+      // Person was autofilled -> mark as unregistered again
+      if (personAutofilled) {
+        this.$db(
+          `autofillDebaters-event${this.eventId}`,
+          this.$db(`autofillDebaters-event${this.eventId}`)
+            .map((item) => ({
+              ...item,
+              registered: item.id === personAutofilled.id ? false : item.registered,
+            })),
+          true,
+        );
+      }
+
       this.$store.commit('eventRegistrationForm/removeEventRegistration', index);
 
       if (!this.formData.length) this.$router.push(this.rolePickRoute);

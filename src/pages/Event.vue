@@ -48,10 +48,6 @@
 <script lang="ts">
 /* eslint-disable */
 // @ts-nocheck
-import autofillCard from '../components/Event/AutofillCard.vue';
-import formFields from '../components/Event/FormFields.vue';
-import pickType from 'components/Event/PickingButtons.vue';
-import teamForm from '../components/Event/TeamForm.vue';
 import { mapGetters, mapState } from 'vuex';
 import { defineComponent } from 'vue';
 import type { RouteRecordName } from 'vue-router';
@@ -62,10 +58,6 @@ export default defineComponent({
 
   components: {
     HeaderCard,
-    autofillCard,
-    formFields,
-    pickType,
-    teamForm,
   },
 
   data() {
@@ -81,16 +73,6 @@ export default defineComponent({
 
   async created() {
     await this.loadEvent();
-  },
-
-  beforeUnmount() {
-    if (!this.event) {
-      return;
-    }
-
-    // Invalidate autofill cache
-    this.$db(`autofillDebaters-event${this.event.id}`, this.DB_DEL);
-    this.$db(`autofillTeams-event${this.event.id}`, this.DB_DEL);
   },
 
   methods: {
