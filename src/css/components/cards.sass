@@ -18,6 +18,31 @@
 	border-left: 0
 	border-right: 0
 
+.q-card.horizontal-list-card
+	@media (min-width: $breakpoint-md-min)
+		display: flex
+
+		> .q-card__section
+			padding-left: 32px
+			padding-right: 32px
+
+			+ .q-card__section
+				flex-grow: 1
+
+		.q-list--bordered
+			border: none
+
+		.q-list--separator > .q-item-type
+			border-left: 1px solid rgba(0, 0, 0, 0.12)
+			border-top: 0
+
+		.q-list
+			display: flex
+			height: 100%
+
+			.q-item
+				flex: 1 1 0
+
 .q-card__actions.float-actions
 	display: block
 

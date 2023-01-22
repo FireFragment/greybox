@@ -1,10 +1,10 @@
 <template>
   <q-page padding>
     <h1 class="text-center text-h4">{{ event ? $tr(event.name, null, false) : '-' }}</h1>
-    <div class="q-pa-md" style="max-width: 350px">
-      <q-card>
+    <div class="q-pa-md">
+      <q-card class="horizontal-list-card">
         <q-card-section>
-          <div class="text-subtitle2">{{ $tr("overview.title") }}</div>
+          <div class="text-subtitle2">{{ $tr("overview.title") }}:</div>
         </q-card-section>
         <q-card-section class="q-pa-none">
           <q-list bordered separator>
