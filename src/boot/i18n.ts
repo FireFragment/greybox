@@ -7,10 +7,10 @@ import {
 } from 'boot/custom';
 import { Router } from 'src/router';
 import { user } from 'src/boot/auth';
-import { translateLink } from 'src/router/helpers';
+import { findValueInNestedObject } from 'src/router/helpers';
 import config from '../config';
 // Import localization data from JSONs
-import i18nConfig, { Lang, Translations, langs } from '../translation/config';
+import i18nConfig, { Lang, langs } from '../translation/config';
 import { apiCall } from './api';
 
 export interface TranslationPrefixData {
@@ -51,23 +51,6 @@ export const translationMatchesInAnyLanguage = (
 export const getCurrentRouteTranslatedPath = (): TranslationValue => $tr(
   `paths.${String(Router.currentRoute.value.meta.translationName ?? Router.currentRoute.value.name)}`,
 );
-
-const findValueInNestedObject = (obj: Translations | string, value: string, path: string)
-  // eslint-disable-next-line consistent-return
-  : string | void => {
-  if (typeof obj === 'string') return;
-  // eslint-disable-next-line no-restricted-syntax
-  for (const elem of Object.keys(obj)) {
-    const curr = obj[elem];
-    if (typeof curr === 'object' && curr !== null) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const retval = findValueInNestedObject(curr, value, `${path + elem}.`);
-      // eslint-disable-next-line consistent-return
-      if (retval) return retval;
-      // eslint-disable-next-line consistent-return
-    } else if (curr === value) return `${path}${elem}`;
-  }
-};
 
 // Replaces all segments by other language values in paths localization
 // (if not found, segment stays the same - e.g. for ID)

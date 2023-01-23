@@ -1,6 +1,6 @@
 import { LocationAsRelativeRaw, MatcherLocationAsPath } from 'vue-router';
 import { i18n } from 'boot/i18n';
-import i18nConfig, { Lang } from 'src/translation/config';
+import i18nConfig, { Lang, Translations } from 'src/translation/config';
 import { aliasRouteLang, primaryRouteLang, Router } from 'src/router/index';
 import { $tr, TranslationValue } from 'boot/custom';
 
@@ -56,4 +56,21 @@ export const translatedRouteLink = (
   return {
     path: translateLink(primaryPath, aliasPath, linkInDefaultLang.path),
   };
+};
+
+export const findValueInNestedObject = (obj: Translations | string, value: string, path: string)
+// eslint-disable-next-line consistent-return
+: string | void => {
+  if (typeof obj === 'string') return;
+  // eslint-disable-next-line no-restricted-syntax
+  for (const elem of Object.keys(obj)) {
+    const curr = obj[elem];
+    if (typeof curr === 'object' && curr !== null) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const retval = findValueInNestedObject(curr, value, `${path + elem}.`);
+      // eslint-disable-next-line consistent-return
+      if (retval) return retval;
+    // eslint-disable-next-line consistent-return
+    } else if (curr === value) return `${path}${elem}`;
+  }
 };
