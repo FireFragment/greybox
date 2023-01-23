@@ -32,7 +32,11 @@
       "note": "Note",
       "accommodation": "Accommodation",
       "meals": "Meals",
-      "dietaryRequirements": "Dietary Requirements"
+      "dietaryRequirements": "Dietary Requirements",
+      "club": "Club",
+      "teamName": "Name",
+      "members": "Members",
+      "registrant": "Registrant"
     }
   }
 }

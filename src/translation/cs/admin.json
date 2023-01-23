@@ -32,7 +32,11 @@
       "note": "Poznámka",
       "accommodation": "Ubytování",
       "meals": "Jídlo",
-      "dietaryRequirements": "Jídlo - omezení"
+      "dietaryRequirements": "Jídlo - omezení",
+      "club": "Klub",
+      "teamName": "Název",
+      "members": "Členové",
+      "registrant": "Přihlásil*a"
     }
   }
 }

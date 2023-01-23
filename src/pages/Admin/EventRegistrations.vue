@@ -66,7 +66,7 @@
         color="primary"
       >
         <!-- Role header cell - filterable -->
-        <template v-slot:header-cell-role2="props">
+        <template v-slot:header-cell-role="props">
           <q-th :props="props" class="filterable-table-heading">
             <q-select borderless v-model="roleFilterModel"
                       :options="uniqueRoles"
@@ -121,6 +121,7 @@
             </template>
           </q-td>
         </template>
+        <!-- Note body cell -->
         <template v-slot:body-cell-note="props">
           <q-td :props="props" class="small-overflow-column">
             {{ props.value }}
