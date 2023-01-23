@@ -6,7 +6,8 @@
     "chooseEvent" : "Choose event",
     "overview": {
       "rolesTitle": "Number of registrations",
-      "mealsTitle": "Dietary requirements"
+      "mealsTitle": "Dietary requirements",
+      "accommodated": "accommodated"
     },
     "meals": {
       "noMeals": "No meals",

@@ -14,7 +14,13 @@
             >
               <q-item-section>
                 <q-item-label caption>{{ $tr(role.name, null, false) }}</q-item-label>
-                <q-item-label>{{ roleRegistrationsCount(role) }}</q-item-label>
+                <q-item-label>
+                  {{ roleRegistrationsCount(role) }}
+                  <!-- Role "All" -->
+                  <span v-if="role.id === Infinity">
+                    ({{ accommodationCount }} {{ $tr("overview.accommodated") }})
+                  </span>
+                </q-item-label>
               </q-item-section>
             </q-item>
           </q-list>
@@ -243,6 +249,13 @@ export default defineComponent({
           (registration: EventRegistration) => ([registration.id, registration.role]),
         )),
       );
+    },
+    accommodationCount(): number {
+      if (!this.registrations) {
+        return 0;
+      }
+
+      return this.registrations.filter((item) => item.accommodation).length;
     },
   },
   async created() {

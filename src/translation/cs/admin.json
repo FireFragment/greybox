@@ -6,7 +6,8 @@
     "chooseEvent": "Vyberte turnaj",
     "overview": {
       "rolesTitle": "Počet přihlášek",
-      "mealsTitle": "Stravovací omezení"
+      "mealsTitle": "Stravovací omezení",
+      "accommodated": "ubytovaných"
     },
     "meals": {
       "noMeals": "Bez jídla",
