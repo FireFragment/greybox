@@ -1,26 +1,7 @@
 start app: php -S localhost:8000 -t public
 .\vendor\bin\phpunit tests
 
-
-To copy a database from yourapp to yourapp_staging:
-
-# turn off the web dynos in staging
-heroku maintenance:on -a yourapp-staging
-
-# if you have non-web-dynos, do them too
-heroku ps:scale worker=0 -a yourapp-staging
-
-# backup the staging database if you are paranoid like me (optional)
-heroku pg:backups capture -a yourapp-staging
-
-# execute the copy
-heroku pg:copy your-app::DATABASE_URL DATABASE_URL -a yourapp-staging
-Then when it's complete, turn staging back on:
-
-# this is if you have workers, change '1' to whatever
-heroku ps:scale worker=1 -a yourapp-staging
-
-heroku maintenance:off -a yourapp-staging
+copy prod db to staging: sudo ./transfer_db.sh
 
 
 <b>Fatal error</b>: Uncaught Error: Call to undefined method Laravel\Lumen\Application::handleException() in
