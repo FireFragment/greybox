@@ -64,7 +64,7 @@ export const findValueInNestedObject = (obj: Translations | string, value: strin
   if (typeof obj === 'string') return;
   // eslint-disable-next-line no-restricted-syntax
   for (const elem of Object.keys(obj)) {
-    const curr = obj[elem];
+    const curr: Translations | string = obj[elem];
     if (typeof curr === 'object' && curr !== null) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const retval = findValueInNestedObject(curr, value, `${path + elem}.`);
