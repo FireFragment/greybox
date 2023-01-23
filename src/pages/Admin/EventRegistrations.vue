@@ -33,7 +33,7 @@
               :key="diet"
             >
               <q-item-section>
-                <q-item-label caption class="text-capitalize">
+                <q-item-label caption class="text-capitalize-first-letter">
                   {{ $tr(diet) }}
                 </q-item-label>
                 <q-item-label>{{ count }}</q-item-label>
@@ -176,12 +176,26 @@ export default defineComponent({
       const uniqueDiets: Diet[] = diets
         .filter((v, i) => dietIds.indexOf(typeof v === 'string' ? v : v.id) === i);
 
-      // Get counts for all diets
-      return uniqueDiets
-        .map((r) => [
-          typeof r === 'string' ? `meals.${r}` : r.name,
-          dietIds.filter((i) => dietAtomicValue(r) === i).length,
-        ]);
+      return (
+        // Get counts for all diets
+        <[(TranslatedString | string), number][]>uniqueDiets
+          .map((r) => [
+            typeof r === 'string' ? `meals.${r}` : r.name,
+            dietIds.filter((i) => dietAtomicValue(r) === i).length,
+          ]))
+        // Sort diets and counts
+        .sort(([aDiet, aCount], [bDiet, bCount]) => {
+          // No meals option at the beginning
+          if (aDiet === 'noMeals') return -1;
+          if (bDiet === 'noMeals') return 1;
+
+          // Other string options (no requirements) after no meals
+          if (typeof aDiet === 'string') return -1;
+          if (typeof bDiet === 'string') return 1;
+
+          // Sort other options (real DietaryRequirements) by count
+          return bCount - aCount;
+        });
     },
     event(): EventFull {
       // eslint-disable-next-line max-len
