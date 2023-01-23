@@ -5,7 +5,7 @@ const files: string[] = [
 ];
 
 // Nested object
-interface Translations {
+export interface Translations {
   [path: string]: Translations | string
 }
 

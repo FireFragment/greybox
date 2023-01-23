@@ -29,8 +29,7 @@
           :to="$translatedRouteLink({
             name: 'event',
             params: {
-              id: event.id,
-              slug: $slug($tr(event.name) + ' ' + event.place),
+              id: event.id
             },
           })">
         <q-item-section avatar>
