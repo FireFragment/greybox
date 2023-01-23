@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Event,
     App\Translation;
+use App\Services\TeamRulesCheckingService;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
@@ -16,7 +17,8 @@ class EventController extends Controller
             'create',
             'update',
             'delete',
-            'showRegistrations'
+            'showRegistrations',
+            'showTeams'
         ]]);
     }
 
@@ -199,6 +201,47 @@ class EventController extends Controller
         }
 
         return response()->json($registrations);
+    }
+
+    public function showTeams($id)
+    {
+        $event = Event::find($id);
+        $this->authorize('showRegistrations', $event);
+
+        $rulesCheckingService = new TeamRulesCheckingService();
+        $registrations = $event->registrations()->where('role', 1)->get();
+
+        $teams = array();
+        foreach ($registrations as $registration) {
+            $team = $registration->team()->first();
+            if (null === $team) {
+                $id = 'n/a';
+                $registeredBy = $registration->registeredBy()->first()->withPerson();
+            } else {
+                $id = $team->id;
+                $registeredBy = $team->registeredBy()->first()->withPerson();
+            }
+            if (!array_key_exists($id, $teams)) $teams[$id] = new \stdClass();
+            $teams[$id]->team = $team;
+            $teams[$id]->members[] = $registration->person()->first();
+            if (null === $team) {
+                $teams[$id]->registered_by[] = $registeredBy;
+            } else {
+                $teams[$id]->registered_by = $registeredBy;
+            }
+        }
+
+        $teamsToPublish = array();
+        foreach ($teams as $team)
+        {
+            if (null !== $team->team)
+            {
+                $team->warnings = $rulesCheckingService->checkTeamRules($team->team->name, $team->members, $event->competition, $event->finals);
+            }
+            $teamsToPublish[] = $team;
+        }
+
+        return response()->json($teamsToPublish);
     }
 
     public function showUserRegistrations($eventId, $userId)

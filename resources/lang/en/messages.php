@@ -21,5 +21,17 @@ return [
     'registration.confirmation.mistake' => 'If you find any mistake, please reply to this email.',
 
     'team.rules.breach.warning.subject' => 'There has been a potential breach in rules for team registrations',
-    'team.rules.breach.warning.body' => 'There has been a potential breach in rules for team registrations. Please take a look at these'
+    'team.rules.breach.warning.body' => 'There has been a potential breach in rules for team registrations. Please take a look at these',
+
+    'team.rules.breach.minimum' => 'Not enough team members.',
+    'team.rules.breach.maximum' => 'Too many team members.',
+    'team.rules.breach.impossible_check.debaters' => 'Impossible to check the paragraph 2 rules for the following debaters: ',
+    'team.rules.breach.shared_team1' => 'Debaters ',
+    'team.rules.breach.shared_team2' => ' shared the following team in the past: ',
+    'team.rules.breach.shared_teams2' => ' shared the following teams in the past: ',
+    'team.rules.breach.shared_team3' => ' and now they are registered as ',
+    'team.rules.breach.impossible_check.team' => 'Impossible to check the paragraph 3.1 and 3.2 rules.',
+    'team.rules.breach.new_debaters' => 'Debaters were not members of this team in the past.',
+    'team.rules.breach.finals.no_past_debaters' => 'No debaters in the previous tournaments.',
+    'team.rules.breach.finals.new_debaters' => 'Debaters were not members of this team in the past: '
 ];

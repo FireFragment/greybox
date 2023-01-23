@@ -62,6 +62,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->delete('event/{id}', ['uses' => 'EventController@delete']);
     $router->put('event/{id}', ['uses' => 'EventController@update']);
     $router->get('event/{id}/registration', ['uses' => 'EventController@showRegistrations']);
+    $router->get('event/{id}/team', ['uses' => 'EventController@showTeams']);
     $router->get('event/{eventId}/user/{userId}/registration', ['uses' => 'EventController@showUserRegistrations']);
     $router->get('event/{eventId}/draw/{roundNumber}', ['uses => EventController@draw']);
 

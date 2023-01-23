@@ -33,4 +33,12 @@ class Team extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         return $this->hasMany(Registration::class, 'team', 'id');
     }
+
+    /*
+     * @return App\User
+     */
+    public function registeredBy()
+    {
+        return $this->belongsTo(User::class, 'registered_by', 'id');
+    }
 }

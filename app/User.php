@@ -132,4 +132,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         return Hash::check($password, $this->password);
     }
+
+    /**
+     * Returns User with Person details
+     * @return User
+     */
+    public function withPerson(): User
+    {
+        $this->person = $this->person()->first();
+        return $this;
+    }
 }
