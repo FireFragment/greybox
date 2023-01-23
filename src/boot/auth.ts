@@ -20,7 +20,7 @@ export interface Person {
   old_greybox_id: number;
   birthdate: Date;
   // eslint-disable-next-line camelcase
-  dietary_requirement: DietaryRequirement;
+  dietary_requirement?: DietaryRequirement;
   // eslint-disable-next-line camelcase
   id_number: string;
   street: string;
