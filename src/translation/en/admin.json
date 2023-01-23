@@ -5,7 +5,8 @@
     "button": "Show registrations",
     "chooseEvent" : "Choose event",
     "overview": {
-      "title": "Number of registrations"
+      "rolesTitle": "Number of registrations",
+      "mealsTitle": "Dietary requirements"
     },
     "noData": "No registrations found",
     "all": "All",

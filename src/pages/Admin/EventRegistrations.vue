@@ -1,10 +1,10 @@
 <template>
   <q-page padding>
     <h1 class="text-center text-h4">{{ event ? $tr(event.name, null, false) : '-' }}</h1>
-    <div class="q-pa-md">
+    <div class="q-px-md">
       <q-card class="horizontal-list-card">
         <q-card-section>
-          <div class="text-subtitle2">{{ $tr("overview.title") }}:</div>
+          <div class="text-subtitle2">{{ $tr("overview.rolesTitle") }}:</div>
         </q-card-section>
         <q-card-section class="q-pa-none">
           <q-list bordered separator>
@@ -15,6 +15,28 @@
               <q-item-section>
                 <q-item-label caption>{{ $tr(role.name, null, false) }}</q-item-label>
                 <q-item-label>{{ roleRegistrationsCount(role) }}</q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-card-section>
+      </q-card>
+    </div>
+    <div class="q-pa-md">
+      <q-card class="horizontal-list-card">
+        <q-card-section>
+          <div class="text-subtitle2">{{ $tr("overview.mealsTitle") }}:</div>
+        </q-card-section>
+        <q-card-section class="q-pa-none">
+          <q-list bordered separator>
+            <q-item
+              v-for="[diet, count] in dietaryRequirements"
+              :key="diet"
+            >
+              <q-item-section>
+                <q-item-label caption class="text-capitalize">
+                  {{ diet ? $tr(diet) : "-" }}
+                </q-item-label>
+                <q-item-label>{{ count }}</q-item-label>
               </q-item-section>
             </q-item>
           </q-list>
@@ -35,7 +57,8 @@
         :loading="tableLoading"
         color="primary"
       >
-        <template v-slot:header-cell-role="props">
+        <!-- Role header cell - filterable -->
+        <template v-slot:header-cell-role2="props">
           <q-th :props="props" class="filterable-table-heading">
             <q-select borderless v-model="roleFilterModel"
                       :options="uniqueRoles"
@@ -49,6 +72,7 @@
             </q-select>
           </q-th>
         </template>
+         <!-- Accommodation header cell - filterable -->
         <template v-slot:header-cell-accommodation="props">
           <q-th :props="props" class="filterable-table-heading">
             <q-select borderless v-model="accommodationFilterModel" :options="booleanFilterOptions"
@@ -60,6 +84,7 @@
             </q-select>
           </q-th>
         </template>
+        <!-- Meal type header cell - filterable -->
         <template v-slot:header-cell-meals="props">
           <q-th :props="props" class="filterable-table-heading">
             <q-select borderless v-model="mealsFilterModel" :options="booleanFilterOptions"
@@ -71,8 +96,10 @@
             </q-select>
           </q-th>
         </template>
+        <!-- Role body cell -->
         <template v-slot:body-cell-role="props">
           <q-td :props="props">
+            <!-- Admin - show role select to edit -->
             <q-select borderless :model-value="participantRoles[props.row.id]"
                       @update:model-value="(role) => changeParticipantRole(role, props.row.id)"
                       :options="applicableRoles"
@@ -80,8 +107,9 @@
                       :dense="true" :options-dense="true"
                       :disable="tableLoading"
                       v-if="$auth.isAdmin()" />
+            <!-- Not admin, just organizer - show static role -->
             <template v-else>
-              {{ props.value }}
+              {{ props.value }}222222
             </template>
           </q-td>
         </template>
@@ -128,6 +156,25 @@ export default defineComponent({
       // eslint-disable-next-line max-len
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       return <EventRegistration[]> this.$store.getters['eventsRegistrations/eventRegistrations'](this.eventId);
+    },
+    dietaryRequirements(): [(TranslatedString | null), number][] {
+      if (!this.registrations) return [];
+
+      // Map registrations to diets
+      const diets: (DietaryRequirement | null)[] = this.registrations
+        .map((reg) => reg.person.dietary_requirement);
+
+      // Get unique diets
+      const dietIds: (number | null)[] = diets.map((i) => i?.id ?? null);
+      const uniqueDiets: (DietaryRequirement | null)[] = diets
+        .filter((v, i) => dietIds.indexOf(v?.id ?? null) === i);
+
+      // Get counts for all diets
+      return uniqueDiets
+        .map((r) => [
+          r?.name ?? null,
+          diets.filter((i) => (i?.id ?? null) === (r?.id ?? null)).length,
+        ]);
     },
     event(): EventFull {
       // eslint-disable-next-line max-len

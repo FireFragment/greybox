@@ -5,7 +5,8 @@
     "button": "Zobrazit registrace",
     "chooseEvent": "Vyberte turnaj",
     "overview": {
-      "title": "Počet přihlášek"
+      "rolesTitle": "Počet přihlášek",
+      "mealsTitle": "Stravovací omezení"
     },
     "noData": "Žádné přihlášky nenalezeny",
     "all": "Vše",
