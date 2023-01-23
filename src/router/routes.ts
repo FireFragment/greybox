@@ -37,8 +37,8 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/About.vue'),
       },
       {
-        path: `${<string>CZroutes.event}/:id-:slug`,
-        alias: `${<string>ENroutes.event}/:id-:slug`,
+        path: `${<string>CZroutes.event}/:id`,
+        alias: `${<string>ENroutes.event}/:id`,
         name: 'event',
         component: () => import('pages/Event.vue'),
         children: [{
@@ -110,8 +110,8 @@ const routes: RouteRecordRaw[] = [
           beforeEnter: anyEventOrganizerMiddleware,
           component: () => import('pages/Admin/Events.vue'),
         }, {
-          path: ':id-:slug',
-          alias: ':id-:slug',
+          path: ':id',
+          alias: ':id',
           name: 'admin.eventRegistrations',
           meta: {
             translationName: 'admin.events',

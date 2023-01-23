@@ -18,8 +18,7 @@
           :to="$translatedRouteLink({
             name: 'admin.eventRegistrations',
             params: {
-              id: event.id,
-              slug: $slug($tr(event.name) + ' ' + event.place),
+              id: event.id
             },
           })"
         />

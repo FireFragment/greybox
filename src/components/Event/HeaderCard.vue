@@ -53,7 +53,6 @@
             name: 'admin.eventRegistrations',
             params: {
               id: event.id,
-              slug: $slug($tr(event.name) + ' ' + event.place),
             },
           })"
           v-if="$auth.organizesEvent(event.id)">

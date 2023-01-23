@@ -7,7 +7,7 @@ import {
 } from 'boot/custom';
 import { Router } from 'src/router';
 import { user } from 'src/boot/auth';
-import { translateLink } from 'src/router/helpers';
+import { findValueInNestedObject } from 'src/router/helpers';
 import config from '../config';
 // Import localization data from JSONs
 import i18nConfig, { Lang, langs } from '../translation/config';
@@ -52,6 +52,20 @@ export const getCurrentRouteTranslatedPath = (): TranslationValue => $tr(
   `paths.${String(Router.currentRoute.value.meta.translationName ?? Router.currentRoute.value.name)}`,
 );
 
+// Replaces all segments by other language values in paths localization
+// (if not found, segment stays the same - e.g. for ID)
+export const translateWholeCurrentRoute = (toLocale: string): string => {
+  const currRoute = Router.currentRoute.value.path.slice(1);
+  const translatedPaths = i18n.global.messages[i18n.global.locale].paths;
+  const newRoute: string[] = [];
+  currRoute.split('/').forEach((el) => {
+    const newval = findValueInNestedObject(translatedPaths, el, '');
+    const translated = newval ? String($tr(`paths.${newval}`, null, false, toLocale)) : el;
+    newRoute.push(translated);
+  });
+  return newRoute.join('/');
+};
+
 export const switchQuasarLanguage = async (locale: Lang): Promise<void> => {
   // change quasar language (for components labels etc)
   const langIso = locale === 'en' ? `${locale}-US` : locale;
@@ -85,22 +99,22 @@ export const switchLocale = async (locale: Lang): Promise<void> => {
 
   // current URL
   const originalPath = <string>getCurrentRouteTranslatedPath();
+  // new URL
+  let newPath = translateWholeCurrentRoute(locale);
 
   // change locale
   i18n.global.locale = locale;
-
-  // new URL
-  const newPath = <string>getCurrentRouteTranslatedPath();
-  const currentPath = Router.currentRoute.value.path;
 
   // Redirect here before route switch to avoid redundant redirect error
   await Router.push(
     $path(originalPath === '' || newPath === '' ? 'about' : 'home'),
   );
 
+  if (newPath === '') newPath = '/';
+
   // go to new url
   await Router.replace({
-    path: translateLink(originalPath, newPath, currentPath),
+    path: `${newPath}`,
   });
 };
 
