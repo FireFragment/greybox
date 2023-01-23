@@ -5,7 +5,7 @@
       <img class="q-mx-auto" alt="Logo ADK" src="../assets/pride_logo_text.png"
            v-if="$isPride && !$isPDS" />
       <img class="q-mx-auto" alt="Logo ADK" src="../assets/logo_text.png" v-else-if="!$isPDS" />
-      <img class="q-mx-auto" alt="PDS Logo" src="../assets/logo_pds_text.png" v-else />
+      <img class="q-mx-auto" alt="PDS Logo" src="../assets/logo_pds_text.svg" v-else />
     </div>
     <div class="row q-mt-xl flex-center" v-if="!$auth.isLoggedIn()">
       <q-card class="home-infocard">
