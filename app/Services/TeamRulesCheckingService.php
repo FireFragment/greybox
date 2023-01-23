@@ -64,7 +64,7 @@ class TeamRulesCheckingService
                 }
             }
         }
-        return $warnings;
+        return array_unique($warnings);
     }
 
     /**
