@@ -11,7 +11,7 @@
     "role": {
       "team": "team",
       "debater": "debater",
-      "judge": "judge",
+      "adjudicator": "adjudicator",
       "volunteer": "volunteer"
     },
     "checkout": "checkout",
