@@ -4,6 +4,10 @@
     "link": "Tournaments registrations",
     "button": "Show registrations",
     "chooseEvent" : "Choose event",
+    "viewTypes": {
+      "people": "People",
+      "teams": "Teams"
+    },
     "overview": {
       "rolesTitle": "Number of registrations",
       "mealsTitle": "Dietary requirements",

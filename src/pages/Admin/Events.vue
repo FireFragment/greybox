@@ -2,21 +2,28 @@
   <q-page padding>
     <h1 class="text-center text-h4">{{ $tr("admin.eventRegistrations.chooseEvent") }}</h1>
     <div class="flex column">
-      <q-btn
+      <div
         v-for="event in events"
         v-bind:key="event.id"
-        class="q-mx-auto q-my-lg q-pa-md"
-        icon="fas fa-trophy"
-        color="primary"
-        :label="$tr(event.name)"
-        :to="$translatedRouteLink({
-          name: 'admin.eventRegistrations',
-          params: {
-            id: event.id,
-            slug: $slug($tr(event.name) + ' ' + event.place),
-          },
-        })"
-      />
+        class="text-center"
+      >
+        <h2 class="text-h5">{{ $tr(event.name) }}</h2>
+        <q-btn
+          v-for="[label, icon] in [['people', 'user'], ['teams', 'users']]"
+          v-bind:key="icon"
+          class="q-mx-sm q-mb-lg q-mt-0 q-pa-md"
+          :icon="`fas fa-${icon}`"
+          color="primary"
+          :label="$tr(`admin.eventRegistrations.viewTypes.${label}`)"
+          :to="$translatedRouteLink({
+            name: 'admin.eventRegistrations',
+            params: {
+              id: event.id,
+              slug: $slug($tr(event.name) + ' ' + event.place),
+            },
+          })"
+        />
+      </div>
     </div>
     <div v-if="!Object.keys(events).length" class="empty-info">
       {{ $tr('tournament.empty') }}

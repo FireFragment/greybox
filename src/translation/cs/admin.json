@@ -4,6 +4,10 @@
     "link": "Registrace na turnaje",
     "button": "Zobrazit registrace",
     "chooseEvent": "Vyberte turnaj",
+    "viewTypes": {
+      "people": "Lidé",
+      "teams": "Týmy"
+    },
     "overview": {
       "rolesTitle": "Počet přihlášek",
       "mealsTitle": "Stravovací omezení",
