@@ -28,6 +28,10 @@
     "currentRegistrations": "current-registrations"
   },
   "admin": {
-    "events": "tournaments-registrations"
+    "events": "tournaments-registrations",
+    "eventViewTypes": {
+      "people": "people",
+      "teams": "teams"
+    }
   }
 }
