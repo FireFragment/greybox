@@ -10,7 +10,7 @@ import { user } from 'src/boot/auth';
 import { translateLink } from 'src/router/helpers';
 import config from '../config';
 // Import localization data from JSONs
-import i18nConfig, { Lang, langs } from '../translation/config';
+import i18nConfig, { Lang, Translations, langs } from '../translation/config';
 import { apiCall } from './api';
 
 export interface TranslationPrefixData {
@@ -48,11 +48,40 @@ export const translationMatchesInAnyLanguage = (
   || $tr(key, null, false, 'en') === comparison
 );
 
-// Replaces all segments by other language values in paths localization
-// (if not found, segment stays the same - e.g. for ID)
 export const getCurrentRouteTranslatedPath = (): TranslationValue => $tr(
   `paths.${String(Router.currentRoute.value.meta.translationName ?? Router.currentRoute.value.name)}`,
 );
+
+const findValueInNestedObject = (obj: Translations | string, value: string, path: string)
+  // eslint-disable-next-line consistent-return
+  : string | void => {
+  if (typeof obj === 'string') return;
+  // eslint-disable-next-line no-restricted-syntax
+  for (const elem of Object.keys(obj)) {
+    const curr = obj[elem];
+    if (typeof curr === 'object' && curr !== null) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const retval = findValueInNestedObject(curr, value, `${path + elem}.`);
+      // eslint-disable-next-line consistent-return
+      if (retval) return retval;
+      // eslint-disable-next-line consistent-return
+    } else if (curr === value) return `${path}${elem}`;
+  }
+};
+
+// Replaces all segments by other language values in paths localization
+// (if not found, segment stays the same - e.g. for ID)
+export const translateWholeCurrentRoute = (toLocale: string): string => {
+  const currRoute = Router.currentRoute.value.path.slice(1);
+  const translatedPaths = i18n.global.messages[i18n.global.locale].paths;
+  const newRoute: string[] = [];
+  currRoute.split('/').forEach((el) => {
+    const newval = findValueInNestedObject(translatedPaths, el, '');
+    const translated = newval ? String($tr(`paths.${newval}`, null, false, toLocale)) : el;
+    newRoute.push(translated);
+  });
+  return newRoute.join('/');
+};
 
 export const switchQuasarLanguage = async (locale: Lang): Promise<void> => {
   // change quasar language (for components labels etc)
@@ -69,10 +98,6 @@ export const switchQuasarLanguage = async (locale: Lang): Promise<void> => {
 };
 
 export const switchLocale = async (locale: Lang): Promise<void> => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, no-console
-  // console.log(Router);
-  // console.log(`paths.${String(Router.currentRoute.value.meta.translationName)}`);
-  // console.log(getCurrentRouteTranslatedPath());
   // update preference
   const userObj = user();
   if (userObj) {
@@ -91,22 +116,22 @@ export const switchLocale = async (locale: Lang): Promise<void> => {
 
   // current URL
   const originalPath = <string>getCurrentRouteTranslatedPath();
+  // new URL
+  let newPath = translateWholeCurrentRoute(locale);
 
   // change locale
   i18n.global.locale = locale;
-
-  // new URL
-  const newPath = <string>getCurrentRouteTranslatedPath();
-  const currentPath = Router.currentRoute.value.path;
 
   // Redirect here before route switch to avoid redundant redirect error
   await Router.push(
     $path(originalPath === '' || newPath === '' ? 'about' : 'home'),
   );
 
+  if (newPath === '') newPath = '/';
+
   // go to new url
   await Router.replace({
-    path: translateLink(originalPath, newPath, currentPath),
+    path: `${newPath}`,
   });
 };
 
