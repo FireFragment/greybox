@@ -2,7 +2,10 @@
   "title": "Admin",
   "eventRegistrations": {
     "link": "Tournaments registrations",
-    "button": "Show registrations",
+    "button": {
+      "people": "Show people",
+      "teams": "Show teams"
+    },
     "chooseEvent" : "Choose event",
     "viewTypes": {
       "people": "People",
