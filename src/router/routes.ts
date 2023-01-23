@@ -126,6 +126,18 @@ const routes: RouteRecordRaw[] = [
               ],
             },
             component: () => import('pages/Admin/EventRegistrations.vue'),
+          }, {
+            path: <string>(<Routes>(<Routes>CZroutes.admin).eventViewTypes).teams,
+            alias: <string>(<Routes>(<Routes>ENroutes.admin).eventViewTypes).teams,
+            name: 'admin.eventTeams',
+            meta: {
+              translationName: 'admin.events',
+              // Array of other param values
+              additionalTranslations: [
+                'admin.eventViewTypes.teams',
+              ],
+            },
+            component: () => import('pages/Admin/EventRegistrations.vue'),
           }],
         }],
       },

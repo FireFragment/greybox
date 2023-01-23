@@ -1,22 +1,25 @@
 <template>
   <q-page padding>
-    <h1 class="text-center text-h4">{{ $tr("admin.eventRegistrations.chooseEvent") }}</h1>
+    <h1 class="text-center text-h4">{{ $tr('admin.eventRegistrations.chooseEvent') }}</h1>
     <div class="flex column">
       <div
         v-for="event in events"
         v-bind:key="event.id"
         class="text-center"
       >
-        <h2 class="text-h5">{{ $tr(event.name) }}</h2>
+        <h2 class="text-h5 q-mb-sm">{{ $tr(event.name) }}</h2>
         <q-btn
-          v-for="[label, icon] in [['people', 'user'], ['teams', 'users']]"
+          v-for="([label, icon, route], index) in [
+            ['people', 'user', 'eventRegistrations'],
+            ['teams', 'users', 'eventTeams'],
+          ]"
           v-bind:key="icon"
           class="q-mx-sm q-mb-lg q-mt-0 q-pa-md"
           :icon="`fas fa-${icon}`"
-          color="primary"
+          :color="`btn-${index + 2}`"
           :label="$tr(`admin.eventRegistrations.viewTypes.${label}`)"
           :to="$translatedRouteLink({
-            name: 'admin.eventRegistrations',
+            name: `admin.${route}`,
             params: {
               id: event.id
             },
