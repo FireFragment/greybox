@@ -95,9 +95,23 @@ class TeamRulesCheckingService
         $membersCount = count($members);
         for ($i = 0; $i < $membersCount; $i++)
         {
+            $iOldGreyboxId = $members[$i]->old_greybox_id;
+            if (null === $iOldGreyboxId)
+            {
+                $warnings[] = trans('messages.team.rules.breach.missing_old_greybox') . $this->listDebaters([$members[$i]]) . '.';
+                continue;
+            }
+
             for ($j = $i + 1; $j < $membersCount; $j++)
             {
-                $sharedTeams = $this->oldGreybox->getPastSharedTeamsInTheSameTournament($competitionId, $members[$i]->old_greybox_id, $members[$j]->old_greybox_id);
+                $jOldGreyboxId = $members[$j]->old_greybox_id;
+                if (null === $jOldGreyboxId)
+                {
+                    $warnings[] = trans('messages.team.rules.breach.missing_old_greybox') . $this->listDebaters([$members[$j]]) . '.';
+                    continue;
+                }
+
+                $sharedTeams = $this->oldGreybox->getPastSharedTeamsInTheSameTournament($competitionId, $iOldGreyboxId, $jOldGreyboxId);
                 $debaters = array($members[$i], $members[$j]);
 
                 // old greybox unreachable

@@ -25,6 +25,7 @@ return [
 
     'team.rules.breach.minimum' => 'Příliš málo členů.',
     'team.rules.breach.maximum' => 'Příliš mnoho členů.',
+    'team.rules.breach.missing_old_greybox' => 'Debatér nemá doplněné old_greybox_id: ',
     'team.rules.breach.impossible_check.debaters' => 'Nebylo možné zkontrolovat pravidla podle odstavce 2 pro debatéry: ',
     'team.rules.breach.shared_team1' => 'Debatéři ',
     'team.rules.breach.shared_team2' => ' spolu debatovali ve více týmech: ',

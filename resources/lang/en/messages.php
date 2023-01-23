@@ -25,6 +25,7 @@ return [
 
     'team.rules.breach.minimum' => 'Not enough team members.',
     'team.rules.breach.maximum' => 'Too many team members.',
+    'team.rules.breach.missing_old_greybox' => 'Debater does not have old_greybox_id filled: ',
     'team.rules.breach.impossible_check.debaters' => 'Impossible to check the paragraph 2 rules for the following debaters: ',
     'team.rules.breach.shared_team1' => 'Debaters ',
     'team.rules.breach.shared_team2' => ' shared the following team in the past: ',
