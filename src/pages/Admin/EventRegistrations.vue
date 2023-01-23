@@ -34,7 +34,7 @@
             >
               <q-item-section>
                 <q-item-label caption class="text-capitalize">
-                  {{ diet ? $tr(diet) : "-" }}
+                  {{ $tr(diet) }}
                 </q-item-label>
                 <q-item-label>{{ count }}</q-item-label>
               </q-item-section>
@@ -157,23 +157,30 @@ export default defineComponent({
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       return <EventRegistration[]> this.$store.getters['eventsRegistrations/eventRegistrations'](this.eventId);
     },
-    dietaryRequirements(): [(TranslatedString | null), number][] {
+    dietaryRequirements(): [(TranslatedString | string), number][] {
       if (!this.registrations) return [];
 
+      type DietConstant = 'noMeals' | 'noRequirements';
+      type Diet = DietaryRequirement | DietConstant;
+      type DietAtomic = number | DietConstant; // diet ID or a constant
+
+      // Get ID or a constant string of a diet requirement
+      const dietAtomicValue = (diet: Diet): DietAtomic => (typeof diet === 'string' ? diet : diet.id);
+
       // Map registrations to diets
-      const diets: (DietaryRequirement | null)[] = this.registrations
-        .map((reg) => reg.person.dietary_requirement);
+      const diets: Diet[] = this.registrations
+        .map((reg) => (!reg.meals ? 'noMeals' : (reg.person.dietary_requirement ?? 'noRequirements')));
 
       // Get unique diets
-      const dietIds: (number | null)[] = diets.map((i) => i?.id ?? null);
-      const uniqueDiets: (DietaryRequirement | null)[] = diets
-        .filter((v, i) => dietIds.indexOf(v?.id ?? null) === i);
+      const dietIds: DietAtomic[] = diets.map(dietAtomicValue);
+      const uniqueDiets: Diet[] = diets
+        .filter((v, i) => dietIds.indexOf(typeof v === 'string' ? v : v.id) === i);
 
       // Get counts for all diets
       return uniqueDiets
         .map((r) => [
-          r?.name ?? null,
-          diets.filter((i) => (i?.id ?? null) === (r?.id ?? null)).length,
+          typeof r === 'string' ? `meals.${r}` : r.name,
+          dietIds.filter((i) => dietAtomicValue(r) === i).length,
         ]);
     },
     event(): EventFull {

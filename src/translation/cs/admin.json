@@ -8,6 +8,10 @@
       "rolesTitle": "Počet přihlášek",
       "mealsTitle": "Stravovací omezení"
     },
+    "meals": {
+      "noMeals": "Bez jídla",
+      "noRequirements": "Bez omezení"
+    },
     "noData": "Žádné přihlášky nenalezeny",
     "all": "Vše",
     "yes": "Ano",
