@@ -5,8 +5,8 @@
   >
     <q-card class="my-card full-height full-width column">
       <q-card-section :class="{
-        'bg-negative': debate.win === false,
-        'bg-positive': debate.win === true,
+        'bg-lose': debate.win === false,
+        'bg-win': debate.win === true,
         'text-white': debate.win !== null,
       }">
         <div class="text-h6">
