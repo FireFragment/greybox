@@ -1,7 +1,7 @@
 <template>
   <q-page padding>
     <h1 class="text-center text-h4">
-      {{ event ? $tr(event.name, null, false) : '-' }} - {{ $tr("viewTypes.people") }}
+      {{ event ? $tr(event.name, null, false) : '-' }} - {{ $tr("viewTypes.teams") }}
     </h1>
     <div class="q-px-md">
       <q-card class="horizontal-list-card">
@@ -155,7 +155,7 @@ interface FilterObject {
 }
 
 export default defineComponent({
-  name: 'EventRegistrations',
+  name: 'EventTeams',
   computed: {
     ...mapState('events', [
       'eventRegistrations',

@@ -137,7 +137,7 @@ const routes: RouteRecordRaw[] = [
                 'admin.eventViewTypes.teams',
               ],
             },
-            component: () => import('pages/Admin/EventRegistrations.vue'),
+            component: () => import('pages/Admin/EventTeams.vue'),
           }],
         }],
       },
