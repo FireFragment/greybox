@@ -2,7 +2,10 @@
   "title": "Admin",
   "eventRegistrations": {
     "link": "Registrace na turnaje",
-    "button": "Zobrazit registrace",
+    "button": {
+      "people": "Zobrazit osoby",
+      "teams": "Zobrazit týmy"
+    },
     "chooseEvent": "Vyberte turnaj",
     "viewTypes": {
       "people": "Lidé",

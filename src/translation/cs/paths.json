@@ -28,6 +28,10 @@
     "currentRegistrations": "stavajici-prihlasky"
   },
   "admin": {
-    "events": "turnaje-registrace"
+    "events": "turnaje-registrace",
+    "eventViewTypes": {
+      "people": "lide",
+      "teams": "tymy"
+    }
   }
 }

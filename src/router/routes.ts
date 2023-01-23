@@ -112,12 +112,33 @@ const routes: RouteRecordRaw[] = [
         }, {
           path: ':id',
           alias: ':id',
-          name: 'admin.eventRegistrations',
-          meta: {
-            translationName: 'admin.events',
-          },
+          component: RouterView,
           beforeEnter: eventOrganizerMiddleware,
-          component: () => import('pages/Admin/EventRegistrations.vue'),
+          children: [{
+            path: <string>(<Routes>(<Routes>CZroutes.admin).eventViewTypes).people,
+            alias: <string>(<Routes>(<Routes>ENroutes.admin).eventViewTypes).people,
+            name: 'admin.eventRegistrations',
+            meta: {
+              translationName: 'admin.events',
+              // Array of other param values
+              additionalTranslations: [
+                'admin.eventViewTypes.people',
+              ],
+            },
+            component: () => import('pages/Admin/EventRegistrations.vue'),
+          }, {
+            path: <string>(<Routes>(<Routes>CZroutes.admin).eventViewTypes).teams,
+            alias: <string>(<Routes>(<Routes>ENroutes.admin).eventViewTypes).teams,
+            name: 'admin.eventTeams',
+            meta: {
+              translationName: 'admin.events',
+              // Array of other param values
+              additionalTranslations: [
+                'admin.eventViewTypes.teams',
+              ],
+            },
+            component: () => import('pages/Admin/EventRegistrations.vue'),
+          }],
         }],
       },
       // Auth

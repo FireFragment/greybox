@@ -11,12 +11,18 @@ export const getRouteTranslatedPath = (name: string, locale: Lang): TranslationV
   locale,
 );
 
+type TranslatedUrlPart = {
+  primary: string;
+  alias: string;
+};
+
 // Replace path in primary translation language for an alias
 export const translateLink = (
-  primaryPath: string,
-  aliasPath: string,
+  parts: TranslatedUrlPart[],
   originalLink: string,
 ): string => {
+  const { primary: primaryPath, alias: aliasPath } = parts[0];
+
   // Homepage cases
   if (primaryPath === '') {
     return `/${aliasRouteLang}/`;
@@ -25,8 +31,8 @@ export const translateLink = (
     return '/';
   }
 
-  // Replace url in router with localized one
-  return originalLink.replace(String(primaryPath), String(aliasPath));
+  // Replace all parts of a URL
+  return parts.reduce((acc, { primary, alias }) => acc.replace(primary, alias), originalLink);
 };
 
 export const translatedRouteLink = (
@@ -39,22 +45,32 @@ export const translatedRouteLink = (
 
   const activeLocale = (locale || i18nConfig.default);
 
+  // Active locale is primary language -> return path
   if (activeLocale === primaryRouteLang) {
     return {
       path: linkInDefaultLang.path,
     };
   }
 
-  const translationKey = typeof route === 'string' ? route : <string>(linkInDefaultLang.meta?.translationName ?? route.name);
+  // Get main path translation key
+  const translationKey = typeof route === 'string'
+    ? route
+    : <string>(linkInDefaultLang.meta?.translationName ?? route.name);
 
-  // current URL
-  const primaryPath = <string>getRouteTranslatedPath(translationKey, primaryRouteLang);
+  // Get additional translation keys for params etc.
+  const translationKeys = [
+    translationKey,
+    ...(<string[]>linkInDefaultLang.meta?.additionalTranslations ?? []),
+  ];
 
-  // new URL
-  const aliasPath = <string>getRouteTranslatedPath(translationKey, aliasRouteLang);
+  const translatedParts: TranslatedUrlPart[] = translationKeys
+    .map((key) => ({
+      primary: <string>getRouteTranslatedPath(key, primaryRouteLang), // current URL
+      alias: <string>getRouteTranslatedPath(key, aliasRouteLang), // new URL
+    }));
 
   return {
-    path: translateLink(primaryPath, aliasPath, linkInDefaultLang.path),
+    path: translateLink(translatedParts, linkInDefaultLang.path),
   };
 };
 

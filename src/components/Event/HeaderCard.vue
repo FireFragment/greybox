@@ -48,16 +48,27 @@
           {{ $tr(event.note) }}
         </p>
 
-        <router-link
-          :to="$translatedRouteLink({
-            name: 'admin.eventRegistrations',
-            params: {
-              id: event.id,
-            },
-          })"
-          v-if="$auth.organizesEvent(event.id)">
-          {{ $tr('admin.eventRegistrations.button', null, false) }}
-        </router-link>
+        <template v-if="$auth.organizesEvent(event.id)">
+          <router-link
+            :to="$translatedRouteLink({
+              name: 'admin.eventRegistrations',
+              params: {
+                id: event.id,
+              },
+            })">
+            {{ $tr('admin.eventRegistrations.button.people', null, false) }}
+          </router-link>
+          |
+          <router-link
+            :to="$translatedRouteLink({
+              name: 'admin.eventTeams',
+              params: {
+                id: event.id,
+              },
+            })">
+            {{ $tr('admin.eventRegistrations.button.teams', null, false) }}
+          </router-link>
+        </template>
       </div>
     </q-card>
   </div>
