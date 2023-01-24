@@ -175,7 +175,8 @@ export default defineComponent({
 
         for (const index in this.formData) {
           const person = this.formData[index];
-
+          this.$store.commit('eventRegistrationForm/removeDietaryRequirements', index);
+          
           const createPerson = this._createPerson(person);
 
           createPerson

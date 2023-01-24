@@ -48,3 +48,9 @@ export const flushEventRegistrationForms: Mutation<EventRegistrationFormState> =
   state.dataToSubmit = [];
   state.confirmation = null;
 };
+
+export const removeDietaryRequirements: Mutation<EventRegistrationFormState> = (
+  state, index: number,
+) => {
+  delete state.dataToSubmit[index].person.dietary_requirement;
+};

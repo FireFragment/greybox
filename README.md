@@ -77,3 +77,6 @@ The folder containing project build is ready to be deployed on Apache webserver 
 More information about deploying a Vue application can be find in [Vue documentation](https://cli.vuejs.org/guide/deployment.html).
 
 To change the directory of the app, you need to edit line `4` of desired `env.ts`, add a new rewrite block to `public/.htaccess` and rebuild.
+
+# API
+API endpoints are [documented here](https://greybox.docs.apiary.io/#reference/0/event-teams/show-all-teams-registered-to-the-event).

@@ -4,7 +4,7 @@ export interface EventRegistrationPerson {
   name: string | null;
   surname: string | null;
   // eslint-disable-next-line camelcase
-  dietary_requirement: number | null,
+  dietary_requirement?: number | null,
   email?: string;
   // eslint-disable-next-line camelcase
   school_year?: number;

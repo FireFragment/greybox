@@ -1,7 +1,7 @@
 {
   "currentRegistrations": {
-    "link" : "Stávající přihlášky",
-    "title" : "Stávající přihlášky",
+    "link" : "Aktuální přihlášky",
+    "title" : "Aktuální přihlášky",
     "empty": "Žádné zadané přihlášky"
   }
 }
