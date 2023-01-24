@@ -144,7 +144,7 @@ export default defineComponent({
       return null;
     },
     formData() {
-      return this.$store.state.eventRegistrationForm[this.eventId].dataToSubmit;
+      return this.$store.state.eventRegistrationForm[this.eventId]?.dataToSubmit ?? [];
     },
     possibleDiets() {
       return this.$store.getters['events/fullEvent'](this.eventId).dietaryRequirements;

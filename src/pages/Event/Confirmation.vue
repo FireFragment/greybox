@@ -154,7 +154,7 @@ export default {
       ];
     },
     data() {
-      return this.$store.state.eventRegistrationForm[this.eventId].confirmation;
+      return this.$store.state.eventRegistrationForm[this.eventId]?.confirmation;
     },
   },
 };
