@@ -5,7 +5,7 @@ export const eventsArray = (state: EventsState): Event[] => Object.values(state.
 
 export const event = (state: EventsState) => (id: number): Event => state.events[id];
 
-export const allEvents = (state: EventsState): Event[] => Object.values(state.eventsAll);
+export const allEvents = (state: EventsState): Event[] => state.eventsAll;
 
 export const fullEvent = (state: EventsState) => (id: number): EventFull => state.eventsFull[id];
 

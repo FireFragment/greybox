@@ -4,7 +4,7 @@
 
     <div class="row justify-center" v-if="events">
       <NoDataMessage
-        v-if="Object.keys(events).length === 0"
+        v-if="events.length === 0"
         :message="$tr('myRegistrations.empty')"
       />
       <template v-else>
@@ -49,10 +49,10 @@ export default defineComponent({
   },
   computed: {
     // TODO - distinguish current and historical events
-    events(): Event {
+    events(): Event[] {
       // eslint-disable-next-line max-len
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      return <Event> this.$store.getters['events/allEvents'];
+      return <Event[]> this.$store.getters['events/allEvents'];
     },
   },
   async created() {

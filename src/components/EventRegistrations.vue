@@ -192,7 +192,10 @@ export default defineComponent({
     await this.$store.dispatch('events/loadFull', this.eventId); // for roles
     await this.$store.dispatch('roles/load');
     await this.$store.dispatch('eventsRegistrations/load', [this.eventId, this.type]);
-    await this.$store.dispatch('eventsTeams/loadSimple', this.eventId);
+
+    if (this.type === 'admin') {
+      await this.$store.dispatch('eventsTeams/loadSimple', this.eventId);
+    }
   },
   data() {
     const outputBoolean = (val: boolean) => (val ? '✅' : '❌');

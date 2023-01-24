@@ -1,5 +1,5 @@
 import { Mutation } from 'vuex';
-import { EventFull } from 'src/types/event';
+import { Event, EventFull } from 'src/types/event';
 import { EventsData, EventsState } from './state';
 
 export const startLoadingEvents: Mutation<EventsState> = (state) => {
@@ -16,7 +16,7 @@ export const setEvents: Mutation<EventsState> = (state, value: EventsData) => {
   state.loading = false;
 };
 
-export const setAllEvents: Mutation<EventsState> = (state, value: EventsData) => {
+export const setAllEvents: Mutation<EventsState> = (state, value: Event[]) => {
   state.eventsAll = value;
   state.loadedAll = true;
   state.loadingAll = false;
@@ -27,4 +27,10 @@ export const setFullEvent: Mutation<EventsState> = (state, value: EventFull) => 
     ...value,
     fullyLoaded: true,
   };
+};
+
+export const flushPersonalEvents: Mutation<EventsState> = (
+  state,
+) => {
+  state.eventsAll = [];
 };

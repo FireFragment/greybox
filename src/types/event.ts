@@ -45,6 +45,7 @@ export interface Event {
   beginning: Date;
   // eslint-disable-next-line camelcase
   created_at: DateTime;
+  current?: boolean;
   // eslint-disable-next-line camelcase
   email_required: boolean;
   end: Date;

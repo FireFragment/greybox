@@ -88,9 +88,7 @@ export const loadAll: Action<EventsState, never> = async ({
         return;
       }
 
-      commit('setAllEvents', $makeIdObject(
-        data.filter((event) => event.pds === $isPDS),
-      ));
+      commit('setAllEvents', data.filter((event) => event.pds === $isPDS));
     })
     .finally(() => {
       if (loading) {

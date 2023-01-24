@@ -4,13 +4,14 @@
       {{ $tr('myRegistrations.title') }} -
       {{ event ? $tr(event.name, null, false) : '-' }}
     </h1>
-    <EventRegistrations :event-id="$route.params.id" type="user" />
+    <EventRegistrations :event-id="eventId" type="user" />
   </q-page>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import EventRegistrations from 'components/EventRegistrations.vue';
+import { EventFull } from 'src/types/event';
 
 export default defineComponent({
   name: 'MyRegistrationsDetail',
@@ -23,18 +24,18 @@ export default defineComponent({
     };
   },
   computed: {
-    eventId() {
-      return this.$route.params.id;
+    eventId(): number {
+      return parseInt(<string> this.$route.params.id, 10);
     },
-    event(): Event {
+    event(): EventFull {
       // eslint-disable-next-line max-len
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      return <Event> this.$store.getters['events/event'](this.eventId);
+      return <EventFull> this.$store.getters['events/fullEvent'](this.eventId);
     },
   },
   async created() {
     // Not cached -> load from API
-    await this.$store.dispatch('events/load', this.eventId);
+    await this.$store.dispatch('events/loadFull', this.eventId);
   },
 });
 </script>

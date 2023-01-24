@@ -30,6 +30,7 @@ export const flushUserData = () => {
   store.commit('eventRegistrationForm/flushAllEventRegistrationForms');
   store.commit('eventsRegistrations/flushEventRegistrations');
   store.commit('eventsTeams/flushAllEventTeams');
+  store.commit('events/flushPersonalEvents');
 };
 
 export default store;

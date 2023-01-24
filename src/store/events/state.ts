@@ -13,7 +13,7 @@ export interface EventsState {
   loading: boolean;
   loaded: boolean;
   eventsFull: EventsFullData;
-  eventsAll: EventsData;
+  eventsAll: Event[];
   loadingAll: boolean;
   loadedAll: boolean;
 }
@@ -23,7 +23,7 @@ export default (): EventsState => ({
   loading: false,
   loaded: false,
   eventsFull: {}, // full data of all current events
-  eventsAll: {}, // simple data of all events the user has sent registrations to
+  eventsAll: [], // simple data of all events the user has sent registrations to
   loadingAll: false,
   loadedAll: false,
 });
