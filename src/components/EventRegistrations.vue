@@ -55,27 +55,32 @@
       <!-- Role body cell -->
       <template v-slot:body-cell-role="props">
         <q-td :props="props">
-          <!-- User is admin - show role select to edit -->
+          <!-- Admin view - show role select to edit -->
           <q-select borderless :model-value="participantRoles[props.row.id]"
                     @update:model-value="(role) => changeParticipantRole(role, props.row.id)"
                     :options="applicableRoles"
                     option-value="id" :option-label="item => $tr(item.name, null, false)"
                     :dense="true" :options-dense="true"
-                    :disable="tableLoading" />
+                    :disable="tableLoading"
+                    v-if="type === 'admin'"/>
+          <!-- Non-edmin view - show static role -->
+          <template v-else>
+            {{ $tr(props.row.role.name) }}
+          </template>
         </q-td>
       </template>
       <!-- Team body cell -->
       <template v-slot:body-cell-team="props">
         <q-td :props="props">
-          <!-- Row is debater - show team select to edit -->
+          <!-- Row is debater && admin view - show team select to edit -->
           <q-select borderless :model-value="props.row.team"
                     @update:model-value="(team) => changeParticipantTeam(team, props.row.id)"
                     :options="teams"
                     option-value="id" option-label="name"
                     :dense="true" :options-dense="true"
                     :disable="tableLoading"
-                    v-if="props.row.role.id ===  config.debaterRoleId" />
-          <!-- Row is not debater - show static team -->
+                    v-if="type === 'admin' && props.row.role.id ===  config.debaterRoleId" />
+          <!-- Row is not debater || non-admin view - show static team -->
           <template v-else>
             {{ props.value }}
           </template>
@@ -104,6 +109,7 @@ import config from 'src/config';
 import { AxiosResponse } from 'axios';
 import { getAllTranslations, TranslatedString } from 'boot/i18n';
 import { langs } from 'src/translation/config';
+import { EventsRegistrationsObjectType } from 'src/store/eventsRegistrations/state';
 
 const booleanFilterOptions = [$tr('event.registrationsOverview.all'), $tr('event.registrationsOverview.yes'), $tr('event.registrationsOverview.no')];
 
@@ -145,12 +151,13 @@ export default defineComponent({
   name: 'EventRegistrations',
   props: {
     eventId: Number,
+    type: String as () => EventsRegistrationsObjectType,
   },
   computed: {
     registrations(): EventRegistration[] {
       // eslint-disable-next-line max-len
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      return <EventRegistration[]> this.$store.getters['eventsRegistrations/eventRegistrations'](this.eventId, 'admin');
+      return <EventRegistration[]> this.$store.getters['eventsRegistrations/eventRegistrations'](this.eventId, this.type);
     },
     filterObject(): FilterObject {
       return {
@@ -184,7 +191,7 @@ export default defineComponent({
     // Not cached -> load from API
     await this.$store.dispatch('events/loadFull', this.eventId); // for roles
     await this.$store.dispatch('roles/load');
-    await this.$store.dispatch('eventsRegistrations/load', [this.eventId, 'admin']);
+    await this.$store.dispatch('eventsRegistrations/load', [this.eventId, this.type]);
     await this.$store.dispatch('eventsTeams/loadSimple', this.eventId);
   },
   data() {
@@ -203,7 +210,7 @@ export default defineComponent({
       }, {
         name: 'name', label: this.$tr('event.registrationsOverview.labels.name'), field: (row: EventRegistration) => row.person.name, sortable: true, align: 'left',
       }, {
-        name: 'role', label: this.$tr('event.registrationsOverview.labels.role'), sortable: false, align: 'center',
+        name: 'role', label: this.$tr('event.registrationsOverview.labels.role'), sortable: false, align: 'left',
       }, {
         name: 'team', label: this.$tr('event.registrationsOverview.labels.team'), field: (row: EventRegistration) => row.team?.name ?? '-', sortable: true, align: 'left',
       }, {
@@ -262,7 +269,6 @@ export default defineComponent({
           this.$store.commit('eventsRegistrations/updateEventRegistration', {
             eventId: this.eventId,
             data,
-            type: 'admin',
           });
         })
         .finally(() => {

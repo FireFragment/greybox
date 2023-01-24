@@ -51,7 +51,7 @@
         </q-card-section>
       </q-card>
     </div>
-    <event-registrations-table :event-id="eventId" />
+    <event-registrations-overview :event-id="eventId" type="admin" />
   </q-page>
 </template>
 
@@ -62,12 +62,12 @@ import { Role } from 'src/types/role';
 
 import { defineComponent } from 'vue';
 import { TranslatedString } from 'boot/i18n';
-import EventRegistrationsTable, { uniqueRoles } from 'src/components/EventRegistrations.vue';
+import EventRegistrationsOverview, { uniqueRoles } from 'src/components/EventRegistrations.vue';
 
 export default defineComponent({
   name: 'EventRegistrations',
   components: {
-    EventRegistrationsTable,
+    EventRegistrationsOverview,
   },
   computed: {
     registrations(): EventRegistration[] {

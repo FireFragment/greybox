@@ -29,14 +29,18 @@ export const updateEventRegistration: Mutation<EventsRegistrationsState> = (
   state, value: {
     eventId: number,
     data: EventRegistration,
-    type: EventsRegistrationsObjectType,
   },
 ) => {
-  state[value.type].events[value.eventId] = [
-    value.data,
-    ...state[value.type].events[value.eventId]
-      .filter((registration) => registration.id !== value.data.id),
-  ];
+  const { eventId, data } = value;
+  eventRegistraionObjectTypes.forEach((type: EventsRegistrationsObjectType) => {
+    if (state[type].events[eventId]) {
+      state[type].events[eventId] = [
+        data,
+        ...state[type].events[eventId]
+          .filter((registration) => registration.id !== data.id),
+      ];
+    }
+  });
 };
 
 export const flushEventRegistrations: Mutation<EventsRegistrationsState> = (
