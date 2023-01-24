@@ -14,9 +14,14 @@
             v-ripple
             v-for="(entry, id) in events"
             :key="id"
-            :to="$path('user.historyOfRegistrations') + '/' + entry.id">
+            :to="$translatedRouteLink({
+              name: 'user.eventRegistrations',
+              params: {
+                id: entry.id
+              },
+            })">
             <q-item-section>
-                <q-item-label>zde {{ $tr(entry.name) }}</q-item-label>
+                <q-item-label>{{ $tr(entry.name) }}</q-item-label>
                 <q-item-label caption>{{ entry.place }}</q-item-label>
             </q-item-section>
           </q-item>
