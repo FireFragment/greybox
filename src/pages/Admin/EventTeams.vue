@@ -54,7 +54,9 @@
                   v-bind:key="index"
                   class="q-px-xs text-h6 text-negative"
             >
-              <i class="fas fa-skull-crossbones"></i>
+              <q-icon :name="`fas fa-${
+                warning.includes('old_greybox_id') ? 'exclamation-triangle' : 'skull-crossbones'
+              }`" />
               <q-tooltip>
                 {{ warning }}
               </q-tooltip>
