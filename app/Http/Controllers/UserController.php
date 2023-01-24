@@ -343,4 +343,18 @@ class UserController extends Controller
         $clients = $user->clients()->get();
         return response()->json($clients, 200);
     }
+
+    public function showRegistrations($id) {
+        $user = User::find($id);
+        $registrations = $user->registrations()->get();
+        foreach ($registrations as $registration)
+        {
+            $registration->event = $registration->event()->first();
+        }
+        $registrations = $registrations->sortByDesc(function ($registration)
+        {
+            return $registration->event->end;
+        });
+        return response()->json($registrations, 200);
+    }
 }
