@@ -3,5 +3,10 @@
     "link" : "Aktuální přihlášky",
     "title" : "Aktuální přihlášky",
     "empty": "Žádné zadané přihlášky"
+  },
+  "historyOfRegistrations": {
+    "link": "Historie přihlášek",
+    "title": "Historie přihlášek",
+    "empty": "Žádné přihlášky v minulosti"
   }
 }

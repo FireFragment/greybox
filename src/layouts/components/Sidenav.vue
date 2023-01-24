@@ -74,6 +74,17 @@
           </q-item-section>
         </q-item>
 
+        <q-item :to="$path('user.historyOfRegistrations')" clickable>
+          <q-item-section avatar>
+            <q-icon name="fas fa-history" />
+          </q-item-section>
+
+          <q-item-section>{{
+              $tr('user.historyOfRegistrations.link')
+            }}
+          </q-item-section>
+        </q-item>
+
         <q-item :to="$path('myDebates')" clickable v-if="!$isPDS">
           <q-item-section avatar>
             <q-icon name="fas fa-user-tie" />

@@ -3,5 +3,10 @@
     "link" : "Current registrations",
     "title" : "Current registrations",
     "empty" : "No recorded registrations"
+  },
+  "historyOfRegistrations": {
+    "link": "History of registrations",
+    "title": "History of registrations",
+    "empty": "No recorded registrations"
   }
 }

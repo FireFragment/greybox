@@ -191,6 +191,13 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/User/CurrentRegistrations.vue'),
         beforeEnter: loggedInMiddleware,
       },
+      {
+        path: <string>(<Routes>CZroutes.user).historyOfRegistrations,
+        alias: <string>(<Routes> ENroutes.user).historyOfRegistrations,
+        name: 'user.historyOfRegistrations',
+        component: () => import('pages/User/HistoryOfRegistrations.vue'),
+        beforeEnter: loggedInMiddleware,
+      },
     ],
   },
 
