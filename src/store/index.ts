@@ -1,6 +1,7 @@
 import { createStore } from 'vuex';
 import { RolesState } from 'src/store/roles/state';
 import eventRegistrationForm from 'src/store/eventRegistrationForm';
+import eventsTeams from 'src/store/eventsTeams';
 import { EventsRegistrationsState } from './eventsRegistrations/state';
 import config from '../config';
 import events from './events';
@@ -19,6 +20,7 @@ const store = createStore({
     eventRegistrationForm,
     events,
     eventsRegistrations,
+    eventsTeams,
     roles,
   },
   strict: config.debug,
@@ -27,6 +29,7 @@ const store = createStore({
 export const flushUserData = () => {
   store.commit('eventRegistrationForm/flushEventRegistrationForms');
   store.commit('eventsRegistrations/flushEventRegistrations');
+  store.commit('eventsTeams/flushAllEventTeams');
 };
 
 export default store;

@@ -38,7 +38,7 @@ export interface Person {
   updated_at: DateTime;
 }
 
-interface User {
+export interface User {
   admin: boolean;
   apiToken: string;
   // eslint-disable-next-line camelcase

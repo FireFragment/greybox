@@ -137,7 +137,6 @@
 
 <script lang="ts">
 
-import { mapState } from 'vuex';
 import { EventFull, EventRegistration, DietaryRequirement } from 'src/types/event';
 import { Role } from 'src/types/role';
 
@@ -158,9 +157,6 @@ interface FilterObject {
 export default defineComponent({
   name: 'EventRegistrations',
   computed: {
-    ...mapState('events', [
-      'eventRegistrations',
-    ]),
     registrations(): EventRegistration[] {
       // eslint-disable-next-line max-len
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
@@ -327,6 +323,7 @@ export default defineComponent({
       created_at: '',
       updated_at: '',
     }),
+    // TODO - allow changing participant's team + flushEventTeams
     changeParticipantRole(role: Role, registrationId: number) {
       this.tableLoading = true;
 

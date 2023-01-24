@@ -2,7 +2,7 @@ import { Date, DateTime } from 'src/types/general';
 import { TranslatedDatabaseString } from 'boot/i18n';
 import { Role } from 'src/types/role';
 import { Team } from 'src/types/debate';
-import { Person } from 'boot/auth';
+import { Person, User } from 'boot/auth';
 
 type EventOptionalSelect = 'opt-in' | 'opt-out' | 'none' | 'required';
 
@@ -89,3 +89,23 @@ export interface EventRegistration {
   // eslint-disable-next-line camelcase
   updated_at: DateTime;
 }
+
+// Fake team that aggregates debaters without a team
+export interface EventTeamAggregate {
+  team: null;
+  members: Person[];
+  // eslint-disable-next-line camelcase
+  registered_by: User[];
+  warnings: string[];
+}
+
+// Actually existing team
+export interface EventTeamProper {
+  team: Team;
+  members: Person[];
+  // eslint-disable-next-line camelcase
+  registered_by: User;
+  warnings: string[];
+}
+
+export type EventTeam = EventTeamAggregate | EventTeamProper;
