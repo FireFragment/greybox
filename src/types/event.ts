@@ -45,6 +45,7 @@ export interface Event {
   beginning: Date;
   // eslint-disable-next-line camelcase
   created_at: DateTime;
+  current?: boolean;
   // eslint-disable-next-line camelcase
   email_required: boolean;
   end: Date;
@@ -89,6 +90,30 @@ export interface EventRegistration {
   created_at: DateTime;
   // eslint-disable-next-line camelcase
   updated_at: DateTime;
+}
+
+export interface DetailedEventRegistration {
+  id: number;
+  person: Person;
+  note: string;
+  event: Event;
+  role: Role;
+  accommodation: boolean;
+  meals: boolean;
+  confirmed: boolean;
+  team: Team;
+  // eslint-disable-next-line camelcase
+  registered_by: number;
+  invoice: number;
+  // eslint-disable-next-line camelcase
+  created_at: DateTime;
+  // eslint-disable-next-line camelcase
+  updated_at: DateTime;
+}
+
+export interface EventPersonRegistrations {
+  event: EventFull;
+  registrations: EventRegistration[];
 }
 
 export interface EventTeam {

@@ -1,19 +1,28 @@
 import { Mutation } from 'vuex';
 import { EventRegistration } from 'src/types/event';
-import { EventsRegistrationsState } from './state';
+import {
+  eventRegistraionObjectTypes,
+  EventsRegistrationsObjectType,
+  EventsRegistrationsState,
+} from './state';
 
-export const startLoadingEventsRegistrations: Mutation<EventsRegistrationsState> = (state) => {
-  state.loading = true;
+export const startLoadingEventsRegistrations: Mutation<EventsRegistrationsState> = (
+  state,
+  type: EventsRegistrationsObjectType,
+) => {
+  state[type].loading = true;
 };
 
 export const setEventRegistrations: Mutation<EventsRegistrationsState> = (
   state, value: {
     eventId: number,
     data: EventRegistration[],
+    type: EventsRegistrationsObjectType,
   },
 ) => {
-  state.events[value.eventId] = value.data;
-  state.loading = false;
+  const { eventId, data, type } = value;
+  state[type].events[eventId] = data;
+  state[type].loading = false;
 };
 
 export const updateEventRegistration: Mutation<EventsRegistrationsState> = (
@@ -22,15 +31,23 @@ export const updateEventRegistration: Mutation<EventsRegistrationsState> = (
     data: EventRegistration,
   },
 ) => {
-  state.events[value.eventId] = [
-    value.data,
-    ...state.events[value.eventId].filter((registration) => registration.id !== value.data.id),
-  ];
+  const { eventId, data } = value;
+  eventRegistraionObjectTypes.forEach((type: EventsRegistrationsObjectType) => {
+    if (state[type].events[eventId]) {
+      state[type].events[eventId] = [
+        data,
+        ...state[type].events[eventId]
+          .filter((registration) => registration.id !== data.id),
+      ];
+    }
+  });
 };
 
 export const flushEventRegistrations: Mutation<EventsRegistrationsState> = (
   state,
 ) => {
-  state.events = {};
-  state.loading = false;
+  eventRegistraionObjectTypes.forEach((type: EventsRegistrationsObjectType) => {
+    state[type].events = {};
+    state[type].loading = false;
+  });
 };

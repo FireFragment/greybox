@@ -43,7 +43,7 @@ export interface User {
   apiToken: string;
   // eslint-disable-next-line camelcase
   created_at: string;
-  id: 292;
+  id: number;
   // eslint-disable-next-line camelcase
   id_token: string;
   person: Person | null;

@@ -89,15 +89,6 @@ const routes: RouteRecordRaw[] = [
         }],
       },
 
-      // My debates
-      {
-        path: `${<string>CZroutes.myDebates}/:page?`,
-        alias: `${<string>ENroutes.myDebates}/:page?`,
-        name: 'myDebates',
-        component: () => import('pages/MyDebates.vue'),
-        beforeEnter: loggedInMiddleware,
-      },
-
       // Admin
       {
         path: <string>(<Routes>CZroutes.admin).events,
@@ -184,12 +175,36 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/Auth/AccountSettings.vue'),
         beforeEnter: loggedInMiddleware,
       },
+      // User
       {
-        path: <string>(<Routes>CZroutes.user).currentRegistrations,
-        alias: <string>(<Routes> ENroutes.user).currentRegistrations,
-        name: 'user.currentRegistrations',
-        component: () => import('pages/User/CurrentRegistrations.vue'),
+        path: `${<string>CZroutes.myDebates}/:page?`,
+        alias: `${<string>ENroutes.myDebates}/:page?`,
+        name: 'myDebates',
+        component: () => import('src/pages/User/MyDebates.vue'),
         beforeEnter: loggedInMiddleware,
+      },
+      {
+        path: <string>(<Routes>CZroutes.user).myRegistrations,
+        alias: <string>(<Routes> ENroutes.user).myRegistrations,
+        beforeEnter: loggedInMiddleware,
+        children: [{
+          path: '',
+          alias: '',
+          meta: {
+            translationName: 'user.myRegistrations',
+          },
+          name: 'user.myRegistrations',
+          component: () => import('pages/User/MyRegistrations.vue'),
+        }, {
+          path: ':id',
+          alias: ':id',
+          meta: {
+            translationName: 'user.myRegistrations',
+          },
+          name: 'user.myRegistrationsDetail',
+          beforeEnter: anyEventOrganizerMiddleware,
+          component: () => import('pages/User/MyRegistrationsDetail.vue'),
+        }],
       },
     ],
   },

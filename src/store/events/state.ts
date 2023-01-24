@@ -10,14 +10,20 @@ export type EventsFullData = {
 
 export interface EventsState {
   events: EventsData;
-  eventsFull: EventsFullData;
   loading: boolean;
   loaded: boolean;
+  eventsFull: EventsFullData;
+  eventsAll: Event[];
+  loadingAll: boolean;
+  loadedAll: boolean;
 }
 
 export default (): EventsState => ({
-  events: {},
-  eventsFull: {},
+  events: {}, // simple data of all current events
   loading: false,
   loaded: false,
+  eventsFull: {}, // full data of all current events
+  eventsAll: [], // simple data of all events the user has sent registrations to
+  loadingAll: false,
+  loadedAll: false,
 });

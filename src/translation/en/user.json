@@ -1,7 +1,7 @@
 {
-  "currentRegistrations": {
-    "link" : "Current registrations",
-    "title" : "Current registrations",
-    "empty" : "No recorded registrations"
+  "myRegistrations": {
+    "link" : "My registrations",
+    "title" : "My registrations",
+    "empty": "No recorded registrations"
   }
 }

@@ -5,6 +5,7 @@ import { $isPDS, $makeIdObject } from 'boot/custom';
 import { apiCall } from 'boot/api';
 import { Event, EventFull } from 'src/types/event';
 import { EventsState } from 'src/store/events/state';
+import { user } from 'boot/auth';
 
 export const load: Action<EventsState, never> = async ({
   commit,
@@ -61,5 +62,37 @@ export const loadFull: Action<EventsState, never> = async ({
     })
     .finally(() => {
       bus.$emit('fullLoader', false);
+    });
+};
+
+export const loadAll: Action<EventsState, never> = async ({
+  commit,
+  state,
+}, loading: boolean = true) => {
+  if (state.loadedAll || state.loadingAll) {
+    return;
+  }
+
+  commit('startLoadingAllEvents');
+
+  if (loading) {
+    bus.$emit('fullLoader', true);
+  }
+
+  await apiCall({
+    url: `user/${user()!.id}/event`,
+    method: 'get',
+  })
+    .then(({ data }: AxiosResponse<Event[]>) => {
+      if (!data.length) {
+        return;
+      }
+
+      commit('setAllEvents', data.filter((event) => event.pds === $isPDS));
+    })
+    .finally(() => {
+      if (loading) {
+        bus.$emit('fullLoader', false);
+      }
     });
 };
