@@ -212,32 +212,24 @@ class EventController extends Controller
         $registrations = $event->registrations()->where('role', 1)->get();
 
         $teams = array();
-        foreach ($registrations as $registration) {
+        foreach ($registrations as $registration)
+        {
             $team = $registration->team()->first();
-            if (null === $team) {
-                $id = 'n/a';
-                $registeredBy = $registration->registeredBy()->first()->withPerson();
-            } else {
-                $id = $team->id;
-                $registeredBy = $team->registeredBy()->first()->withPerson();
+            if (null === $team)
+            {
+                continue;
             }
+            $id = $team->id;
             if (!array_key_exists($id, $teams)) $teams[$id] = new \stdClass();
             $teams[$id]->team = $team;
             $teams[$id]->members[] = $registration->person()->first();
-            if (null === $team) {
-                $teams[$id]->registered_by[] = $registeredBy;
-            } else {
-                $teams[$id]->registered_by = $registeredBy;
-            }
+            $teams[$id]->registered_by = $team->registeredBy()->first()->withPerson();
         }
 
         $teamsToPublish = array();
         foreach ($teams as $team)
         {
-            if (null !== $team->team)
-            {
-                $team->warnings = $rulesCheckingService->checkTeamRules($team->team->name, $team->members, $event->competition, $event->finals);
-            }
+            $team->warnings = $rulesCheckingService->checkTeamRules($team->team->name, $team->members, $event->competition, $event->finals);
             $teamsToPublish[] = $team;
         }
 
