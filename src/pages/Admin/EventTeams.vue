@@ -86,7 +86,7 @@ export default defineComponent({
     teams(): EventTeam[] {
       // eslint-disable-next-line max-len
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      return <EventTeam[]> this.$store.getters['eventsTeams/eventTeamsDetails'](this.eventId);
+      return <EventTeam[]> this.$store.getters['eventsTeams/eventTeamsDetailed'](this.eventId);
     },
     eventId(): number {
       const idParam: string | string[] = this.$route.params.id;
@@ -99,7 +99,7 @@ export default defineComponent({
   async created() {
     // Not cached -> load from API
     await this.$store.dispatch('events/loadFull', this.eventId);
-    await this.$store.dispatch('eventsTeams/loadDetails', this.eventId);
+    await this.$store.dispatch('eventsTeams/loadDetailed', this.eventId);
   },
   data() {
     return {
