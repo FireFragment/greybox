@@ -179,7 +179,7 @@ export default defineComponent({
     registrations(): EventRegistration[] {
       // eslint-disable-next-line max-len
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      return <EventRegistration[]> this.$store.getters['eventsRegistrations/eventRegistrations'](this.eventId);
+      return <EventRegistration[]> this.$store.getters['eventsRegistrations/eventRegistrations'](this.eventId, 'admin');
     },
     dietaryRequirements(): [(TranslatedString | string), number][] {
       if (!this.registrations) return [];
@@ -285,7 +285,7 @@ export default defineComponent({
     // Not cached -> load from API
     await this.$store.dispatch('events/loadFull', this.eventId);
     await this.$store.dispatch('roles/load');
-    await this.$store.dispatch('eventsRegistrations/load', this.eventId);
+    await this.$store.dispatch('eventsRegistrations/load', [this.eventId, 'admin']);
     await this.$store.dispatch('eventsTeams/loadSimple', this.eventId);
   },
   data() {
@@ -380,6 +380,7 @@ export default defineComponent({
           this.$store.commit('eventsRegistrations/updateEventRegistration', {
             eventId: this.eventId,
             data,
+            type: 'admin',
           });
         })
         .finally(() => {
