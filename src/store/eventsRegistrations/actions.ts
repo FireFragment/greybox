@@ -13,7 +13,7 @@ export const load: Action<EventsRegistrationsState, never> = async (
   { commit, state },
   [eventId, type]: [number, EventsRegistrationsObjectType],
 ) => {
-  const apiUrl = type === 'admin' ? eventId : `/${eventId}/user/${user()?.id ?? 0}`;
+  const apiUrl = type === 'admin' ? eventId : `${eventId}/user/${user()?.id ?? 0}`;
 
   if (state[type].loading || state[type].events[eventId]) {
     return;

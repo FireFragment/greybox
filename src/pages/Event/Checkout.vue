@@ -107,7 +107,6 @@ import { defineComponent } from 'vue';
 import PersonCard from 'src/components/Event/CheckoutPersonCard.vue';
 import billingMenu from 'src/components/Event/BillingMenu.vue';
 import CountrySelect from 'src/components/Event/CountrySelect.vue';
-import { DBkey as CurrentRegistrationsDBKey } from 'pages/User/CurrentRegistrations.vue';
 
 export default defineComponent({
   name: 'Checkout',
@@ -239,7 +238,6 @@ export default defineComponent({
               // Remove autofill data to include newly added people later
               this.$db(`autofillDebaters-event${this.eventId}`, this.DB_DEL);
               this.$db(`autofillTeams-event${this.eventId}`, this.DB_DEL);
-              this.$db(CurrentRegistrationsDBKey, this.DB_DEL);
 
               this.$router.push({
                 name: 'event-confirmation',

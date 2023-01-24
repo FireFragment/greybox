@@ -1,54 +1,40 @@
 <template>
   <q-page padding>
-    <div class="row">
-        {{ registrations }}
-        <!--<EventRegistrations :entry="registrations" />-->
-    </div>
+    <h1 class="text-center text-h4">
+      {{ $tr('myRegistrations.title') }} -
+      {{ event ? $tr(event.name, null, false) : '-' }}
+    </h1>
+    <EventRegistrations :event-id="$route.params.id" type="user" />
   </q-page>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { AxiosResponse } from 'axios';
-import { TranslationPrefixData } from 'boot/i18n';
-import { EventPersonRegistrations } from 'src/types/event';
-
-interface SingleEventRegistrationsData extends TranslationPrefixData {
-  translationPrefix: string;
-  registrations: EventPersonRegistrations[];
-}
+import EventRegistrations from 'components/EventRegistrations.vue';
 
 export default defineComponent({
   name: 'MyRegistrationsDetail',
   components: {
-    // EventRegistrations,
+    EventRegistrations,
   },
-  data(): SingleEventRegistrationsData {
+  data() {
     return {
       translationPrefix: 'user.',
-      registrations: [],
     };
   },
-  methods: {
-    async loadRegistrations() {
-      const eventId = String(this.$route.params.id);
-
-      this.$bus.$emit('fullLoader', true);
-      await this.$api({
-        url: `event/${eventId}/user/${this.$auth.user()!.id}/registration`,
-        method: 'get',
-      })
-        .then(({ data }: AxiosResponse<EventPersonRegistrations[]>) => {
-          if (!data.length) {
-            return;
-          }
-          this.registrations = data;
-        });
-      this.$bus.$emit('fullLoader', false);
+  computed: {
+    eventId() {
+      return this.$route.params.id;
+    },
+    event(): Event {
+      // eslint-disable-next-line max-len
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+      return <Event> this.$store.getters['events/event'](this.eventId);
     },
   },
-  created() {
-    void this.loadRegistrations();
+  async created() {
+    // Not cached -> load from API
+    await this.$store.dispatch('events/load', this.eventId);
   },
 });
 </script>
