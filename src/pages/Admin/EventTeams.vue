@@ -5,7 +5,7 @@
     </h1>
     <div class="q-pa-md">
       <q-table
-        :rows="properTeams"
+        :rows="teams"
         :columns="columns"
         :binary-state-sort="true"
         sort-by="surname"
@@ -68,9 +68,7 @@
 
 <script lang="ts">
 
-import {
-  EventFull, EventTeam, EventTeamAggregate, EventTeamProper,
-} from 'src/types/event';
+import { EventFull, EventTeam } from 'src/types/event';
 
 import { defineComponent } from 'vue';
 import config from '../../config';
@@ -87,12 +85,6 @@ export default defineComponent({
       // eslint-disable-next-line max-len
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       return <EventTeam[]> this.$store.getters['eventsTeams/eventTeams'](this.eventId);
-    },
-    properTeams(): EventTeamProper[] {
-      return <EventTeamProper[]> this.teams.filter((team) => team.team !== null);
-    },
-    aggregateTeam(): EventTeamAggregate | undefined {
-      return <EventTeamAggregate> this.teams.find((team) => team.team === null);
     },
     eventId(): number {
       const idParam: string | string[] = this.$route.params.id;
@@ -115,9 +107,9 @@ export default defineComponent({
       mealsFilterModel: null,
       config,
       columns: [{
-        name: 'club', label: this.$tr('admin.eventRegistrations.labels.club'), field: (row: EventTeamProper) => row.team.institution ?? '-', sortable: true, align: 'left',
+        name: 'club', label: this.$tr('admin.eventRegistrations.labels.club'), field: (row: EventTeam) => row.team.institution ?? '-', sortable: true, align: 'left',
       }, {
-        name: 'name', label: this.$tr('admin.eventRegistrations.labels.teamName'), field: (row: EventTeamProper) => row.team.name, sortable: true, align: 'left', classes: 'text-bold',
+        name: 'name', label: this.$tr('admin.eventRegistrations.labels.teamName'), field: (row: EventTeam) => row.team.name, sortable: true, align: 'left', classes: 'text-bold',
       }, {
         name: 'members', label: this.$tr('admin.eventRegistrations.labels.members'), field: 'members', sortable: false, align: 'left',
       }, {

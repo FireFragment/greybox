@@ -90,22 +90,10 @@ export interface EventRegistration {
   updated_at: DateTime;
 }
 
-// Fake team that aggregates debaters without a team
-export interface EventTeamAggregate {
-  team: null;
-  members: Person[];
-  // eslint-disable-next-line camelcase
-  registered_by: User[];
-  warnings: string[];
-}
-
-// Actually existing team
-export interface EventTeamProper {
+export interface EventTeam {
   team: Team;
   members: Person[];
   // eslint-disable-next-line camelcase
   registered_by: User;
   warnings: string[];
 }
-
-export type EventTeam = EventTeamAggregate | EventTeamProper;
