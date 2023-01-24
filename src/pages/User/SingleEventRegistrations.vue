@@ -1,29 +1,57 @@
 <template>
-    <q-page padding>
-    <h1 class="text-center text-h4">{{ $tr('currentRegistrations.title') }}</h1>
-        <template v-for="(entry, id) in events" :key="id">
-          <div class="col-12 q-px-sm">
-            <h5 class="q-mt-lg q-mb-xs">{{ $tr(entry.event.name) }}</h5>
-          </div>
-          <checkout-person-card
-            v-for="(registration, index) in entry.registrations"
-            :key="JSON.stringify(registration)"
-            :person="{
-              ...registration,
-              person: {
-                ...registration.person,
-                dietary_requirement: registration.person.dietary_requirement?.id,
-              },
-            }"
-            :registration="registration"
-            :person-index="index"
-            :possible-diets="entry.event.dietaryRequirements"
-            :menu="false"
-          />
-        </template>
-    </q-page>
+  <q-page padding>
+    <div class="row">
+      <template>
+        <EventRegistrations :entry="registrations" />
+      </template>
+    </div>
+
+  </q-page>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue';
+import { AxiosResponse } from 'axios';
+import { TranslationPrefixData } from 'boot/i18n';
+import { EventPersonRegistrations } from 'src/types/event';
+import EventRegistrations from 'components/EventRegistrations.vue';
 
+interface SingleEventRegistrationsData extends TranslationPrefixData {
+  translationPrefix: string;
+  registrations: EventPersonRegistrations[];
+}
+
+export default defineComponent({
+  name: 'SingleEventRegistrations',
+  components: {
+    EventRegistrations,
+  },
+  data(): SingleEventRegistrationsData {
+    return {
+      translationPrefix: 'user.',
+      registrations: [],
+    };
+  },
+  methods: {
+    async loadRegistrations() {
+      const eventId = String(this.$route.params.id);
+
+      this.$bus.$emit('fullLoader', true);
+      await this.$api({
+        url: `event/${eventId}/user/${this.$auth.user()!.id}/registration`,
+        method: 'get',
+      })
+        .then(({ data }: AxiosResponse<EventPersonRegistrations[]>) => {
+          if (!data.length) {
+            return;
+          }
+          this.registrations = data;
+        });
+      this.$bus.$emit('fullLoader', false);
+    },
+  },
+  created() {
+    void this.loadRegistrations();
+  },
+});
 </script>
