@@ -185,11 +185,6 @@ class RegistrationController extends FakturoidController
                 $invoice = null;
             }
 
-            if (0 < $registration->countTeams() && isset($event->competition)) {
-                $debatersInTeams = $registration->getDebatersInTeamsRegistrations();
-                event(new TeamsRegisteredEvent($event->competition, $debatersInTeams, $event->finals));
-            }
-
             // TODO: vyřešit jak nastavit locale pouze pro email / případně jak používat locale vůbec
             app('translator')->setLocale($language);
             Mail::to($user->username)->bcc('info@debatovani.cz')->send(new RegistrationConfirmation($language, $event, $people, $invoice));
