@@ -9,24 +9,7 @@
       />
       <template v-else>
         <template v-for="(entry, id) in events" :key="id">
-          <div class="col-12 q-px-sm">
-            <h5 class="q-mt-lg q-mb-xs">{{ $tr(entry.event.name) }}</h5>
-          </div>
-          <checkout-person-card
-            v-for="(registration, index) in entry.registrations"
-            :key="JSON.stringify(registration)"
-            :person="{
-              ...registration,
-              person: {
-                ...registration.person,
-                dietary_requirement: registration.person.dietary_requirement?.id,
-              },
-            }"
-            :registration="registration"
-            :person-index="index"
-            :possible-diets="entry.event.dietaryRequirements"
-            :menu="false"
-          />
+          <EventRegistrations :entry="entry" />
         </template>
       </template>
     </div>
@@ -38,18 +21,15 @@
 import { defineComponent } from 'vue';
 import { DBValue } from 'boot/custom';
 import { AxiosResponse } from 'axios';
-import CheckoutPersonCard from 'components/Event/CheckoutPersonCard.vue';
 import { TranslationPrefixData } from 'boot/i18n';
 import { mapGetters } from 'vuex';
-import { Event, EventFull, EventRegistration } from 'src/types/event';
+import {
+  Event, EventFull, EventPersonRegistrations, EventRegistration,
+} from 'src/types/event';
 import NoDataMessage from 'components/NoDataMessage.vue';
+import EventRegistrations from 'components/EventRegistrations.vue';
 
 export const DBkey = 'current-registrations';
-
-interface EventPersonRegistrations {
-  event: EventFull;
-  registrations: EventRegistration[];
-}
 
 type EventPersonRegistrationsData = Record<number, EventPersonRegistrations>;
 
@@ -62,7 +42,7 @@ export default defineComponent({
   name: 'CurrentRegistrations',
   components: {
     NoDataMessage,
-    CheckoutPersonCard,
+    EventRegistrations,
   },
   data(): CurrentRegistrationsData {
     return {

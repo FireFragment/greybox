@@ -194,9 +194,26 @@ const routes: RouteRecordRaw[] = [
       {
         path: <string>(<Routes>CZroutes.user).historyOfRegistrations,
         alias: <string>(<Routes> ENroutes.user).historyOfRegistrations,
-        name: 'user.historyOfRegistrations',
-        component: () => import('pages/User/HistoryOfRegistrations.vue'),
-        beforeEnter: loggedInMiddleware,
+        component: RouterView,
+        children: [{
+          path: '',
+          alias: '',
+          meta: {
+            translationName: 'user.historyOfRegistrations',
+          },
+          name: 'user.historyOfRegistrations',
+          component: () => import('pages/User/HistoryOfRegistrations.vue'),
+          beforeEnter: loggedInMiddleware,
+        }, {
+          path: ':id',
+          alias: ':id',
+          meta: {
+            translationName: 'user.historyOfRegistrations',
+          },
+          name: 'user.eventRegistrations',
+          beforeEnter: anyEventOrganizerMiddleware,
+          component: () => import('pages/User/SingleEventRegistrations.vue'),
+        }],
       },
     ],
   },
