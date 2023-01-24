@@ -199,6 +199,6 @@ export default defineComponent({
         size: `${this.maxSizeMB} MB`,
       });
     },
-  },
+  }, 
 });
 </script>
