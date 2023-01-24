@@ -2,29 +2,35 @@ import { Mutation } from 'vuex';
 import { EventTeam } from 'src/types/event';
 import { EventsTeamsState } from './state';
 
-export const startLoadingEventsTeams: Mutation<EventsTeamsState> = (state) => {
-  state.loading = true;
+export const startLoadingEventsTeamsDetails: Mutation<EventsTeamsState> = (state) => {
+  state.detailedTeams.loading = true;
 };
 
-export const setEventTeams: Mutation<EventsTeamsState> = (
+export const setEventTeamsDetails: Mutation<EventsTeamsState> = (
   state, value: {
     eventId: number,
     data: EventTeam[],
   },
 ) => {
-  state.events[value.eventId] = value.data;
-  state.loading = false;
+  state.detailedTeams.events[value.eventId] = value.data;
+  state.detailedTeams.loading = false;
 };
 
-export const flushEventTeams: Mutation<EventsTeamsState> = (
+export const flushEventTeamsDetails: Mutation<EventsTeamsState> = (
   state, eventId: number,
 ) => {
-  delete state.events[eventId];
+  delete state.detailedTeams.events[eventId];
 };
 
 export const flushAllEventTeams: Mutation<EventsTeamsState> = (
   state,
 ) => {
-  state.events = {};
-  state.loading = false;
+  state.detailedTeams = {
+    events: {},
+    loading: false,
+  };
+  state.simpleTeams = {
+    events: {},
+    loading: false,
+  };
 };
