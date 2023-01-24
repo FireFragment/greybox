@@ -1,6 +1,6 @@
 <template>
   <q-list
-    class="rounded-borders shadow-2 q-pb-sm bg-white debaters-sticky-card"
+    class="rounded-borders shadow-2 q-pb-sm bg-white autofill-sticky-card"
   >
     <q-scroll-area>
       <q-item-label header>{{ $tr("title") }}</q-item-label>

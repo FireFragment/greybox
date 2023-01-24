@@ -1,7 +1,7 @@
 <template>
   <div class="row q-col-gutter-md reverse" v-if="event && role">
     <div class="col-12 col-sm-4 col-md-5 autofill-wrapper">
-      <autofill-card @person-selected="debaterSelected" :eventId="eventId" />
+      <autofill-card @person-selected="personSelected" :eventId="eventId" />
     </div>
     <div class="col-12 col-sm-8 col-md-7">
       <form-fields
@@ -19,7 +19,7 @@
         v-else
         @submit="submitTeamForm"
         @goToRolePick="goToRolePick()"
-        @autofillPerson="debaterSelected"
+        @autofillPerson="personSelected"
         :autofill="autofillData"
         :accommodationType="event.accommodation"
         :mealType="event.meals"
@@ -74,6 +74,7 @@ import autofillCard from 'components/Event/AutofillCard.vue';
 import formFields from 'components/Event/FormFields.vue';
 import teamForm from 'components/Event/TeamForm.vue';
 import { translationMatchesInAnyLanguage } from 'boot/i18n';
+import config from 'src/config';
 
 export default defineComponent({
   name: 'RegisterForm',
@@ -131,7 +132,7 @@ export default defineComponent({
   },
 
   methods: {
-    debaterSelected(data) {
+    personSelected(data) {
       this.autofillData = data;
     },
 
@@ -141,7 +142,7 @@ export default defineComponent({
       const registrationData = {
         person: null,
         event: this.eventId,
-        role: this.role.id === Infinity ? 1 : this.role.id, // if role is team, set as debater
+        role: this.role.id === Infinity ? config.debaterRoleId : this.role.id, // if role is team, set as debater
         accommodation: data.accommodation,
         meals: data.meals,
         team: data.team || null,
