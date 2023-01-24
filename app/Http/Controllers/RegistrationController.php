@@ -86,10 +86,10 @@ class RegistrationController extends FakturoidController
     
     public function update($id, Request $request)
     {
-        $this->authorize('update', Registration::class);
-        try {
-            $registration = Registration::findOrFail($id);
+        $registration = Registration::findOrFail($id);
+        $this->authorize('update', $registration);
 
+        try {
             if ($request->has('person')) $this->updateColumn($registration, 'person', $request->input('person'));
             if ($request->has('note')) $this->updateColumn($registration, 'note', $request->input('note'));
             if ($request->has('event')) $this->updateColumn($registration, 'event', $request->input('event'));
