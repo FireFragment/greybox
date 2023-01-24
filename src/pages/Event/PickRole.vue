@@ -7,7 +7,7 @@
       :values="values"
     />
     <q-btn
-      v-if="$store.state.eventRegistrationForm.dataToSubmit.length"
+      v-if="$store.state.eventRegistrationForm[this.eventId]?.dataToSubmit.length"
       :label="$tr('event.buttons.goToCheckout')"
       type="reset"
       color="blue-9"

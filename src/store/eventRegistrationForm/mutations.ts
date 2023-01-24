@@ -6,51 +6,59 @@ import {
 } from 'src/store/eventRegistrationForm/state';
 
 export const addEventRegistration: Mutation<EventRegistrationFormState> = (
-  state, value: EventRegistrationItem,
+  state, [eventId, value]: [number, EventRegistrationItem],
 ) => {
-  state.dataToSubmit.push(value);
+  if (!state[eventId]) {
+    state[eventId] = {
+      dataToSubmit: [],
+      confirmation: null,
+    };
+  }
+
+  state[eventId].dataToSubmit.push(value);
 };
 
 export const setRegistrationPersonId: Mutation<EventRegistrationFormState> = (
-  state, value: {
+  state, [eventId, value]: [number, {
     registrationIndex: number,
     personId: number,
-  },
+  }],
 ) => {
-  state.dataToSubmit[value.registrationIndex].registration.person = value.personId;
+  state[eventId].dataToSubmit[value.registrationIndex].registration.person = value.personId;
 };
 
 export const setRegisteredData: Mutation<EventRegistrationFormState> = (
-  state, value: {
+  state, [eventId, value]: [number, {
     registrationIndex: number,
     data: Record<string, never>,
-  },
+  }],
 ) => {
-  state.dataToSubmit[value.registrationIndex].registered_data = value.data;
+  state[eventId].dataToSubmit[value.registrationIndex].registered_data = value.data;
 };
 
 export const removeEventRegistration: Mutation<EventRegistrationFormState> = (
-  state, index: number,
+  state, [eventId, index]: [number, number],
 ) => {
-  state.dataToSubmit.splice(index, 1);
+  state[eventId].dataToSubmit.splice(index, 1);
 };
 
 export const confirmRegistration: Mutation<EventRegistrationFormState> = (
-  state, confirmation: EventRegistrationConfirmation,
+  state, [eventId, confirmation]: [number, EventRegistrationConfirmation],
 ) => {
-  state.dataToSubmit = [];
-  state.confirmation = confirmation;
+  state[eventId] = {
+    dataToSubmit: [],
+    confirmation,
+  };
 };
 
-export const flushEventRegistrationForms: Mutation<EventRegistrationFormState> = (
+export const flushAllEventRegistrationForms: Mutation<EventRegistrationFormState> = (
   state,
 ) => {
-  state.dataToSubmit = [];
-  state.confirmation = null;
+  Object.assign(state, {});
 };
 
 export const removeDietaryRequirements: Mutation<EventRegistrationFormState> = (
-  state, index: number,
+  state, [eventId, index]: [number, number],
 ) => {
-  delete state.dataToSubmit[index].person.dietary_requirement;
+  delete state[eventId].dataToSubmit[index].person.dietary_requirement;
 };

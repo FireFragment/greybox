@@ -157,11 +157,11 @@ export default defineComponent({
       delete personData.meals;
       delete personData.note;
 
-      this.$store.commit('eventRegistrationForm/addEventRegistration', {
+      this.$store.commit('eventRegistrationForm/addEventRegistration', [this.eventId, {
         person: personData,
         registration: registrationData,
         autofill,
-      });
+      }]);
 
       // Autofilled person -> remove from autofill
       if (autofill) {
