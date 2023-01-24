@@ -33,4 +33,5 @@ export const flushPersonalEvents: Mutation<EventsState> = (
   state,
 ) => {
   state.eventsAll = [];
+  state.loadedAll = false;
 };
