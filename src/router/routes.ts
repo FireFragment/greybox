@@ -94,7 +94,7 @@ const routes: RouteRecordRaw[] = [
         path: `${<string>CZroutes.myDebates}/:page?`,
         alias: `${<string>ENroutes.myDebates}/:page?`,
         name: 'myDebates',
-        component: () => import('pages/MyDebates.vue'),
+        component: () => import('src/pages/User/MyDebates.vue'),
         beforeEnter: loggedInMiddleware,
       },
 
