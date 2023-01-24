@@ -45,6 +45,7 @@ class TeamRulesCheckingService
             if (false === $pastMembersIds)
             {
                 $warnings[] = trans('messages.team.rules.breach.impossible_check.team');
+                return array_unique($warnings);
             }
 
             if (!$this->teamRegistrationContainsPastTeamDebaters($pastMembersIds, $members))
