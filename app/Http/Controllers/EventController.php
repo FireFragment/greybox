@@ -214,6 +214,10 @@ class EventController extends Controller
         {
             $teams[] = $registration->team()->first();
         }
+        usort($teams, function($a, $b)
+        {
+            return $a->name < $b->name;
+        });
 
         return response()->json($teams);
     }
