@@ -42,7 +42,7 @@ import {
 } from 'src/types/event';
 import NoDataMessage from 'components/NoDataMessage.vue';
 
-export const DBkey = 'current-registrations';
+export const DBkey = 'historical-registrations';
 
 interface historyOfRegistrationsData extends TranslationPrefixData {
   translationPrefix: string;
