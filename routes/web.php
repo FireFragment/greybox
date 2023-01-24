@@ -63,6 +63,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->put('event/{id}', ['uses' => 'EventController@update']);
     $router->get('event/{id}/registration', ['uses' => 'EventController@showRegistrations']);
     $router->get('event/{id}/team', ['uses' => 'EventController@showTeams']);
+    $router->get('event/{id}/team/detail', ['uses' => 'EventController@showTeamsDetails']);
     $router->get('event/{eventId}/user/{userId}/registration', ['uses' => 'EventController@showUserRegistrations']);
     $router->get('event/{eventId}/draw/{roundNumber}', ['uses => EventController@draw']);
 

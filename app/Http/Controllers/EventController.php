@@ -208,6 +208,21 @@ class EventController extends Controller
         $event = Event::find($id);
         $this->authorize('showRegistrations', $event);
 
+        $registrations = $event->registrations()->select('team')->distinct()->whereNotNull('team')->get();
+        $teams = array();
+        foreach ($registrations as $registration)
+        {
+            $teams[] = $registration->team()->first();
+        }
+
+        return response()->json($teams);
+    }
+
+    public function showTeamsDetails($id)
+    {
+        $event = Event::find($id);
+        $this->authorize('showRegistrations', $event);
+
         $rulesCheckingService = new TeamRulesCheckingService();
         $registrations = $event->registrations()->where('role', 1)->get();
 
