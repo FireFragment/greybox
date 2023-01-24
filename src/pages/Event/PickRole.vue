@@ -53,6 +53,7 @@ export default defineComponent({
         icon: role.icon,
         value: role.id,
         label: role.name,
+        note: role?.note ?? undefined,
         routeParam: String(this.$tr(role.slug)),
       }));
     },

@@ -13,4 +13,5 @@ export interface RoleRaw {
 
 export interface Role extends RoleRaw {
   slug: TranslatedString;
+  note?: TranslatedString | null;
 }
