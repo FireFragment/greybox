@@ -216,7 +216,7 @@ class EventController extends Controller
         }
         usort($teams, function($a, $b)
         {
-            return $a->name < $b->name;
+            return collator_compare(new \Collator('cs_CZ'), $a->name, $b->name);
         });
 
         return response()->json($teams);
