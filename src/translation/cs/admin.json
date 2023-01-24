@@ -19,24 +19,6 @@
     "meals": {
       "noMeals": "Bez jídla",
       "noRequirements": "Bez omezení"
-    },
-    "noData": "Žádné přihlášky nenalezeny",
-    "all": "Vše",
-    "yes": "Ano",
-    "no": "Ne",
-    "labels": {
-      "surname": "Příjmení",
-      "name": "Jméno",
-      "role": "Role",
-      "team": "Tým",
-      "note": "Poznámka",
-      "accommodation": "Ubytování",
-      "meals": "Jídlo",
-      "dietaryRequirements": "Jídlo - omezení",
-      "club": "Klub",
-      "teamName": "Název",
-      "members": "Členstvo",
-      "registrant": "Přihlašující"
     }
   }
 }

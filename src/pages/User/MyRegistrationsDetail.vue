@@ -1,11 +1,9 @@
 <template>
   <q-page padding>
     <div class="row">
-      <template>
-        <EventRegistrations :entry="registrations" />
-      </template>
+        {{ registrations }}
+        <!--<EventRegistrations :entry="registrations" />-->
     </div>
-
   </q-page>
 </template>
 
@@ -14,7 +12,6 @@ import { defineComponent } from 'vue';
 import { AxiosResponse } from 'axios';
 import { TranslationPrefixData } from 'boot/i18n';
 import { EventPersonRegistrations } from 'src/types/event';
-import EventRegistrations from 'components/EventRegistrations.vue';
 
 interface SingleEventRegistrationsData extends TranslationPrefixData {
   translationPrefix: string;
@@ -22,9 +19,9 @@ interface SingleEventRegistrationsData extends TranslationPrefixData {
 }
 
 export default defineComponent({
-  name: 'SingleEventRegistrations',
+  name: 'MyRegistrationsDetail',
   components: {
-    EventRegistrations,
+    // EventRegistrations,
   },
   data(): SingleEventRegistrationsData {
     return {

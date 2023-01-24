@@ -19,24 +19,6 @@
     "meals": {
       "noMeals": "No meals",
       "noRequirements": "No requirements"
-    },
-    "noData": "No registrations found",
-    "all": "All",
-    "yes": "Yes",
-    "no": "No",
-    "labels": {
-      "surname": "Surname",
-      "name": "Name",
-      "role": "Role",
-      "team": "Team",
-      "note": "Note",
-      "accommodation": "Accommodation",
-      "meals": "Meals",
-      "dietaryRequirements": "Dietary Requirements",
-      "club": "Club",
-      "teamName": "Name",
-      "members": "Members",
-      "registrant": "Registrant"
     }
   }
 }

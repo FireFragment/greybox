@@ -25,8 +25,7 @@
     "accountSettings": "nastaveni-uctu"
   },
   "user": {
-    "currentRegistrations": "aktualni-prihlasky",
-    "historyOfRegistrations": "historie-prihlasek"
+    "myRegistrations": "moje-prihlasky"
   },
   "admin": {
     "events": "turnaje-registrace",

@@ -1,7 +1,8 @@
 <template>
   <q-page padding v-if="teams">
     <h1 class="text-center text-h4">
-      {{ event ? $tr(event.name, null, false) : '-' }} - {{ $tr("viewTypes.teams") }}
+      {{ event ? $tr(event.name, null, false) : '-' }} -
+      {{ $tr("admin.eventRegistrations.viewTypes.teams") }}
     </h1>
     <div class="q-pa-md">
       <q-table
@@ -10,7 +11,7 @@
         :binary-state-sort="true"
         sort-by="surname"
         :pagination="initialPagination"
-        :no-data-label="$tr('noData')"
+        :no-data-label="$tr('event.registrationsOverview.noData')"
         row-key="id"
         :loading="tableLoading"
         color="primary"
@@ -103,21 +104,20 @@ export default defineComponent({
   },
   data() {
     return {
-      translationPrefix: 'admin.eventRegistrations.',
       roleFilterModel: null,
       accommodationFilterModel: null,
       mealsFilterModel: null,
       config,
       columns: [{
-        name: 'club', label: this.$tr('admin.eventRegistrations.labels.club'), field: (row: EventTeam) => row.team.institution ?? '-', sortable: true, align: 'left',
+        name: 'club', label: this.$tr('event.registrationsOverview.labels.club'), field: (row: EventTeam) => row.team.institution ?? '-', sortable: true, align: 'left',
       }, {
-        name: 'name', label: this.$tr('admin.eventRegistrations.labels.teamName'), field: (row: EventTeam) => row.team.name, sortable: true, align: 'left', classes: 'text-bold',
+        name: 'name', label: this.$tr('event.registrationsOverview.labels.teamName'), field: (row: EventTeam) => row.team.name, sortable: true, align: 'left', classes: 'text-bold',
       }, {
-        name: 'members', label: this.$tr('admin.eventRegistrations.labels.members'), field: 'members', sortable: false, align: 'left',
+        name: 'members', label: this.$tr('event.registrationsOverview.labels.members'), field: 'members', sortable: false, align: 'left',
       }, {
-        name: 'registrant', label: this.$tr('admin.eventRegistrations.labels.registrant'), field: 'registered_by', sortable: false, align: 'left',
+        name: 'registrant', label: this.$tr('event.registrationsOverview.labels.registrant'), field: 'registered_by', sortable: false, align: 'left',
       }, {
-        name: 'warnings', label: this.$tr('admin.eventRegistrations.labels.note'), field: 'warnings', align: 'center', sortable: true, sort: (a: string[], b: string[]) => a.length - b.length,
+        name: 'warnings', label: this.$tr('event.registrationsOverview.labels.note'), field: 'warnings', align: 'center', sortable: true, sort: (a: string[], b: string[]) => a.length - b.length,
       }],
       initialPagination: {
         sortBy: 'club',
