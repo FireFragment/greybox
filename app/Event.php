@@ -75,6 +75,15 @@ class Event extends Model implements AuthenticatableContract, AuthorizableContra
     }
 
     /**
+     * Returns true if the tournament hasn't ended yet.
+     * @return bool
+     */
+    public function isCurrent(): bool
+    {
+        return time() < strtotime($this->end);
+    }
+
+    /**
      * Returns Event with name Translation
      * @return Event
      */

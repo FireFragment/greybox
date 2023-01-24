@@ -350,7 +350,9 @@ class UserController extends Controller
         $events = array();
         foreach ($registrations as $registration)
         {
-            $events[] = $registration->event()->first()->withName();
+            $event = $registration->event()->first()->withName();
+            $event->current = $event->isCurrent();
+            $events[] = $event;
         }
         usort($events, function ($a, $b)
         {
