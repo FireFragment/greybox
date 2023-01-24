@@ -107,7 +107,7 @@
         <!-- Role body cell -->
         <template v-slot:body-cell-role="props">
           <q-td :props="props">
-            <!-- Admin - show role select to edit -->
+            <!-- User is admin - show role select to edit -->
             <q-select borderless :model-value="participantRoles[props.row.id]"
                       @update:model-value="(role) => changeParticipantRole(role, props.row.id)"
                       :options="applicableRoles"
@@ -115,9 +115,26 @@
                       :dense="true" :options-dense="true"
                       :disable="tableLoading"
                       v-if="$auth.isAdmin()" />
-            <!-- Not admin, just organizer - show static role -->
+            <!-- User is not admin, just organizer - show static role -->
             <template v-else>
-              {{ props.value }}222222
+              {{ $tr(props.row.role.name) }}
+            </template>
+          </q-td>
+        </template>
+        <!-- Team body cell -->
+        <template v-slot:body-cell-team="props">
+          <q-td :props="props">
+            <!-- Row is debater - show team select to edit -->
+            <q-select borderless :model-value="props.row.team"
+                      @update:model-value="(team) => changeParticipantTeam(team, props.row.id)"
+                      :options="teams"
+                      option-value="id" option-label="name"
+                      :dense="true" :options-dense="true"
+                      :disable="tableLoading"
+                      v-if="props.row.role.id ===  config.debaterRoleId" />
+            <!-- Row is not debater - show static team -->
+            <template v-else>
+              {{ props.value }}
             </template>
           </q-td>
         </template>
@@ -137,7 +154,9 @@
 
 <script lang="ts">
 
-import { EventFull, EventRegistration, DietaryRequirement } from 'src/types/event';
+import {
+  EventFull, EventRegistration, DietaryRequirement, EventTeam,
+} from 'src/types/event';
 import { Role } from 'src/types/role';
 
 import { defineComponent } from 'vue';
@@ -145,6 +164,8 @@ import { $tr } from 'boot/custom';
 import { getAllTranslations, TranslatedString } from 'boot/i18n';
 import { langs } from 'src/translation/config';
 import { AxiosResponse } from 'axios';
+import config from 'src/config';
+import { Team } from 'src/types/debate';
 
 const booleanFilterOptions = [$tr('admin.eventRegistrations.all'), $tr('admin.eventRegistrations.yes'), $tr('admin.eventRegistrations.no')];
 
@@ -215,6 +236,12 @@ export default defineComponent({
         ...<Role[]> this.$store.getters['roles/eventRoles'](this.eventId),
       ];
     },
+    teams(): Team[] {
+      // TODO - don't use eventTeams, but just eventTeamsNames once the API is ready
+      // eslint-disable-next-line max-len
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+      return (<EventTeam[]> this.$store.getters['eventsTeams/eventTeams'](this.eventId) ?? []).map((t) => t.team);
+    },
     uniqueRoles(): Role[] {
       if (!this.registrations) {
         return [];
@@ -262,12 +289,14 @@ export default defineComponent({
     await this.$store.dispatch('events/loadFull', this.eventId);
     await this.$store.dispatch('roles/load');
     await this.$store.dispatch('eventsRegistrations/load', this.eventId);
+    await this.$store.dispatch('eventsTeams/load', this.eventId);
   },
   data() {
     const outputBoolean = (val: boolean) => (val ? '✅' : '❌');
     const emptyToHyphen = (val: string | null) => (val ?? '-');
     const dietOrHyphen = (diet: DietaryRequirement | null) => (diet ? this.$tr(diet.name) : '-');
     return {
+      config,
       translationPrefix: 'admin.eventRegistrations.',
       roleFilterModel: null,
       accommodationFilterModel: null,
@@ -278,7 +307,7 @@ export default defineComponent({
       }, {
         name: 'name', label: this.$tr('admin.eventRegistrations.labels.name'), field: (row: EventRegistration) => row.person.name, sortable: true, align: 'left',
       }, {
-        name: 'role', label: this.$tr('admin.eventRegistrations.labels.role'), field: (row: EventRegistration) => row.role.name, format: this.$tr, sortable: false, align: 'center',
+        name: 'role', label: this.$tr('admin.eventRegistrations.labels.role'), sortable: false, align: 'center',
       }, {
         name: 'team', label: this.$tr('admin.eventRegistrations.labels.team'), field: (row: EventRegistration) => row.team?.name ?? '-', sortable: true, align: 'left',
       }, {
@@ -323,16 +352,30 @@ export default defineComponent({
       created_at: '',
       updated_at: '',
     }),
-    // TODO - allow changing participant's team + flushEventTeams
+    changeParticipantTeam(team: Team, registrationId: number) {
+      void this.updateParticipantData({
+        team: team.id,
+      }, registrationId)
+        .then(() => {
+          // Invalidate event teams for admin teams view
+          this.$store.commit('eventsTeams/flushEventTeams', this.eventId);
+        });
+    },
     changeParticipantRole(role: Role, registrationId: number) {
+      void this.updateParticipantData({
+        role: role.id !== Infinity ? role.id : 4,
+      }, registrationId);
+    },
+    updateParticipantData(
+      requestData: Record<string, number | boolean | string>,
+      registrationId: number,
+    ) {
       this.tableLoading = true;
 
-      this.$api({
+      return this.$api({
         url: `registration/${registrationId}`,
         method: 'put',
-        data: {
-          role: role.id !== Infinity ? role.id : 4,
-        },
+        data: requestData,
       })
         .then(({
           data,
