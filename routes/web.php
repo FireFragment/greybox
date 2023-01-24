@@ -35,7 +35,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->get('user/{userId}/team[/event/{eventId}]', ['uses' => 'UserController@showTeams']);
     $router->get('user/{id}/client', ['uses' => 'UserController@showClients']);
     $router->get('user/{id}/debate', ['uses' => 'DebateController@showDebatesForUser']);
-    $router->get('user/{id}/registration', ['uses' => 'UserController@showRegistrations']);
+    $router->get('user/{id}/event', ['uses' => 'UserController@showEvents']);
 
 	$router->get('registration',  ['uses' => 'RegistrationController@showAll']);
 	$router->get('registration/{id}', ['uses' => 'RegistrationController@showOne']);

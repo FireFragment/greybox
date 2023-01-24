@@ -344,19 +344,18 @@ class UserController extends Controller
         return response()->json($clients, 200);
     }
 
-    public function showRegistrations($id) {
+    public function showEvents($id) {
         $user = User::find($id);
-        $registrations = $user->registrations()->get();
-        $response = array();
+        $registrations = $user->registrations()->select('event')->distinct()->get();
+        $events = array();
         foreach ($registrations as $registration)
         {
-            $registration->event = $registration->event()->first()->withName();
-            $response[] = $registration;
+            $events[] = $registration->event()->first()->withName();
         }
-        usort($response, function ($a, $b)
+        usort($events, function ($a, $b)
         {
-            return $a->event->end < $b->event->end;
+            return $a->end < $b->end;
         });
-        return response()->json($response, 200);
+        return response()->json($events, 200);
     }
 }
