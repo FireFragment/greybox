@@ -77,7 +77,7 @@ export default defineComponent({
       }
 
       (<QUploader>fileInput).addFiles(
-        event.dataTransfer.files,
+        [event.dataTransfer.files[0]],
       );
     },
   },
