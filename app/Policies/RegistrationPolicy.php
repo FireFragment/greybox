@@ -5,6 +5,8 @@ namespace App\Policies;
 use App\User;
 use App\Registration;
 
+const ORGANIZER_ROLE_ID = 4; // TODO: vyřešit hromadně
+
 class RegistrationPolicy extends Policy
 {
     public function showOne(User $user, Registration $registration)
