@@ -5,15 +5,42 @@ import { apiCall } from 'boot/api';
 import { EventTeam } from 'src/types/event';
 import { EventsTeamsState } from 'src/store/eventsTeams/state';
 
-export const load: Action<EventsTeamsState, never> = async ({
+export const loadDetailed: Action<EventsTeamsState, never> = async ({
   commit,
   state,
 }, eventId: number) => {
-  if (state.loading || state.events[eventId]) {
+  if (state.detailedTeams.loading || state.detailedTeams.events[eventId]) {
     return;
   }
 
-  commit('startLoadingEventsTeams');
+  commit('startLoadingEventsTeamsDetailed');
+
+  bus.$emit('fullLoader', true);
+
+  await apiCall({
+    url: `event/${eventId}/team/detail`,
+    method: 'get',
+  })
+    .then(({ data }: AxiosResponse<EventTeam[]>) => {
+      commit('setEventTeamsDetails', {
+        eventId,
+        data,
+      });
+    })
+    .finally(() => {
+      bus.$emit('fullLoader', false);
+    });
+};
+
+export const loadSimple: Action<EventsTeamsState, never> = async ({
+  commit,
+  state,
+}, eventId: number) => {
+  if (state.simpleTeams.loading || state.simpleTeams.events[eventId]) {
+    return;
+  }
+
+  commit('startLoadingEventsTeamsSimple');
 
   bus.$emit('fullLoader', true);
 
@@ -22,7 +49,7 @@ export const load: Action<EventsTeamsState, never> = async ({
     method: 'get',
   })
     .then(({ data }: AxiosResponse<EventTeam[]>) => {
-      commit('setEventTeams', {
+      commit('setEventTeamsSimple', {
         eventId,
         data,
       });

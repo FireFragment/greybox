@@ -108,12 +108,11 @@ export interface EventRegistrationConfirmation {
   invoice: Invoice | null;
 }
 
-export interface EventRegistrationFormState {
+export interface SingleEventRegistrationForm {
   dataToSubmit: EventRegistrationItem[];
   confirmation: EventRegistrationConfirmation | null;
 }
 
-export default (): EventRegistrationFormState => ({
-  dataToSubmit: [],
-  confirmation: null,
-});
+export type EventRegistrationFormState = Record<number, SingleEventRegistrationForm>;
+
+export default (): EventRegistrationFormState => ({});

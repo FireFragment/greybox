@@ -125,6 +125,9 @@ export default {
     setTimeout(() => this.enterGuard(), 200);
   },
   computed: {
+    eventId() {
+      return this.$route.params.id;
+    },
     columns() {
       return [
         {
@@ -151,7 +154,7 @@ export default {
       ];
     },
     data() {
-      return this.$store.state.eventRegistrationForm.confirmation;
+      return this.$store.state.eventRegistrationForm[this.eventId]?.confirmation;
     },
   },
 };

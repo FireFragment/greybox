@@ -1,5 +1,5 @@
 import { Date, DateTime } from 'src/types/general';
-import { TranslatedDatabaseString } from 'boot/i18n';
+import { TranslatedDatabaseString, TranslatedString } from 'boot/i18n';
 import { Role } from 'src/types/role';
 import { Team } from 'src/types/debate';
 import { Person, User } from 'boot/auth';
@@ -37,6 +37,7 @@ export interface EventPrice {
   role: EventRole;
   // eslint-disable-next-line camelcase
   updated_at: DateTime;
+  note: TranslatedString | null;
 }
 
 export interface Event {

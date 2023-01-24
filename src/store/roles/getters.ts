@@ -16,17 +16,25 @@ export const eventRoles: Getter<RolesState, State> = (
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
   const event: EventFull = rootGetters['events/fullEvent'](eventId);
 
+  const rolePrice = (roleId: number): EventPrice | undefined => event.prices
+    .find((price: EventPrice) => price.role.id === roleId);
+
   // Check if roles are present in event's prices
-  return state.roles.filter((r: Role) => (
-    (
-      r.id === Infinity // Is team role...
+  return state.roles
+    .filter((r: Role) => (
+      (
+        r.id === Infinity // Is team role...
       && !isIndividual // ... registration type is not individual...
-      && event.prices.find((price: EventPrice) => price.role.id === 1) // ...debater role is present
-    ) || (
-      event.prices.find((price: EventPrice) => price.role.id === r.id)
-      && (!$isPDS || r.id !== 1) // Individual debater should be hidden on PDS
-    )
-  ));
+      && rolePrice(1) // ...debater role is present
+      ) || (
+        rolePrice(r.id) // Role is present in pricing...
+      && (!$isPDS || r.id !== 1) // ...and is not an individual debater on PDS
+      )
+    ))
+    .map((r: Role) => ({
+      ...r,
+      note: rolePrice(r.id)?.note ?? null,
+    }));
 };
 
 export const roleFromSlug = (state: RolesState) => (

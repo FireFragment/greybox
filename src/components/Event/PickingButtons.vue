@@ -5,6 +5,7 @@
       v-for="btn in values"
       v-bind:key="btn.value"
       :label="btn.label ? btn.label : `event.${name}s.${btn.value}`"
+      :note="btn.note"
       :icon="btn.icon"
       :color="btn.color"
       :auto-size="values.length > 4"
@@ -31,6 +32,7 @@ export interface PickingButtonOptions {
   color?: string;
   value: string | number;
   label?: TranslatedString;
+  note?: TranslatedString;
   routeParam?: string;
 }
 

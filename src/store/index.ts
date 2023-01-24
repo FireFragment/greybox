@@ -27,7 +27,7 @@ const store = createStore({
 });
 
 export const flushUserData = () => {
-  store.commit('eventRegistrationForm/flushEventRegistrationForms');
+  store.commit('eventRegistrationForm/flushAllEventRegistrationForms');
   store.commit('eventsRegistrations/flushEventRegistrations');
   store.commit('eventsTeams/flushAllEventTeams');
 };

@@ -144,7 +144,7 @@ export default defineComponent({
       return null;
     },
     formData() {
-      return this.$store.state.eventRegistrationForm.dataToSubmit;
+      return this.$store.state.eventRegistrationForm[this.eventId]?.dataToSubmit ?? [];
     },
     possibleDiets() {
       return this.$store.getters['events/fullEvent'](this.eventId).dietaryRequirements;
@@ -175,16 +175,18 @@ export default defineComponent({
 
         for (const index in this.formData) {
           const person = this.formData[index];
-          this.$store.commit('eventRegistrationForm/removeDietaryRequirements', index);
-          
+          if (person.person.dietary_requirement === null) {
+            this.$store.commit('eventRegistrationForm/removeDietaryRequirements', [this.eventId, index]);
+          }
+
           const createPerson = this._createPerson(person);
 
           createPerson
             .then((person_id) => {
-              this.$store.commit('eventRegistrationForm/setRegistrationPersonId', {
+              this.$store.commit('eventRegistrationForm/setRegistrationPersonId', [this.eventId, {
                 registrationIndex: index,
                 personId: person_id,
-              });
+              }]);
 
               if (person.registered_data) {
                 registered++;
@@ -199,10 +201,10 @@ export default defineComponent({
               })
                 .then((data) => {
                   registered++;
-                  this.$store.commit('eventRegistrationForm/setRegisteredData', {
+                  this.$store.commit('eventRegistrationForm/setRegisteredData', [this.eventId, {
                     registrationIndex: index,
                     data,
-                  });
+                  }]);
                   if (registerCount <= registered) return resolve(data);
                 })
                 .catch((data) => {
@@ -232,7 +234,7 @@ export default defineComponent({
             .then((data) => {
               this.$flash(this.$tr('success'), 'success');
 
-              this.$store.commit('eventRegistrationForm/confirmRegistration', data.data);
+              this.$store.commit('eventRegistrationForm/confirmRegistration', [this.eventId, data.data]);
 
               // Remove autofill data to include newly added people later
               this.$db(`autofillDebaters-event${this.eventId}`, this.DB_DEL);
@@ -328,7 +330,7 @@ export default defineComponent({
         );
       }
 
-      this.$store.commit('eventRegistrationForm/removeEventRegistration', index);
+      this.$store.commit('eventRegistrationForm/removeEventRegistration', [this.eventId, index]);
 
       if (!this.formData.length) this.$router.push(this.rolePickRoute);
     },

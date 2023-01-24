@@ -154,9 +154,7 @@
 
 <script lang="ts">
 
-import {
-  EventFull, EventRegistration, DietaryRequirement, EventTeam,
-} from 'src/types/event';
+import { EventFull, EventRegistration, DietaryRequirement } from 'src/types/event';
 import { Role } from 'src/types/role';
 
 import { defineComponent } from 'vue';
@@ -237,10 +235,9 @@ export default defineComponent({
       ];
     },
     teams(): Team[] {
-      // TODO - don't use eventTeams, but just eventTeamsNames once the API is ready
       // eslint-disable-next-line max-len
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      return (<EventTeam[]> this.$store.getters['eventsTeams/eventTeams'](this.eventId) ?? []).map((t) => t.team);
+      return <Team[]> this.$store.getters['eventsTeams/eventTeamsSimple'](this.eventId) ?? [];
     },
     uniqueRoles(): Role[] {
       if (!this.registrations) {
@@ -289,7 +286,7 @@ export default defineComponent({
     await this.$store.dispatch('events/loadFull', this.eventId);
     await this.$store.dispatch('roles/load');
     await this.$store.dispatch('eventsRegistrations/load', this.eventId);
-    await this.$store.dispatch('eventsTeams/load', this.eventId);
+    await this.$store.dispatch('eventsTeams/loadSimple', this.eventId);
   },
   data() {
     const outputBoolean = (val: boolean) => (val ? '✅' : '❌');
@@ -358,7 +355,7 @@ export default defineComponent({
       }, registrationId)
         .then(() => {
           // Invalidate event teams for admin teams view
-          this.$store.commit('eventsTeams/flushEventTeams', this.eventId);
+          this.$store.commit('eventsTeams/flushEventTeamsDetailed', this.eventId);
         });
     },
     changeParticipantRole(role: Role, registrationId: number) {
