@@ -73,4 +73,14 @@ class Event extends Model implements AuthenticatableContract, AuthorizableContra
         }
         return false;
     }
+
+    /**
+     * Returns Event with name Translation
+     * @return Event
+     */
+    public function withName(): Event
+    {
+        $this->name = $this->nameTranslation()->first();
+        return $this;
+    }
 }

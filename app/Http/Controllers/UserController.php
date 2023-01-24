@@ -350,7 +350,7 @@ class UserController extends Controller
         $response = array();
         foreach ($registrations as $registration)
         {
-            $registration->event = $registration->event()->first();
+            $registration->event = $registration->event()->first()->withName();
             $response[] = $registration;
         }
         usort($response, function ($a, $b)
