@@ -2,6 +2,8 @@
   "myRegistrations": {
     "link" : "My registrations",
     "title" : "My registrations",
-    "empty": "No recorded registrations"
+    "empty": "No recorded registrations",
+    "showHistorical": "Show historical",
+    "showCurrent": "Show current"
   }
 }

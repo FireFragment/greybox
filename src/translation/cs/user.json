@@ -2,6 +2,8 @@
   "myRegistrations": {
     "link" : "Moje přihlášky",
     "title" : "Moje přihlášky",
-    "empty": "Žádné zadané přihlášky"
+    "empty": "Žádné zadané přihlášky",
+    "showHistorical": "Zobrazit historické",
+    "showCurrent": "Zobrazit současné"
   }
 }

@@ -25,7 +25,8 @@
     "accountSettings": "nastaveni-uctu"
   },
   "user": {
-    "myRegistrations": "moje-prihlasky"
+    "myRegistrations": "moje-prihlasky",
+    "historicalRegistrations": "historie"
   },
   "admin": {
     "events": "turnaje-registrace",

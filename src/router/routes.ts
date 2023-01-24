@@ -192,8 +192,18 @@ const routes: RouteRecordRaw[] = [
           alias: '',
           meta: {
             translationName: 'user.myRegistrations',
+            isHistorical: false,
           },
           name: 'user.myRegistrations',
+          component: () => import('pages/User/MyRegistrations.vue'),
+        }, {
+          path: <string>(<Routes>CZroutes.user).historicalRegistrations,
+          alias: <string>(<Routes>ENroutes.user).historicalRegistrations,
+          meta: {
+            translationName: 'user.myRegistrations',
+            isHistorical: true,
+          },
+          name: 'user.myRegistrationsHistorical',
           component: () => import('pages/User/MyRegistrations.vue'),
         }, {
           path: ':id',
@@ -202,7 +212,6 @@ const routes: RouteRecordRaw[] = [
             translationName: 'user.myRegistrations',
           },
           name: 'user.myRegistrationsDetail',
-          beforeEnter: anyEventOrganizerMiddleware,
           component: () => import('pages/User/MyRegistrationsDetail.vue'),
         }],
       },

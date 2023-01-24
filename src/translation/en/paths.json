@@ -25,7 +25,8 @@
     "accountSettings": "account-settings"
   },
   "user": {
-    "myRegistrations": "my-registrations"
+    "myRegistrations": "my-registrations",
+    "historicalRegistrations": "history"
   },
   "admin": {
     "events": "tournaments-registrations",
