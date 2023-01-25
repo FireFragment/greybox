@@ -14,30 +14,34 @@
              })" />
     </p>
 
-    <div class="row justify-center" v-if="events">
+    <div class="flex column justify-center" v-if="events">
       <NoDataMessage
         v-if="events.length === 0"
         :message="$tr('empty')"
       />
       <template v-else>
-        <q-list bordered separator>
-          <q-item
-            clickable
-            v-ripple
-            v-for="(entry, id) in events"
-            :key="id"
+        <div v-for="(event, id) in events"
+             :key="id"
+             class="q-my-sm text-center">
+          <q-btn
+            color="white"
+            text-color="black"
             :to="$translatedRouteLink({
               name: 'user.myRegistrationsDetail',
               params: {
-                id: entry.id
+                id: event.id
               },
-            })">
-            <q-item-section>
-              <q-item-label>{{ $tr(entry.name) }}</q-item-label>
-              <q-item-label caption>{{ entry.place }}</q-item-label>
-            </q-item-section>
-          </q-item>
-        </q-list>
+            })"
+            class="my-registration-event-card">
+            <div class="flex column q-pa-sm">
+              <div class="text-subtitle2">{{ $tr(event.name) }}</div>
+              <div class="text-caption text-grey-9">
+                {{ getDate(event.beginning, 'D. M. YYYY') }}
+              </div>
+              <div class="text-caption text-grey text-weight-light">{{ event.place }}</div>
+            </div>
+          </q-btn>
+        </div>
       </template>
     </div>
 
@@ -48,6 +52,7 @@
 import { defineComponent } from 'vue';
 import { Event } from 'src/types/event';
 import NoDataMessage from 'components/NoDataMessage.vue';
+import { date } from 'quasar';
 
 export default defineComponent({
   name: 'MyOfRegistrations',
@@ -72,6 +77,9 @@ export default defineComponent({
   },
   async created() {
     await this.$store.dispatch('events/loadAll');
+  },
+  methods: {
+    getDate: date.formatDate,
   },
 });
 </script>
