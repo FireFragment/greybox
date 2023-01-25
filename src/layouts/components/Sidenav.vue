@@ -173,9 +173,9 @@
   </q-drawer>
 </template>
 
-<script>
-import { mapState } from 'vuex';
+<script lang="ts">
 import { defineComponent } from 'vue';
+import { Event } from 'src/types/event';
 
 export default defineComponent({
   name: 'Sidenav',
@@ -183,9 +183,10 @@ export default defineComponent({
     modelValue: Boolean,
   },
   computed: {
-    ...mapState('events', [
-      'events',
-    ]),
+    events(): Event[] {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      return <Event[]> this.$store.getters['events/eventsCurrent'];
+    },
   },
   async created() {
     await this.$store.dispatch('events/load');
