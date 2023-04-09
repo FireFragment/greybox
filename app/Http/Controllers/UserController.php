@@ -83,6 +83,13 @@ class UserController extends Controller
         $user = \Auth::user();
         $user->apiToken = $request->header('Authorization');
         $user->organizedEventsIds = $user->getOrganizedEventsIds(); // TODO: Udělat v App/User funkci pro vracení objektu v požadované podobě
+
+        $user->wrappedUrl = null;
+        $person = $user->person()->first();
+        if (null !== $person) {
+            $user->wrappedUrl = $person->getWrappedUrl();
+        }
+        
         return response()->json($user);
     }
 
