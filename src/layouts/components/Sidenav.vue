@@ -63,7 +63,7 @@
       <q-item-label header>{{ $tr('general.user') }}</q-item-label>
       <template v-if="$auth.isLoggedIn() && $auth.user()">
 
-        <q-item :to="$auth.user().wrappedUrl" clickable v-if="$auth.user().wrappedUrl">
+        <q-item :href="$auth.user().wrappedUrl" clickable v-if="$auth.user().wrappedUrl">
           <q-item-section avatar>
             <q-icon name="fas fa-gift" />
           </q-item-section>
