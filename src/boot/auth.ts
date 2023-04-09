@@ -56,6 +56,7 @@ export interface User {
   updated_at: string;
   username: string;
   organizedEventsIds: number[];
+  wrappedUrl: string | null;
 }
 
 export interface LoginData {
