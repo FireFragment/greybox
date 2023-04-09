@@ -61,6 +61,14 @@ class Person extends Model implements AuthenticatableContract, AuthorizableContr
     }
 
     /**
+     * @return Institution
+     */
+    public function isAHeadOf(): Institution
+    {
+        return $this->hasOne(Institution::class, 'head', 'id');
+    }
+
+    /**
      * @return string
      */
     public function getOldGreyboxId()
@@ -75,5 +83,27 @@ class Person extends Model implements AuthenticatableContract, AuthorizableContr
     public function isAdjudicator(): bool
     {
         return $this->roles()->where('id','2')->exists(); // 2 = ID of Adjudicator Role
+    }
+
+    /**
+     * @return string | null
+     */
+    public function getWrappedUrl(): ?string
+    {
+        if (null === $this->old_greybox_id) return null;
+
+        // Convert the integer to a string.
+        $integer_str = strval($this->old_greybox_id);
+
+        // Concatenate the integer string and the salt.
+        $str_with_salt = $integer_str . '$salt';
+
+        // Hash the concatenated string using the SHA256 algorithm.
+        $hashed_str = hash('sha256', $str_with_salt);
+
+        // Concatenate the URL and the hashed string
+        $url = 'https://debatovani.cz/greybox/wrapped/' . $hashed_str;
+
+        return $url;
     }
 }

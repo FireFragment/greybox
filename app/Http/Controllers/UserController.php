@@ -53,6 +53,12 @@ class UserController extends Controller
             $user->apiToken = $apiToken;
             $user->organizedEventsIds = $user->getOrganizedEventsIds();
 
+            $user->wrappedUrl = null;
+            $person = $user->person()->first();
+            if (null !== $person) {
+                $user->wrappedUrl = $person->getWrappedUrl();
+            }
+
             return response()->json($user, 200)
                 ->header('Authorization', 'Bearer '.$apiToken)
                 ->header('Access-Control-Expose-Headers', 'Authorization');
