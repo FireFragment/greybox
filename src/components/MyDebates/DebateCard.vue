@@ -11,6 +11,10 @@
       }">
         <div class="text-h6">
           {{ debate.motion }}
+          <q-badge outline color="primary"
+                   :label="debate.role.length > 3 ? debate.role.substring(0, 1) : debate.role"
+                   :title="debate.role.length > 3 ? debate.role : ''"
+          />
         </div>
       </q-card-section>
 
