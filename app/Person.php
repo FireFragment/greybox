@@ -102,7 +102,7 @@ class Person extends Model implements AuthenticatableContract, AuthorizableContr
         $hashed_str = hash('sha256', $str_with_salt);
 
         // Concatenate the URL and the hashed string
-        $url = 'https://adk-wrapped.fly.dev/slides/' . $hashed_str;
+        $url = 'https://adk-wrapped.fly.dev/link/' . $hashed_str;
 
         return $url;
     }
