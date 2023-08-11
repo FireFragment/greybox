@@ -71,6 +71,7 @@ class RegistrationController extends FakturoidController
                 'accommodation' => $request->input('accommodation', 1),
                 'meals' => $request->input('meals', 1),
                 'team' => $request->input('team'),
+                'novice' => $request->input('novice'),
                 'registered_by' => \Auth::user()->id // to be checked
             ]);
             // TODO: refresh from DB https://laravel.com/docs/5.8/eloquent#retrieving-models
@@ -97,6 +98,7 @@ class RegistrationController extends FakturoidController
             if ($request->has('accommodation')) $this->updateColumn($registration, 'accommodation', $request->input('accommodation'));
             if ($request->has('meals')) $this->updateColumn($registration, 'meals', $request->input('meals'));
             if ($request->has('team')) $this->updateColumn($registration, 'team', $request->input('team'));
+            if ($request->has('novice')) $this->updateColumn($registration, 'novice', $request->input('novice'));
 
             $registration->person = $registration->person()->first();
             $registration->team = $registration->team()->first();
