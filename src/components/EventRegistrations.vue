@@ -13,6 +13,7 @@
       :loading="tableLoading"
       color="primary"
     >
+      <!-- --- TABLE HEADER CELLS --- -->
       <!-- Role header cell - filterable -->
       <template v-slot:header-cell-role="props">
         <q-th :props="props" class="filterable-table-heading">
@@ -52,18 +53,20 @@
           </q-select>
         </q-th>
       </template>
+
+      <!-- --- TABLE BODY CELLS --- -->
       <!-- Role body cell -->
       <template v-slot:body-cell-role="props">
         <q-td :props="props">
           <!-- Admin view - show role select to edit -->
-          <q-select borderless :model-value="participantRoles[props.row.id]"
-                    @update:model-value="(role) => changeParticipantRole(role, props.row.id)"
+          <q-select borderless :model-value="editing?.role"
+                    @update:model-value="(role) => editing.role = role"
                     :options="applicableRoles"
                     option-value="id" :option-label="item => $tr(item.name, null, false)"
                     :dense="true" :options-dense="true"
                     :disable="tableLoading"
-                    v-if="type === 'admin'"/>
-          <!-- Non-edmin view - show static role -->
+                    v-if="editing?.id === props.row.id && type === 'admin'"/>
+          <!-- Non-admin view - show static role -->
           <template v-else>
             {{ $tr(props.row.role.name) }}
           </template>
@@ -73,8 +76,8 @@
       <template v-slot:body-cell-team="props">
         <q-td :props="props">
           <!-- Row is debater && admin view - show team select to edit -->
-          <q-select borderless :model-value="props.row.team"
-                    @update:model-value="(team) => changeParticipantTeam(team, props.row.id)"
+          <q-select borderless :model-value="editing?.team"
+                    @update:model-value="(team) => editing.team = team"
                     :options="teams"
                     option-value="id" option-label="name"
                     :dense="true" :options-dense="true"
@@ -89,10 +92,29 @@
       <!-- Note body cell -->
       <template v-slot:body-cell-note="props">
         <q-td :props="props" class="small-overflow-column">
-          {{ props.value }}
-          <q-tooltip v-if="props.row.note">
+          <q-input
+            v-model="editing.note"
+            outlined
+            dense
+            v-if="editing?.id === props.row.id && type === 'admin'"
+          />
+          <template v-else>
             {{ props.value }}
-          </q-tooltip>
+            <q-tooltip v-if="props.row.note">
+              {{ props.value }}
+            </q-tooltip>
+          </template>
+        </q-td>
+      </template>
+      <!-- Editing body cell -->
+      <template v-slot:body-cell-edit="props">
+        <q-td :props="props">
+          <q-btn round color="primary" icon="fas fa-pencil-alt" size="sm"
+                 @click="startEditingRow(props.row)"
+                 v-if="editing?.id !== props.row.id" />
+          <q-btn round color="positive" icon="fas fa-save" size="sm"
+                 @click="updateEditedData()"
+                 v-else />
         </q-td>
       </template>
     </q-table>
@@ -201,30 +223,40 @@ export default defineComponent({
     const outputBoolean = (val: boolean) => (val ? '✅' : '❌');
     const emptyToHyphen = (val: string | null) => (val ?? '-');
     const dietOrHyphen = (diet: DietaryRequirement | null) => (diet ? this.$tr(diet.name) : '-');
+
+    const columns: unknown[] = [{
+      name: 'surname', label: this.$tr('event.registrationsOverview.labels.surname'), field: (row: EventRegistration) => row.person.surname, sortable: true, align: 'left',
+    }, {
+      name: 'name', label: this.$tr('event.registrationsOverview.labels.name'), field: (row: EventRegistration) => row.person.name, sortable: true, align: 'left',
+    }, {
+      name: 'role', label: this.$tr('event.registrationsOverview.labels.role'), sortable: false, align: 'left',
+    }, {
+      name: 'team', label: this.$tr('event.registrationsOverview.labels.team'), field: (row: EventRegistration) => row.team?.name ?? '-', sortable: true, align: 'left',
+    }, {
+      name: 'note', label: this.$tr('event.registrationsOverview.labels.note'), field: 'note', format: emptyToHyphen, sortable: true, align: 'left',
+    }, {
+      name: 'accommodation', label: this.$tr('event.registrationsOverview.labels.accommodation'), field: 'accommodation', format: outputBoolean, sortable: false, align: 'center',
+    }, {
+      name: 'meals', label: this.$tr('event.registrationsOverview.labels.meals'), field: 'meals', format: outputBoolean, sortable: false, align: 'center',
+    }, {
+      name: 'dietary_requirements', label: this.$tr('event.registrationsOverview.labels.dietaryRequirements'), field: (row: EventRegistration) => row.person.dietary_requirement, format: dietOrHyphen, sortable: true, align: 'center',
+    }];
+
+    if (this.type === 'admin') {
+      columns.push({
+        name: 'edit', label: '',
+      });
+    }
+
     return {
       config,
       translationPrefix: 'event.registrationsOverview.',
       roleFilterModel: null,
       accommodationFilterModel: null,
       mealsFilterModel: null,
+      editing: {},
       booleanFilterOptions,
-      columns: [{
-        name: 'surname', label: this.$tr('event.registrationsOverview.labels.surname'), field: (row: EventRegistration) => row.person.surname, sortable: true, align: 'left',
-      }, {
-        name: 'name', label: this.$tr('event.registrationsOverview.labels.name'), field: (row: EventRegistration) => row.person.name, sortable: true, align: 'left',
-      }, {
-        name: 'role', label: this.$tr('event.registrationsOverview.labels.role'), sortable: false, align: 'left',
-      }, {
-        name: 'team', label: this.$tr('event.registrationsOverview.labels.team'), field: (row: EventRegistration) => row.team?.name ?? '-', sortable: true, align: 'left',
-      }, {
-        name: 'note', label: this.$tr('event.registrationsOverview.labels.note'), field: 'note', format: emptyToHyphen, sortable: true, align: 'left',
-      }, {
-        name: 'accommodation', label: this.$tr('event.registrationsOverview.labels.accommodation'), field: 'accommodation', format: outputBoolean, sortable: false, align: 'center',
-      }, {
-        name: 'meals', label: this.$tr('event.registrationsOverview.labels.meals'), field: 'meals', format: outputBoolean, sortable: false, align: 'center',
-      }, {
-        name: 'dietary_requirements', label: this.$tr('event.registrationsOverview.labels.dietaryRequirements'), field: (row: EventRegistration) => row.person.dietary_requirement, format: dietOrHyphen, sortable: true, align: 'center',
-      }],
+      columns,
       initialPagination: {
         sortBy: 'surname',
         descending: false,
@@ -241,38 +273,43 @@ export default defineComponent({
         && (terms.meals == null || terms.meals === this.$tr('all') || ((terms.meals === this.$tr('yes')) === item.meals))
       ));
     },
-    changeParticipantTeam(team: Team, registrationId: number) {
-      void this.updateParticipantData({
-        team: team.id,
-      }, registrationId)
-        .then(() => {
-          // Invalidate event teams for admin teams view
-          this.$store.commit('eventsTeams/flushEventTeamsDetailed', this.eventId);
-        });
+    startEditingRow(row: EventRegistration) {
+      this.editing = {
+        id: row.id,
+        note: row.note,
+        role: row.role,
+        team: row.team,
+      };
     },
-    changeParticipantRole(role: Role, registrationId: number) {
-      void this.updateParticipantData({
-        role: role.id !== Infinity ? role.id : 4,
-      }, registrationId);
-    },
-    updateParticipantData(
-      requestData: Record<string, number | boolean | string>,
-      registrationId: number,
-    ) {
+    updateEditedData() {
+      const updatedData: EventRegistration = <EventRegistration> this.editing;
+
+      if (!updatedData?.id) {
+        return;
+      }
+
       this.tableLoading = true;
 
-      return this.$api({
-        url: `registration/${registrationId}`,
+      this.$api({
+        url: `registration/${updatedData.id}`,
         method: 'put',
-        data: requestData,
+        data: {
+          ...updatedData,
+          role: updatedData.role.id === Infinity ? 4 : updatedData.role.id,
+          team: updatedData.team?.id ?? null,
+        },
       })
         .then(({
           data,
         }: AxiosResponse<EventRegistration>) => {
+          this.editing = {};
           this.$store.commit('eventsRegistrations/updateEventRegistration', {
             eventId: this.eventId,
             data,
           });
+
+          // Invalidate event teams for admin teams view
+          this.$store.commit('eventsTeams/flushEventTeamsDetailed', this.eventId);
         })
         .finally(() => {
           this.tableLoading = false;
