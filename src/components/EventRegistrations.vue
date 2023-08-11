@@ -106,6 +106,24 @@
           </template>
         </q-td>
       </template>
+      <!-- Accommodation body cell -->
+      <template v-slot:body-cell-accommodation="props">
+        <q-td :props="props" class="small-overflow-column">
+          <q-toggle
+            v-model="editing.accommodation"
+            v-if="editing?.id === props.row.id && type === 'admin'" />
+          <template v-else>{{ props.value }}</template>
+        </q-td>
+      </template>
+      <!-- Accommodation body cell -->
+      <template v-slot:body-cell-meals="props">
+        <q-td :props="props" class="small-overflow-column">
+          <q-toggle
+            v-model="editing.meals"
+            v-if="editing?.id === props.row.id && type === 'admin'" />
+          <template v-else>{{ props.value }}</template>
+        </q-td>
+      </template>
       <!-- Editing body cell -->
       <template v-slot:body-cell-edit="props">
         <q-td :props="props">
@@ -279,6 +297,8 @@ export default defineComponent({
         note: row.note,
         role: row.role,
         team: row.team,
+        accommodation: row.accommodation,
+        meals: row.meals,
       };
     },
     updateEditedData() {
