@@ -4,6 +4,7 @@
   "empty": "No events are available at the moment",
   "deadline": "Registration deadline",
   "note": "Note",
+  "register": "Registration",
   "types": {
     "individual": "Individual",
     "group": "Group",

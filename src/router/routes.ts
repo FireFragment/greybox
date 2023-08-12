@@ -44,6 +44,14 @@ const routes: RouteRecordRaw[] = [
         children: [{
           path: '',
           alias: '',
+          name: 'event-detail',
+          meta: {
+            translationName: 'event',
+          },
+          component: () => import('pages/Event/Detail.vue'),
+        }, {
+          path: <string>(<Routes>CZroutes.eventParams).pickRole,
+          alias: <string>(<Routes>ENroutes.eventParams).pickRole,
           name: 'event-pick-type',
           meta: {
             translationName: 'event',
@@ -135,28 +143,28 @@ const routes: RouteRecordRaw[] = [
       // Auth
       {
         path: <string>(<Routes>CZroutes.auth).login,
-        alias: <string>(<Routes> ENroutes.auth).login,
+        alias: <string>(<Routes>ENroutes.auth).login,
         name: 'auth.login',
         component: () => import('pages/Auth/Login.vue'),
         beforeEnter: notLoggedInMiddleware,
       },
       {
         path: <string>(<Routes>CZroutes.auth).signUp,
-        alias: <string>(<Routes> ENroutes.auth).signUp,
+        alias: <string>(<Routes>ENroutes.auth).signUp,
         name: 'auth.signUp',
         component: () => import('pages/Auth/SignUp.vue'),
         beforeEnter: notLoggedInMiddleware,
       },
       {
         path: <string>(<Routes>CZroutes.auth).logout,
-        alias: <string>(<Routes> ENroutes.auth).logout,
+        alias: <string>(<Routes>ENroutes.auth).logout,
         name: 'auth.logout',
         component: () => import('pages/Auth/Logout.vue'),
         beforeEnter: loggedInMiddleware,
       },
       {
         path: <string>(<Routes>CZroutes.auth).passwordReset,
-        alias: <string>(<Routes> ENroutes.auth).passwordReset,
+        alias: <string>(<Routes>ENroutes.auth).passwordReset,
         name: 'auth.passwordReset',
         component: () => import('pages/Auth/PasswordReset.vue'),
         beforeEnter: notLoggedInMiddleware,
@@ -170,7 +178,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         path: <string>(<Routes>CZroutes.auth).accountSettings,
-        alias: <string>(<Routes> ENroutes.auth).accountSettings,
+        alias: <string>(<Routes>ENroutes.auth).accountSettings,
         name: 'auth.accountSettings',
         component: () => import('pages/Auth/AccountSettings.vue'),
         beforeEnter: loggedInMiddleware,
@@ -185,7 +193,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         path: <string>(<Routes>CZroutes.user).myRegistrations,
-        alias: <string>(<Routes> ENroutes.user).myRegistrations,
+        alias: <string>(<Routes>ENroutes.user).myRegistrations,
         beforeEnter: loggedInMiddleware,
         children: [{
           path: '',

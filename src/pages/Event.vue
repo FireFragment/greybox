@@ -1,7 +1,7 @@
 <template>
   <q-page padding v-if="event" class="page-event">
     <!-- Header card -->
-    <HeaderCard :event="event" :smaller="smallHeader" />
+    <HeaderCard v-if="!isInitialPage" :event="event" />
 
     <!-- After deadline -->
     <div v-if="event.hard_deadline < now" class="row justify-center">
@@ -14,7 +14,7 @@
         </q-banner>
       </div>
     </div>
-    <div v-else-if="!event.fullyLoaded" class="row justify-center">
+    <div v-else-if="!isInitialPage && !event.fullyLoaded" class="row justify-center">
       <div class="col-12 col-md-6">
         <q-banner class="bg-primary text-white q-mt-xl">
           <template v-slot:avatar>
@@ -64,10 +64,6 @@ export default defineComponent({
     return {
       translationPrefix: 'event.',
       event: null,
-      bigHeaderRoutes: <RouteRecordName[]>[
-        'event-pick-type',
-        'event-pick-role',
-      ]
     };
   },
 
@@ -117,9 +113,6 @@ export default defineComponent({
           ].join(':')}`
       );
     },
-    smallHeader(): boolean {
-      return !this.bigHeaderRoutes.includes(this.$route.name)
-    },
     ...mapGetters('events', {
       simpleEvent: 'event',
       fullEvent: 'fullEvent',
@@ -130,6 +123,9 @@ export default defineComponent({
     ...mapState('roles', {
       allRoles: 'roles',
     }),
+    isInitialPage() {
+      return this.$route.name === 'event-detail';
+    }
   },
 
   watch: {

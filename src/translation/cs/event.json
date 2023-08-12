@@ -4,6 +4,7 @@
   "empty": "Momentálně se nelze registrovat na žádné akce",
   "deadline": "Konec přihlášek",
   "note": "Poznámka",
+  "register": "Přihláška",
   "types": {
     "individual": "Jednotlivec",
     "group": "Skupina",
