@@ -107,6 +107,8 @@ class EventController extends Controller
             }
             // TODO: doplnit accommodation, meals, novices, membership required a email required
             $event = Event::create([
+               'competition' => $request->input('competition'),
+               'finals' => $request->input('finals', 0),
                'name' => $nameTranslation->id,
                'beginning' => $request->input('beginning'),
                'end' => $request->input('end'),
@@ -134,15 +136,17 @@ class EventController extends Controller
     public function update($id, Request $request)
     {
         try {
-            $this->authorize('update', Event::class);
-
             $event = Event::findOrFail($id);
+            $this->authorize('update', $event);
 
+            if ($request->has('competition')) $this->updateColumn($event, 'competition', $request->input('competition'));
+            if ($request->has('finals')) $this->updateColumn($event, 'finals', $request->input('finals'));
             if ($request->has('name_cs')) {
                 $nameTranslation = $event->nameTranslation()->updateOrCreate([], [
                     'cs' => $request->input('name_cs'),
                     'en' => $request->input('name_en')
                 ]);
+                $this->updateColumn($event, 'name', $nameTranslation->id);
             }
             if ($request->has('beginning')) $this->updateColumn($event, 'beginning', $request->input('beginning'));
             if ($request->has('end')) $this->updateColumn($event, 'end', $request->input('end'));
@@ -159,12 +163,14 @@ class EventController extends Controller
                     'cs' => $request->input('invoice_cs'),
                     'en' => $request->input('invoice_en')
                 ]);
+                $this->updateColumn($event, 'invoice_text', $invoiceTextTranslation->id);
             }
             if ($request->has('note_cs')) {
-                $noteTranslation = $event->noteTranslation()->getRelated()->updateOrCreate([],[
+                $noteTranslation = $event->noteTranslation()->updateOrCreate([],[
                     'cs' => $request->input('note_cs'),
                     'en' => $request->input('note_en')
                 ]);
+                $this->updateColumn($event, 'note', $noteTranslation->id);
             }
 
             $event->name = $event->nameTranslation()->first();

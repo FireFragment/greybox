@@ -18,6 +18,8 @@ class Event extends Model implements AuthenticatableContract, AuthorizableContra
      * @var array
      */
     protected $fillable = [
+        'competition',
+        'finals',
         'name',
         'beginning',
         'end',
