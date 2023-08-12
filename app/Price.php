@@ -29,6 +29,11 @@ class Price extends Model implements AuthenticatableContract, AuthorizableContra
     protected $hidden = [
     ];
 
+    public function event()
+    {
+        return $this->belongsTo(Event::class, 'event', 'id');
+    }
+
     public function role()
     {
         return $this->belongsTo(Role::class, 'role', 'id');
