@@ -140,7 +140,6 @@
       <!-- Diet body cell -->
       <template v-slot:body-cell-dietary_requirements="props">
         <q-td :props="props">
-          <!-- TODO - highlight requirements of the current event (event.dietaryRequirements) -->
           <!-- Admin view - show diet select to edit -->
           <q-select borderless :model-value="editing?.person.dietary_requirement"
                     @update:model-value="(diet) => editing.person.dietary_requirement = diet"
@@ -148,7 +147,18 @@
                     option-value="id" :option-label="item => $tr(item.name)"
                     :dense="true" :options-dense="true"
                     :disable="tableLoading"
-                    v-if="editing?.id === props.row.id && type === 'admin'"/>
+                    v-if="editing?.id === props.row.id && type === 'admin'">
+            <template v-slot:option="scope">
+              <q-item v-bind="scope.itemProps" :class="
+                event.dietaryRequirements.find((dr) => dr.id === scope.opt.id)
+                ? 'highlighted' : 'unhighlighted'
+              ">
+                <q-item-section>
+                  <q-item-label>{{ scope.label }}</q-item-label>
+                </q-item-section>
+              </q-item>
+            </template>
+          </q-select>
           <!-- Non-admin view - show static diet -->
           <template v-else>
             {{ props.value }}

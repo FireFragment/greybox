@@ -83,6 +83,12 @@ main.q-page a:not(.q-item):not(.q-btn-item)
 .text-capitalize-first-letter:first-letter
 	text-transform: uppercase
 
+.q-item.highlighted .q-item__label
+	font-weight: 700
+
+.q-item:not(.q-item--active).unhighlighted .q-item__label
+	opacity: .8
+	font-weight: 300
 
 .page-404
 	.q-page
