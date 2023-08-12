@@ -82,7 +82,8 @@
                     option-value="id" option-label="name"
                     :dense="true" :options-dense="true"
                     :disable="tableLoading"
-                    v-if="type === 'admin' && props.row.role.id ===  config.debaterRoleId" />
+                    v-if="editing?.id === props.row.id && type === 'admin'
+                      && props.row.role.id ===  config.debaterRoleId" />
           <!-- Row is not debater || non-admin view - show static team -->
           <template v-else>
             {{ props.value }}

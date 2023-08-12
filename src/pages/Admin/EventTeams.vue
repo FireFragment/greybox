@@ -40,8 +40,8 @@
         <template v-slot:body-cell-registrant="props">
           <q-td :props="props" class="small-overflow-column">
             <a :href="`mailto:${props.value.username}`">
-              {{ props.value.person.name }}
-              {{ props.value.person.surname }}
+              {{ props.value.person?.name ?? props.value.username }}
+              {{ props.value.person?.surname ?? "" }}
             </a>
           </q-td>
         </template>
