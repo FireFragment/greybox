@@ -4,7 +4,7 @@
       {{ $tr('myRegistrations.title') }} -
       {{ event ? $tr(event.name, null, false) : '-' }}
     </h1>
-    <EventRegistrations :event-id="eventId" type="user" />
+    <EventRegistrations v-if="event" :event="event" type="user" />
   </q-page>
 </template>
 

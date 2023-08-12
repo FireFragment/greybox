@@ -53,6 +53,18 @@
           </q-select>
         </q-th>
       </template>
+      <!-- Novice header cell - filterable -->
+      <template v-slot:header-cell-novice="props">
+        <q-th :props="props" class="filterable-table-heading">
+          <q-select borderless v-model="noviceFilterModel" :options="booleanFilterOptions"
+                    :label="props.col.label" :dense="true" :options-dense="true"
+                    class="meals-filter" popup-content-class="table-filter-options">
+            <template v-slot:prepend>
+              <q-icon name="fas fa-filter" />
+            </template>
+          </q-select>
+        </q-th>
+      </template>
 
       <!-- --- TABLE BODY CELLS --- -->
       <!-- Role body cell -->
@@ -116,11 +128,20 @@
           <template v-else>{{ props.value }}</template>
         </q-td>
       </template>
-      <!-- Accommodation body cell -->
+      <!-- Meals body cell -->
       <template v-slot:body-cell-meals="props">
         <q-td :props="props" class="small-overflow-column">
           <q-toggle
             v-model="editing.meals"
+            v-if="editing?.id === props.row.id && type === 'admin'" />
+          <template v-else>{{ props.value }}</template>
+        </q-td>
+      </template>
+      <!-- Novice body cell -->
+      <template v-slot:body-cell-novice="props">
+        <q-td :props="props" class="small-overflow-column">
+          <q-toggle
+            v-model="editing.novice"
             v-if="editing?.id === props.row.id && type === 'admin'" />
           <template v-else>{{ props.value }}</template>
         </q-td>
@@ -141,7 +162,7 @@
 </template>
 
 <script lang="ts">
-import { DietaryRequirement, EventRegistration } from 'src/types/event';
+import { DietaryRequirement, EventFull, EventRegistration } from 'src/types/event';
 import { defineComponent } from 'vue';
 import { Team } from 'src/types/debate';
 import { Role } from 'src/types/role';
@@ -191,14 +212,17 @@ interface FilterObject {
 export default defineComponent({
   name: 'EventRegistrations',
   props: {
-    eventId: Number,
+    event: {
+      type: Object as () => EventFull,
+      required: true,
+    },
     type: String as () => EventsRegistrationsObjectType,
   },
   computed: {
     registrations(): EventRegistration[] {
       // eslint-disable-next-line max-len
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      return <EventRegistration[]> this.$store.getters['eventsRegistrations/eventRegistrations'](this.eventId, this.type);
+      return <EventRegistration[]> this.$store.getters['eventsRegistrations/eventRegistrations'](this.event.id, this.type);
     },
     filterObject(): FilterObject {
       return {
@@ -219,23 +243,23 @@ export default defineComponent({
         this.fakeRoleObject('event.types.organizer'),
         // eslint-disable-next-line max-len
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-        ...<Role[]> this.$store.getters['roles/eventRoles'](this.eventId),
+        ...<Role[]> this.$store.getters['roles/eventRoles'](this.event.id),
       ];
     },
     teams(): Team[] {
       // eslint-disable-next-line max-len
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      return <Team[]> this.$store.getters['eventsTeams/eventTeamsSimple'](this.eventId) ?? [];
+      return <Team[]> this.$store.getters['eventsTeams/eventTeamsSimple'](this.event.id) ?? [];
     },
   },
   async created() {
     // Not cached -> load from API
-    await this.$store.dispatch('events/loadFull', this.eventId); // for roles
+    await this.$store.dispatch('events/loadFull', this.event.id); // for roles
     await this.$store.dispatch('roles/load');
-    await this.$store.dispatch('eventsRegistrations/load', [this.eventId, this.type]);
+    await this.$store.dispatch('eventsRegistrations/load', [this.event.id, this.type]);
 
     if (this.type === 'admin') {
-      await this.$store.dispatch('eventsTeams/loadSimple', this.eventId);
+      await this.$store.dispatch('eventsTeams/loadSimple', this.event.id);
     }
   },
   data() {
@@ -261,6 +285,12 @@ export default defineComponent({
       name: 'dietary_requirements', label: this.$tr('event.registrationsOverview.labels.dietaryRequirements'), field: (row: EventRegistration) => row.person.dietary_requirement, format: dietOrHyphen, sortable: true, align: 'center',
     }];
 
+    if (this.event.novices) {
+      columns.push({
+        name: 'novice', label: this.$tr('event.registrationsOverview.labels.novice'), field: 'novice', format: outputBoolean, sortable: false, align: 'center',
+      });
+    }
+
     if (this.type === 'admin') {
       columns.push({
         name: 'edit', label: '',
@@ -273,6 +303,7 @@ export default defineComponent({
       roleFilterModel: null,
       accommodationFilterModel: null,
       mealsFilterModel: null,
+      noviceFilterModel: null,
       editing: {},
       booleanFilterOptions,
       columns,
@@ -300,6 +331,7 @@ export default defineComponent({
         team: row.team,
         accommodation: row.accommodation,
         meals: row.meals,
+        novice: row.novice ?? false,
       };
     },
     updateEditedData() {
@@ -325,12 +357,12 @@ export default defineComponent({
         }: AxiosResponse<EventRegistration>) => {
           this.editing = {};
           this.$store.commit('eventsRegistrations/updateEventRegistration', {
-            eventId: this.eventId,
+            eventId: this.event.id,
             data,
           });
 
           // Invalidate event teams for admin teams view
-          this.$store.commit('eventsTeams/flushEventTeamsDetailed', this.eventId);
+          this.$store.commit('eventsTeams/flushEventTeamsDetailed', this.event.id);
         })
         .finally(() => {
           this.tableLoading = false;

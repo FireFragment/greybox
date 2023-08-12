@@ -51,13 +51,13 @@
         </q-card-section>
       </q-card>
     </div>
-    <event-registrations-overview :event-id="eventId" type="admin" />
+    <event-registrations-overview v-if="event" :event="event" type="admin" />
   </q-page>
 </template>
 
 <script lang="ts">
 
-import { EventRegistration, DietaryRequirement } from 'src/types/event';
+import { EventRegistration, DietaryRequirement, EventFull } from 'src/types/event';
 import { Role } from 'src/types/role';
 
 import { defineComponent } from 'vue';
@@ -115,10 +115,10 @@ export default defineComponent({
           return bCount - aCount;
         });
     },
-    event(): Event {
+    event(): EventFull {
       // eslint-disable-next-line max-len
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      return <Event> this.$store.getters['events/event'](this.eventId);
+      return <EventFull> this.$store.getters['events/fullEvent'](this.eventId);
     },
     uniqueRoles(): Role[] {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call
@@ -142,7 +142,7 @@ export default defineComponent({
   },
   async created() {
     // Not cached -> load from API
-    await this.$store.dispatch('events/load', this.eventId);
+    await this.$store.dispatch('events/loadFull', this.eventId);
     await this.$store.dispatch('eventsRegistrations/load', [this.eventId, 'admin']);
   },
   data() {

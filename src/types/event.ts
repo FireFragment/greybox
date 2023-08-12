@@ -82,6 +82,7 @@ export interface EventRegistration {
   role: Role;
   accommodation: boolean;
   meals: boolean;
+  novice: boolean;
   confirmed: boolean;
   team: Team;
   // eslint-disable-next-line camelcase
