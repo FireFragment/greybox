@@ -68,6 +68,7 @@
         :registration="person.registration"
         :person-index="index"
         :possible-diets="possibleDiets"
+        :novices="event.novices"
         @remove="removePerson"
       />
     </div>
@@ -145,8 +146,11 @@ export default defineComponent({
     formData() {
       return this.$store.state.eventRegistrationForm[this.eventId]?.dataToSubmit ?? [];
     },
+    event() {
+      return this.$store.getters['events/fullEvent'](this.eventId);
+    },
     possibleDiets() {
-      return this.$store.getters['events/fullEvent'](this.eventId).dietaryRequirements;
+      return this.event.dietaryRequirements;
     },
     rolePickRoute() {
       return this.$translatedRouteLink({

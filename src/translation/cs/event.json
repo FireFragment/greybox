@@ -66,6 +66,7 @@
     "accommodationOptIn": "Potřebuji zařídit ubytování",
     "meals": "Nepotřebuji zařídit stravu",
     "mealsOptIn": "Chci zařídit stravu",
+    "novice": "Začínající",
     "legalGuardian": "Zákonný zástupce",
     "parentName": "Celé jméno",
     "parentPhone": "Telefonní číslo",
@@ -94,6 +95,7 @@
     "id_number": "Vyplňte prosím, pokud již občanský průkaz máte.",
     "accommodation": "Pro individuální požadavky k ubytování vyplňte prosím poznámku.",
     "meals": "Pro individuální požadavky ke stravě vyplňte prosím poznámku.",
+    "novice": "Začínající má zkušenosti s debatováním kratší než 1 rok.",
     "example": "Vzor:"
   },
   "speakerStatusModal": {

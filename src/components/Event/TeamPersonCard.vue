@@ -48,6 +48,7 @@
               :is-team="true"
               :accommodationType="accommodationType"
               :mealType="mealType"
+              :novices="novices"
               :possibleDiets="possibleDiets"
               :role="1"
               :requireEmail="requireEmail"
@@ -75,6 +76,7 @@ export default {
     error: Boolean,
     accommodationType: String,
     mealType: String,
+    novices: Boolean,
     possibleDiets: Array,
     requireEmail: Boolean,
   },

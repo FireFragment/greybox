@@ -78,6 +78,18 @@
             }}
           </dd>
         </div>
+
+        <div v-if="novices">
+          <dt>{{ $tr("fields.novice") }}:</dt>
+          <dd>
+            {{
+              registration.novice
+                ? $tr("checkout.values.yes")
+                : $tr("checkout.values.no")
+            }}
+          </dd>
+        </div>
+
         <template v-if="!dietaryRequirement">{{ dietaryRequirement }}</template>
         <div
           v-if="registration.meals && person.person.dietary_requirement && dietaryRequirement"
@@ -137,6 +149,7 @@ export default {
       required: false,
       default: [],
     },
+    novices: Boolean,
     menu: {
       type: Boolean,
       required: false,

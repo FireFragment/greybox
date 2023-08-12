@@ -91,8 +91,10 @@
 
     <!-- details needed for accommodation -->
     <div
+      class="q-field--with-bottom"
       :class="{ 'form-conditional-block': accommodationType !== 'required' }"
-      v-show="accommodationType !== 'none' && values.accommodation === true"
+      v-show="values.accommodation === true"
+      v-if="accommodationType !== 'none'"
     >
       <div class="row q-col-gutter-sm">
         <div class="col-12 q-field" style="color: rgba(0,0,0,0.54);">
@@ -321,7 +323,7 @@
         -->
 
     <div
-      class="block q-mt-sm"
+      class="block q-mt-sm checkbox-wrapper"
       v-if="mealType !== 'required' && mealType !== 'none'"
     >
       <q-checkbox
@@ -372,6 +374,23 @@
           <q-icon name="fas fa-utensils" />
         </template>
       </q-select>
+    </div>
+
+    <div
+      class="block q-mt-sm checkbox-wrapper q-pb-sm"
+      v-if="novices"
+    >
+      <q-checkbox
+        v-model="values.novice"
+        :true-value="true"
+        :false-value="false"
+        :label="$tr('fields.novice')"
+      />
+      <q-icon name="fas fa-info-circle" class="q-pl-sm">
+        <q-tooltip anchor="top middle" self="bottom middle" :offset="[0, 0]">
+          {{ $tr("fieldNotes.novice") }}
+        </q-tooltip>
+      </q-icon>
     </div>
 
     <!-- International event (PDS) option: -->
@@ -532,6 +551,7 @@
 /* eslint-disable */
 import GDPRCheckbox from './GDPRCheckbox';
 import MaskInput from './MaskInput';
+import config from '../../config';
 
 export default {
   name: 'FormFields',
@@ -544,6 +564,7 @@ export default {
     isTeam: Boolean,
     accommodationType: String,
     mealType: String,
+    novices: Boolean,
     possibleDiets: Array,
     role: Number,
     requireEmail: Boolean,
@@ -552,6 +573,7 @@ export default {
   data() {
     return {
       translationPrefix: 'event.',
+      config,
       values: {
         name: null,
         surname: null,
@@ -562,6 +584,7 @@ export default {
         // phone: "+420",
         dietary_requirement: null,
         meals: this.mealType !== 'opt-in' && this.mealType !== 'none',
+        novice: false,
         accommodation:
           this.accommodationType !== 'opt-in'
           && this.accommodationType !== 'none',
@@ -589,9 +612,9 @@ export default {
       schoolYears: [],
       possibleDietsOptions: [],
       showSpeakerStatusModal: false,
-      requireSchoolYear: !this.$isPDS && this.role === 1, // only for non-PDS debaters
-      requireSpeakerStatus: this.$isPDS && this.role === 1, // only for PDS debaters
-      requireJudingExperience: this.$isPDS && this.role === 2, // show "Judging experience" instead of note (only for PDS judges)
+      requireSchoolYear: !this.$isPDS && this.role === config.debaterRoleId, // only for non-PDS debaters
+      requireSpeakerStatus: this.$isPDS && this.role === config.debaterRoleId, // only for PDS debaters
+      requireJudingExperience: this.$isPDS && this.role === config.judgeRoleId, // show "Judging experience" instead of note (only for PDS judges)
       speakerOptions: [
         {
           label: this.$tr('event.fields.EFL'),
@@ -870,6 +893,7 @@ export default {
         surname: this.values.surname ? this.values.surname.trim() : null,
         note: this.values.note,
         meals: this.values.meals,
+        novice: this.values.novice,
         dietary_requirement: this.values.dietary_requirement
           ? this.values.dietary_requirement.value
           : null,

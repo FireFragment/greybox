@@ -66,6 +66,7 @@
     "accommodationOptIn": "I need to arrange accommodation",
     "meals": "I don't need to arrange meals.",
     "mealsOptIn": "I need to arrange meals",
+    "novice": "Novice",
     "legalGuardian": "Legal guardian",
     "parentName": "Full name",
     "parentPhone":  "Phone number",
@@ -93,6 +94,7 @@
     "id_number": "Please fill in your ID number if you have one.",
     "accommodation": "Use the note field below for special accommodation requirements.",
     "meals": "Use the note field below for special dietary requirements.",
+    "novice": "A novice speaker is a speaker with up to 1 year of debating experience.",
     "example": "Ex.:"
   },
   "speakerStatusModal": {

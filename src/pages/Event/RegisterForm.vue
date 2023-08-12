@@ -10,6 +10,7 @@
         :autofill="autofillData"
         :accommodationType="event.accommodation"
         :mealType="event.meals"
+        :novices="event.novices"
         :possibleDiets="event.dietaryRequirements"
         :role="role.id"
         :requireEmail="event.email_required"
@@ -23,6 +24,7 @@
         :autofill="autofillData"
         :accommodationType="event.accommodation"
         :mealType="event.meals"
+        :novices="event.novices"
         :possibleDiets="event.dietaryRequirements"
         :eventId="eventId"
         :requireEmail="event.email_required"
@@ -145,6 +147,7 @@ export default defineComponent({
         role: this.role.id === Infinity ? config.debaterRoleId : this.role.id, // if role is team, set as debater
         accommodation: data.accommodation,
         meals: data.meals,
+        novice: data.novice,
         team: data.team || null,
         teamName: data.teamName || null,
         note: data.note,

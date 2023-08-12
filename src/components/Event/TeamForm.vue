@@ -59,6 +59,7 @@
       :possibleDiets="possibleDiets"
       :accommodationType="accommodationType"
       :mealType="mealType"
+      :novices="novices"
       :requireEmail="requireEmail"
     />
     <g-d-p-r-checkbox v-model="accept" :error="acceptError" />
@@ -105,6 +106,8 @@ export default {
     autofill: Object,
     accommodationType: String,
     mealType: String,
+    novices: Boolean,
+    novices: Boolean,
     possibleDiets: Array,
     eventId: Number,
     requireEmail: Boolean,
