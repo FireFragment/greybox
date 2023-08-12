@@ -116,7 +116,6 @@ class EventController extends Controller
                'novices' => $request->input('novices', 0),
                'membership_required' => $request->input('membership_required', 1),
                'email_required' => $request->input('email_required', 0),
-               'email_required' => $request->input('email_required', 0),
                'soft_deadline' => $request->input('soft_deadline'),
                'hard_deadline' => $request->input('hard_deadline'),
                'invoice_text' => $invoiceTextTranslation->id,
