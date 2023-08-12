@@ -137,6 +137,23 @@
           <template v-else>{{ props.value }}</template>
         </q-td>
       </template>
+      <!-- Role body cell -->
+      <template v-slot:body-cell-dietary_requirements="props">
+        <q-td :props="props">
+          <!-- Admin view - show role select to edit -->
+          <q-select borderless :model-value="editing?.role"
+                    @update:model-value="(role) => editing.role = role"
+                    :options="applicableRoles"
+                    option-value="id" :option-label="item => $tr(item.name, null, false)"
+                    :dense="true" :options-dense="true"
+                    :disable="tableLoading"
+                    v-if="editing?.id === props.row.id && type === 'admin'"/>
+          <!-- Non-admin view - show static role -->
+          <template v-else>
+            {{ props.value }}
+          </template>
+        </q-td>
+      </template>
       <!-- Novice body cell -->
       <template v-slot:body-cell-novice="props">
         <q-td :props="props" class="small-overflow-column">
@@ -277,13 +294,22 @@ export default defineComponent({
       name: 'team', label: this.$tr('event.registrationsOverview.labels.team'), field: (row: EventRegistration) => row.team?.name ?? '-', sortable: true, align: 'left',
     }, {
       name: 'note', label: this.$tr('event.registrationsOverview.labels.note'), field: 'note', format: emptyToHyphen, sortable: true, align: 'left',
-    }, {
-      name: 'accommodation', label: this.$tr('event.registrationsOverview.labels.accommodation'), field: 'accommodation', format: outputBoolean, sortable: false, align: 'center',
-    }, {
-      name: 'meals', label: this.$tr('event.registrationsOverview.labels.meals'), field: 'meals', format: outputBoolean, sortable: false, align: 'center',
-    }, {
-      name: 'dietary_requirements', label: this.$tr('event.registrationsOverview.labels.dietaryRequirements'), field: (row: EventRegistration) => row.person.dietary_requirement, format: dietOrHyphen, sortable: true, align: 'center',
     }];
+
+    if (this.event.accommodation !== 'none') {
+      columns.push({
+        name: 'accommodation', label: this.$tr('event.registrationsOverview.labels.accommodation'), field: 'accommodation', format: outputBoolean, sortable: false, align: 'center',
+      });
+    }
+
+    if (this.event.meals !== 'none') {
+      columns.push({
+        name: 'meals', label: this.$tr('event.registrationsOverview.labels.meals'), field: 'meals', format: outputBoolean, sortable: false, align: 'center',
+      });
+      columns.push({
+        name: 'dietary_requirements', label: this.$tr('event.registrationsOverview.labels.dietaryRequirements'), field: (row: EventRegistration) => row.person.dietary_requirement, format: dietOrHyphen, sortable: true, align: 'center',
+      });
+    }
 
     if (this.event.novices) {
       columns.push({
