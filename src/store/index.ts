@@ -4,6 +4,7 @@ import eventRegistrationForm from 'src/store/eventRegistrationForm';
 import eventsTeams from 'src/store/eventsTeams';
 import { EventsRegistrationsState } from './eventsRegistrations/state';
 import config from '../config';
+import diets from './diets';
 import events from './events';
 import roles from './roles';
 import eventsRegistrations from './eventsRegistrations';
@@ -17,6 +18,7 @@ export interface State {
 
 const store = createStore({
   modules: {
+    diets,
     eventRegistrationForm,
     events,
     eventsRegistrations,

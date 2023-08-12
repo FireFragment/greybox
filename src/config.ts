@@ -3,6 +3,7 @@ export default {
   oldGreyboxUrl: 'https://debatovani.cz/greybox/',
   debaterRoleId: 1,
   judgeRoleId: 2,
+  noDietaryRequirementId: 1,
   api: {
     /* eslint-disable-next-line */
     baseURL: `${process.env.API_URL}api/`,

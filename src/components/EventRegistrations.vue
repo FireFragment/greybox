@@ -137,18 +137,19 @@
           <template v-else>{{ props.value }}</template>
         </q-td>
       </template>
-      <!-- Role body cell -->
+      <!-- Diet body cell -->
       <template v-slot:body-cell-dietary_requirements="props">
         <q-td :props="props">
-          <!-- Admin view - show role select to edit -->
-          <q-select borderless :model-value="editing?.role"
-                    @update:model-value="(role) => editing.role = role"
-                    :options="applicableRoles"
-                    option-value="id" :option-label="item => $tr(item.name, null, false)"
+          <!-- TODO - highlight requirements of the current event (event.dietaryRequirements) -->
+          <!-- Admin view - show diet select to edit -->
+          <q-select borderless :model-value="editing?.person.dietary_requirement"
+                    @update:model-value="(diet) => editing.person.dietary_requirement = diet"
+                    :options="diets"
+                    option-value="id" :option-label="item => $tr(item.name)"
                     :dense="true" :options-dense="true"
                     :disable="tableLoading"
                     v-if="editing?.id === props.row.id && type === 'admin'"/>
-          <!-- Non-admin view - show static role -->
+          <!-- Non-admin view - show static diet -->
           <template v-else>
             {{ props.value }}
           </template>
@@ -185,7 +186,7 @@ import { Team } from 'src/types/debate';
 import { Role } from 'src/types/role';
 import { $tr } from 'boot/custom';
 import config from 'src/config';
-import { AxiosResponse } from 'axios';
+import { AxiosPromise, AxiosResponse } from 'axios';
 import { getAllTranslations, TranslatedString } from 'boot/i18n';
 import { langs } from 'src/translation/config';
 import { EventsRegistrationsObjectType } from 'src/store/eventsRegistrations/state';
@@ -268,6 +269,11 @@ export default defineComponent({
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       return <Team[]> this.$store.getters['eventsTeams/eventTeamsSimple'](this.event.id) ?? [];
     },
+    diets(): DietaryRequirement[] {
+      // eslint-disable-next-line max-len
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-explicit-any
+      return <DietaryRequirement[]> (<any> this.$store.state).diets.diets;
+    },
   },
   async created() {
     // Not cached -> load from API
@@ -277,6 +283,7 @@ export default defineComponent({
 
     if (this.type === 'admin') {
       await this.$store.dispatch('eventsTeams/loadSimple', this.event.id);
+      await this.$store.dispatch('diets/load');
     }
   },
   data() {
@@ -358,6 +365,11 @@ export default defineComponent({
         accommodation: row.accommodation,
         meals: row.meals,
         novice: row.novice ?? false,
+        person: {
+          dietary_requirement: row.person.dietary_requirement ?? this.diets.find(
+            (diet) => diet.id === config.noDietaryRequirementId,
+          ),
+        },
       };
     },
     updateEditedData() {
@@ -369,30 +381,44 @@ export default defineComponent({
 
       this.tableLoading = true;
 
-      this.$api({
-        url: `registration/${updatedData.id}`,
+      void this.updateDietaryRequirements(
+        this.registrations.find((r) => r.id === updatedData.id)!.person.id,
+        updatedData.person.dietary_requirement!.id,
+      )
+        .then(() => {
+          this.$api({
+            url: `registration/${updatedData.id}`,
+            method: 'put',
+            data: {
+              ...updatedData,
+              role: updatedData.role.id === Infinity ? 4 : updatedData.role.id,
+              team: updatedData.team?.id ?? null,
+              person: undefined,
+            },
+          })
+            .then(({ data }: AxiosResponse<EventRegistration>) => {
+              this.editing = {};
+              this.$store.commit('eventsRegistrations/updateEventRegistration', {
+                eventId: this.event.id,
+                data,
+              });
+
+              // Invalidate event teams for admin teams view
+              this.$store.commit('eventsTeams/flushEventTeamsDetailed', this.event.id);
+            })
+            .finally(() => {
+              this.tableLoading = false;
+            });
+        });
+    },
+    updateDietaryRequirements(personId: number, value: number): AxiosPromise {
+      return this.$api({
+        url: `person/${personId}`,
         method: 'put',
         data: {
-          ...updatedData,
-          role: updatedData.role.id === Infinity ? 4 : updatedData.role.id,
-          team: updatedData.team?.id ?? null,
+          dietary_requirement: value,
         },
-      })
-        .then(({
-          data,
-        }: AxiosResponse<EventRegistration>) => {
-          this.editing = {};
-          this.$store.commit('eventsRegistrations/updateEventRegistration', {
-            eventId: this.event.id,
-            data,
-          });
-
-          // Invalidate event teams for admin teams view
-          this.$store.commit('eventsTeams/flushEventTeamsDetailed', this.event.id);
-        })
-        .finally(() => {
-          this.tableLoading = false;
-        });
+      });
     },
     uniqueRoles,
     fakeRoleObject,
