@@ -101,6 +101,7 @@ class RegistrationController extends FakturoidController
             if ($request->has('novice')) $this->updateColumn($registration, 'novice', $request->input('novice'));
 
             $registration->person = $registration->person()->first();
+            $registration->person->dietary_requirement = $registration->person->dietaryRequirement()->first();
             $registration->team = $registration->team()->first();
             $registration->role = $registration->role()->first();
             $registration->role->name = $registration->role->translation()->first();
