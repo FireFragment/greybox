@@ -7,11 +7,7 @@ use App\User;
 
 abstract class Policy
 {
-    public function isSuperAdmin(User $user)
-    {
-        if ($user->isAdmin()) return true;
-        return false;
-    }
+    use SuperAdmin;
 
     public function create(User $user)
     {

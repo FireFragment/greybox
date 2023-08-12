@@ -5,10 +5,10 @@ namespace App\Policies;
 use App\User;
 use App\Event;
 
-const ORGANIZER_ROLE_ID = 4;
-
 class EventPolicy
 {
+    use SuperAdmin, EventOrganizer;
+
     public function showAll(User $user): bool
     {
         if ($this->isSuperAdmin($user)) {
@@ -62,25 +62,5 @@ class EventPolicy
     public function showUserRegistrations(User $user): bool
     {
         return $this->isSuperAdmin($user);
-    }
-
-    private function isSuperAdmin(User $user)
-    {
-        if ($user->isAdmin()) return true;
-        return false;
-    }
-
-    private function isEventOrganizer(User $user, Event $event): bool
-    {
-        $organizers = $event->registrations()->where('role', ORGANIZER_ROLE_ID)->get();
-        $userPerson = $user->person()->first();
-        foreach ($organizers as $organizer) {
-            $organizerPerson = $organizer->person()->first();
-            if ($userPerson->id === $organizerPerson->id) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }
