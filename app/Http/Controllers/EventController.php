@@ -28,7 +28,7 @@ class EventController extends Controller
         if ($user !== null && $user->can('showAll', Event::class)) {
             $events = Event::all();
         } else {
-            $events = Event::where('end', '>', date("Y-m-d H:i:s"))->get();
+            $events = Event::where('end', '>=', date("Y-m-d"))->get();
         }
         foreach ($events as $event) {
             $event->name = $event->nameTranslation()->first();
