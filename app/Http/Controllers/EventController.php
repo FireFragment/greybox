@@ -105,11 +105,18 @@ class EventController extends Controller
                     'en' => $request->input('note_en')
                 ]);
             }
+            // TODO: doplnit accommodation, meals, novices, membership required a email required
             $event = Event::create([
                'name' => $nameTranslation->id,
                'beginning' => $request->input('beginning'),
                'end' => $request->input('end'),
                'place' => $request->input('place'),
+               'accommodation' => $request->input('accommodation', 'opt-out'),
+               'meals' => $request->input('meals', 'opt-out'),
+               'novices' => $request->input('novices', 0),
+               'membership_required' => $request->input('membership_required', 1),
+               'email_required' => $request->input('email_required', 0),
+               'email_required' => $request->input('email_required', 0),
                'soft_deadline' => $request->input('soft_deadline'),
                'hard_deadline' => $request->input('hard_deadline'),
                'invoice_text' => $invoiceTextTranslation->id,
@@ -121,13 +128,10 @@ class EventController extends Controller
             $event->note = $noteTranslation;
             return response()->json($event, 201);
         } catch (\Illuminate\Database\QueryException $e) {
-            return response()->json(['message' => $e->getMessage()], $e->getCode());
+            return response()->json(['message' => $e->getMessage()], 500);
         }
     }
 
-    /*
-     * TODO: Add accommodation, meals and membership required
-     */
     public function update($id, Request $request)
     {
         try {
@@ -144,6 +148,11 @@ class EventController extends Controller
             if ($request->has('beginning')) $this->updateColumn($event, 'beginning', $request->input('beginning'));
             if ($request->has('end')) $this->updateColumn($event, 'end', $request->input('end'));
             if ($request->has('place')) $this->updateColumn($event, 'place', $request->input('place'));
+            if ($request->has('accommodation')) $this->updateColumn($event, 'accommodation', $request->input('accommodation'));
+            if ($request->has('meals')) $this->updateColumn($event, 'meals', $request->input('meals'));
+            if ($request->has('novices')) $this->updateColumn($event, 'novices', $request->input('novices'));
+            if ($request->has('membership_required')) $this->updateColumn($event, 'membership_required', $request->input('membership_required'));
+            if ($request->has('email_required')) $this->updateColumn($event, 'email_required', $request->input('email_required'));
             if ($request->has('soft_deadline')) $this->updateColumn($event, 'soft_deadline', $request->input('soft_deadline'));
             if ($request->has('hard_deadline')) $this->updateColumn($event, 'hard_deadline', $request->input('hard_deadline'));
             if ($request->has('invoice_cs')) {
@@ -175,9 +184,12 @@ class EventController extends Controller
         try {
             $event = Event::findOrFail($id);
             $event->delete();
-            $event->nameTranslation()->delete();
-            $event->invoiceTextTranslation()->delete();
-            $event->noteTranslation()->delete();
+            $nameTranslation = $event->nameTranslation()->first();
+            if (null != $nameTranslation) $nameTranslation->delete();
+            $invoiceTextTranslation = $event->invoiceTextTranslation()->first();
+            if (null != $invoiceTextTranslation) $invoiceTextTranslation->delete();
+            $noteTranslation = $event->noteTranslation()->first();
+            if (null != $noteTranslation) $noteTranslation->delete();
             return response()->json(['message' => 'Deleted successfully.'], 204);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
