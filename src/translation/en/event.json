@@ -48,6 +48,12 @@
     "addDebater": "Add a debater",
     "goToCheckout": "Submit registration"
   },
+  "optionalSelectValues": {
+    "none": "Not available",
+    "opt-in": "Opt in",
+    "opt-out": "Opt out",
+    "required": "Required"
+  },
   "fields": {
     "teamName": "Team name",
     "name": "Name",

@@ -11,14 +11,14 @@
       "hard_deadline": "Hard deadline",
       "invoice": "Věta před položkami faktury",
       "place": "Místo",
-      "novices": "Možné označit začínající",
+      "novices": "Možné označit začínající zúčastněné",
       "email_required": "Vyžadovat e-mail zúčastěných",
       "membership_required": "Vyžadovat členství zúčastněných v ADK",
       "finals": "Finálový turnaj",
       "accommodation": "Ubytování",
       "meals": "Strava",
       "competition": "Soutěž",
-      "dietary_requirements": "Typy stravy"
+      "dietary_requirements": "Dostupné typy stravy"
     }
   },
   "eventRegistrations": {

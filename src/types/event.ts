@@ -132,6 +132,8 @@ export interface Competition {
   id: number;
   name: string;
   // eslint-disable-next-line camelcase
+  old_greybox_id: number;
+  // eslint-disable-next-line camelcase
   created_at: DateTime;
   // eslint-disable-next-line camelcase
   updated_at: DateTime;

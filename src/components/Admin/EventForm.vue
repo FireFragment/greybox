@@ -112,16 +112,18 @@
 
       <q-select
         outlined
-        v-for="field in ['accommodation', 'competition', 'meals', 'dietary_requirements']"
+        v-for="field in Object.keys(selectOptions)"
         :key="field"
         v-model="$data[field]"
         :options="selectOptions[field]"
-        option-value="label"
         :label="$tr(`fields.${field}`)"
         class="col-12 col-sm-6 col-lg-3"
+        emit-value
+        map-options
+        :multiple="field === 'dietary_requirements'"
       >
         <template v-slot:prepend>
-          <q-icon name="fas fa-utensils" />
+          <q-icon :name="selectIcons[field]" />
         </template>
       </q-select>
 
@@ -139,7 +141,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import TranslatableInput from 'components/Form/TranslatableInput.vue';
-import { Competition, DietaryRequirement } from 'src/types/event';
+import { Competition, DietaryRequirement, eventOptionalSelectValues } from 'src/types/event';
 
 export default defineComponent({
   name: 'EventForm',
@@ -147,6 +149,14 @@ export default defineComponent({
   data() {
     return {
       translationPrefix: 'admin.newEvent.',
+      selectIcons: {
+        accommodation: 'fas fa-home',
+        meals: 'fas fa-utensils',
+        dietary_requirements: 'fas fa-seedling',
+        competition: 'fas fa-trophy',
+      },
+
+      // Form data below
       name: {
         cs: 'Událost 1',
         en: 'Event 1',
@@ -197,13 +207,30 @@ export default defineComponent({
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-explicit-any
       return <Competition[]> (<any> this.$store.state).competitions.competitions;
     },
-    selectOptions() {
-      // TODO
+    selectOptions(): Record<string, Record<'value' | 'label', string | number | null>[]> {
+      const mealsAndAccommodation = eventOptionalSelectValues.map(
+        (value) => ({
+          value,
+          label: <string> this.$tr(`event.optionalSelectValues.${value}`, null, false),
+        }),
+      );
       return {
-        accommodation: [],
-        competition: [], // TODO - add null option for no competition
-        meals: [],
-        dietary_requirements: [],
+        accommodation: mealsAndAccommodation,
+        meals: mealsAndAccommodation,
+        dietary_requirements: this.diets.map((diet) => ({
+          value: diet.id,
+          label: <string> this.$tr(diet.name),
+        })),
+        competition: [
+          {
+            value: null,
+            label: 'Žádný',
+          },
+          ...this.competitions.map((competition) => ({
+            value: competition.old_greybox_id,
+            label: competition.name,
+          })),
+        ],
       };
     },
   },
