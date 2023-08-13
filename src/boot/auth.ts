@@ -157,6 +157,10 @@ export default boot(({ app }) => {
   apiCall({
     url: 'user/logged',
     method: 'get',
+    alerts: {
+      error: null,
+      success: null,
+    },
   })
     .then(({ data }: AxiosResponse<User>) => {
       saveUserData(data);
