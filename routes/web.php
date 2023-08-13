@@ -135,4 +135,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->put('debate/{id}', ['uses' => 'DebateController@update']);
 
     $router->post('ballot', ['uses' => 'BallotController@create']);
+
+    $router->get('competition',  ['uses' => 'CompetitionController@showAll']);
 });
