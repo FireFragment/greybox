@@ -24,8 +24,8 @@ const loadMessages = (locale: string): Translations => {
 export const langs = ['cs', 'en'] as const;
 export type Lang = typeof langs[number];
 
-const defaultLocale: Lang = user()?.preferred_locale ?? 'cs';
-const fallbackLocale: Lang = defaultLocale === 'cs' ? 'en' : 'cs';
+export const defaultLocale: Lang = user()?.preferred_locale ?? 'cs';
+export const fallbackLocale: Lang = defaultLocale === 'cs' ? 'en' : 'cs';
 
 export default {
   default: defaultLocale,
