@@ -48,12 +48,17 @@ class PriceController extends Controller
                 'cs' => $request->input('description_cs'),
                 'en' => $request->input('description_en')
             ]);
+            $noteTranslation = Translation::create([
+                'cs' => $request->input('note_cs'),
+                'en' => $request->input('note_en')
+            ]);
             $price = Price::create([
                 'event' => $event->id,
                 'role' => $request->input('role'),
                 'description' => $descriptionTranslation->id,
                 'amount' => $request->input('amount'),
-                'currency' => $request->input('currency', 'CZK')
+                'currency' => $request->input('currency', 'CZK'),
+                'note' => $noteTranslation->id
             ]);
             return response()->json($price, 201);
         } catch (\Illuminate\Database\QueryException $e) {
@@ -77,6 +82,13 @@ class PriceController extends Controller
                 ]);
                 $this->updateColumn($price, 'description', $descriptionTranslation->id);
             }
+            if ($request->has('note_cs')) {
+                $noteTranslation = $price->noteTranslation()->updateOrCreate([], [
+                    'cs' => $request->input('note_cs'),
+                    'en' => $request->input('note_en')
+                ]);
+                $this->updateColumn($price, 'note', $noteTranslation->id);
+            }
             if ($request->has('amount')) $this->updateColumn($price, 'amount', $request->input('amount'));
             if ($request->has('currency')) $this->updateColumn($price, 'currency', $request->input('currency'));
 
@@ -96,6 +108,9 @@ class PriceController extends Controller
             $price->delete();
             $descriptionTranslation = $price->translation()->first();
             if (null != $descriptionTranslation) $descriptionTranslation->delete();
+            $noteTranslation = $price->noteTranslation()->first();
+            if (null != $noteTranslation) $noteTranslation->delete();
+
             return response()->json(['message' => 'Deleted successfully.'], 204);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);

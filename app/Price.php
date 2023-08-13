@@ -18,7 +18,7 @@ class Price extends Model implements AuthenticatableContract, AuthorizableContra
      * @var array
      */
     protected $fillable = [
-        'event', 'role', 'description', 'amount', 'currency'
+        'event', 'role', 'description', 'amount', 'currency', 'note'
     ];
 
     /**
@@ -42,6 +42,11 @@ class Price extends Model implements AuthenticatableContract, AuthorizableContra
     public function translation()
     {
         return $this->belongsTo(Translation::class, 'description', 'id');
+    }
+
+    public function noteTranslation()
+    {
+        return $this->belongsTo(Translation::class, 'note', 'id');
     }
 
     public function getAmount()
