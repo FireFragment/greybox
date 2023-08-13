@@ -1,5 +1,5 @@
 <template>
-  <div class="text-center">
+  <div class="text-center" v-if="event">
     <q-btn color="white" text-color="black" class="float-left q-mb-md go-back-button"
       @click="goBack()">
       <q-icon size="1em" name="fas fa-arrow-left " />

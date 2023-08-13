@@ -1,5 +1,5 @@
 <template>
-  <div class="text-center">
+  <div class="text-center" v-if="event">
     <q-card
       class="inline-block event-header"
     >
