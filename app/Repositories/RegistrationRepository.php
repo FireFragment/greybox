@@ -13,7 +13,7 @@ class RegistrationRepository
      */
     public function getConfirmationEmailBccRecipients(Event $event): array
     {
-        $bccRecipients = array(getenv('MAIL_FROM_ADDRESS'));
+        $bccRecipients = array(env('MAIL_FROM_ADDRESS'));
         $organizers = $event->organizers();
         foreach ($organizers as $organizer) {
             $users = $organizer->user()->get();
