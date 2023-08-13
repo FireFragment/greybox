@@ -147,13 +147,6 @@
         "title": "Are you sure you want to remove this person's registration?"
       }
     },
-    "validation": {
-      "duplicateRegistration": "{person} has already registered for this tournament",
-      "missedDeadline": "This tournament is already past deadline, registrations are not accepted",
-      "eventNotFound": "Tournament not found",
-      "clientNotFound": "There has been an error generating an invoice, please try again later",
-      "fakturoidFull": "There has been an error generating an invoice, please try again later"
-    },
     "confirm": {
       "title": "Thank you for your registration!",
       "invoiceTitle": "Please find payment details below",
@@ -199,9 +192,6 @@
         "add": "An error has occured during creation, please try again later",
         "edit": "An error has occured during editation, please try again later",
         "delete": "An error has occured during removal, please try again later"
-      },
-      "validation": {
-        "invalidEmail": "The e-mail is not valid"
       }
     }
   },

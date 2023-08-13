@@ -1,0 +1,29 @@
+{
+    "duplicateRegistration": "{person} je na tento turnaj již zaregistrován/a",
+    "missedDeadline": "Na tento turnaj již není možné se registrovat",
+    "eventNotFound": "Turnaj nebyl nalezen",
+    "clientNotFound": "Při generování faktury nastal problém, opakujte prosím akci později",
+    "fakturoidFull": "Při generování faktury nastal problém, opakujte prosím akci později",
+    "invalidEmail": "E-mail nemá správný formát",
+    "invalidCredentials": "Zadané údaje nejsou správné",
+    "serverError": "Vyskytla se chyba. Zkuste to znovu nebo kontaktujte administrátora",
+    "username": {
+        "email": "E-mail nemá správný formát",
+        "required": "E-mail musí být vyplněn",
+        "unique": "Zadaný e-mail již používá jiný účet"
+    },
+    "password": {
+        "min-string": "Heslo musí obsahovat alespoň 8 znaků",
+        "confirmed": "Zadaná hesla se neshodují",
+        "regex": "Heslo musí obsahovat velká a malá písmena a čísla",
+        "required": "Heslo musí být vyplněno"
+    },
+    "message": {
+        "invalidCredentials": "Zadané heslo není správné",
+        "userNotFound": "Cizímu účtu heslo měnit nelze"
+    },
+    "email": "Zadaný e-mail nebyl nalezen",
+    "tokenNotFound": "Odkaz pro obnovení není platný, odešlete novou žádost",
+    "userNotFound": "Zadaný e-mail nebyl nalezen",
+    "teamNameTooLong": "Název týmu je příliš dlouhý"
+}

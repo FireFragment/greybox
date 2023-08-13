@@ -101,8 +101,8 @@ export default {
       }
 
       // These translations don't work inside auth promises for some odd reason
-      const invalidCredentials = this.$tr('login.validation.invalidCredentials');
-      const serverError = this.$tr('login.validation.serverError');
+      const invalidCredentials = this.$tr('validation.invalidCredentials', null, false);
+      const serverError = this.$tr('validation.serverError', null, false);
       const signupSuccess = this.$tr('signUp.success');
       const loginSuccess = this.$tr('login.success');
 

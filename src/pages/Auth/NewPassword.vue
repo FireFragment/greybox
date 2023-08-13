@@ -108,7 +108,7 @@ export default {
             // Just one error
             if (response.message) {
               this.$flash(
-                this.$tr(`passwordReset.validation.${response.message}`),
+                this.$tr(`validation.${response.message}`, null, false),
                 'error',
                 false,
                 9000,
@@ -122,10 +122,12 @@ export default {
                 data.response.data[index].forEach((message) => {
                   this.$flash(
                     this.$tr(
-                      `signUp.validation.${
+                      `validation.${
                         index
                       }.${
-                        message.substr(11).replace('.', '-')}`,
+                        message.substr(11).replace('.', '-')}`, 
+                      null, 
+                      false
                     ),
                     'error',
                     false,

@@ -264,7 +264,6 @@ export default {
     submitForm() {
       const validationPromise = new Promise((resolve, reject) => {
         this.acceptError = !this.accept;
-
         if (!this.accept || !this.teamName || !this.teamName.trim().length) reject();
 
         const cards = Object.keys(this.people)
@@ -273,7 +272,6 @@ export default {
         let hasError = false;
 
         if (!cards.length) return reject();
-
         // Validate and submit all people
         cards.forEach(([item]) => {
           const formFields = item.$refs['form-fields'];
@@ -299,7 +297,6 @@ export default {
                 return true;
               }
             }
-
             this.people[id]['error'] = true;
             hasError = true;
 
@@ -307,7 +304,6 @@ export default {
           });
         });
       });
-
       validationPromise
         .then(() => {
           this.$emit('submit', this.people, this.teamName, this.teamId);
