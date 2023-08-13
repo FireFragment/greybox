@@ -1,5 +1,5 @@
 <template>
-  <q-page class="flex flex-center content-center tw-bg-red-500">
+  <q-page class="flex flex-center content-center">
     <div class="row full-width text-center">
       <!-- Template strings cannot be used in [src] attributes -->
       <img class="q-mx-auto" alt="Logo ADK" src="../assets/pride_logo_text.png"
