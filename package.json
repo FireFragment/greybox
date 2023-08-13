@@ -26,10 +26,10 @@
     "build:debug": "GREYBOX_ENV=debug npx quasar build",
     "build:dev": "GREYBOX_ENV=dev npx quasar build",
     "build:pds": "GREYBOX_ENV=pds-prod npx quasar build",
-    "start": "npm run serve",
+    "start": "yarn run serve",
     "lint": "eslint --ext .js,.ts,.vue ./src",
     "lint:fix": "eslint --fix --ext .js,.ts,.vue ./src",
-    "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start",
+    "install:clean": "rm -rf node_modules/ && rm -rf yarn.lock && yarn install && yarn start",
     "prepare": "husky install"
   },
   "dependencies": {

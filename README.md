@@ -29,20 +29,20 @@ Current mode can be detected in code by global boolean constant `this.$isPDS` in
 - New version should be released for every push to `vue-frontend-prod` branch (see bellow)
 
 ## Intial setup
-This project requires [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.com/) to build the code.
+This project requires [Node.js](https://nodejs.org/) and [yarn](https://yarnpkg.com/) to build the code.
 
-Once you have Node.js and npm installed on your computer, run `npm install` to install dependencies.
+Once you have Node.js and yarn installed on your computer, run `yarn` to install dependencies.
 
 ## Building code
 #### Development
-Use variations of `npm run serve` command for different environments:
+Use variations of `yarn run serve` command for different environments:
 - `serve` for **development** environment of **normal** mode
 - `serve:debug` for **debug** environment of **normal** mode
 - `serve:prod` for **production** environment of **normal** mode
 - `serve:pds` for **development** environment of **PDS** mode
 
 #### Production
-Use variations of `npm run build` command for different environments:
+Use variations of `yarn run build` command for different environments:
 - `build` for **production** environment of **normal** mode
 - `build:debug` for **debug** environment of **normal** mode
 - `build:dev` for **development** environment of **normal** mode
@@ -53,7 +53,7 @@ Use variations of `npm run build` command for different environments:
 Greybox uses `@vue/prettier` and `plugin:vue/essential` extensions of ESLint. You can lint your code manually by running
 
 ```
-npm run lint
+yarn run lint
 ```
 It is recommended to set git hook to automatically lint your code before committing. All commited code should be linted!
 
