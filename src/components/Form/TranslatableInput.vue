@@ -17,22 +17,27 @@
       v-else
       min-height="5rem"
       :toolbar="[
-        ['bold', 'italic', 'underline'],
         [{
           label: $q.lang.editor.formatting,
           icon: $q.iconSet.editor.formatting,
           list: 'no-icons',
           options: ['p', 'h2', 'h3']
         }],
+        ['bold', 'italic', 'link'],
+        ['hr', 'quote', 'unordered', 'ordered', 'outdent', 'indent'],
+        ['fullscreen'],
         ['lang'],
       ]"
+      :definitions="{
+        hr: { icon: 'fas fa-minus' }
+      }"
       :modelValue="modelValue[currentLanguage]"
       @update:modelValue="newValue => $emit('update:modelValue', {
         ...modelValue,
         [currentLanguage]: newValue,
       })">
       <template v-slot:lang>
-        <LanguageSelect v-model="currentLanguage" :small="true" />
+        <LanguageSelect v-model="currentLanguage" :small="true"/>
       </template>
     </q-editor>
   </div>
