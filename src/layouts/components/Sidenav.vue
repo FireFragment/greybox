@@ -47,6 +47,17 @@
         <q-item-label header>
           {{ $tr($auth.isAdmin() ? 'admin.title' : 'event.types.organizer') }}
         </q-item-label>
+        <q-item :to="$path('admin.newEvent')" v-if="$auth.isAdmin()">
+          <q-item-section avatar>
+            <q-icon name="fas fa-plus" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>{{
+                $tr('admin.newEvent.link')
+              }}
+            </q-item-label>
+          </q-item-section>
+        </q-item>
         <q-item :to="$path('admin.events')">
           <q-item-section avatar>
             <q-icon name="fas fa-trophy" />

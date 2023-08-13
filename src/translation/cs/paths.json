@@ -30,6 +30,7 @@
     "historicalRegistrations": "historie"
   },
   "admin": {
+    "newEvent": "vytvorit-turnaj",
     "events": "turnaje-registrace",
     "eventViewTypes": {
       "people": "lide",

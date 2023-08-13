@@ -30,6 +30,7 @@
     "historicalRegistrations": "history"
   },
   "admin": {
+    "newEvent": "new-event",
     "events": "tournaments-registrations",
     "eventViewTypes": {
       "people": "people",

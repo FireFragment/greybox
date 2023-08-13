@@ -1,5 +1,8 @@
 {
   "title": "Admin",
+  "newEvent": {
+    "link": "Vytvořit turnaj"
+  },
   "eventRegistrations": {
     "link": "Registrace na turnaje",
     "button": {

@@ -1,5 +1,6 @@
 import { RouteRecordRaw, RouterView } from 'vue-router';
 import {
+  adminMiddleware,
   anyEventOrganizerMiddleware,
   eventOrganizerMiddleware,
   loggedInMiddleware,
@@ -139,6 +140,13 @@ const routes: RouteRecordRaw[] = [
             component: () => import('pages/Admin/EventTeams.vue'),
           }],
         }],
+      },
+      {
+        path: <string>(<Routes>CZroutes.admin).newEvent,
+        alias: <string>(<Routes>ENroutes.admin).newEvent,
+        name: 'admin.newEvent',
+        component: () => import('pages/Admin/NewEvent.vue'),
+        beforeEnter: adminMiddleware,
       },
       // Auth
       {
