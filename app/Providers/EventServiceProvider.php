@@ -20,6 +20,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         \App\Events\EventCreated::class => [
             \App\Listeners\RegisterEventOrganizer::class,
+        ],
+        \App\Events\RegistrationConfirmed::class => [
+            \App\Listeners\SendRegistrationConfirmationEmail::class,
         ]
     ];
 }
