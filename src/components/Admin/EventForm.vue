@@ -100,32 +100,36 @@
         :label="$tr('fields.invoice')"
       />
 
-      <q-checkbox
-        v-for="field in ['novices', 'email_required', 'membership_required', 'finals']"
-        :key="field"
-        v-model="$data[field]"
-        class="col-12 col-sm-6 col-lg-3"
-        :true-value="true"
-        :false-value="false"
-        :label="$tr(`fields.${field}`)"
-      />
+      <div class="col-12 col-sm-6 row q-col-gutter-md">
+        <q-select
+          outlined
+          v-for="field in Object.keys(selectOptions)"
+          :key="field"
+          v-model="$data[field]"
+          :options="selectOptions[field]"
+          :label="$tr(`fields.${field}`)"
+          class="col-12 col-lg-6"
+          emit-value
+          map-options
+          :multiple="field === 'dietary_requirements'"
+        >
+          <template v-slot:prepend>
+            <q-icon :name="selectIcons[field]" />
+          </template>
+        </q-select>
+      </div>
 
-      <q-select
-        outlined
-        v-for="field in Object.keys(selectOptions)"
-        :key="field"
-        v-model="$data[field]"
-        :options="selectOptions[field]"
-        :label="$tr(`fields.${field}`)"
-        class="col-12 col-sm-6 col-lg-3"
-        emit-value
-        map-options
-        :multiple="field === 'dietary_requirements'"
-      >
-        <template v-slot:prepend>
-          <q-icon :name="selectIcons[field]" />
-        </template>
-      </q-select>
+      <div class="col-12 col-sm-6 row q-col-gutter-md">
+        <q-checkbox
+          v-for="field in ['novices', 'email_required', 'membership_required', 'finals']"
+          :key="field"
+          v-model="$data[field]"
+          class="col-12 col-lg-6"
+          :true-value="true"
+          :false-value="false"
+          :label="$tr(`fields.${field}`)"
+        />
+      </div>
 
       <div class="col-12">
         <TranslatableInput
@@ -215,12 +219,6 @@ export default defineComponent({
         }),
       );
       return {
-        accommodation: mealsAndAccommodation,
-        meals: mealsAndAccommodation,
-        dietary_requirements: this.diets.map((diet) => ({
-          value: diet.id,
-          label: <string> this.$tr(diet.name),
-        })),
         competition: [
           {
             value: null,
@@ -231,6 +229,12 @@ export default defineComponent({
             label: competition.name,
           })),
         ],
+        accommodation: mealsAndAccommodation,
+        meals: mealsAndAccommodation,
+        dietary_requirements: this.diets.map((diet) => ({
+          value: diet.id,
+          label: <string> this.$tr(diet.name),
+        })),
       };
     },
   },
