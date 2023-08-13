@@ -63,6 +63,7 @@ import { Role } from 'src/types/role';
 import { defineComponent } from 'vue';
 import { TranslatedString } from 'boot/i18n';
 import EventRegistrationsOverview, { uniqueRoles } from 'src/components/EventRegistrations.vue';
+import { $setTitle } from 'boot/custom';
 
 export default defineComponent({
   name: 'EventRegistrations',
@@ -144,6 +145,7 @@ export default defineComponent({
     // Not cached -> load from API
     await this.$store.dispatch('events/loadFull', this.eventId);
     await this.$store.dispatch('eventsRegistrations/load', [this.eventId, 'admin']);
+    $setTitle(`${<string> this.$tr(this.event.name)} - ${(<string> this.$tr('titles.admin.eventRegistrations', null, false)).toLowerCase()}`);
   },
   data() {
     return {

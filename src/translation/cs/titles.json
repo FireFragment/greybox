@@ -2,15 +2,17 @@
     "about": "O webu",
     "event": "Turnaj",
     "admin": {
-        "events": "Registrace na turnaje"
+        "events": "Registrace na turnaje",
+        "eventRegistrations": "Zaregistrovaní lidé",
+        "eventTeams": "Zaregistrované týmy"
     },
-    "newEvent": "Nový turnaj",
+    "newEvent": "Vytvořit turnaj",
     "login": "Přihlášení",
     "logout": "Odhlášení",
     "signUp": "Registrace",
     "passwordReset": "Obnova hesla",
     "accountSettings": "Nastavení účtu",
     "myDebates": "Moje debaty",
-    "myRegistrations": "Moje registrace",
+    "myRegistrations": "Moje přihlášky",
     "notFound": "Stránka nenalezena"
 }

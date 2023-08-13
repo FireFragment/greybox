@@ -2,15 +2,17 @@
     "about": "About website",
     "event": "Tournament",
     "admin": {
-        "events": "Tournament Registration"
+        "events": "Tournament registration",
+      "eventRegistrations": "Registered people",
+      "eventTeams": "Registered teams"
     },
-    "newEvent": "New Tournament",
+    "newEvent": "Create an event",
     "login": "Login",
     "logout": "Logout",
-    "signUp": "Sign Up",
-    "passwordReset": "Password Reset",
-    "accountSettings": "Account Settings",
-    "myDebates": "My Debates",
-    "myRegistrations": "My Registrations",
+    "signUp": "Sign up",
+    "passwordReset": "Password reset",
+    "accountSettings": "Account settings",
+    "myDebates": "My debates",
+    "myRegistrations": "My registrations",
     "notFound": "Page not found"
 }

@@ -1,22 +1,22 @@
 <template>
-  <div>
-    <q-input
-      v-if="type === 'text'"
-      outlined
-      :modelValue="modelValue[currentLanguage]"
-      @update:modelValue="newValue => $emit('update:modelValue', {
+  <q-input
+    v-if="type === 'text'"
+    v-bind="$attrs"
+    :modelValue="modelValue[currentLanguage]"
+    @update:modelValue="newValue => $emit('update:modelValue', {
         ...modelValue,
         [currentLanguage]: newValue,
       })">
-      <template v-slot:append>
-        <LanguageSelect v-model="currentLanguage"/>
-      </template>
-    </q-input>
+    <template v-slot:append>
+      <LanguageSelect v-model="currentLanguage"/>
+    </template>
+  </q-input>
 
-    <q-editor
-      v-else
-      min-height="5rem"
-      :toolbar="[
+  <q-editor
+    v-else
+    v-bind="$attrs"
+    min-height="5rem"
+    :toolbar="[
         [{
           label: $q.lang.editor.formatting,
           icon: $q.iconSet.editor.formatting,
@@ -28,19 +28,18 @@
         ['fullscreen'],
         ['lang'],
       ]"
-      :definitions="{
+    :definitions="{
         hr: { icon: 'fas fa-minus' }
       }"
-      :modelValue="modelValue[currentLanguage]"
-      @update:modelValue="newValue => $emit('update:modelValue', {
+    :modelValue="modelValue[currentLanguage]"
+    @update:modelValue="newValue => $emit('update:modelValue', {
         ...modelValue,
         [currentLanguage]: newValue,
       })">
-      <template v-slot:lang>
-        <LanguageSelect v-model="currentLanguage" :small="true"/>
-      </template>
-    </q-editor>
-  </div>
+    <template v-slot:lang>
+      <LanguageSelect v-model="currentLanguage" :small="true"/>
+    </template>
+  </q-editor>
 </template>
 
 <script lang="ts">

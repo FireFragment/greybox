@@ -1,7 +1,21 @@
 {
   "title": "Admin",
   "newEvent": {
-    "link": "Create an event"
+    "link": "Create an event",
+    "fields": {
+      "name": "Event name",
+      "note": "Description",
+      "beginning": "Beginning",
+      "end": "End",
+      "soft_deadline": "Soft deadline",
+      "hard_deadline": "Hard deadline",
+      "invoice": "Sentence above invoice items",
+      "place": "Place",
+      "novices": "Allow Novice checkbox",
+      "email_required": "Require participants' emails",
+      "membership_required": "Require ADK membership of participants",
+      "finals": "Finals tournament"
+    }
   },
   "eventRegistrations": {
     "link": "Tournaments registrations",
