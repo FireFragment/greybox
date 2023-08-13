@@ -14,7 +14,11 @@
       "novices": "Možné označit začínající",
       "email_required": "Vyžadovat e-mail zúčastěných",
       "membership_required": "Vyžadovat členství zúčastněných v ADK",
-      "finals": "Finálový turnaj"
+      "finals": "Finálový turnaj",
+      "accommodation": "Ubytování",
+      "meals": "Strava",
+      "competition": "Soutěž",
+      "dietary_requirements": "Typy stravy"
     }
   },
   "eventRegistrations": {

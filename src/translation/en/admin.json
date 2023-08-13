@@ -14,7 +14,11 @@
       "novices": "Allow Novice checkbox",
       "email_required": "Require participants' emails",
       "membership_required": "Require ADK membership of participants",
-      "finals": "Finals tournament"
+      "finals": "Finals tournament",
+      "accommodation": "Accommodation",
+      "meals": "Meals",
+      "competition": "Competition",
+      "dietary_requirements": "Available diets"
     }
   },
   "eventRegistrations": {

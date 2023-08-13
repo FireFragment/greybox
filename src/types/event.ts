@@ -4,7 +4,8 @@ import { Role } from 'src/types/role';
 import { Team } from 'src/types/debate';
 import { Person, User } from 'boot/auth';
 
-type EventOptionalSelect = 'opt-in' | 'opt-out' | 'none' | 'required';
+export const eventOptionalSelectValues = ['none', 'opt-in', 'opt-out', 'required'] as const;
+export type EventOptionalSelect = typeof eventOptionalSelectValues[number];
 
 export interface EventRole {
   // eslint-disable-next-line camelcase
@@ -43,6 +44,7 @@ export interface EventPrice {
 export interface Event {
   accommodation: EventOptionalSelect;
   beginning: Date;
+  competition?: number;
   // eslint-disable-next-line camelcase
   created_at: DateTime;
   current?: boolean;
@@ -124,4 +126,13 @@ export interface EventTeam {
   // eslint-disable-next-line camelcase
   registered_by: User;
   warnings: string[];
+}
+
+export interface Competition {
+  id: number;
+  name: string;
+  // eslint-disable-next-line camelcase
+  created_at: DateTime;
+  // eslint-disable-next-line camelcase
+  updated_at: DateTime;
 }

@@ -110,6 +110,21 @@
         :label="$tr(`fields.${field}`)"
       />
 
+      <q-select
+        outlined
+        v-for="field in ['accommodation', 'competition', 'meals', 'dietary_requirements']"
+        :key="field"
+        v-model="$data[field]"
+        :options="selectOptions[field]"
+        option-value="label"
+        :label="$tr(`fields.${field}`)"
+        class="col-12 col-sm-6 col-lg-3"
+      >
+        <template v-slot:prepend>
+          <q-icon name="fas fa-utensils" />
+        </template>
+      </q-select>
+
       <div class="col-12">
         <TranslatableInput
           v-model="note"
@@ -124,6 +139,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import TranslatableInput from 'components/Form/TranslatableInput.vue';
+import { Competition, DietaryRequirement } from 'src/types/event';
 
 export default defineComponent({
   name: 'EventForm',
@@ -152,7 +168,17 @@ export default defineComponent({
       email_required: false,
       membership_required: false,
       finals: false,
+      accommodation: 'none',
+      meals: 'none',
+      competition: 42,
+      dietary_requirements: [1, 2],
     };
+  },
+  async created() {
+    await Promise.all([
+      this.$store.dispatch('diets/load'),
+      this.$store.dispatch('competitions/load'),
+    ]);
   },
   computed: {
     nowTime(): string {
@@ -160,6 +186,25 @@ export default defineComponent({
     },
     nowDate(): string {
       return this.nowTime.substring(0, 'YYYY-MM-DD'.length);
+    },
+    diets(): DietaryRequirement[] {
+      // eslint-disable-next-line max-len
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-explicit-any
+      return <DietaryRequirement[]> (<any> this.$store.state).diets.diets;
+    },
+    competitions(): Competition[] {
+      // eslint-disable-next-line max-len
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-explicit-any
+      return <Competition[]> (<any> this.$store.state).competitions.competitions;
+    },
+    selectOptions() {
+      // TODO
+      return {
+        accommodation: [],
+        competition: [], // TODO - add null option for no competition
+        meals: [],
+        dietary_requirements: [],
+      };
     },
   },
 });
