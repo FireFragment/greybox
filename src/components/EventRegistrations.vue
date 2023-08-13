@@ -287,14 +287,18 @@ export default defineComponent({
   },
   async created() {
     // Not cached -> load from API
-    await this.$store.dispatch('events/loadFull', this.event.id); // for roles
-    await this.$store.dispatch('roles/load');
-    await this.$store.dispatch('eventsRegistrations/load', [this.event.id, this.type]);
-
-    if (this.type === 'admin') {
-      await this.$store.dispatch('eventsTeams/loadSimple', this.event.id);
-      await this.$store.dispatch('diets/load');
-    }
+    await Promise.all(
+      [
+        this.$store.dispatch('events/loadFull', this.event.id), // for roles
+        this.$store.dispatch('roles/load'),
+        this.$store.dispatch('eventsRegistrations/load', [this.event.id, this.type]),
+      ].concat(
+        (this.type === 'admin' ? [
+          this.$store.dispatch('eventsTeams/loadSimple', this.event.id),
+          this.$store.dispatch('diets/load'),
+        ] : []),
+      ),
+    );
   },
   data() {
     const outputBoolean = (val: boolean) => (val ? '✅' : '❌');
