@@ -4,7 +4,13 @@
     "link": "Create an event",
     "fields": {
       "name": "Event name",
-      "note": "Description"
+      "note": "Description",
+      "beginning": "Beginning",
+      "end": "End",
+      "soft_deadline": "Soft deadline",
+      "hard_deadline": "Hard deadline",
+      "invoice": "Sentence above invoice items",
+      "place": "Place"
     }
   },
   "eventRegistrations": {
