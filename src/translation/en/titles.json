@@ -1,0 +1,16 @@
+{
+    "about": "About website",
+    "event": "Tournament",
+    "admin": {
+        "events": "Tournament Registration"
+    },
+    "newEvent": "New Tournament",
+    "login": "Login",
+    "logout": "Logout",
+    "signUp": "Sign Up",
+    "passwordReset": "Password Reset",
+    "accountSettings": "Account Settings",
+    "myDebates": "My Debates",
+    "myRegistrations": "My Registrations",
+    "notFound": "Page not found"
+}

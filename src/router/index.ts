@@ -6,8 +6,9 @@ import {
   RouteLocationNormalized,
   RouteRecordNormalized,
 } from 'vue-router';
-import { i18n } from 'boot/i18n';
+import { i18n, TranslatedString } from 'boot/i18n';
 import { Lang } from 'src/translation/config';
+import { $setTitle } from 'src/boot/custom';
 import routes from './routes';
 
 export const primaryRouteLang: Lang = 'cs';
@@ -38,6 +39,13 @@ export const Router = createRouter({
 export default route(() => {
   Router.afterEach((to) => {
     setLocaleToRoute(to);
+    try {
+      const lang = i18n.global.locale;
+      const title: TranslatedString = <TranslatedString> to.meta.title;
+      $setTitle(title[lang]);
+    } catch (_) {
+      $setTitle();
+    }
   });
 
   return Router;

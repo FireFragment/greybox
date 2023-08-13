@@ -100,6 +100,7 @@ import { defineComponent } from 'vue';
 import { Event } from 'src/types/event';
 import { date } from 'quasar';
 import { TranslationPrefixData } from 'boot/i18n';
+import { $setTitle } from 'src/boot/custom';
 
 export default defineComponent({
   name: 'Detail',
@@ -116,7 +117,9 @@ export default defineComponent({
       translationPrefix: 'event.',
     };
   },
-
+  created() {
+    $setTitle(<string> this.$tr(this.event.name));
+  },
   computed: {
     event(): Event {
       // eslint-disable-next-line max-len

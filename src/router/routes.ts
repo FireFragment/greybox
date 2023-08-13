@@ -14,9 +14,13 @@ interface Routes {
 // Translations
 import CZroutesJson from '../translation/cs/paths.json';
 import ENroutesJson from '../translation/en/paths.json';
+import CZtitlesJson from '../translation/cs/titles.json';
+import ENtitlesJson from '../translation/en/titles.json';
 
 const CZroutes: Routes = <Routes>CZroutesJson;
 const ENroutes: Routes = <Routes>ENroutesJson;
+const CZtitles: Routes = <Routes>CZtitlesJson;
+const ENtitles: Routes = <Routes>ENtitlesJson;
 
 const eventTypes = (routes: Routes) => Object.values((<Routes>routes.eventParams).type).join('|');
 
@@ -36,6 +40,12 @@ const routes: RouteRecordRaw[] = [
         alias: <string>ENroutes.about,
         name: 'about',
         component: () => import('pages/About.vue'),
+        meta: {
+          title: {
+            cs: <string>CZtitles.about,
+            en: <string>ENtitles.about,
+          },
+        },
       },
       {
         path: `${<string>CZroutes.event}/:id`,
@@ -56,6 +66,10 @@ const routes: RouteRecordRaw[] = [
           name: 'event-pick-type',
           meta: {
             translationName: 'event',
+            title: {
+              cs: <string>CZtitles.event,
+              en: <string>ENtitles.event,
+            },
           },
           component: () => import('pages/Event/PickType.vue'),
         }, {
@@ -68,6 +82,10 @@ const routes: RouteRecordRaw[] = [
             name: 'event-pick-role',
             meta: {
               translationName: 'event',
+              title: {
+                cs: <string>CZtitles.event,
+                en: <string>ENtitles.event,
+              },
             },
             component: () => import('pages/Event/PickRole.vue'),
           }, {
@@ -76,6 +94,10 @@ const routes: RouteRecordRaw[] = [
             name: 'event-register-form',
             meta: {
               translationName: 'event',
+              title: {
+                cs: <string>CZtitles.event,
+                en: <string>ENtitles.event,
+              },
             },
             component: () => import('pages/Event/RegisterForm.vue'),
           }, {
@@ -84,6 +106,10 @@ const routes: RouteRecordRaw[] = [
             name: 'event-checkout',
             meta: {
               translationName: 'event',
+              title: {
+                cs: <string>CZtitles.event,
+                en: <string>ENtitles.event,
+              },
             },
             component: () => import('pages/Event/Checkout.vue'),
           }, {
@@ -92,6 +118,10 @@ const routes: RouteRecordRaw[] = [
             name: 'event-confirmation',
             meta: {
               translationName: 'event',
+              title: {
+                cs: <string>CZtitles.event,
+                en: <string>ENtitles.event,
+              },
             },
             component: () => import('pages/Event/Confirmation.vue'),
           }],
@@ -103,6 +133,12 @@ const routes: RouteRecordRaw[] = [
         path: <string>(<Routes>CZroutes.admin).events,
         alias: <string>(<Routes>ENroutes.admin).events,
         component: RouterView,
+        meta: {
+          title: {
+            cs: <string>(<Routes>CZtitles.admin).events,
+            en: <string>(<Routes>ENtitles.admin).events,
+          },
+        },
         children: [{
           path: '',
           alias: '',
@@ -147,6 +183,12 @@ const routes: RouteRecordRaw[] = [
         name: 'admin.newEvent',
         component: () => import('pages/Admin/NewEvent.vue'),
         beforeEnter: adminMiddleware,
+        meta: {
+          title: {
+            cs: <string>CZtitles.newEvent,
+            en: <string>ENtitles.newEvent,
+          },
+        },
       },
       // Auth
       {
@@ -155,6 +197,12 @@ const routes: RouteRecordRaw[] = [
         name: 'auth.login',
         component: () => import('pages/Auth/Login.vue'),
         beforeEnter: notLoggedInMiddleware,
+        meta: {
+          title: {
+            cs: <string>CZtitles.login,
+            en: <string>ENtitles.login,
+          },
+        },
       },
       {
         path: <string>(<Routes>CZroutes.auth).signUp,
@@ -162,6 +210,12 @@ const routes: RouteRecordRaw[] = [
         name: 'auth.signUp',
         component: () => import('pages/Auth/SignUp.vue'),
         beforeEnter: notLoggedInMiddleware,
+        meta: {
+          title: {
+            cs: <string>CZtitles.signUp,
+            en: <string>ENtitles.signUp,
+          },
+        },
       },
       {
         path: <string>(<Routes>CZroutes.auth).logout,
@@ -169,6 +223,12 @@ const routes: RouteRecordRaw[] = [
         name: 'auth.logout',
         component: () => import('pages/Auth/Logout.vue'),
         beforeEnter: loggedInMiddleware,
+        meta: {
+          title: {
+            cs: <string>CZtitles.logout,
+            en: <string>ENtitles.logout,
+          },
+        },
       },
       {
         path: <string>(<Routes>CZroutes.auth).passwordReset,
@@ -176,6 +236,12 @@ const routes: RouteRecordRaw[] = [
         name: 'auth.passwordReset',
         component: () => import('pages/Auth/PasswordReset.vue'),
         beforeEnter: notLoggedInMiddleware,
+        meta: {
+          title: {
+            cs: <string>CZtitles.passwordReset,
+            en: <string>ENtitles.passwordReset,
+          },
+        },
       },
       {
         path: `${<string>(<Routes>CZroutes.auth).passwordReset}/:token`,
@@ -183,6 +249,12 @@ const routes: RouteRecordRaw[] = [
         name: 'auth.newPassword',
         component: () => import('pages/Auth/NewPassword.vue'),
         beforeEnter: notLoggedInMiddleware,
+        meta: {
+          title: {
+            cs: <string>CZtitles.passwordReset,
+            en: <string>ENtitles.passwordReset,
+          },
+        },
       },
       {
         path: <string>(<Routes>CZroutes.auth).accountSettings,
@@ -190,6 +262,12 @@ const routes: RouteRecordRaw[] = [
         name: 'auth.accountSettings',
         component: () => import('pages/Auth/AccountSettings.vue'),
         beforeEnter: loggedInMiddleware,
+        meta: {
+          title: {
+            cs: <string>CZtitles.accountSettings,
+            en: <string>ENtitles.accountSettings,
+          },
+        },
       },
       // User
       {
@@ -198,11 +276,23 @@ const routes: RouteRecordRaw[] = [
         name: 'myDebates',
         component: () => import('src/pages/User/MyDebates.vue'),
         beforeEnter: loggedInMiddleware,
+        meta: {
+          title: {
+            cs: <string>CZtitles.myDebates,
+            en: <string>ENtitles.myDebates,
+          },
+        },
       },
       {
         path: <string>(<Routes>CZroutes.user).myRegistrations,
         alias: <string>(<Routes>ENroutes.user).myRegistrations,
         beforeEnter: loggedInMiddleware,
+        meta: {
+          title: {
+            cs: <string>CZtitles.myRegistrations,
+            en: <string>ENtitles.myRegistrations,
+          },
+        },
         children: [{
           path: '',
           alias: '',
@@ -243,6 +333,12 @@ const routes: RouteRecordRaw[] = [
       path: '',
       component: () => import('pages/404.vue'),
     }],
+    meta: {
+      title: {
+        cs: <string>CZtitles.notFound,
+        en: <string>ENtitles.notFound,
+      },
+    },
   },
 ];
 

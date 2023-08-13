@@ -145,6 +145,14 @@ export const $makeIdObject = (array: any) => {
   return result;
 };
 
+export const $setTitle = (title?: string | undefined) => {
+  if (title) {
+    document.title = title + ' | Greybox 2.0';
+  } else {
+    document.title = 'Greybox 2.0';
+  }
+}
+
 export default boot(({ app }) => {
   app.use(store);
 

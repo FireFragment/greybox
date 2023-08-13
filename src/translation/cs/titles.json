@@ -1,0 +1,16 @@
+{
+    "about": "O webu",
+    "event": "Turnaj",
+    "admin": {
+        "events": "Registrace na turnaje"
+    },
+    "newEvent": "Nový turnaj",
+    "login": "Přihlášení",
+    "logout": "Odhlášení",
+    "signUp": "Registrace",
+    "passwordReset": "Obnova hesla",
+    "accountSettings": "Nastavení účtu",
+    "myDebates": "Moje debaty",
+    "myRegistrations": "Moje registrace",
+    "notFound": "Stránka nenalezena"
+}
