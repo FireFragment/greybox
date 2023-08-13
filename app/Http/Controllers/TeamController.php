@@ -45,7 +45,7 @@ class TeamController extends Controller
     public function create(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required'
+            'name' => 'required|max:31'
         ]);
 
         $request->merge(['registered_by' => \Auth::user()->id]);
