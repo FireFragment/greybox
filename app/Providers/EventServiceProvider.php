@@ -17,6 +17,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         \App\Events\TeamsRegisteredEvent::class => [
             \App\Listeners\SendTeamRulesBreachWarning::class,
+        ],
+        \App\Events\EventCreated::class => [
+            \App\Listeners\RegisterEventOrganizer::class,
         ]
     ];
 }

@@ -4,9 +4,11 @@
 namespace App\Http\Controllers;
 
 use App\Event,
-    App\Translation;
-use App\Services\TeamRulesCheckingService;
-use Illuminate\Http\Request;
+    App\Translation,
+    App\Events\EventCreated,
+    App\Services\TeamRulesCheckingService;
+use Illuminate\Http\Request,
+    Illuminate\Support\Facades\Event as EventFacade;
 
 class EventController extends Controller
 {
@@ -105,7 +107,7 @@ class EventController extends Controller
                     'en' => $request->input('note_en')
                 ]);
             }
-            // TODO: doplnit accommodation, meals, novices, membership required a email required
+
             $event = Event::create([
                'competition' => $request->input('competition'),
                'finals' => $request->input('finals', 0),
@@ -123,8 +125,9 @@ class EventController extends Controller
                'invoice_text' => $invoiceTextTranslation->id,
                'note' => $noteTranslation->id
             ]);
-
             $event->dietaryRequirements()->attach($request->input('dietary_requirements'));
+
+            EventFacade::dispatch(new EventCreated($event));
 
             $event->name = $nameTranslation;
             $event->invoice_text = $invoiceTextTranslation;
