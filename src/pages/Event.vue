@@ -52,6 +52,7 @@ import { mapGetters, mapState } from 'vuex';
 import { defineComponent } from 'vue';
 import type { RouteRecordName } from 'vue-router';
 import HeaderCard from 'components/Event/HeaderCard.vue';
+import { $setTitle } from 'boot/custom';
 
 export default defineComponent({
   name: 'Event',
@@ -69,6 +70,7 @@ export default defineComponent({
 
   async created() {
     await this.loadEvent();
+    $setTitle(<string> this.$tr(this.event.name));
   },
 
   methods: {

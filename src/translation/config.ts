@@ -1,7 +1,7 @@
 import { user } from 'src/boot/auth';
 
 const files: string[] = [
-  'general', 'auth', 'paths', 'event', 'admin', 'myDebates', 'user',
+  'general', 'auth', 'paths', 'event', 'admin', 'myDebates', 'user', 'titles',
 ];
 
 // Nested object

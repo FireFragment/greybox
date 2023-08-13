@@ -100,7 +100,6 @@ import { defineComponent } from 'vue';
 import { Event } from 'src/types/event';
 import { date } from 'quasar';
 import { TranslationPrefixData } from 'boot/i18n';
-import { $setTitle } from 'src/boot/custom';
 
 export default defineComponent({
   name: 'Detail',
@@ -116,9 +115,6 @@ export default defineComponent({
     return {
       translationPrefix: 'event.',
     };
-  },
-  created() {
-    $setTitle(<string> this.$tr(this.event.name));
   },
   computed: {
     event(): Event {
