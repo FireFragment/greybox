@@ -100,6 +100,16 @@
         :label="$tr('fields.invoice')"
       />
 
+      <q-checkbox
+        v-for="field in ['novices', 'email_required', 'membership_required', 'finals']"
+        :key="field"
+        v-model="$data[field]"
+        class="col-12 col-sm-6 col-lg-3"
+        :true-value="true"
+        :false-value="false"
+        :label="$tr(`fields.${field}`)"
+      />
+
       <div class="col-12">
         <TranslatableInput
           v-model="note"
@@ -138,6 +148,10 @@ export default defineComponent({
         cs: 'Fakturujeme vám...',
         en: 'Invoice for...',
       },
+      novices: false,
+      email_required: false,
+      membership_required: false,
+      finals: false,
     };
   },
   computed: {
