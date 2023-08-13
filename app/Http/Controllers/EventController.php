@@ -124,6 +124,8 @@ class EventController extends Controller
                'note' => $noteTranslation->id
             ]);
 
+            $event->dietaryRequirements()->attach($request->input('dietary_requirements'));
+
             $event->name = $nameTranslation;
             $event->invoice_text = $invoiceTextTranslation;
             $event->note = $noteTranslation;
@@ -172,6 +174,9 @@ class EventController extends Controller
                 ]);
                 $this->updateColumn($event, 'note', $noteTranslation->id);
             }
+            if ($request->has('dietary_requirements')) {
+                $event->dietaryRequirements()->sync($request->input('dietary_requirements'));
+            }
 
             $event->name = $event->nameTranslation()->first();
             $event->invoice_text = $event->invoiceTextTranslation()->first();
@@ -188,6 +193,7 @@ class EventController extends Controller
 
         try {
             $event = Event::findOrFail($id);
+            $event->dietaryRequirements()->detach();
             $event->delete();
             $nameTranslation = $event->nameTranslation()->first();
             if (null != $nameTranslation) $nameTranslation->delete();
