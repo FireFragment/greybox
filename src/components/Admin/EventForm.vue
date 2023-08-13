@@ -1,9 +1,26 @@
 <template>
   <q-form>
     <div class="row q-col-gutter-md q-pb-sm">
-      <TranslatableInput class="col-12" v-model="name" />
+      <TranslatableInput
+        class="col-12"
+        v-model="name"
+        outlined
+        :label="$tr('fields.name') + ' *'"
+        lazy-rules
+        :rules="[
+          val =>
+            (val && val.length > 0) ||
+            $tr('general.form.fieldError', null, false)
+        ]"
+      />
 
-      <TranslatableInput class="col-12" v-model="note" type="wysiwyg" />
+      <div class="col-12">
+        <TranslatableInput
+          v-model="note"
+          type="wysiwyg"
+          :placeholder="$tr('fields.note') + ' *'"
+        />
+      </div>
     </div>
   </q-form>
 </template>
@@ -17,6 +34,7 @@ export default defineComponent({
   components: { TranslatableInput },
   data() {
     return {
+      translationPrefix: 'admin.newEvent.',
       name: {
         cs: 'Událost 1',
         en: 'Event 1',

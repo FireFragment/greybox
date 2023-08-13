@@ -1,7 +1,11 @@
 {
   "title": "Admin",
   "newEvent": {
-    "link": "Create an event"
+    "link": "Create an event",
+    "fields": {
+      "name": "Event name",
+      "note": "Description"
+    }
   },
   "eventRegistrations": {
     "link": "Tournaments registrations",

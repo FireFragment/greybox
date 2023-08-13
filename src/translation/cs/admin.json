@@ -1,7 +1,11 @@
 {
   "title": "Admin",
   "newEvent": {
-    "link": "Vytvořit turnaj"
+    "link": "Vytvořit turnaj",
+    "fields": {
+      "name": "Název turnaje",
+      "note": "Propozice"
+    }
   },
   "eventRegistrations": {
     "link": "Registrace na turnaje",
