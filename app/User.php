@@ -91,7 +91,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         $this->tokens()->create([
             'api_token' => $apiToken,
             'user' => $this->id,
-            'valid_until' => new \DateTime('+ 24 hours')
+            'valid_until' => new \DateTime('+ 31 days')
         ]);
         return $apiToken;
     }
