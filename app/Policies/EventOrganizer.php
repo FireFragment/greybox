@@ -15,7 +15,7 @@ trait EventOrganizer {
      */
     public function isEventOrganizer(User $user, Event $event): bool
     {
-        $organizers = $event->registrations()->where('role', getenv('ORGANIZER_ROLE_ID'))->get();
+        $organizers = $event->registrations()->where('role', env('ORGANIZER_ROLE_ID'))->get();
         $userPerson = $user->person()->first();
         foreach ($organizers as $organizer) {
             $organizerPerson = $organizer->person()->first();

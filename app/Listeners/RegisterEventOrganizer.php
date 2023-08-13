@@ -23,7 +23,7 @@ class RegisterEventOrganizer
         $registration = Registration::create([
             'person' => $user->person()->first()->id,
             'event' => $organizedEvent->id,
-            'role' => getenv('ORGANIZER_ROLE_ID'),
+            'role' => env('ORGANIZER_ROLE_ID'),
             'confirmed' => true,
             'registered_by' => $user->id
         ]);

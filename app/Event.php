@@ -113,7 +113,7 @@ class Event extends Model implements AuthenticatableContract, AuthorizableContra
      */
     public function organizers(): array
     {
-        $registrations = $this->registrations()->where('role', getenv('ORGANIZER_ROLE_ID'))->get();
+        $registrations = $this->registrations()->where('role', env('ORGANIZER_ROLE_ID'))->get();
         $organizers = [];
         foreach ($registrations as $registration) {
             $organizers[] = $registration->person()->first();
