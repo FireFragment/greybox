@@ -31,7 +31,7 @@ class Person extends Model implements AuthenticatableContract, AuthorizableContr
 
     public function user()
     {
-        return $this->hasOne('App\User');
+        return $this->hasOne('App\User', 'person', 'id');
     }
 
     public function membership()

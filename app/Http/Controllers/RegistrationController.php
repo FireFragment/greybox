@@ -7,6 +7,7 @@ use App\Events\TeamsRegisteredEvent;
 use App\Invoice;
 use App\Mail\RegistrationConfirmation;
 use App\Registration;
+use App\Repositories\RegistrationRepository;
 use Fakturoid\Exception as FakturoidException;
 use http\Env\Response;
 use Illuminate\Http\Request;
@@ -14,6 +15,8 @@ use Illuminate\Support\Facades\Mail;
 
 class RegistrationController extends FakturoidController
 {
+    private $repository;
+
     public function __construct()
     {
         // TBD
@@ -25,6 +28,8 @@ class RegistrationController extends FakturoidController
             'delete',
             'confirm'
         ]]);
+
+        $this->repository = new RegistrationRepository();
     }
 
     public function showAll()
@@ -189,9 +194,10 @@ class RegistrationController extends FakturoidController
                 $invoice = null;
             }
 
+            $bccRecipients = $this->repository->getConfirmationEmailBccRecipients($event);
             // TODO: vyřešit jak nastavit locale pouze pro email / případně jak používat locale vůbec
             app('translator')->setLocale($language);
-            Mail::to($user->username)->bcc('info@debatovani.cz')->send(new RegistrationConfirmation($language, $event, $people, $invoice));
+            Mail::to($user->username)->bcc($bccRecipients)->send(new RegistrationConfirmation($language, $event, $people, $invoice));
 
             $invoiceId = null;
             if (null !== $invoice) {

@@ -106,4 +106,18 @@ class Event extends Model implements AuthenticatableContract, AuthorizableContra
         $this->name = $this->nameTranslation()->first();
         return $this;
     }
+
+    /**
+     * Returns all organizers of the given event.
+     * @return Person[]
+     */
+    public function organizers(): array
+    {
+        $registrations = $this->registrations()->where('role', getenv('ORGANIZER_ROLE_ID'))->get();
+        $organizers = [];
+        foreach ($registrations as $registration) {
+            $organizers[] = $registration->person()->first();
+        }
+        return $organizers;
+    }
 }
