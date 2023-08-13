@@ -1,12 +1,16 @@
 module.exports = {
-  purge: [],
-  darkMode: false, // or 'media' or 'class'
+  content: ['./src/**/*.{js,jsx,ts,tsx,vue,html}'],
   theme: {
     extend: {},
   },
 
   prefix: 'tw-',
 
-  variants: {},
   plugins: [],
+  darkMode: 'class',
+  corePlugins: {
+    preflight: false,
+  },
+
+  mode: 'jit',
 };

@@ -57,7 +57,8 @@
     "eslint-plugin-vue": "^7.20.0",
     "husky": "^7.0.4",
     "lint-staged": "^11.2.6",
-    "quasar-app-extension-tailwindcss": "^2.0.6"
+    "postcss": "^8.4.19",
+    "quasar-app-extension-tailwindcss-3": "^3.1.1"
   },
   "browserslist": [
     "last 10 Chrome versions",
