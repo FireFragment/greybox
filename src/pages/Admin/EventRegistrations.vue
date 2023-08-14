@@ -25,6 +25,12 @@
                 </q-item-label>
               </q-item-section>
             </q-item>
+            <q-item v-if="uniqueTeams > 0">
+              <q-item-section>
+                <q-item-label caption>{{ $tr("viewTypes.teams") }}</q-item-label>
+                <q-item-label>{{ uniqueTeams }}</q-item-label>
+              </q-item-section>
+            </q-item>
           </q-list>
         </q-card-section>
       </q-card>
@@ -125,6 +131,17 @@ export default defineComponent({
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       return (<Role[]>uniqueRoles(this.registrations))
         .sort((a, b) => this.roleRegistrationsCount(b) - this.roleRegistrationsCount(a));
+    },
+    uniqueTeams(): number {
+      if (!this.registrations) {
+        return 0;
+      }
+
+      return this.registrations
+        .filter((item) => item.team)
+        .map((item) => item.team.id)
+        .filter((value, index, self) => self.indexOf(value) === index)
+        .length;
     },
     eventId(): number {
       const idParam: string | string[] = this.$route.params.id;
