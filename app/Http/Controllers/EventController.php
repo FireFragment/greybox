@@ -124,7 +124,8 @@ class EventController extends Controller
                 'soft_deadline' => $request->input('soft_deadline'),
                 'hard_deadline' => $request->input('hard_deadline'),
                 'invoice_text' => $invoiceTextTranslation->id,
-                'note' => $noteTranslation->id
+                'note' => $noteTranslation->id,
+                'reply_email' => $request->input('reply_email')
             ]);
             $event->dietaryRequirements()->attach($request->input('dietary_requirements'));
 
@@ -179,6 +180,7 @@ class EventController extends Controller
                 ]);
                 $this->updateColumn($event, 'note', $noteTranslation->id);
             }
+            if ($request->has('reply_email')) $this->updateColumn($event, 'reply_email', $request->input('reply_email'));
             if ($request->has('dietary_requirements')) {
                 $event->dietaryRequirements()->sync($request->input('dietary_requirements'));
             }

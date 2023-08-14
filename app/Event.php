@@ -33,7 +33,8 @@ class Event extends Model implements AuthenticatableContract, AuthorizableContra
         'soft_deadline',
         'hard_deadline',
         'invoice_text',
-        'note'
+        'note',
+        'reply_email'
     ];
 
     /**

@@ -25,6 +25,14 @@ class RegistrationConfirmation extends Mailable
      * @var string
      */
     private $mailFromName;
+    /**
+     * @var string
+     */
+    private $replyToAddress;
+    /**
+     * @var string
+     */
+    private $replyToName;
 
     /**
      * Create a new message instance.
@@ -38,11 +46,14 @@ class RegistrationConfirmation extends Mailable
         $this->people = $people;
         $this->invoice = $invoice;
 
-        $this->mailFromAddress = env('MAIL_FROM_ADDRESS');
-        $this->mailFromName = env('MAIL_FROM_NAME');
+        $this->mailFromAddress = $this->replyToAddress = env('MAIL_FROM_ADDRESS');
+        $this->mailFromName = $this->replyToName = env('MAIL_FROM_NAME');
         if ($event->isPds()) {
-            $this->mailFromAddress = env('PDS_MAIL_FROM_ADDRESS');
-            $this->mailFromName = env('PDS_MAIL_FROM_NAME');
+            $this->mailFromAddress = $this->replyToAddress = env('PDS_MAIL_FROM_ADDRESS');
+            $this->mailFromName = $this->replyToName = env('PDS_MAIL_FROM_NAME');
+        }
+        if (null !== $event->reply_email) {
+            $this->replyToAddress = $event->reply_email;
         }
     }
 
@@ -72,6 +83,7 @@ class RegistrationConfirmation extends Mailable
 
         return $this
             ->from($this->mailFromAddress, $this->mailFromName)
+            ->replyTo($this->replyToAddress, $this->replyToName)
             ->subject($subject)
             ->view('email.registrationconfirmation')
             ->with([
