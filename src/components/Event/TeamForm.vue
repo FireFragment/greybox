@@ -15,10 +15,7 @@
       @input-value="teamName = $event"
       lazy-rules
       :loading="loadingTeamFill"
-      :rules="[
-        val =>
-          (val && val.length > 0) || $tr('general.form.fieldError', null, false)
-      ]"
+      :rules="[$validators.nonEmpty]"
     >
       <template v-slot:option="scope">
         <q-item v-bind="scope.itemProps" v-on="scope.itemProps">
@@ -313,7 +310,7 @@ export default {
           this.$emit('submit', this.people, this.teamName, this.teamId);
         })
         .catch(() => {
-          this.$flash(this.$tr('general.form.error', null, false), 'error');
+          this.$flash(this.$tr('general.form.errors.form', null, false), 'error');
         });
     },
     deleteTeam(id) {

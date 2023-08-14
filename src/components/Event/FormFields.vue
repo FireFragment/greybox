@@ -7,11 +7,7 @@
         :label="$tr('fields.name') + ' *'"
         class="col-12 col-sm-6"
         lazy-rules
-        :rules="[
-          val =>
-            (val && val.length > 0) ||
-            $tr('general.form.fieldError', null, false)
-        ]"
+        :rules="[$validators.nonEmpty]"
       />
 
       <q-input
@@ -20,11 +16,7 @@
         :label="$tr('fields.surname') + ' *'"
         class="col-12 col-sm-6"
         lazy-rules
-        :rules="[
-          val =>
-            (val && val.length > 0) ||
-            $tr('general.form.fieldError', null, false)
-        ]"
+        :rules="[$validators.nonEmpty]"
       />
     </div>
 
@@ -36,11 +28,7 @@
       outlined
       :label="$tr('auth.fields.email', null, false) + ' *'"
       lazy-rules
-      :rules="[
-          val => (
-              val !== null && val !== '') ||
-              $tr(`general.form.fieldError`, null, false),
-          val => $validators.validateEmail(val) || $tr('auth.errors.emailFormat', null, false)]"
+      :rules="[$validators.nonEmpty, $validators.email]"
     >
       <template v-slot:prepend>
         <q-icon name="fas fa-at" />
@@ -57,7 +45,7 @@
       lazy-rules
       use-input
       input-debounce="0"
-      :rules="[val => val || $tr('general.form.fieldError', null, false)]"
+      :rules="[val => val || $tr('general.form.errors.nonEmpty', null, false)]"
     >
       <template v-slot:prepend>
         <q-icon name="fas fa-graduation-cap" />
@@ -116,7 +104,7 @@
           :rules="[val =>
             values.accommodation === false ||
             val ||
-            $tr('general.form.fieldError', null, false)
+            $tr('general.form.errors.nonEmpty', null, false)
           ]"
         >
           <template v-slot:prepend>
@@ -141,7 +129,7 @@
           :rules="[val =>
             values.accommodation === false ||
             val ||
-            $tr('general.form.fieldError', null, false)
+            $tr('general.form.errors.nonEmpty', null, false)
           ]"
         >
           <template v-slot:prepend>
@@ -164,7 +152,7 @@
           :rules="[val =>
             values.accommodation === false ||
             val ||
-            $tr('general.form.fieldError', null, false)
+            $tr('general.form.errors.nonEmpty', null, false)
           ]"
         >
           <template v-slot:prepend>
@@ -189,7 +177,7 @@
             val === '#########' ||
             !val ||
             val.toString().match(/\d{9}/) ||
-            $tr('general.form.fieldError', null, false)
+            $tr('general.form.errors.nonEmpty', null, false)
         ]"
       >
         <template v-slot:prepend>
@@ -220,7 +208,7 @@
           val =>
             values.accommodation === false ||
             (val && val.length > 0) ||
-            $tr('general.form.fieldError', null, false)
+            $tr('general.form.errors.nonEmpty', null, false)
         ]"
       >
         <template v-slot:prepend>
@@ -239,7 +227,7 @@
           val =>
             values.accommodation === false ||
             (val && val.length > 0) ||
-            $tr('general.form.fieldError', null, false)
+            $tr('general.form.errors.nonEmpty', null, false)
         ]"
       >
         <template v-slot:prepend>
@@ -278,7 +266,7 @@
           val =>
             values.accommodation === false ||
             (val && val.toString().match(/\d{3} ?\d{2}/)) ||
-            $tr('general.form.fieldError', null, false)
+            $tr('general.form.errors.nonEmpty', null, false)
         ]"
         >
           <template v-slot:prepend>
@@ -296,10 +284,7 @@
       :label="$tr('fields.school') + ' *'"
       class="q-mt-sm"
       lazy-rules
-      :rules="[
-        val =>
-          (val && val.length > 0) || $tr('general.form.fieldError', null, false)
-      ]"
+      :rules="[$validators.nonEmptyField]"
     >
       <template v-slot:prepend>
         <q-icon name="fas fa-school" />
@@ -368,7 +353,7 @@
         data-select-value="diet"
         data-select-options="possibleDiets"
         lazy-rules
-        :rules="[val => val || $tr('general.form.fieldError', null, false)]"
+        :rules="[val => val || $tr('general.form.errors.nonEmpty', null, false)]"
       >
         <template v-slot:prepend>
           <q-icon name="fas fa-utensils" />
@@ -403,7 +388,7 @@
         :label="$tr('fields.speakerStatus') + ' *'"
         class="q-pt-sm q-mb-md col-12 col-md-4"
         lazy-rules
-        :rules="[val => val || $tr('general.form.fieldError', null, false)]"
+        :rules="[val => val || $tr('general.form.errors.nonEmpty', null, false)]"
       >
         <template v-slot:hint>
           <a class="pointer-cursor" @click="showSpeakerStatusModal = true">
@@ -466,9 +451,7 @@
             :label="$tr('fields.parentName') + ' *'"
             class="col-12 col-sm-6"
             lazy-rules
-            :rules="[
-              val => (val && val.length > 0) || $tr('general.form.fieldError', null, false)
-            ]"
+            :rules="[$validators.nonEmptyField]"
           >
             <template v-slot:prepend>
             </template>
@@ -483,9 +466,7 @@
             class="q-pt-sm"
             hint="Např.: +420 123456789"
             lazy-rules
-            :rules="[
-              val => (val && val.length > 0) || $tr('general.form.fieldError', null, false)
-            ]"
+            :rules="[$validators.nonEmptyField]"
           >
             <template v-slot:prepend>
               <q-icon name="fas fa-phone-alt" />
@@ -498,9 +479,7 @@
             :label="$tr('fields.parentEmail') + ' *'"
             class="q-pt-sm"
             lazy-rules
-            :rules="[
-              val => (val !== null && val !== '') || $tr('general.form.fieldError', null, false)
-            ]"
+            :rules="[$validators.nonEmptyField]"
           >
             <template v-slot:prepend>
               <q-icon name="fas fa-at" />

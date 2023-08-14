@@ -6,7 +6,7 @@
         v-model="name"
         outlined
         :label="<string> $tr('fields.name')"
-        required="all"
+        required="defaultLanguageOnly"
         hide-bottom-space
       />
 
@@ -16,11 +16,7 @@
         class="col-12 col-md-4"
         :label="$tr('fields.place') + ' *'"
         lazy-rules
-        :rules="[
-          val =>
-            (val && val.length > 0) ||
-            $tr('general.form.fieldError', null, false)
-        ]"
+        :rules="[$validators.nonEmpty]"
         hide-bottom-space
       />
 
@@ -32,11 +28,7 @@
         :min="nowDate"
         :label="$tr('fields.beginning') + ' *'"
         lazy-rules
-        :rules="[
-          val =>
-            (val && val.length > 0) ||
-            $tr('general.form.fieldError', null, false)
-        ]"
+        :rules="[$validators.nonEmpty]"
         hide-bottom-space
       />
 
@@ -48,11 +40,7 @@
         :min="nowDate"
         :label="$tr('fields.end') + ' *'"
         lazy-rules
-        :rules="[
-          val =>
-            (val && val.length > 0) ||
-            $tr('general.form.fieldError', null, false)
-        ]"
+        :rules="[$validators.nonEmpty]"
         hide-bottom-space
       />
 
@@ -64,11 +52,7 @@
         :min="nowTime"
         :label="$tr('fields.soft_deadline') + ' *'"
         lazy-rules
-        :rules="[
-          val =>
-            (val && val.length > 0) ||
-            $tr('general.form.fieldError', null, false)
-        ]"
+        :rules="[$validators.nonEmpty]"
         hide-bottom-space
       />
 
@@ -80,11 +64,7 @@
         :min="nowTime"
         :label="$tr('fields.hard_deadline') + ' *'"
         lazy-rules
-        :rules="[
-          val =>
-            (val && val.length > 0) ||
-            $tr('general.form.fieldError', null, false)
-        ]"
+        :rules="[$validators.nonEmpty]"
         hide-bottom-space
       />
 
@@ -132,7 +112,7 @@
           v-model="note"
           type="wysiwyg"
           :label="<string> $tr('fields.note')"
-          required="defaultLanguageOnly"
+          required="none"
           hide-bottom-space
         />
       </div>

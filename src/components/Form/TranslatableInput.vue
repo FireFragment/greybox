@@ -112,12 +112,12 @@ export default defineComponent({
       }
 
       if (this.required === 'defaultLanguageOnly') {
-        return this.modelValue[defaultLocale].length > 0 || <string> this.$tr('general.form.fieldErrorLocale', { locale: defaultLocale }, false);
+        return this.modelValue[defaultLocale].length > 0 || <string> this.$tr('general.form.errors.nonEmptyLocale', { locale: defaultLocale }, false);
       }
 
       const langWithError = langs.find((lang) => this.modelValue[lang].length === 0);
 
-      return !langWithError || <string> this.$tr('general.form.fieldErrorLocale', { locale: langWithError }, false);
+      return !langWithError || <string> this.$tr('general.form.errors.nonEmptyLocale', { locale: langWithError }, false);
     },
   },
 });
