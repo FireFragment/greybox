@@ -257,7 +257,7 @@ export default defineComponent({
 
                 if (message) {
                   return this.$flash(
-                    this.$tr(`validation.${message}`),
+                    this.$tr(`validation.${message}`, null, false),
                     'error',
                   );
                 }
@@ -279,7 +279,7 @@ export default defineComponent({
               return this.$flash(
                 this.$tr(`validation.${message}`, {
                   person: `${person.person.name} ${person.person.surname}`,
-                }),
+                }, false),
                 'error',
               );
             }

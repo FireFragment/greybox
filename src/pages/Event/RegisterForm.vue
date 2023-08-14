@@ -210,9 +210,21 @@ export default defineComponent({
           name: teamName,
           event: this.event.id,
         },
+        alerts: false
       })
         .then((data) => {
           doneCallback(data.data.id, teamName);
+        })
+        .catch(({response}) => {
+          if (
+            response
+            && response.status === 422
+            && response.data.name[0] === 'validation.max.string'
+          ) {
+            this.$flash(this.$tr('validation.teamNameTooLong', null, false), 'error');
+          } else {
+            this.$flash(this.$tr('general.form.error', null, false), 'error');
+          }
         })
         .finally(() => {
           this.$bus.$emit('fullLoader', false);

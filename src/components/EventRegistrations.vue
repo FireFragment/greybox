@@ -200,6 +200,7 @@ import { AxiosPromise, AxiosResponse } from 'axios';
 import { getAllTranslations, TranslatedString } from 'boot/i18n';
 import { langs } from 'src/translation/config';
 import { EventsRegistrationsObjectType } from 'src/store/eventsRegistrations/state';
+import { customCompareStrings } from 'src/boot/custom';
 
 const booleanFilterOptions = [$tr('event.registrationsOverview.all'), $tr('event.registrationsOverview.yes'), $tr('event.registrationsOverview.no')];
 
@@ -306,15 +307,15 @@ export default defineComponent({
     const dietOrHyphen = (diet: DietaryRequirement | null) => (diet ? this.$tr(diet.name) : '-');
 
     const columns: unknown[] = [{
-      name: 'surname', label: this.$tr('event.registrationsOverview.labels.surname'), field: (row: EventRegistration) => row.person.surname, sortable: true, align: 'left',
+      name: 'surname', label: this.$tr('event.registrationsOverview.labels.surname'), field: (row: EventRegistration) => row.person.surname, sortable: true, sort: (a: string, b: string) => customCompareStrings(a, b), align: 'left',
     }, {
-      name: 'name', label: this.$tr('event.registrationsOverview.labels.name'), field: (row: EventRegistration) => row.person.name, sortable: true, align: 'left',
+      name: 'name', label: this.$tr('event.registrationsOverview.labels.name'), field: (row: EventRegistration) => row.person.name, sortable: true, sort: (a: string, b: string) => customCompareStrings(a, b), align: 'left',
     }, {
       name: 'role', label: this.$tr('event.registrationsOverview.labels.role'), sortable: false, align: 'left',
     }, {
-      name: 'team', label: this.$tr('event.registrationsOverview.labels.team'), field: (row: EventRegistration) => row.team?.name ?? '-', sortable: true, align: 'left',
+      name: 'team', label: this.$tr('event.registrationsOverview.labels.team'), field: (row: EventRegistration) => row.team?.name ?? '-', sortable: true, sort: (a: string, b: string) => customCompareStrings(a, b), align: 'left',
     }, {
-      name: 'note', label: this.$tr('event.registrationsOverview.labels.note'), field: 'note', format: emptyToHyphen, sortable: true, align: 'left',
+      name: 'note', label: this.$tr('event.registrationsOverview.labels.note'), field: 'note', format: emptyToHyphen, sortable: true, sort: (a: string, b: string) => customCompareStrings(a, b), align: 'left',
     }];
 
     if (this.event.accommodation !== 'none') {
@@ -328,7 +329,7 @@ export default defineComponent({
         name: 'meals', label: this.$tr('event.registrationsOverview.labels.meals'), field: 'meals', format: outputBoolean, sortable: false, align: 'center',
       });
       columns.push({
-        name: 'dietary_requirements', label: this.$tr('event.registrationsOverview.labels.dietaryRequirements'), field: (row: EventRegistration) => row.person.dietary_requirement, format: dietOrHyphen, sortable: true, align: 'center',
+        name: 'dietary_requirements', label: this.$tr('event.registrationsOverview.labels.dietaryRequirements'), field: (row: EventRegistration) => row.person.dietary_requirement, format: dietOrHyphen, sortable: true, sort: (a: string, b: string) => customCompareStrings(a, b), align: 'center',
       });
     }
 

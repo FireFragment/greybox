@@ -78,7 +78,7 @@ export default {
                 });
               } else {
                 this.$flash(
-                  this.$tr(`passwordReset.validation.${msg}`),
+                  this.$tr(`validation.${msg}`, null, false),
                   'error',
                 );
               }

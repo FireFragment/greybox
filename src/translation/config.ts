@@ -1,7 +1,8 @@
 import { user } from 'src/boot/auth';
 
+// Kinda hard to dynamically generate this list (both Kuxa and Laďa tried)
 const files: string[] = [
-  'general', 'auth', 'paths', 'event', 'admin', 'myDebates', 'user', 'titles',
+  'general', 'auth', 'paths', 'event', 'admin', 'myDebates', 'user', 'titles', 'validation',
 ];
 
 // Nested object

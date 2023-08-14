@@ -277,7 +277,7 @@ export default {
           if (data.response.data) {
             const { message } = data.response.data;
 
-            if (message && this.$trExists(`validation.${message}`)) return this.$flash(this.$tr(`validation.${message}`), 'error');
+            if (message && this.$trExists(`validation.${message}`, null, false)) return this.$flash(this.$tr(`validation.${message}`, null, false), 'error');
           }
           this.$flash(this.$tr(`error.${isEdit ? 'edit' : 'add'}`), 'error');
         })

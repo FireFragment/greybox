@@ -154,13 +154,6 @@
         "title": "Opravdu si přejete odstranit tuto přihlášku?"
       }
     },
-    "validation": {
-      "duplicateRegistration": "{person} je na tento turnaj již zaregistrován/a",
-      "missedDeadline": "Na tento turnaj již není možné se registrovat",
-      "eventNotFound": "Turnaj nebyl nalezen",
-      "clientNotFound": "Při generování faktury nastal problém, opakujte prosím akci později",
-      "fakturoidFull": "Při generování faktury nastal problém, opakujte prosím akci později"
-    },
     "confirm": {
       "title": "Registrace úspěšně odeslána, děkujeme!",
       "invoiceTitle": "Níže najdete podrobnosti k platbě",
@@ -206,9 +199,6 @@
         "add": "Fakturační údaje se nepodařilo přidat, opakujte akci",
         "edit": "Fakturační údaje se nepodařilo upravit, opakujte akci",
         "delete": "Fakturační údaje se nepodařilo odstranit, opakujte akci"
-      },
-      "validation": {
-        "invalidEmail": "E-mail nemá správný formát"
       }
     }
   },
