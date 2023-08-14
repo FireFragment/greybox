@@ -3,48 +3,63 @@
     v-if="type === 'text'"
     v-bind="$attrs"
     :modelValue="modelValue[currentLanguage]"
-    @update:modelValue="newValue => $emit('update:modelValue', {
-        ...modelValue,
-        [currentLanguage]: newValue,
-      })">
+    @update:modelValue="updateModel"
+    :label="`${label}${isCurrentLocaleRequired ? ' *' : ''}`"
+    lazy-rules
+    :rules="[validate]"
+  >
     <template v-slot:append>
       <LanguageSelect v-model="currentLanguage"/>
     </template>
   </q-input>
 
-  <q-editor
+  <q-field
     v-else
     v-bind="$attrs"
-    min-height="5rem"
-    :toolbar="[
-        [{
-          label: $q.lang.editor.formatting,
-          icon: $q.iconSet.editor.formatting,
-          list: 'no-icons',
-          options: ['p', 'h2', 'h3']
-        }],
-        ['bold', 'italic', 'link'],
-        ['hr', 'quote', 'unordered', 'ordered', 'outdent', 'indent'],
-        ['fullscreen'],
-        ['lang'],
-      ]"
-    :definitions="{
-        hr: { icon: 'fas fa-minus' }
-      }"
     :modelValue="modelValue[currentLanguage]"
-    @update:modelValue="newValue => $emit('update:modelValue', {
-        ...modelValue,
-        [currentLanguage]: newValue,
-      })">
-    <template v-slot:lang>
-      <LanguageSelect v-model="currentLanguage" :small="true"/>
+    @update:modelValue="updateModel"
+    :label="`${label}${isCurrentLocaleRequired ? ' *' : ''}`"
+    lazy-rules
+    :rules="[validate]"
+
+    ref="fieldRef"
+    stack-label
+    borderless
+  >
+    <template #control>
+      <q-editor
+        :modelValue="modelValue[currentLanguage]"
+        @update:modelValue="updateModel"
+
+        :style="
+          $refs['fieldRef']?.hasError ? 'border-color: var(--q-negative)' : ''
+        "
+        class="tw-mt-2 -tw-mb-2 tw-w-full tw-min-h-[6rem]"
+        :toolbar="[
+          [{
+            label: $q.lang.editor.formatting,
+            icon: $q.iconSet.editor.formatting,
+            list: 'no-icons',
+            options: ['p', 'h2', 'h3']
+          }],
+          ['bold', 'italic', 'link'],
+          ['hr', 'quote', 'unordered', 'ordered', 'outdent', 'indent'],
+          ['fullscreen'],
+          ['lang'],
+        ]"
+        :definitions="{ hr: { icon: 'fas fa-minus' } }"
+      >
+        <template v-slot:lang>
+          <LanguageSelect v-model="currentLanguage" :small="true"/>
+        </template>
+      </q-editor>
     </template>
-  </q-editor>
+  </q-field>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { defaultLocale, Lang } from 'src/translation/config';
+import { defaultLocale, Lang, langs } from 'src/translation/config';
 import LanguageSelect from 'components/Form/LanguageSelect.vue';
 
 export default defineComponent({
@@ -60,6 +75,16 @@ export default defineComponent({
       required: false,
       default: 'text',
     },
+    required: {
+      type: String as PropType<'none' | 'defaultLanguageOnly' | 'all'>,
+      required: false,
+      default: 'none',
+    },
+    label: {
+      type: String,
+      required: false,
+      default: null,
+    },
   },
   emits: [
     'update:modelValue',
@@ -68,6 +93,32 @@ export default defineComponent({
     return {
       currentLanguage: defaultLocale,
     };
+  },
+  computed: {
+    isCurrentLocaleRequired() {
+      return this.required === 'all' || (this.required === 'defaultLanguageOnly' && this.currentLanguage === defaultLocale);
+    },
+  },
+  methods: {
+    updateModel(newValue: string) {
+      this.$emit('update:modelValue', {
+        ...this.modelValue,
+        [this.currentLanguage]: newValue,
+      });
+    },
+    validate(): boolean | string {
+      if (this.required === 'none') {
+        return true;
+      }
+
+      if (this.required === 'defaultLanguageOnly') {
+        return this.modelValue[defaultLocale].length > 0 || <string> this.$tr('general.form.errors.nonEmptyLocale', { locale: defaultLocale }, false);
+      }
+
+      const langWithError = langs.find((lang) => this.modelValue[lang].length === 0);
+
+      return !langWithError || <string> this.$tr('general.form.errors.nonEmptyLocale', { locale: langWithError }, false);
+    },
   },
 });
 </script>

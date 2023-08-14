@@ -18,8 +18,12 @@
     "remove": "Odstranit"
   },
   "form": {
-    "error": "Formulář obsahuje chyby",
-    "fieldError": "Vyplňte prosím toto pole",
+    "errors": {
+      "form": "Formulář obsahuje chyby",
+      "nonEmpty": "Vyplňte prosím toto pole",
+      "nonEmptyLocale": "Vyplňte prosím toto pole v jazyce {locale}",
+      "email": "E-mail nemá správný formát"
+    },
     "fields": {
       "country": "Země"
     }

@@ -18,8 +18,12 @@
     "remove": "Remove"
   },
   "form": {
-    "error": "Please check the form for errors",
-    "fieldError": "This field is required",
+    "errors": {
+      "form": "Please check the form for errors",
+      "nonEmpty": "This field is required",
+      "nonEmptyLocale": "This field is required in locale {locale}",
+      "email": "Invalid email format"
+    },
     "fields": {
       "country": "Country"
     }

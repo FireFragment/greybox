@@ -48,6 +48,12 @@
     "addDebater": "Přidat debatéra",
     "goToCheckout": "Odeslat přihlášky"
   },
+  "optionalSelectValues": {
+    "none": "Není k dispozici",
+    "opt-in": "Možno zažádat (opt in)",
+    "opt-out": "Možno odmítnout (opt out)",
+    "required": "Povinně"
+  },
   "fields": {
     "teamName": "Název týmu",
     "name": "Jméno",

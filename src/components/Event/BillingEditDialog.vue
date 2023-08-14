@@ -18,11 +18,7 @@
               class="col-12 q-pb-md"
               lazy-rules
               v-model="values.name"
-              :rules="[
-                val =>
-                  (val && val.length > 0) ||
-                  $tr('general.form.fieldError', null, false)
-              ]"
+              :rules="[$validators.nonEmpty]"
             >
               <template v-slot:prepend>
                 <q-icon name="fas fa-user" />

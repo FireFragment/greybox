@@ -100,8 +100,10 @@ export default defineComponent({
   },
   async created() {
     // Not cached -> load from API
-    await this.$store.dispatch('events/loadFull', this.eventId);
-    await this.$store.dispatch('eventsTeams/loadDetailed', this.eventId);
+    await Promise.all([
+      this.$store.dispatch('events/loadFull', this.eventId),
+      this.$store.dispatch('eventsTeams/loadDetailed', this.eventId),
+    ]);
     $setTitle(`${<string> this.$tr(this.event.name)} - ${(<string> this.$tr('titles.admin.eventTeams', null, false)).toLowerCase()}`);
   },
   data() {
