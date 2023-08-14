@@ -20,6 +20,7 @@
   "form": {
     "error": "Formulář obsahuje chyby",
     "fieldError": "Vyplňte prosím toto pole",
+    "fieldErrorLocale": "Vyplňte prosím toto pole v jazyce {locale}",
     "fields": {
       "country": "Země"
     }

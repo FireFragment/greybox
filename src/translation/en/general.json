@@ -20,6 +20,7 @@
   "form": {
     "error": "Please check the form for errors",
     "fieldError": "This field is required",
+    "fieldErrorLocale": "This field is required in locale {locale}",
     "fields": {
       "country": "Country"
     }
