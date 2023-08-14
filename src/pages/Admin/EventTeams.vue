@@ -74,7 +74,7 @@
 import { EventFull, EventTeam } from 'src/types/event';
 
 import { defineComponent } from 'vue';
-import { $setTitle } from 'boot/custom';
+import { $setTitle, customCompareStrings } from 'boot/custom';
 import config from '../../config';
 
 export default defineComponent({
@@ -111,9 +111,9 @@ export default defineComponent({
       mealsFilterModel: null,
       config,
       columns: [{
-        name: 'club', label: this.$tr('event.registrationsOverview.labels.club'), field: (row: EventTeam) => row.team.institution ?? '-', sortable: true, align: 'left',
+        name: 'club', label: this.$tr('event.registrationsOverview.labels.club'), field: (row: EventTeam) => row.team.institution ?? '-', sortable: true, sort: (a: string, b: string) => customCompareStrings(a, b), align: 'left',
       }, {
-        name: 'name', label: this.$tr('event.registrationsOverview.labels.teamName'), field: (row: EventTeam) => row.team.name, sortable: true, align: 'left', classes: 'text-bold',
+        name: 'name', label: this.$tr('event.registrationsOverview.labels.teamName'), field: (row: EventTeam) => row.team.name, sortable: true, sort: (a: string, b: string) => customCompareStrings(a, b), align: 'left', classes: 'text-bold',
       }, {
         name: 'members', label: this.$tr('event.registrationsOverview.labels.members'), field: 'members', sortable: false, align: 'left',
       }, {
@@ -129,5 +129,7 @@ export default defineComponent({
       tableLoading: false,
     };
   },
+  // methods: {
+  // },
 });
 </script>

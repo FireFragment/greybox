@@ -299,3 +299,12 @@ export default boot(({ app }) => {
   app.config.globalProperties.dbPersonal = {};
 
 });
+
+export const customCompareStrings = (a: string, b: string) => {
+  if (a === null || a === undefined) {
+    return 1;
+  } if (b === null || b === undefined) {
+    return -1;
+  }
+  return a.localeCompare(b, 'cs');
+};
