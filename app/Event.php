@@ -18,6 +18,7 @@ class Event extends Model implements AuthenticatableContract, AuthorizableContra
      * @var array
      */
     protected $fillable = [
+        'pds',
         'competition',
         'finals',
         'name',
@@ -119,5 +120,11 @@ class Event extends Model implements AuthenticatableContract, AuthorizableContra
             $organizers[] = $registration->person()->first();
         }
         return $organizers;
+    }
+
+    public function isPds(): bool
+    {
+        if ($this->pds) return true;
+        return false;
     }
 }

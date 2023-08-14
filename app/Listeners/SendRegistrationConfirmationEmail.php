@@ -38,10 +38,14 @@ class SendRegistrationConfirmationEmail
         // TODO: Převzít invoice z RegistrationConfirmed eventu
         $invoice = null;
 
+        $mailer = Mail::mailer('default');
+        if ($event->isPds()) {
+            $mailer = Mail::mailer('pds');
+        }
         $bccRecipients = $this->registrationRepository->getConfirmationEmailBccRecipients($event);
 
         // TODO: vyřešit jak nastavit locale pouze pro email / případně jak používat locale vůbec
         // app('translator')->setLocale($language); // Uvidíme, jestli bude potřeba. Viz. https://laravel.com/docs/5.4/localization#introduction
-        Mail::bcc($bccRecipients)->send(new RegistrationConfirmation($language, $event, $people, $invoice));
+        $mailer->bcc($bccRecipients)->send(new RegistrationConfirmation($language, $event, $people, $invoice));
     }
 }

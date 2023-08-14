@@ -109,21 +109,22 @@ class EventController extends Controller
             }
 
             $event = Event::create([
-               'competition' => $request->input('competition'),
-               'finals' => $request->input('finals', 0),
-               'name' => $nameTranslation->id,
-               'beginning' => $request->input('beginning'),
-               'end' => $request->input('end'),
-               'place' => $request->input('place'),
-               'accommodation' => $request->input('accommodation', 'opt-out'),
-               'meals' => $request->input('meals', 'opt-out'),
-               'novices' => $request->input('novices', 0),
-               'membership_required' => $request->input('membership_required', 1),
-               'email_required' => $request->input('email_required', 0),
-               'soft_deadline' => $request->input('soft_deadline'),
-               'hard_deadline' => $request->input('hard_deadline'),
-               'invoice_text' => $invoiceTextTranslation->id,
-               'note' => $noteTranslation->id
+                'pds' => $request->input('pds', 0),
+                'competition' => $request->input('competition'),
+                'finals' => $request->input('finals', 0),
+                'name' => $nameTranslation->id,
+                'beginning' => $request->input('beginning'),
+                'end' => $request->input('end'),
+                'place' => $request->input('place'),
+                'accommodation' => $request->input('accommodation', 'opt-out'),
+                'meals' => $request->input('meals', 'opt-out'),
+                'novices' => $request->input('novices', 0),
+                'membership_required' => $request->input('membership_required', 1),
+                'email_required' => $request->input('email_required', 0),
+                'soft_deadline' => $request->input('soft_deadline'),
+                'hard_deadline' => $request->input('hard_deadline'),
+                'invoice_text' => $invoiceTextTranslation->id,
+                'note' => $noteTranslation->id
             ]);
             $event->dietaryRequirements()->attach($request->input('dietary_requirements'));
 
@@ -144,6 +145,7 @@ class EventController extends Controller
             $event = Event::findOrFail($id);
             $this->authorize('update', $event);
 
+            if ($request->has('pds')) $this->updateColumn($event, 'pds', $request->input('pds'));
             if ($request->has('competition')) $this->updateColumn($event, 'competition', $request->input('competition'));
             if ($request->has('finals')) $this->updateColumn($event, 'finals', $request->input('finals'));
             if ($request->has('name_cs')) {

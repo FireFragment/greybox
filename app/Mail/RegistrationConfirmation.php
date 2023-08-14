@@ -2,6 +2,8 @@
 
 namespace App\Mail;
 
+use App\Event;
+
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -15,18 +17,33 @@ class RegistrationConfirmation extends Mailable
     public $event;
     public $people;
     public $invoice;
+    /**
+     * @var string
+     */
+    private $mailFromAddress;
+    /**
+     * @var string
+     */
+    private $mailFromName;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($locale, \App\Event $event, $people, $invoice = null)
+    public function __construct($locale, Event $event, $people, $invoice = null)
     {
         $this->locale = $locale;
         $this->event = $event;
         $this->people = $people;
         $this->invoice = $invoice;
+
+        $this->mailFromAddress = env('MAIL_FROM_ADDRESS');
+        $this->mailFromName = env('MAIL_FROM_NAME');
+        if ($event->isPds()) {
+            $this->mailFromAddress = env('PDS_MAIL_FROM_ADDRESS');
+            $this->mailFromName = env('PDS_MAIL_FROM_NAME');
+        }
     }
 
     /**
@@ -54,6 +71,7 @@ class RegistrationConfirmation extends Mailable
         // TODO: solve invoiceLines, late registrations
 
         return $this
+            ->from($this->mailFromAddress, $this->mailFromName)
             ->subject($subject)
             ->view('email.registrationconfirmation')
             ->with([
