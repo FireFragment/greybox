@@ -15,7 +15,7 @@
   "errors": {
     "deadline": "This tournament is already past deadline, registrations are not accepted.",
     "auth": "Plese login or sign up before registering for a tournament.",
-    "teamLenght": "Maximal number of team members is {len}"
+    "teamLength": "Maximal number of team members is {len}"
   },
   "gdpr": {
     "label": "I agree with",
