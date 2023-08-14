@@ -7,7 +7,7 @@ const validateEmail = (email: string): boolean => {
     .toLowerCase());
 };
 
-const email = (val: string): boolean | string => validateEmail(val) || <string> $tr('general.form.errors.email', null, false);
+const email = (val: string): boolean | string => !val || val.length === 0 || validateEmail(val) || <string> $tr('general.form.errors.email', null, false);
 
 const nonEmpty = (val: string): boolean | string => (val && val.length > 0) || <string> $tr('general.form.errors.nonEmpty', null, false);
 

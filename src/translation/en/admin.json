@@ -18,7 +18,8 @@
       "accommodation": "Accommodation",
       "meals": "Meals",
       "competition": "Competition",
-      "dietary_requirements": "Available diets"
+      "dietary_requirements": "Available diets",
+      "reply_email": "E-mail address for reply"
     }
   },
   "eventRegistrations": {

@@ -1,9 +1,9 @@
 <template>
-  <q-form>
+  <q-form @submit="sendForm">
     <div class="row q-col-gutter-md q-pb-sm">
       <TranslatableInput
         class="col-12 col-md-8"
-        v-model="name"
+        v-model="data.name"
         outlined
         :label="<string> $tr('fields.name')"
         required="defaultLanguageOnly"
@@ -11,7 +11,7 @@
       />
 
       <q-input
-        v-model="place"
+        v-model="data.place"
         outlined
         class="col-12 col-md-4"
         :label="$tr('fields.place') + ' *'"
@@ -21,7 +21,7 @@
       />
 
       <q-input
-        v-model="beginning"
+        v-model="data.beginning"
         outlined
         class="col-12 col-sm-6 col-md-3"
         type="date"
@@ -33,7 +33,7 @@
       />
 
       <q-input
-        v-model="end"
+        v-model="data.end"
         outlined
         class="col-12 col-sm-6 col-md-3"
         type="date"
@@ -45,7 +45,7 @@
       />
 
       <q-input
-        v-model="soft_deadline"
+        v-model="data.soft_deadline"
         outlined
         class="col-12 col-sm-6 col-md-3"
         type="datetime-local"
@@ -57,7 +57,7 @@
       />
 
       <q-input
-        v-model="hard_deadline"
+        v-model="data.hard_deadline"
         outlined
         class="col-12 col-sm-6 col-md-3"
         type="datetime-local"
@@ -69,22 +69,33 @@
       />
 
       <TranslatableInput
-        class="col-12"
-        v-model="invoice"
+        class="col-12 col-md-7 col-lg-8"
+        v-model="data.invoice"
         outlined
         :label="<string> $tr('fields.invoice')"
         required="none"
+        hide-bottom-space
       />
 
-      <div class="col-12 col-sm-6 row q-col-gutter-md">
+      <q-input
+          v-model="data.reply_email"
+          outlined
+          class="col-12 col-md-5 col-lg-4"
+          :label="<string> $tr('fields.reply_email')"
+          lazy-rules
+          :rules="[$validators.email]"
+          hide-bottom-space
+      />
+
+      <div class="col-12 col-lg-6 row q-col-gutter-md">
         <q-select
           outlined
           v-for="field in Object.keys(selectOptions)"
           :key="field"
-          v-model="$data[field]"
+          v-model="data[field]"
           :options="selectOptions[field]"
           :label="<string> $tr(`fields.${field}`)"
-          class="col-12 col-lg-6"
+          class="col-12 col-sm-6"
           emit-value
           map-options
           :multiple="field === 'dietary_requirements'"
@@ -95,12 +106,12 @@
         </q-select>
       </div>
 
-      <div class="col-12 col-sm-6 row q-col-gutter-md">
+      <div class="col-12 col-lg-6 row q-col-gutter-md">
         <q-checkbox
           v-for="field in ['novices', 'email_required', 'membership_required', 'finals']"
           :key="field"
-          v-model="$data[field]"
-          class="col-12 col-lg-6"
+          v-model="data[field]"
+          class="col-12 col-sm-6"
           :true-value="true"
           :false-value="false"
           :label="<string> $tr(`fields.${field}`)"
@@ -109,11 +120,20 @@
 
       <div class="col-12">
         <TranslatableInput
-          v-model="note"
+          v-model="data.note"
           type="wysiwyg"
           :label="<string> $tr('fields.note')"
           required="none"
           hide-bottom-space
+        />
+      </div>
+
+      <div class="text-center col-12">
+        <q-btn
+            :label="<string> $tr('general.save', null, false)"
+            class="q-my-sm"
+            type="submit"
+            color="primary"
         />
       </div>
     </div>
@@ -128,6 +148,7 @@ import { Competition, DietaryRequirement, eventOptionalSelectValues } from 'src/
 export default defineComponent({
   name: 'EventForm',
   components: { TranslatableInput },
+  emits: ['submit'],
   data() {
     return {
       translationPrefix: 'admin.newEvent.',
@@ -138,33 +159,35 @@ export default defineComponent({
         competition: 'fas fa-trophy',
       },
 
-      // Form data below
-      name: {
-        cs: '',
-        en: '',
+      data: {
+        pds: this.$isPDS,
+        name: {
+          cs: '',
+          en: '',
+        },
+        beginning: '',
+        end: '',
+        place: '',
+        soft_deadline: '',
+        hard_deadline: '',
+        note: {
+          cs: '',
+          en: '',
+        },
+        invoice: {
+          cs: '',
+          en: '',
+        },
+        novices: false,
+        email_required: false,
+        membership_required: false,
+        finals: false,
+        accommodation: 'none',
+        meals: 'none',
+        competition: null,
+        dietary_requirements: [],
+        reply_email: null,
       },
-      beginning: this.nowDate,
-      end: this.nowDate,
-      place: '',
-      soft_deadline: this.nowTime,
-      hard_deadline: this.nowTime,
-      note: {
-        cs: '',
-        en: '',
-      },
-      invoice: {
-        cs: '',
-        en: '',
-      },
-      novices: false,
-      email_required: false,
-      membership_required: false,
-      finals: false,
-      accommodation: 'none',
-      meals: 'none',
-      competition: null,
-      dietary_requirements: [],
-      pds: this.$isPDS,
     };
   },
   async created() {
@@ -172,6 +195,12 @@ export default defineComponent({
       this.$store.dispatch('diets/load'),
       this.$store.dispatch('competitions/load'),
     ]);
+  },
+  mounted() {
+    this.data.beginning = this.nowDate;
+    this.data.end = this.nowDate;
+    this.data.soft_deadline = this.nowTime;
+    this.data.hard_deadline = this.nowTime;
   },
   computed: {
     nowTime(): string {
@@ -215,6 +244,19 @@ export default defineComponent({
           label: <string> this.$tr(diet.name),
         })),
       };
+    },
+  },
+  methods: {
+    sendForm() {
+      this.$emit('submit', {
+        ...this.data,
+        name_cs: this.data.name.cs,
+        name_en: this.data.name.en,
+        note_cs: this.data.note.cs,
+        note_en: this.data.note.en,
+        invoice_cs: this.data.invoice.cs,
+        invoice_en: this.data.invoice.en,
+      });
     },
   },
 });

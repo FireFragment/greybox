@@ -10,8 +10,8 @@ import { user } from 'boot/auth';
 export const load: Action<EventsState, never> = async ({
   commit,
   state,
-}, loading: boolean = true) => {
-  if (state.loaded || state.loading) {
+}, [loading = true, forceReload = false]: boolean[] = []) => {
+  if ((state.loaded && !forceReload) || state.loading) {
     return;
   }
 

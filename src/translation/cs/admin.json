@@ -18,7 +18,8 @@
       "accommodation": "Ubytování",
       "meals": "Strava",
       "competition": "Soutěž",
-      "dietary_requirements": "Dostupné typy stravy"
+      "dietary_requirements": "Dostupné typy stravy",
+      "reply_email": "E-mailová adresa pro odpověď"
     }
   },
   "eventRegistrations": {
