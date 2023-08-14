@@ -1,5 +1,5 @@
 <template>
-  <q-form>
+  <q-form @submit="sendForm">
     <div class="row q-col-gutter-md q-pb-sm">
       <TranslatableInput
         class="col-12 col-md-8"
@@ -69,14 +69,22 @@
       />
 
       <TranslatableInput
-        class="col-12"
+        class="col-12 col-md-7 col-lg-8"
         v-model="invoice"
         outlined
         :label="<string> $tr('fields.invoice')"
         required="none"
+        hide-bottom-space
       />
 
-      <div class="col-12 col-sm-6 row q-col-gutter-md">
+      <q-input
+          v-model="reply_email"
+          outlined
+          class="col-12 col-md-5 col-lg-4"
+          :label="<string> $tr('fields.reply_email')"
+      />
+
+      <div class="col-12 col-lg-6 row q-col-gutter-md">
         <q-select
           outlined
           v-for="field in Object.keys(selectOptions)"
@@ -84,7 +92,7 @@
           v-model="$data[field]"
           :options="selectOptions[field]"
           :label="<string> $tr(`fields.${field}`)"
-          class="col-12 col-lg-6"
+          class="col-12 col-sm-6"
           emit-value
           map-options
           :multiple="field === 'dietary_requirements'"
@@ -95,12 +103,12 @@
         </q-select>
       </div>
 
-      <div class="col-12 col-sm-6 row q-col-gutter-md">
+      <div class="col-12 col-lg-6 row q-col-gutter-md">
         <q-checkbox
           v-for="field in ['novices', 'email_required', 'membership_required', 'finals']"
           :key="field"
           v-model="$data[field]"
-          class="col-12 col-lg-6"
+          class="col-12 col-sm-6"
           :true-value="true"
           :false-value="false"
           :label="<string> $tr(`fields.${field}`)"
@@ -114,6 +122,15 @@
           :label="<string> $tr('fields.note')"
           required="none"
           hide-bottom-space
+        />
+      </div>
+
+      <div class="text-center col-12">
+        <q-btn
+            :label="<string> $tr('general.save', null, false)"
+            class="q-my-sm"
+            type="submit"
+            color="primary"
         />
       </div>
     </div>
@@ -139,15 +156,16 @@ export default defineComponent({
       },
 
       // Form data below
+      pds: this.$isPDS,
       name: {
         cs: '',
         en: '',
       },
-      beginning: this.nowDate,
-      end: this.nowDate,
+      beginning: '',
+      end: '',
       place: '',
-      soft_deadline: this.nowTime,
-      hard_deadline: this.nowTime,
+      soft_deadline: '',
+      hard_deadline: '',
       note: {
         cs: '',
         en: '',
@@ -164,7 +182,7 @@ export default defineComponent({
       meals: 'none',
       competition: null,
       dietary_requirements: [],
-      pds: this.$isPDS,
+      reply_email: '',
     };
   },
   async created() {
@@ -172,6 +190,12 @@ export default defineComponent({
       this.$store.dispatch('diets/load'),
       this.$store.dispatch('competitions/load'),
     ]);
+  },
+  mounted() {
+    this.beginning = this.nowDate;
+    this.end = this.nowDate;
+    this.soft_deadline = this.nowTime;
+    this.hard_deadline = this.nowTime;
   },
   computed: {
     nowTime(): string {
@@ -215,6 +239,11 @@ export default defineComponent({
           label: <string> this.$tr(diet.name),
         })),
       };
+    },
+  },
+  methods: {
+    sendForm() {
+      // TODO - emit
     },
   },
 });

@@ -34,7 +34,8 @@
         :style="
           $refs['fieldRef']?.hasError ? 'border-color: var(--q-negative)' : ''
         "
-        class="tw-mt-2 -tw-mb-2 tw-w-full tw-min-h-[6rem]"
+        min-height="30rem"
+        class="tw-mt-2 -tw-mb-2 tw-w-full"
         :toolbar="[
           [{
             label: $q.lang.editor.formatting,
