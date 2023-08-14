@@ -22,14 +22,18 @@
       "reply_email": "E-mail address for reply"
     }
   },
-  "eventRegistrations": {
-    "link": "Tournaments registrations",
+  "events": {
+    "link": "Events",
     "button": {
+      "edit": "Edit info",
+      "editRoles": "Edit roles",
       "people": "Show people",
       "teams": "Show teams"
     },
     "chooseEvent" : "Choose event",
     "viewTypes": {
+      "edit": "Edit",
+      "editRoles": "Edit roles",
       "people": "People",
       "teams": "Teams"
     },

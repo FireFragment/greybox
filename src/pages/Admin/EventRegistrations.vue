@@ -151,7 +151,7 @@ export default defineComponent({
   },
   data() {
     return {
-      translationPrefix: 'admin.eventRegistrations.',
+      translationPrefix: 'admin.events.',
     };
   },
   methods: {

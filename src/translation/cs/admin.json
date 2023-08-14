@@ -22,14 +22,18 @@
       "reply_email": "E-mailová adresa pro odpověď"
     }
   },
-  "eventRegistrations": {
-    "link": "Registrace na turnaje",
+  "events": {
+    "link": "Turnaje",
     "button": {
+      "edit": "Upravit informace",
+      "editRoles": "Upravit role",
       "people": "Zobrazit osoby",
       "teams": "Zobrazit týmy"
     },
     "chooseEvent": "Vyberte turnaj",
     "viewTypes": {
+      "edit": "Úprava",
+      "editRoles": "Úprava rolí",
       "people": "Lidé",
       "teams": "Týmy"
     },

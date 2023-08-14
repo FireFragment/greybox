@@ -2,7 +2,7 @@
   <q-page padding v-if="teams">
     <h1 class="text-center text-h4">
       {{ event ? $tr(event.name, null, false) : '-' }} -
-      {{ $tr("admin.eventRegistrations.viewTypes.teams") }}
+      {{ $tr("admin.events.viewTypes.teams") }}
     </h1>
     <div class="q-pa-md">
       <q-table

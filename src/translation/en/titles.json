@@ -3,8 +3,10 @@
     "event": "Tournament",
     "admin": {
         "events": "Tournament registration",
-      "eventRegistrations": "Registered people",
-      "eventTeams": "Registered teams"
+        "eventRegistrations": "Registered people",
+        "eventTeams": "Registered teams",
+        "editEvent": "Edit event info",
+        "editEventRoles": "Edit event roles"
     },
     "newEvent": "Create an event",
     "login": "Login",

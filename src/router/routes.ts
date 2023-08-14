@@ -151,6 +151,30 @@ const routes: RouteRecordRaw[] = [
           component: RouterView,
           beforeEnter: eventOrganizerMiddleware,
           children: [{
+            path: <string>(<Routes>(<Routes>CZroutes.admin).eventViewTypes).edit,
+            alias: <string>(<Routes>(<Routes>ENroutes.admin).eventViewTypes).edit,
+            name: 'admin.editEvent',
+            meta: {
+              translationName: 'admin.events',
+              // Array of other param values
+              additionalTranslations: [
+                'admin.eventViewTypes.edit',
+              ],
+            },
+            component: () => import('pages/Admin/EditEvent.vue'),
+          }, {
+            path: <string>(<Routes>(<Routes>CZroutes.admin).eventViewTypes).editRoles,
+            alias: <string>(<Routes>(<Routes>ENroutes.admin).eventViewTypes).editRoles,
+            name: 'admin.editEventRoles',
+            meta: {
+              translationName: 'admin.events',
+              // Array of other param values
+              additionalTranslations: [
+                'admin.eventViewTypes.editRoles',
+              ],
+            },
+            component: () => import('pages/Admin/EditEventRoles.vue'),
+          }, {
             path: <string>(<Routes>(<Routes>CZroutes.admin).eventViewTypes).people,
             alias: <string>(<Routes>(<Routes>ENroutes.admin).eventViewTypes).people,
             name: 'admin.eventRegistrations',

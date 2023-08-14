@@ -31,8 +31,10 @@
   },
   "admin": {
     "newEvent": "new-event",
-    "events": "tournaments-registrations",
+    "events": "tournaments",
     "eventViewTypes": {
+      "edit": "edit",
+      "editRoles": "edit-roles",
       "people": "people",
       "teams": "teams"
     }

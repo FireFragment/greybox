@@ -40,13 +40,33 @@
 
         <div v-if="$auth.organizesEvent(event.id)">
           <router-link
+              :to="$translatedRouteLink({
+              name: 'admin.editEvent',
+              params: {
+                id: event.id,
+              },
+            })">
+            {{ $tr('admin.events.button.edit', null, false) }}
+          </router-link>
+          |
+          <router-link
+              :to="$translatedRouteLink({
+              name: 'admin.editEventRoles',
+              params: {
+                id: event.id,
+              },
+            })">
+            {{ $tr('admin.events.button.editRoles', null, false) }}
+          </router-link>
+          |
+          <router-link
             :to="$translatedRouteLink({
               name: 'admin.eventRegistrations',
               params: {
                 id: event.id,
               },
             })">
-            {{ $tr('admin.eventRegistrations.button.people', null, false) }}
+            {{ $tr('admin.events.button.people', null, false) }}
           </router-link>
           |
           <router-link
@@ -56,7 +76,7 @@
                 id: event.id,
               },
             })">
-            {{ $tr('admin.eventRegistrations.button.teams', null, false) }}
+            {{ $tr('admin.events.button.teams', null, false) }}
           </router-link>
         </div>
 

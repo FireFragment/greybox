@@ -64,7 +64,7 @@
           </q-item-section>
           <q-item-section>
             <q-item-label>{{
-                $tr('admin.eventRegistrations.link')
+                $tr('admin.events.link')
               }}
             </q-item-label>
           </q-item-section>

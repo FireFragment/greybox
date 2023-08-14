@@ -4,7 +4,9 @@
     "admin": {
         "events": "Registrace na turnaje",
         "eventRegistrations": "Zaregistrovaní lidé",
-        "eventTeams": "Zaregistrované týmy"
+        "eventTeams": "Zaregistrované týmy",
+        "editEvent": "Úprava informací turnaje",
+        "editEventRoles": "Úprava rolí turnaje"
     },
     "newEvent": "Vytvořit turnaj",
     "login": "Přihlášení",

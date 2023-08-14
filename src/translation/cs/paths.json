@@ -31,8 +31,10 @@
   },
   "admin": {
     "newEvent": "vytvorit-turnaj",
-    "events": "turnaje-registrace",
+    "events": "turnaje",
     "eventViewTypes": {
+      "edit": "upravit",
+      "editRoles": "upravit-role",
       "people": "lide",
       "teams": "tymy"
     }
