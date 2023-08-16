@@ -92,6 +92,7 @@ $app->alias('mailer', Illuminate\Contracts\Mail\MailQueue::class);
 $app->register(Illuminate\Mail\MailServiceProvider::class);
 
 $app->configure('queue');
+$app->register(Illuminate\Queue\QueueServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------

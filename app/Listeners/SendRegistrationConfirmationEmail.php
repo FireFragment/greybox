@@ -5,9 +5,10 @@ namespace App\Listeners;
 use App\Events\RegistrationConfirmed,
     App\Mail\RegistrationConfirmation,
     App\Repositories\RegistrationRepository;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Mail;
 
-class SendRegistrationConfirmationEmail
+class SendRegistrationConfirmationEmail implements ShouldQueue
 {
     /**
      * @var RegistrationRepository
