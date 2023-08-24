@@ -21,6 +21,7 @@ export default defineComponent({
       }).then(async () => {
         // Reload simple events storage
         await this.$store.dispatch('events/load', [true, true]);
+        // TODO - alert
         // TODO - redirect to roles (prices) form
       }).finally(() => {
         this.$bus.$emit('fullLoader', false);

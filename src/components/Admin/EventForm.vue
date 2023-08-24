@@ -141,14 +141,24 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import TranslatableInput from 'components/Form/TranslatableInput.vue';
-import { Competition, DietaryRequirement, eventOptionalSelectValues } from 'src/types/event';
+import {
+  Competition, DietaryRequirement, EventFull, eventOptionalSelectValues,
+} from 'src/types/event';
+import { TranslatedDatabaseString } from 'src/boot/i18n';
 
 export default defineComponent({
   name: 'EventForm',
   components: { TranslatableInput },
   emits: ['submit'],
+  props: {
+    event: {
+      type: Object as PropType<EventFull>,
+      required: false,
+      default: null,
+    },
+  },
   data() {
     return {
       translationPrefix: 'admin.newEvent.',
@@ -185,7 +195,7 @@ export default defineComponent({
         accommodation: 'none',
         meals: 'none',
         competition: null,
-        dietary_requirements: [],
+        dietary_requirements: [] as number[],
         reply_email: null,
       },
     };
@@ -195,6 +205,32 @@ export default defineComponent({
       this.$store.dispatch('diets/load'),
       this.$store.dispatch('competitions/load'),
     ]);
+
+    // Copy event data to local form data
+    Object.entries(this.data).forEach(([index, formValue]) => {
+      const eventValue = this.event[<keyof EventFull> index];
+      if (typeof formValue !== 'object' || formValue === null) {
+        // Primitive value -> just set
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        this.data[index] = eventValue;
+      } else if ('cs' in formValue && 'en' in formValue) {
+        // Translatable object -> set values
+        if (eventValue) {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          this.data[index] = {
+            cs: (<TranslatedDatabaseString> eventValue).cs,
+            en: (<TranslatedDatabaseString> eventValue).en,
+          };
+        }
+      } else if (index === 'dietary_requirements') {
+        // Relationship objects (dietaryReqirements) -> map to IDs
+        this.data.dietary_requirements = this.event.dietaryRequirements.map((diet) => diet.id);
+      } else {
+        throw new Error(`Unexpected event field - ${index}`);
+      }
+    });
   },
   mounted() {
     this.data.beginning = this.nowDate;

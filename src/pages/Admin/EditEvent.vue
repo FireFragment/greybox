@@ -3,7 +3,7 @@
     <h1 class="text-center text-h4">
       {{ event ? $tr(event.name, null, false) : '-' }} - {{ $tr('viewTypes.edit') }}
     </h1>
-    <!-- TODO -->
+    <EventForm @submit="submit" :event="event" v-if="event" />
   </q-page>
 </template>
 
@@ -13,9 +13,11 @@ import { EventFull } from 'src/types/event';
 
 import { defineComponent } from 'vue';
 import { $setTitle } from 'boot/custom';
+import EventForm from 'components/Admin/EventForm.vue';
 
 export default defineComponent({
   name: 'EditEvent',
+  components: { EventForm },
   computed: {
     event(): EventFull {
       // eslint-disable-next-line max-len
@@ -41,6 +43,22 @@ export default defineComponent({
     return {
       translationPrefix: 'admin.events.',
     };
+  },
+  methods: {
+    submit(formData: Record<string, string>) {
+      this.$bus.$emit('fullLoader', true);
+      this.$api({
+        url: `event/${this.eventId}`,
+        data: formData,
+        method: 'PUT',
+      }).then(async () => {
+        // Reload simple events storage
+        await this.$store.dispatch('events/load', [true, true]);
+        // TODO - alert
+      }).finally(() => {
+        this.$bus.$emit('fullLoader', false);
+      });
+    },
   },
 });
 </script>
