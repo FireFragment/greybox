@@ -60,7 +60,9 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { defaultLocale, Lang, langs } from 'src/translation/config';
+import {
+  defaultLocale, Lang, langs, primaryLocale,
+} from 'src/translation/config';
 import LanguageSelect from 'components/Form/LanguageSelect.vue';
 
 export default defineComponent({
@@ -77,7 +79,7 @@ export default defineComponent({
       default: 'text',
     },
     required: {
-      type: String as PropType<'none' | 'defaultLanguageOnly' | 'all'>,
+      type: String as PropType<'none' | 'primaryLanguageOnly' | 'currentLanguageOnly' | 'all'>,
       required: false,
       default: 'none',
     },
@@ -97,7 +99,9 @@ export default defineComponent({
   },
   computed: {
     isCurrentLocaleRequired() {
-      return this.required === 'all' || (this.required === 'defaultLanguageOnly' && this.currentLanguage === defaultLocale);
+      return this.required === 'all'
+        || (this.required === 'currentLanguageOnly' && this.currentLanguage === defaultLocale)
+        || (this.required === 'primaryLanguageOnly' && this.currentLanguage === primaryLocale);
     },
   },
   methods: {
@@ -112,8 +116,12 @@ export default defineComponent({
         return true;
       }
 
-      if (this.required === 'defaultLanguageOnly') {
+      if (this.required === 'currentLanguageOnly') {
         return this.modelValue[defaultLocale].length > 0 || <string> this.$tr('general.form.errors.nonEmptyLocale', { locale: defaultLocale }, false);
+      }
+
+      if (this.required === 'primaryLanguageOnly') {
+        return this.modelValue[primaryLocale].length > 0 || <string> this.$tr('general.form.errors.nonEmptyLocale', { locale: primaryLocale }, false);
       }
 
       const langWithError = langs.find((lang) => this.modelValue[lang].length === 0);
