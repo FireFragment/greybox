@@ -3,7 +3,7 @@
     <h1 class="text-center text-h4">
       {{ event ? $tr(event.name, null, false) : '-' }} - {{ $tr('viewTypes.editRoles') }}
     </h1>
-    <!-- TODO -->
+    Work in progress
   </q-page>
 </template>
 
