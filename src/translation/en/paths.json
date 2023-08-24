@@ -31,7 +31,7 @@
   },
   "admin": {
     "newEvent": "new-event",
-    "events": "tournaments",
+    "events": "events",
     "eventViewTypes": {
       "edit": "edit",
       "editRoles": "edit-roles",
