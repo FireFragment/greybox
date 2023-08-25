@@ -4,7 +4,6 @@
  * $Id: index.php,v 1.38 2006/08/23 17:07:33 che0 Exp $
  */
 
-include_once("lib/de_magic_quotes.inc");
 include_once("lib/config.inc.php");
 include_once("lib/cpykhen.inc");
 include_once("lib/dblink.inc");
