@@ -17,7 +17,7 @@ class OldGreyboxService
 
     public function __construct()
     {
-        $this->baseUrl = 'https://debatovani.cz/greybox/static.php?token=' . env('OLD_GREYBOX_SAFETY_TOKEN');
+        $this->baseUrl = 'https://statistiky.debatovani.cz/static.php?token=' . env('OLD_GREYBOX_SAFETY_TOKEN');
     }
 
     /**
