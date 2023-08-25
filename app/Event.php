@@ -128,4 +128,10 @@ class Event extends Model implements AuthenticatableContract, AuthorizableContra
         if ($this->pds) return true;
         return false;
     }
+
+    public function requiresMembership(): bool
+    {
+        if ($this->membership_required) return true;
+        return false;
+    }
 }

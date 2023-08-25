@@ -6,8 +6,10 @@ use App\Client;
 use App\Events\TeamsRegisteredEvent;
 use App\Invoice;
 use App\Mail\RegistrationConfirmation;
+use App\Objects\RegistrationGroup;
 use App\Registration;
 use App\Repositories\RegistrationRepository;
+use App\Services\PriceCalculatingService;
 use Fakturoid\Exception as FakturoidException;
 use http\Env\Response;
 use Illuminate\Http\Request;
@@ -30,6 +32,7 @@ class RegistrationController extends FakturoidController
         ]]);
 
         $this->repository = new RegistrationRepository();
+        $this->setFakturoidClient();
     }
 
     public function showAll()
@@ -130,8 +133,33 @@ class RegistrationController extends FakturoidController
 
     public function confirm($id, Request $request)
     {
+        $registration = Registration::findOrFail($id);
+        $event = $registration->event()->first();
+        $user = $registration->registeredBy()->first();
+
+        $registrationGroupQuery = [
+            ['registered_by', '=', $user->id],
+            ['event', '=', $event->id],
+            ['confirmed', '=', false]
+        ];
+
+        $registrationGroup = new RegistrationGroup($registration->where($registrationGroupQuery));
+
+        if ($registrationGroup->isEmpty()) {
+            return response()->json(['message' => 'noRegistration'], 404);
+        }
+
+        $calculator = new PriceCalculatingService($registrationGroup, $event);
+
+        $data = new \stdClass();
+        $data->invoiceLines = $calculator->getInvoiceLines();
+        $data->totalAmount = $calculator->getTotalPrice();
+
+        // Temporary just for testing purposes
+        return response()->json($data, 200);
+
         try {
-            $fc = $this->getFakturoidClient();
+            $fc = $this->fakturoidClient;
             $registration = Registration::findOrFail($id);
             $registrationGroup = $registration->getRegistrationGroup();
             $event = $registration->event()->first();
@@ -153,10 +181,12 @@ class RegistrationController extends FakturoidController
                 }
             }
 
+            // solved
             if (0 === count($registrationGroup)) {
                 return response()->json(['message' => 'noRegistration'], 404);
             }
             $invoice->setRegistrationFeeLines($registration->getQuantifiedRoles(), $event, $language);
+
             if ($event->membership_required) {
                 $invoice->setMembershipFeeLines($registrationGroup);
             }
@@ -203,7 +233,7 @@ class RegistrationController extends FakturoidController
             if (null !== $invoice) {
                 $invoiceId = $invoice->id;
             }
-            $registration->confirmRegistrationGroup($invoiceId);
+            //$registration->confirmRegistrationGroup($invoiceId);
 
             return response()->json($data, 200);
         } catch (\Illuminate\Database\QueryException $e) {

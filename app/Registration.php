@@ -57,7 +57,7 @@ class Registration extends Model implements AuthenticatableContract, Authorizabl
         return $this->belongsTo(Team::class, 'team', 'id');
     }
 
-    private function getRegistrationGroupQuery()
+    public function getRegistrationGroupQuery()
     {
         $user = $this->registeredBy()->first();
         $event = $this->event()->first();

@@ -2,15 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use Fakturoid\Client;
+
 abstract class FakturoidController extends Controller
 {
-    /*
-     * @return Fakturoid\Client
-     * TODO: To be deleted
+    /**
+     * @var Client
      */
-    public function getFakturoidClient()
+    protected $fakturoidClient;
+
+    /*
+     * @return Client
+     */
+    public function setFakturoidClient(): void
     {
-        return new \Fakturoid\Client(env('FAKTUROID_SLUG'), env('FAKTUROID_EMAIL'), env('FAKTUROID_API_KEY'), env('FAKTUROID_USER_AGENT'));
+        $this->fakturoidClient = new Client(
+            env('FAKTUROID_SLUG'),
+            env('FAKTUROID_EMAIL'),
+            env('FAKTUROID_API_KEY'),
+            env('FAKTUROID_USER_AGENT')
+        );
     }
 
     public function fillInvoiceData(array $data, $fakturoidInvoice)
