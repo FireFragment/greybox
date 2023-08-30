@@ -13,7 +13,7 @@ function cpdb_bind($query, $args = array()) {
 	$repl_from = $repl_to = array();
 	foreach ($args as $key => $value) {
 		$repl_from[] = $key;
-		
+
 		if (!is_int($value)) {
 			if ($value == "" || is_null($value)) {
 				$repl_to[] = "NULL";
@@ -24,7 +24,7 @@ function cpdb_bind($query, $args = array()) {
 			$repl_to[] = $value;
 		}
 	}
-	
+
 	// cpdb_achtung(str_replace($repl_from, $repl_to, $query));
 	return str_replace($repl_from, $repl_to, $query);
 }
@@ -40,13 +40,17 @@ function cpdb_fetch_one_value ($query, $args = array()) {
 	} else {
 		cpdb_achtung(mysqli_error());
 		return false;
-	}	
+	}
 }
 
 function cpdb_fetch_all ($query, $args, & $result, $primary_key = "__") {
 	$result = array();
 	$numres = 0;
-	
+
+	if (!$query) {
+		return [];
+	}
+
 	$my_res = mysqli_query($GLOBALS["dblink"], cpdb_bind($query, $args));
 	if ($my_res) {
 		while ($tres = mysqli_fetch_array($my_res)) {
@@ -62,7 +66,7 @@ function cpdb_fetch_all ($query, $args, & $result, $primary_key = "__") {
 	} else {
 		cpdb_achtung(mysqli_error($GLOBALS["dblink"]));
 	}
-	
+
 	return $numres;
 }
 
@@ -81,7 +85,7 @@ function cpdb_fetch_one_row ($query, $args, & $row) {
 		$row = NULL;
 		return false;
 	}
-	
+
 }
 
 function cpdb_exec($query, $args) {
