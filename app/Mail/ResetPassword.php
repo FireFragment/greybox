@@ -22,7 +22,7 @@ class ResetPassword extends Mailable
     public function __construct(string $token, bool $pds)
     {
         $this->token = $token;
-        $this->url = ($pds) ? 'https://debatovani.cz/pds/registration/' : 'https://debatovani.cz/greybox/registrace/';
+        $this->url = ($pds) ? 'https://debatovani.cz/pds/registration/' : 'https://greybox.debatovani.cz/';
     }
 
     /**
