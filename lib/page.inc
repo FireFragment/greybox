@@ -15,12 +15,13 @@ class pg_page {
 	var $login_block;
 	var $season_block;
 	var $pages;
+	var $page;
 	var $default_page;
 	
 	var $was_head;
 	var $achtungs;
 	
-	function pg_page() {
+	function __construct() {
 		$this->headers = array();
 		$this->links = array();
 		$this->pages = array();

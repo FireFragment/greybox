@@ -155,6 +155,7 @@ class BBCode {
 		$cpos = 0;
 		$parser_stack = array ();
 		$saved_newtext = '';
+		if (null === $text) $text = '';
 		// find first [ in the text
 		while (($npos = strpos ($text, '[', $cpos)) !== false) {
 			// put everything until now into the saved new text => it is not affected by bb code
@@ -536,6 +537,7 @@ class BBCode {
 			$cpos = $npos+1;
 		}
 		// copy last bits
+		if (null === $text) $text = '';
 		$saved_newtext .= substr ($text, $cpos);
 		// add saved new text to new text
 		$newtext .= $this->parse_text ($saved_newtext, $this->_parser_stack_last_elem ($parser_stack));

@@ -13,7 +13,7 @@ class cpykhen {
 	var $init_done; // internal, sat if the object is initialized
 	
 	// constructor
-	function cpykhen() {
+	function __construct() {
 		$this->form = array();
 		$this->form_attr = array("method"=>"post");
 		$this->init_done = false;
@@ -146,7 +146,7 @@ class cfutral {
 class cpf_text extends cfutral {
 	var $tx;
 	
-	function cpf_text($content, $attr = array()) {
+	function __construct($content, $attr = array()) {
 		$this->tx = $content;
 		$this->attr = $attr;
 	}
@@ -165,7 +165,7 @@ class cpf_db_link extends cfutral {
 	var $href;
 	var $tx;
 	
-	function cpf_db_link($field, $href, $tx) {
+	function __construct($field, $href, $tx) {
 		$this->field = $field;
 		$this->href = $href;
 		$this->tx = $tx;
@@ -188,7 +188,7 @@ class cpf_nl extends cfutral {
 class cpf_db_text extends cfutral {
 	var $transform; // text transform array
 	
-	function cpf_db_text($field, $attr = array(), $transform = array()) {
+	function __construct($field, $attr = array(), $transform = array()) {
 		$this->field = $field;
 		$this->attr = $attr;
 		$this->transform = $transform;
@@ -213,7 +213,7 @@ class cpf_db_text extends cfutral {
 class cpf_db_listbox_array extends cfutral {
 	var $domain;
 	
-	function cpf_db_listbox_array($name, $domain, $field = "__", $attr = array()) {
+	function __construct($name, $domain, $field = "__", $attr = array()) {
 		$this->attr = array_merge(array("name"=>$name), $attr);
 		$this->domain = $domain;
 		if ($field == "__") {
@@ -244,7 +244,7 @@ class cpf_db_listbox extends cpf_db_listbox_array {
 	var $select;
 	var $select_args;
 	
-	function cpf_db_listbox($name, $domain, $field = "__", $attr = array()) {
+	function __construct($name, $domain, $field = "__", $attr = array()) {
 		$this->attr = array_merge(array("name"=>$name), $attr);
 		$this->select = $domain[0];
 		$this->select_args = $domain[1];
@@ -268,7 +268,7 @@ class cpf_db_listbox extends cpf_db_listbox_array {
 // one line textbox
 class cpf_db_textbox extends cfutral {
 
-	function cpf_db_textbox($name, $field = "__", $attr = array()) {
+	function __construct($name, $field = "__", $attr = array()) {
 		$this->attr = array_merge(array("name"=>$name), $attr);
 		if ($field == "__") {
 			$this->field = $name;	
@@ -285,7 +285,7 @@ class cpf_db_textbox extends cfutral {
 // password field
 class cpf_db_password extends cfutral {
 
-	function cpf_db_password($name, $field = "__", $attr = array()) {
+	function __construct($name, $field = "__", $attr = array()) {
 		$this->attr = array_merge(array("name"=>$name), $attr);
 		if ($field == "__") {
 			$this->field = $name;	
@@ -302,7 +302,7 @@ class cpf_db_password extends cfutral {
 // textarea -- multi line text
 class cpf_db_textarea extends cfutral {
 
-	function cpf_db_textarea($name, $field = "__", $attr = array()) {
+	function __construct($name, $field = "__", $attr = array()) {
 		$this->attr = array_merge(array("name"=>$name), $attr);
 		if ($field == "__") {
 			$this->field = $name;	
@@ -312,6 +312,7 @@ class cpf_db_textarea extends cfutral {
 	}
 	
 	function render() {
+		if (null === $this->value) $this->value = '';
 		cph_tag("textarea", $this->attr, htmlspecialchars($this->value));
 	}
 }
@@ -320,7 +321,7 @@ class cpf_db_textarea extends cfutral {
 class cpf_hidden extends cfutral {
 	var $tx;
 	
-	function cpf_hidden($name, $value) {
+	function __construct($name, $value) {
 		$this->tx = $value;
 		$this->attr = array_merge(array("name"=>$name),$this->attr);
 	}
@@ -333,7 +334,7 @@ class cpf_hidden extends cfutral {
 // hidden form field
 class cpf_db_hidden extends cfutral {
 	
-	function cpf_db_hidden($name, $field = NULL) {
+	function __construct($name, $field = NULL) {
 		if ($field == NULL) {
 			$this->field = $name;
 		} else {
@@ -350,7 +351,7 @@ class cpf_db_hidden extends cfutral {
 // a button
 class cpf_button extends cfutral {
 	
-	function cpf_button($name,$caption) {
+	function __construct($name,$caption) {
 		$this->attr = array("name"=>$name, "value"=>$caption, "type"=>"submit");
 	}
 	

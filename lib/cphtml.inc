@@ -29,6 +29,7 @@ function cph_tag_end($name) {
 function cphs_tag_single($name, $attr = array()) {
 	$t =  "<" . $name;
 	foreach ($attr as $key => $value) {
+		if (null === $value) $value = '';
 		$t .= " " . $key . "=\"" . htmlspecialchars($value) . "\"";
 	}
 	$t .= " />";
