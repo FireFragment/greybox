@@ -16,8 +16,8 @@ $clovek_id = $_REQUEST["clovek_id"];
 $clovek_old = $_REQUEST["clovek_old"];
 $role = $_REQUEST["role"];
 $role_old = $_REQUEST["role_old"];
-$rozhodnuti = $_REQUEST["rozhodnuti"] - 1;
-$presvedcive = $_REQUEST["presvedcive"] - 1;
+$rozhodnuti = (int) $_REQUEST["rozhodnuti"] - 1;
+$presvedcive = (int) $_REQUEST["presvedcive"] - 1;
 
 if (!isset($_REQUEST["delete"])) switch ($role) {
 	case "r": // adjudicator
