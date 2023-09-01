@@ -49,7 +49,9 @@ if ($can_edit) {
 		$klub_f->form[] = new cpf_text($lang["application"] . ": ");
 		$klub_f->form[] = new cpf_db_listbox_array("prihlaska", array(1 => $lang['yes'], 0 => $lang['no']));
 		$klub_f->form[] = new cpf_nl;
-    }
+    } else {
+		$klub_f->form[] = new cpf_db_hidden("prihlaska","prihlaska");
+	}
 	$klub_f->form[] = new cpf_button("save",$lang["save"]);
 	//$klub_f->form[] = new cpf_button("delete",$lang["delete"]);
 	$klub_f->load_this($klub_p);
