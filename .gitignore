@@ -11,6 +11,8 @@ debugbox.zip
 registration.zip
 /build-debug
 build-debug.zip
+/greybox
+greybox.zip
 
 # local env files
 .env.local

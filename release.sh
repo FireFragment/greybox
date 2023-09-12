@@ -34,8 +34,8 @@ git push origin ${version}
 
 # ------------------- DELETE OLD BUILDS AND CREATE NEW ONES
 # Remove old builds
-rm -rf registrace build-debug registration
-rm -f registrace.zip build-debug.zip registration.zip
+rm -rf greybox build-debug registration
+rm -f greybox.zip build-debug.zip registration.zip
 
 # Build production & debug
 npm run build
@@ -46,12 +46,12 @@ npm run build:pds
 if ! command -v tar &> /dev/null
 then
     # tar command not found -> Windows
-    tar.exe -a -c -f registrace.zip registrace
+    tar.exe -a -c -f greybox.zip greybox
     tar.exe -a -c -f build-debug.zip build-debug
     tar.exe -a -c -f registration.zip registration
 else
     # tar command found -> Linux
-    tar -a -c -f registrace.zip registrace
+    tar -a -c -f greybox.zip greybox
     tar -a -c -f build-debug.zip build-debug
     tar -a -c -f registration.zip registration
 fi
@@ -95,7 +95,7 @@ releaseUploadUrl=${releaseUploadUrl%\{?name,label\}}
 printf "\nRelease created, uploading files...\n"
 
 # Choose which files with which labels to upload
-fileNames=("build-debug.zip" "registrace.zip" "registration.zip")
+fileNames=("build-debug.zip" "greybox.zip" "registration.zip")
 fileLabels=("Development%20build" "Production%20build" "PDS%20production%20build")
 
 # Loop through files to upload
@@ -127,5 +127,5 @@ done
 
 
 # ------------------- CLEAR FOLDER FROM BUILDS
-rm -rf registrace build-debug registration
-rm -f registrace.zip build-debug.zip registration.zip
+rm -rf greybox build-debug registration
+rm -f greybox.zip build-debug.zip registration.zip
