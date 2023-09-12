@@ -102,6 +102,7 @@
           </div>
         </q-card>
       </q-form>
+      <SupportBanner />
     </div>
   </q-page>
 </template>
@@ -109,6 +110,7 @@
 <script>
 /* eslint-disable */
 import { $tr, $flash } from '../../boot/custom';
+import SupportBanner from 'components/SupportBanner.vue';
 
 export const outputValidationErrors = (data) => {
   if (!data) {
@@ -152,6 +154,7 @@ export const outputValidationErrors = (data) => {
 
 export default {
   name: 'PageSignUp',
+  components: { SupportBanner },
   data() {
     return {
       translationPrefix: 'auth.',

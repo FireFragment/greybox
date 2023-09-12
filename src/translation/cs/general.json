@@ -11,6 +11,7 @@
   "error": "Vyskytla se chyba, opakujte akci později",
   "loginNeeded": "Pro příhlašení na debatní akci je nutné se nejdříve přihlásit do registračního systému.",
   "noAccountYet": "Ještě nemáte účet? Zaregistrujte se!",
+  "help": "V případě technických problémů nás prosím kontaktujte na",
   "confirmModal": {
     "title": "Potvrďte akci",
     "confirm": "Potvrdit",

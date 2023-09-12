@@ -11,6 +11,7 @@
   "error": "An error has occured, please try again later",
   "loginNeeded": "To register for a debating event, you need to login to the registration system first.",
   "noAccountYet": "Don't have an account yet? Sign up!",
+  "help": "If you are experiencing technical difficulties, reach out at",
   "confirmModal": {
     "title": "Confirm action",
     "confirm": "Confirm",
