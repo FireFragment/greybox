@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Objects\RegistrationGroup;
 use Illuminate\Auth\Authenticatable;
 use Laravel\Lumen\Auth\Authorizable;
 use Illuminate\Database\Eloquent\Model;
@@ -68,9 +69,18 @@ class Registration extends Model implements AuthenticatableContract, Authorizabl
         ]);
     }
 
-    public function getRegistrationGroup()
+    public function getRegistrationGroup(): RegistrationGroup
     {
-        return $this->getRegistrationGroupQuery()->get();
+        $event = $this->event()->first();
+        $user = $this->registeredBy()->first();
+
+        $registrationGroupQuery = [
+            ['registered_by', '=', $user->id],
+            ['event', '=', $event->id],
+            ['confirmed', '=', false]
+        ];
+
+        return new RegistrationGroup(self::where($registrationGroupQuery));
     }
 
     public function getQuantifiedRoles()

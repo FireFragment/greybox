@@ -4,7 +4,9 @@ namespace App\Services;
 
 use App\Event,
     App\Events\MembershipInvoiced,
-    App\Objects\RegistrationGroup;
+    App\Objects\InvoiceLine,
+    App\Objects\RegistrationGroup,
+    App\Price;
 use Illuminate\Support\Facades\Event as EventFacade;
 
 class PriceCalculatingService
@@ -15,9 +17,7 @@ class PriceCalculatingService
     /* @var Event */
     private $event;
 
-    /* @var \App\Price[]
-     * maybe unnecessary
-     */
+    /* @var Price[] */
     private $priceList;
 
     /* @var bool */
@@ -36,6 +36,9 @@ class PriceCalculatingService
         $this->priceList = $event->prices()->get();
 
         $this->calculateRegistrationFees($lang);
+        $this->calculateAccommodationFees($lang);
+        $this->calculateMealsFees($lang);
+        $this->calculateMembershipFees($lang);
     }
 
     public function getTotalPrice(): float
@@ -50,11 +53,40 @@ class PriceCalculatingService
 
     private function calculateRegistrationFees($lang): void
     {
-        foreach ($this->priceList as $price)
+        $prices = $this->priceList->where('type', 'fee');
+        foreach ($prices as $price)
         {
             $peopleCount = $this->group->countPeopleByRole($price->role);
             if (0 < $peopleCount) {
-                $invoiceLine = new \App\Objects\InvoiceLine($price, $peopleCount, $lang);
+                $invoiceLine = new InvoiceLine($price, $peopleCount, $lang);
+                $this->totalPrice += $invoiceLine->total_price;
+                $this->invoiceLines[] = $invoiceLine;
+            }
+        }
+    }
+
+    private function calculateAccommodationFees($lang): void
+    {
+        $prices = $this->priceList->where('type', 'accommodation');
+        foreach ($prices as $price)
+        {
+            $peopleCount = $this->group->countAccommodatedPeopleByRole($price->role);
+            if (0 < $peopleCount) {
+                $invoiceLine = new InvoiceLine($price, $peopleCount, $lang);
+                $this->totalPrice += $invoiceLine->total_price;
+                $this->invoiceLines[] = $invoiceLine;
+            }
+        }
+    }
+
+    private function calculateMealsFees($lang): void
+    {
+        $prices = $this->priceList->where('type', 'meals');
+        foreach ($prices as $price)
+        {
+            $peopleCount = $this->group->countEatingPeopleByRole($price->role);
+            if (0 < $peopleCount) {
+                $invoiceLine = new InvoiceLine($price, $peopleCount, $lang);
                 $this->totalPrice += $invoiceLine->total_price;
                 $this->invoiceLines[] = $invoiceLine;
             }
@@ -77,8 +109,12 @@ class PriceCalculatingService
         }
 
         if (0 < $membershipCount) {
-            $invoiceLine = new \App\Objects\InvoiceLine('Členství v České asociaci studentů', $peopleCount, $this->event->membership_fee, $lang);
+            // TODO: create DB seeder
+            $membershipPrice = Price::find(1);
+
+            $invoiceLine = new InvoiceLine($membershipPrice, $membershipCount, $lang, false);
             $this->totalPrice += $invoiceLine->total_price;
             $this->invoiceLines[] = $invoiceLine;
+        }
     }
 }

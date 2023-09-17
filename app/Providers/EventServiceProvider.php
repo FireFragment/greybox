@@ -23,6 +23,7 @@ class EventServiceProvider extends ServiceProvider
         ],
         \App\Events\RegistrationConfirmed::class => [
             \App\Listeners\SendRegistrationConfirmationEmail::class,
+            \App\Listeners\ConfirmRegistrationAndLinkInvoice::class,
         ],
         \App\Events\MembershipInvoiced::class => [
             \App\Listeners\CreateOrProlongMembership::class,

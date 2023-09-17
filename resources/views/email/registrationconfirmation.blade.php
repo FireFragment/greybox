@@ -4,14 +4,23 @@
 <ul>
     @foreach ($people as $role => $teams)
     <li>{{ $role }}:
-        @foreach ($teams as $people)
+        @if (count($teams) > 1)
+            <ul>
+        @endif
+        @foreach ($teams as $name => $people)
+            @unless ('emptyTeamName' === $name)
+                <li>{{ $name }}:
+            @endunless
             @foreach ($people as $person)
-                {{ $person }}
-                @unless ($loop->last)
-                    ,
-                @endunless
+                {{ $person }}@unless ($loop->last),@endunless
             @endforeach
+            @unless ('emptyTeamName' === $name)
+                </li>
+            @endunless
         @endforeach
+        @if (count($teams) > 1)
+            </ul>
+        @endif
     </li>
     @endforeach
 </ul>

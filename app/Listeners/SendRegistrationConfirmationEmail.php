@@ -29,15 +29,16 @@ class SendRegistrationConfirmationEmail implements ShouldQueue
     public function handle(RegistrationConfirmed $event)
     {
         $registration = $event->registration;
+        $invoice = $event->invoice;
         $user = $registration->registeredBy()->first();
+        if (null !== $event->language) {
+            $language = $event->language;
+        } else {
+            $language = $user->preferredLocale();
+        }
 
-        $language = $user->preferredLocale();
         $event = $registration->event()->first();
-        // TODO: Vytvořit registration group a přidat do něj všechny registrace, které mají stejný event a jsou vytvořeny v rámci jednoho requestu
-        $person = $registration->person()->first();
-        $people['Organizátor']['emptyTeamName'][] = $person->name . ' ' . $person->surname;
-        // TODO: Převzít invoice z RegistrationConfirmed eventu
-        $invoice = null;
+        $people = $registration->getRegistrationGroup()->getPeopleForEmail($language);
 
         $mailer = Mail::mailer('default');
         if ($event->isPds()) {
@@ -45,8 +46,6 @@ class SendRegistrationConfirmationEmail implements ShouldQueue
         }
         $bccRecipients = $this->registrationRepository->getConfirmationEmailBccRecipients($event);
 
-        // TODO: vyřešit jak nastavit locale pouze pro email / případně jak používat locale vůbec
-        // app('translator')->setLocale($language); // Uvidíme, jestli bude potřeba. Viz. https://laravel.com/docs/5.4/localization#introduction
-        $mailer->bcc($bccRecipients)->send(new RegistrationConfirmation($language, $event, $people, $invoice));
+        $mailer->to($user->username)->bcc($bccRecipients)->send(new RegistrationConfirmation($language, $event, $people, $invoice));
     }
 }

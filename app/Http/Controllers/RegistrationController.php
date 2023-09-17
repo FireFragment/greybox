@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Client;
+use App\Events\RegistrationConfirmed;
 use App\Events\TeamsRegisteredEvent;
 use App\Invoice;
 use App\Mail\RegistrationConfirmation;
@@ -13,6 +14,7 @@ use App\Services\PriceCalculatingService;
 use Fakturoid\Exception as FakturoidException;
 use http\Env\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Event as EventFacade;
 use Illuminate\Support\Facades\Mail;
 
 class RegistrationController extends FakturoidController
@@ -137,23 +139,51 @@ class RegistrationController extends FakturoidController
         $event = $registration->event()->first();
         $user = $registration->registeredBy()->first();
 
-        $registrationGroupQuery = [
-            ['registered_by', '=', $user->id],
-            ['event', '=', $event->id],
-            ['confirmed', '=', false]
-        ];
-
-        $registrationGroup = new RegistrationGroup($registration->where($registrationGroupQuery));
+        $registrationGroup = $registration->getRegistrationGroup();
 
         if ($registrationGroup->isEmpty()) {
             return response()->json(['message' => 'noRegistration'], 404);
         }
 
-        $calculator = new PriceCalculatingService($registrationGroup, $event);
+        $language = $request->input('lang', $user->preferredLocale());
+
+        $calculator = new PriceCalculatingService($registrationGroup, $event, $language);
 
         $data = new \stdClass();
         $data->invoiceLines = $calculator->getInvoiceLines();
         $data->totalAmount = $calculator->getTotalPrice();
+
+        $invoice = null;
+
+        if ($data->totalAmount >= 0) {
+            if ($request->has('client')) {
+                $client = Client::findOrFail($request->input('client'));
+            } else {
+                // TODO: default client, nebo pořadí, nebo podle aktuálnosti?
+                $client = $user->clients()->first();
+                if ($client === null) {
+                    $client = new Client();
+                    $client->createFakturoidSubject($user);
+                }
+            }
+            $data->client = $client;
+
+            $invoice = new Invoice();
+            $invoice->setDue(strtotime($event->soft_deadline));
+            $invoice->setLanguage($language);
+            $invoice->addUpToTotalAmount($data->totalAmount);
+            $invoice->addLines($data->invoiceLines);
+            $invoice->client = $client;
+            $invoice->taxable_fulfillment_due = $event->end;
+            $invoice->setTextNew($event->invoiceTextTranslation()->first());
+            $invoice->createFakturoidInvoice();
+            $invoice->setFullUrls($this->fakturoidClient);
+            $data->invoice = $invoice;
+        }
+
+        EventFacade::dispatch(new RegistrationConfirmed($registration, $language, $invoice));
+
+
 
         // Temporary just for testing purposes
         return response()->json($data, 200);
@@ -164,9 +194,13 @@ class RegistrationController extends FakturoidController
             $registrationGroup = $registration->getRegistrationGroup();
             $event = $registration->event()->first();
             $data = new \stdClass();
+
             $invoice = new Invoice();
             $invoice->setDue(strtotime($event->soft_deadline));
+
             $user = $registration->registeredBy()->first();
+
+            // solved
             $language = $user->preferredLocale();
             if ($request->has('lang'))
             {
@@ -186,16 +220,19 @@ class RegistrationController extends FakturoidController
                 return response()->json(['message' => 'noRegistration'], 404);
             }
             $invoice->setRegistrationFeeLines($registration->getQuantifiedRoles(), $event, $language);
-
             if ($event->membership_required) {
                 $invoice->setMembershipFeeLines($registrationGroup);
             }
+
             /*if ($event->pds)
             {
                 $invoice->setMissingAdjudicatorFeeLine($registration->countTeams(), $registration->countAdjudicators());
             }*/
+
+            // TODO
             $people = $invoice->getPeopleListForEmail($registrationGroup, $language);
 
+            // solved
             $data->invoiceLines = $invoice->lines;
             $data->totalAmount = $invoice->getTotalAmount();
 
@@ -224,11 +261,13 @@ class RegistrationController extends FakturoidController
                 $invoice = null;
             }
 
+            // TODO
             $bccRecipients = $this->repository->getConfirmationEmailBccRecipients($event);
             // TODO: vyřešit jak nastavit locale pouze pro email / případně jak používat locale vůbec
             app('translator')->setLocale($language);
             Mail::to($user->username)->bcc($bccRecipients)->send(new RegistrationConfirmation($language, $event, $people, $invoice));
 
+            // TODO
             $invoiceId = null;
             if (null !== $invoice) {
                 $invoiceId = $invoice->id;

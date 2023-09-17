@@ -40,6 +40,26 @@ class RegistrationGroup
     }
 
     /**
+     * Returns number of accommodated people in the group with given role
+     * @param int $roleId
+     * @return int
+     */
+    public function countAccommodatedPeopleByRole(int $roleId): int
+    {
+        return $this->registrations->where('accommodation', true)->where('role', $roleId)->count();
+    }
+
+    /**
+     * Returns number of people who ordered meals in the group with given role
+     * @param int $roleId
+     * @return int
+     */
+    public function countEatingPeopleByRole(int $roleId): int
+    {
+        return $this->registrations->where('meals', true)->where('role', $roleId)->count();
+    }
+
+    /**
      * @return Person[]
      */
     public function getPeople(): array
@@ -57,5 +77,28 @@ class RegistrationGroup
         foreach ($this->registrations as $registration) {
             $this->people[] = $registration->person()->first();
         }
+    }
+
+    public function update(int $invoiceId = null): void
+    {
+        $this->builder->update([
+            'confirmed' => true,
+            'invoice' => $invoiceId
+        ]);
+    }
+
+    /**
+     * @return array
+     */
+    public function getPeopleForEmail($lang = 'cs'): array
+    {
+        $people = array();
+        foreach ($this->registrations as $registration) {
+            $person = $registration->person()->first();
+            $role = $registration->role()->first()->translation()->first()->$lang;
+            $team = $registration->team()->first()->name ?? 'emptyTeamName';
+            $people[$role][$team][] = $person->name . ' ' . $person->surname;
+        }
+        return $people;
     }
 }

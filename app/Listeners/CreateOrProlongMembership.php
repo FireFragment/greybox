@@ -16,16 +16,18 @@ class CreateOrProlongMembership implements ShouldQueue
      */
     public function handle(MembershipInvoiced $event)
     {
+        $endDate = Membership::setEndDate(date('Y'), date('n'));
+
         if (null === $event->membership) {
             Membership::create([
                 'person' => $event->person->id,
                 'beginning' => date('Y-m-d'),
-                'end' => Membership::setEndDate(date('Y'), date('n'))
+                'end' => $endDate
             ]);
             return;
         }
         $event->membership->update([
-            'end' => Membership::setEndDate(date('Y'), date('n'))
+            'end' => $endDate
         ]);
     }
 }

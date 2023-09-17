@@ -116,17 +116,34 @@ class Invoice extends Model implements AuthenticatableContract, AuthorizableCont
         ];
     }
 
+    public function addLines(array $lines)
+    {
+        $this->lines = $lines;
+    }
+
     public function setText(String $text): void
     {
         $this->text = $text;
     }
 
-    public function setLanguage(string $lang): void
+    public function setTextNew(Translation $text = null): void
     {
-        $this->language = $lang;
+        if (null !== $text) {
+            if ($this->language = 'cz') {
+                $this->text = $text->cs;
+            } else {
+                $this->text = $text->en;
+            }
+        }
     }
 
-    private function addUpToTotalAmount($addition)
+    public function setLanguage(string $language): void
+    {
+        if ('cs' === $language) $language = 'cz';
+        $this->language = $language;
+    }
+
+    public function addUpToTotalAmount($addition)
     {
         $this->totalAmount = $this->totalAmount + $addition;
     }

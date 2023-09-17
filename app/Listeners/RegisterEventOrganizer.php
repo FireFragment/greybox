@@ -24,7 +24,7 @@ class RegisterEventOrganizer
             'person' => $user->person()->first()->id,
             'event' => $organizedEvent->id,
             'role' => env('ORGANIZER_ROLE_ID'),
-            'confirmed' => true,
+            'confirmed' => false,
             'registered_by' => $user->id
         ]);
 

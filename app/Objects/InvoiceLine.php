@@ -34,7 +34,7 @@ class InvoiceLine
     /* @var string */
     public $currency;
 
-    public function __construct(Price $price, int $quantity, string $lang = 'cs')
+    public function __construct(Price $price, int $quantity, string $lang = 'cs', bool $showRole = true)
     {
         $this->quantity = $quantity;
         $this->unit_price = $price->getAmount();
@@ -42,7 +42,7 @@ class InvoiceLine
 
         $this->calculateTotalPrice();
         $this->setUnitName($lang);
-        $this->setName($price, $lang);
+        $this->setName($price, $lang, $showRole);
     }
 
     private function calculateTotalPrice(): void
@@ -68,12 +68,14 @@ class InvoiceLine
         }
     }
 
-    private function setName(Price $price, string $lang = 'cs'): void
+    private function setName(Price $price, string $lang, bool $showRole): void
     {
-        $role = $price->role()->first();
-        if (null !== $role) {
-            $this->name = strtolower($role->translation()->first()->$lang);
-            $this->name .= ' - ';
+        if ($showRole) {
+            $role = $price->role()->first();
+            if (null !== $role) {
+                $this->name = strtolower($role->translation()->first()->$lang);
+                $this->name .= ' - ';
+            }
         }
         $this->name .= strtolower($price->translation()->first()->$lang);
     }

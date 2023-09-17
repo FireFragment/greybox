@@ -18,9 +18,10 @@ This project requires [Composer](https://getcomposer.org/) to build the code. On
 To start the application run:
 - `php artisan migrate` to run migrate the DB
 - `php -S localhost:8000 -t public` to start the server
+- `php artisan queue:work` to start the queue worker
 
-## Deployment
-Production and Staging deployment on [Heroku](http://heroku.com/) is recommended.
+### Database
+Price with ID 1 for membership fee needs to be created manually. 
 
-### Tests
+## Tests
 To test the code run `.\vendor\bin\phpunit tests`.
