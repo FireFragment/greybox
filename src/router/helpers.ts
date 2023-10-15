@@ -90,3 +90,21 @@ export const findValueInNestedObject = (obj: Translations | string, value: strin
     } else if (curr === value) return `${path}${elem}`;
   }
 };
+
+export const getNowFormatted = (): string => {
+  const d = new Date();
+
+  return (
+    `${[
+      d.getFullYear(),
+      (`0${d.getMonth() + 1}`).substr(-2),
+      (`0${d.getDate()}`).substr(-2),
+    ].join('-')
+    } ${
+      [
+        (`0${d.getHours()}`).substr(-2),
+        (`0${d.getMinutes()}`).substr(-2),
+        (`0${d.getSeconds()}`).substr(-2),
+      ].join(':')}`
+  );
+};

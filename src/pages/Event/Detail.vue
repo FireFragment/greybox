@@ -66,6 +66,7 @@
         </div>
 
         <q-btn
+          v-if="event.hard_deadline >= now"
           class="hidden-link q-my-lg"
           :to="$translatedRouteLink({
             name: 'event-pick-type',
@@ -82,7 +83,7 @@
         <p class="wysiwyg-content text-left" v-if="event.note" v-html="$tr(event.note)" />
 
         <q-btn
-          v-if="event.note"
+          v-if="event.note && event.hard_deadline >= now"
           class="hidden-link q-my-lg"
           :to="$translatedRouteLink({
             name: 'event-pick-type',
@@ -106,6 +107,7 @@ import { Event } from 'src/types/event';
 import { date } from 'quasar';
 import { TranslationPrefixData } from 'boot/i18n';
 import EventDate from 'components/Event/EventDate.vue';
+import { getNowFormatted } from 'src/router/helpers';
 
 export default defineComponent({
   name: 'Detail',
@@ -124,6 +126,9 @@ export default defineComponent({
     };
   },
   computed: {
+    now() {
+      return getNowFormatted();
+    },
     event(): Event {
       // eslint-disable-next-line max-len
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
