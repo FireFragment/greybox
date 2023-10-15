@@ -1,5 +1,6 @@
 {
   "link": "Tournaments",
+  "linkClosed": "Closed tournaments",
   "title": "Register for",
   "empty": "No events are available at the moment",
   "deadline": "Registration deadline",

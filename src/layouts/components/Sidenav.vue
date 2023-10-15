@@ -43,6 +43,33 @@
         {{ $tr('event.empty') }}
       </div>
 
+      <div v-if="Object.keys(eventsClosed).length">
+        <q-item-label header>{{ $tr('event.linkClosed') }}</q-item-label>
+      </div>
+      <q-item
+          v-for="event in eventsClosed"
+          v-bind:key="event.id"
+          :class="
+            // Needed for switching locales
+            ($route.name === 'event' || $route.meta?.translationName === 'event')
+            && parseInt($route.params.id) === event.id
+              ? 'q-router-link--active'
+              : ''
+          "
+          :to="$translatedRouteLink({
+            name: 'event',
+            params: {
+              id: event.id
+            },
+          })">
+        <q-item-section avatar>
+          <q-icon name="fas fa-trophy" />
+        </q-item-section>
+        <q-item-section>
+          <q-item-label>{{ $tr(event.name) }}</q-item-label>
+        </q-item-section>
+      </q-item>
+
       <template v-if="$auth.isAdmin() || ($auth.user()?.organizedEventsIds ?? []).length">
         <q-item-label header>
           {{ $tr($auth.isAdmin() ? 'admin.title' : 'event.types.organizer') }}
@@ -207,7 +234,11 @@ export default defineComponent({
   computed: {
     events(): Event[] {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      return <Event[]> this.$store.getters['events/eventsCurrent'];
+      return <Event[]> this.$store.getters['events/eventsBeforeRegistration'];
+    },
+    eventsClosed(): Event[] {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      return <Event[]> this.$store.getters['events/eventsClosed'];
     },
   },
   async created() {

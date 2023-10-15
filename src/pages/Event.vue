@@ -4,7 +4,7 @@
     <HeaderCard v-if="!isInitialPage" :event="event" />
 
     <!-- After deadline -->
-    <div v-if="event.hard_deadline < now" class="row justify-center">
+    <div v-if="event.hard_deadline < now" class="row justify-center q-pb-md">
       <div class="col-12 col-md-4">
         <q-banner class="bg-primary text-white q-mt-xl">
           <template v-slot:avatar>
@@ -14,7 +14,8 @@
         </q-banner>
       </div>
     </div>
-    <div v-else-if="!isInitialPage && !event.fullyLoaded" class="row justify-center">
+
+    <div v-if="!isInitialPage && !event.fullyLoaded" class="row justify-center">
       <div class="col-12 col-md-6">
         <q-banner class="bg-primary text-white q-mt-xl">
           <template v-slot:avatar>
@@ -53,6 +54,7 @@ import { defineComponent } from 'vue';
 import type { RouteRecordName } from 'vue-router';
 import HeaderCard from 'components/Event/HeaderCard.vue';
 import { $setTitle } from 'boot/custom';
+import { getNowFormatted } from 'src/router/helpers';
 
 export default defineComponent({
   name: 'Event',
@@ -99,21 +101,7 @@ export default defineComponent({
 
   computed: {
     now() {
-      const d = new Date();
-
-      return (
-        `${[
-          d.getFullYear(),
-          (`0${d.getMonth() + 1}`).substr(-2),
-          (`0${d.getDate()}`).substr(-2),
-        ].join('-')
-        } ${
-          [
-            (`0${d.getHours()}`).substr(-2),
-            (`0${d.getMinutes()}`).substr(-2),
-            (`0${d.getSeconds()}`).substr(-2),
-          ].join(':')}`
-      );
+      return getNowFormatted()
     },
     ...mapGetters('events', {
       simpleEvent: 'event',
