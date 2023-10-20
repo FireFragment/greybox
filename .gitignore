@@ -1,0 +1,84 @@
+/odznacky
+/teze
+/lib/config.inc.php
+/languages/relnotes_cz.inc
+/languages/relnotes_en.inc
+/_install/1.sql
+/_install/debatovanicz.sql
+/_install/cisla.xlsx
+/_install/Novy1.sql
+/_install/Novy2.sql
+/_install/Novy3.sql
+/registrace/admin.php
+registrace/teams.php
+
+# Lumen
+# ========================
+
+/vendor
+/.idea
+Homestead.json
+Homestead.yaml
+.env
+.env.prod
+/public/invoices/*.pdf
+/public/qrs/*.png
+.phpunit.result.cache
+/storage/
+
+# Temporarily
+# /database/migrations
+
+
+# Nette
+# =========================
+
+/temp
+/log
+/vendor
+robots.txt
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
+
+# =========================
+# Operating System Files
+# =========================
+
+# OSX
+# =========================
+
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+static.php
