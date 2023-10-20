@@ -15,7 +15,7 @@
         "rikudou/czqrpayment": "^5.3",
         "endroid/qr-code": "^4.4.1",
         "bugsnag/bugsnag-laravel": "^2.21.0",
-        "league/flysystem-aws-s3-v3": "^1.0",
+        "league/flysystem-aws-s3-v3": "^3.16",
         "illuminate/mail": "^9.52"
     },
     "require-dev": {
