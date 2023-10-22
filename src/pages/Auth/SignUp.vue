@@ -131,16 +131,11 @@ export const outputValidationErrors = (data) => {
 
     messages.forEach((message) => {
       // Convert message path to actual error message
-      const translated = $tr(
-        `auth.signUp.validation.${
-          index
-        }.${
-          message.includes('validation.')
-            ? message.substr(11).replace('.', '-')
-            : message
-        }`,
-        null, false,
-      );
+      const messageId = message.includes('validation.')
+        ? message.substring('validation.'.length).replace('.', '-')
+        : message;
+
+      const translated = $tr(`validation.${index}.${messageId}`, null, false);
 
       $flash(
         typeof translated === 'string' ? translated : $tr('general.error', null, false),
