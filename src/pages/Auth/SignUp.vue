@@ -102,6 +102,27 @@
           </div>
         </q-card>
       </q-form>
+      <div class="col-12">
+        <div class="row q-col-gutter-md">
+          <div class="col-12 col-sm-6 tw-mx-auto">
+            <div class="q-mx-sm">
+              <q-banner class="bg-primary text-white">
+                <template v-slot:avatar>
+                  <q-icon name="fas fa-key" color="white" class="!tw-text-2xl tw-h-10"/>
+                </template>
+                <div class="tw-py-2">
+                  {{ $tr('signUp.password.title') }}
+                  <ul class="tw-pl-6">
+                    <li v-for="item in $tr('signUp.password.list')" v-bind:key="item">
+                      {{ item }}
+                    </li>
+                  </ul>
+                </div>
+              </q-banner>
+            </div>
+          </div>
+        </div>
+      </div>
       <SupportBanner />
     </div>
   </q-page>

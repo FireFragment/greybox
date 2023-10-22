@@ -3,7 +3,7 @@
     <div class="q-mx-sm">
       <q-banner class="bg-primary text-white">
         <template v-slot:avatar>
-          <q-icon name="fas fa-info" color="white"/>
+          <q-icon name="fas fa-info" color="white" class="!tw-text-2xl tw-h-10"/>
         </template>
         {{ $tr('general.help', null, false) }}
         <a href="mailto:info@debatovani.cz" class="!tw-text-white">info@debatovani.cz</a>.
