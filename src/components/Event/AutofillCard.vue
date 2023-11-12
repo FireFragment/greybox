@@ -2,7 +2,7 @@
   <q-list
     class="rounded-borders shadow-2 q-pb-sm bg-white autofill-sticky-card"
   >
-    <q-scroll-area>
+    <q-scroll-area :class="{ small: !notRegisteredPeople.length && !showLoading }">
       <q-item-label header>{{ $tr("title") }}</q-item-label>
       <div
         class="empty-info"
