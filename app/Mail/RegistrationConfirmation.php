@@ -52,6 +52,10 @@ class RegistrationConfirmation extends Mailable
             $this->mailFromAddress = $this->replyToAddress = env('PDS_MAIL_FROM_ADDRESS');
             $this->mailFromName = $this->replyToName = env('PDS_MAIL_FROM_NAME');
         }
+        if ($event->isEurosdc()) {
+            $this->mailFromAddress = $this->replyToAddress = env('EUROSDC_MAIL_FROM_ADDRESS');
+            $this->mailFromName = $this->replyToName = env('EUROSDC_MAIL_FROM_NAME');
+        }
         if (null !== $event->reply_email) {
             $this->replyToAddress = $event->reply_email;
         }

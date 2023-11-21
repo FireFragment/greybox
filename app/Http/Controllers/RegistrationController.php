@@ -194,10 +194,18 @@ class RegistrationController extends FakturoidController
                 $invoice = null;
             }
 
+            $mailer = Mail::mailer('default');
+            if ($event->isPds()) {
+                $mailer = Mail::mailer('pds');
+            }
+            if ($event->isEurosdc()) {
+                $mailer = Mail::mailer('eurosdc');
+            }
+
             $bccRecipients = $this->repository->getConfirmationEmailBccRecipients($event);
             // TODO: vyřešit jak nastavit locale pouze pro email / případně jak používat locale vůbec
             app('translator')->setLocale($language);
-            Mail::to($user->username)->bcc($bccRecipients)->send(new RegistrationConfirmation($language, $event, $people, $invoice));
+            $mailer->to($user->username)->bcc($bccRecipients)->send(new RegistrationConfirmation($language, $event, $people, $invoice));
 
             $invoiceId = null;
             if (null !== $invoice) {

@@ -109,7 +109,7 @@ class EventController extends Controller
             }
 
             $event = Event::create([
-                'pds' => $request->input('pds', 0),
+                'organizer' => $request->input('organizer', 'adk'),
                 'competition' => $request->input('competition'),
                 'finals' => $request->input('finals', 0),
                 'name' => $nameTranslation->id,
@@ -146,7 +146,7 @@ class EventController extends Controller
             $event = Event::findOrFail($id);
             $this->authorize('update', $event);
 
-            if ($request->has('pds')) $this->updateColumn($event, 'pds', $request->input('pds'));
+            if ($request->has('organizer')) $this->updateColumn($event, 'organizer', $request->input('organizer'));
             if ($request->has('competition')) $this->updateColumn($event, 'competition', $request->input('competition'));
             if ($request->has('finals')) $this->updateColumn($event, 'finals', $request->input('finals'));
             if ($request->has('name_cs')) {

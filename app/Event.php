@@ -18,7 +18,7 @@ class Event extends Model implements AuthenticatableContract, AuthorizableContra
      * @var array
      */
     protected $fillable = [
-        'pds',
+        'organizer',
         'competition',
         'finals',
         'name',
@@ -125,7 +125,13 @@ class Event extends Model implements AuthenticatableContract, AuthorizableContra
 
     public function isPds(): bool
     {
-        if ($this->pds) return true;
+        if ('pds' === $this->organizer) return true;
+        return false;
+    }
+
+    public function isEurosdc(): bool
+    {
+        if ('eurosdc' === $this->organizer) return true;
         return false;
     }
 }

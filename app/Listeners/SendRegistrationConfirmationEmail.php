@@ -43,6 +43,9 @@ class SendRegistrationConfirmationEmail implements ShouldQueue
         if ($event->isPds()) {
             $mailer = Mail::mailer('pds');
         }
+        if ($event->isEurosdc()) {
+            $mailer = Mail::mailer('eurosdc');
+        }
         $bccRecipients = $this->registrationRepository->getConfirmationEmailBccRecipients($event);
 
         // TODO: vyřešit jak nastavit locale pouze pro email / případně jak používat locale vůbec
