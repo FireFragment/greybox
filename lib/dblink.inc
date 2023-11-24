@@ -9,7 +9,8 @@ $nodb = "no database" . (@$GLOBALS["embed"] ? "_embed" : "");
 $GLOBALS["dblink"] = mysqli_connect(
 	$GLOBALS["cp_config"]["db_server"],
 	$GLOBALS["cp_config"]["db_user"],
-	$GLOBALS["cp_config"]["db_password"], $GLOBALS["cp_config"]["db_database"]
+	$GLOBALS["cp_config"]["db_password"],
+	$GLOBALS["cp_config"]["db_database"]
 	/*or die(sprintf($GLOBALS["cp_config"][$nodb],mysql_error()))*/);
 
 //@mysql_select_db ($GLOBALS["cp_config"]["db_database"], $GLOBALS["dblink"])

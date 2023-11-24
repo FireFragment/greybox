@@ -121,7 +121,7 @@ class BBCode {
 			return array ('default' => $attr_string);
 		}
 		if ($sep == ':') {
-			if ($attr_string{0} == ' ') {
+			if ($attr_string[0] == ' ') {
 				// remove space
 				return array ('default' => substr ($attr_string, 1));
 			}
@@ -169,7 +169,7 @@ class BBCode {
 			// get tag contents
 			$tag_contents = substr ($text, $npos+1, $npos2-$npos-1);
 			// if this is a closing tag
-			if ($tag_contents{0} == '/') {
+			if ($tag_contents[0] == '/') {
 				$tag_contents = substr ($tag_contents, 1);
 				// if the tag is not a closing tag
 				if (!in_array ($tag_contents, $this->code_names)) {

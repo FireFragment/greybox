@@ -1,7 +1,7 @@
 -- MySQL dump 8.23
 --
 -- Host: localhost    Database: greybox
----------------------------------------------------------
+-- -------------------------------------------------------
 -- Server version	3.23.58
 
 --
@@ -15,7 +15,7 @@ CREATE TABLE klub (
   kratky_nazev varchar(32) NOT NULL default '',
   komentar text,
   PRIMARY KEY  (klub_ID)
-) TYPE=InnoDB CHARSET=utf8 COLLATE=utf8_czech_ci;
+);
 
 --
 -- Table structure for table `tym`
@@ -29,7 +29,7 @@ CREATE TABLE tym (
   PRIMARY KEY  (tym_ID),
   KEY klub_ID (klub_ID),
   constraint fk_tym_klub foreign key (klub_ID) references klub (klub_ID) on delete restrict
-) TYPE=InnoDB CHARSET=utf8 COLLATE=utf8_czech_ci;
+);
 
 
 --
@@ -54,7 +54,7 @@ CREATE TABLE clovek (
   KEY klub_ID (klub_ID),
   KEY prijmeni (prijmeni,jmeno,nick),
   constraint fk_clovek_klub foreign key (klub_ID) references klub (klub_ID) on delete restrict
-) TYPE=InnoDB CHARSET=utf8 COLLATE=utf8_czech_ci;
+)  ;
 
 --
 -- Table structure for table `soutez`
@@ -68,7 +68,7 @@ CREATE TABLE soutez (
   komentar text,
   zamceno tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (soutez_ID)
-) TYPE=InnoDB CHARSET=utf8 COLLATE=utf8_czech_ci;
+)  ;
 
 --
 -- Table structure for table `turnaj`
@@ -80,7 +80,7 @@ CREATE TABLE `liga` (
   nazev varchar(255) NOT NULL default '',
   komentar text,
   PRIMARY KEY  (liga_ID)
-) TYPE=InnoDB CHARSET=utf8 COLLATE=utf8_czech_ci;
+)  ;
 
 --
 -- Table structure for table `turnaj`
@@ -91,8 +91,8 @@ CREATE TABLE turnaj (
   soutez_ID int(10) unsigned NOT NULL default '0',
   liga_ID int(10) unsigned default NULL,
   nazev varchar(255) NOT NULL default '',
-  datum_od date NOT NULL default '0000-00-00',
-  datum_do date NOT NULL default '0000-00-00',
+  datum_od date NOT NULL default '1970-01-01',
+  datum_do date NOT NULL default '1970-01-01',
   komentar text,
   PRIMARY KEY  (turnaj_ID),
   KEY soutez_ID (soutez_ID),
@@ -100,7 +100,7 @@ CREATE TABLE turnaj (
   KEY datum_od (datum_od),
   CONSTRAINT fk_turnaj_liga FOREIGN KEY (liga_ID) REFERENCES liga (liga_ID) on delete restrict,
   constraint fk_turnaj_soutez foreign key (soutez_ID) references soutez (soutez_ID) on delete restrict
-) TYPE=InnoDB CHARSET=utf8 COLLATE=utf8_czech_ci;
+)  ;
 
 --
 -- Table structure for table `debata`
@@ -111,7 +111,7 @@ CREATE TABLE debata (
   soutez_ID int(10) unsigned NOT NULL default '0',
   turnaj_ID int(10) unsigned default NULL,
   teze_ID int(10) unsigned NOT NULL default '0',
-  datum datetime NOT NULL default '0000-00-00',
+  datum datetime NOT NULL default '1970-01-01',
   misto varchar(255) default NULL,
   komentar text,
   achtung tinyint(1) NOT NULL default '0',
@@ -124,7 +124,7 @@ CREATE TABLE debata (
   constraint fk_debata_soutez foreign key (soutez_ID) references soutez (soutez_ID) on delete restrict,
   constraint fk_debata_turnaj foreign key (turnaj_ID) references turnaj (turnaj_ID) on delete restrict,
   constraint fk_debata_teze foreign key (teze_ID) references teze (teze_ID) on delete restrict
-) TYPE=InnoDB CHARSET=utf8 COLLATE=utf8_czech_ci;
+)  ;
 
 
 --
@@ -143,7 +143,7 @@ CREATE TABLE clovek_debata (
   KEY clovek_ID (clovek_ID),
   constraint fk_cd_debata foreign key (debata_ID) references debata (debata_ID) on delete cascade,
   constraint fk_cd_clovek foreign key (clovek_ID) references clovek (clovek_ID) on delete restrict
-) TYPE=InnoDB CHARSET=utf8 COLLATE=utf8_czech_ci;
+)  ;
 
 --
 -- Table structure for table `clovek_debata_ibody`
@@ -161,7 +161,7 @@ CREATE TABLE clovek_debata_ibody (
   KEY role (role),
   constraint fk_cdi_clovek foreign key (clovek_ID) references clovek (clovek_ID) on delete cascade,
   constraint fk_cdi_debata foreign key (debata_ID) references debata (debata_ID) on delete cascade
-) TYPE=InnoDB CHARSET=utf8 COLLATE=utf8_czech_ci;
+)  ;
 
 --
 -- Table structure for table `clovek_klub`
@@ -177,7 +177,7 @@ CREATE TABLE clovek_klub (
   KEY klub_ID (klub_ID),
   constraint fk_ck_clovek foreign key (clovek_ID) references clovek (clovek_ID) on delete restrict,
   constraint fk_ck_klub foreign key (klub_ID) references klub (klub_ID) on delete cascade
-) TYPE=InnoDB CHARSET=utf8 COLLATE=utf8_czech_ci;
+)  ;
 
 --
 -- Table structure for table `clovek_turnaj`
@@ -193,7 +193,7 @@ CREATE TABLE clovek_turnaj (
   KEY turnaj_ID (turnaj_ID),
   constraint fk_ctu_clovek foreign key (clovek_ID) references clovek (clovek_ID) on delete restrict,
   constraint fk_ctu_turnaj foreign key (turnaj_ID) references turnaj (turnaj_ID) on delete cascade
-) TYPE=InnoDB CHARSET=utf8 COLLATE=utf8_czech_ci;
+)  ;
 
 --
 -- Table structure for table `clovek_tym`
@@ -208,7 +208,7 @@ CREATE TABLE clovek_tym (
   KEY tym_ID (tym_ID),
   constraint fk_cty_clovek foreign key (clovek_ID) references clovek (clovek_ID) on delete cascade,
   constraint fk_cty_tym foreign key (tym_ID) references tym (tym_ID) on delete cascade
-) TYPE=InnoDB CHARSET=utf8 COLLATE=utf8_czech_ci;
+)  ;
 
 
 --
@@ -226,7 +226,7 @@ CREATE TABLE debata_tym (
   KEY tym_ID (tym_ID),
   constraint fk_dt_debata foreign key (debata_ID) references debata (debata_ID) on delete cascade,
   constraint fk_dt_tym foreign key (tym_ID) references tym (tym_ID) on delete restrict
-) TYPE=InnoDB CHARSET=utf8 COLLATE=utf8_czech_ci;
+)  ;
 
 --
 -- Table structure for table `liga_tym`
@@ -241,7 +241,7 @@ CREATE TABLE liga_tym (
   KEY tym_ID (tym_ID),
   CONSTRAINT fk_lt_liga FOREIGN KEY (liga_ID) REFERENCES liga (liga_ID) ON DELETE CASCADE,
   CONSTRAINT fk_lt_tym FOREIGN KEY (tym_ID) REFERENCES tym (tym_ID) ON DELETE CASCADE
-) TYPE=InnoDB CHARSET=utf8 COLLATE=utf8_czech_ci;
+)  ;
 
 --
 -- Table structure for table `kontakt`
@@ -256,7 +256,7 @@ CREATE TABLE kontakt (
   PRIMARY KEY  (kontakt_ID),
   KEY clovek_ID (clovek_ID),
   constraint fk_kontakt_clovek foreign key (clovek_ID) references clovek (clovek_ID) on delete cascade
-) TYPE=InnoDB CHARSET=utf8 COLLATE=utf8_czech_ci;
+)  ;
 
 --
 -- Table structure for table `login`
@@ -269,7 +269,7 @@ CREATE TABLE login (
   PRIMARY KEY  (clovek_ID),
   UNIQUE username (username),
   constraint fk_login_clovek foreign key (clovek_ID) references clovek (clovek_ID) on delete cascade
-) TYPE=InnoDB CHARSET=utf8 COLLATE=utf8_czech_ci;
+)  ;
 
 --
 -- Table structure for table `rozhodci`
@@ -284,7 +284,7 @@ CREATE TABLE rozhodci (
   PRIMARY KEY  (clovek_ID, rocnik),
   KEY clovek_ID (clovek_ID),
   constraint fk_rozhodci_clovek foreign key (clovek_ID) references clovek (clovek_ID) on delete cascade
-) TYPE=InnoDB CHARSET=utf8 COLLATE=utf8_czech_ci;
+)  ;
 
 --
 -- Table structure for table `teze`
@@ -298,7 +298,7 @@ CREATE TABLE teze (
   komentar text,
   PRIMARY KEY  (teze_ID),
   KEY jazyk (jazyk)
-) TYPE=InnoDB CHARSET=utf8 COLLATE=utf8_czech_ci;
+)  ;
 
 --
 -- Table structure for table `soutez_teze`
@@ -312,7 +312,7 @@ CREATE TABLE soutez_teze (
   KEY teze_ID (teze_ID),
   constraint fk_st_soutez foreign key (soutez_ID) references soutez (soutez_ID) on delete cascade,
   constraint fk_st_teze foreign key (teze_ID) references teze (teze_ID) on delete restrict
-) TYPE=InnoDB CHARSET=utf8 COLLATE=utf8_czech_ci;
+)  ;
 
 --
 -- Table structure for table `clovek_ibody`
@@ -326,7 +326,7 @@ CREATE TABLE clovek_ibody (
   PRIMARY KEY (clovek_ibody_ID),
   KEY clovek_ID (clovek_ID),
   constraint fk_ibody_clovek foreign key (clovek_ID) references clovek (clovek_ID) on delete cascade
-) TYPE=InnoDB CHARSET=utf8 COLLATE=utf8_czech_ci;
+)  ;
 
 ALTER TABLE `clovek`
 ADD `prihlaska` tinyint(1) NOT NULL DEFAULT '0' AFTER `clen_do`,
@@ -343,4 +343,4 @@ ADD FOREIGN KEY (`prihlasil`) REFERENCES `clovek` (`clovek_ID`) ON DELETE RESTRI
 ADD `komentar` text COLLATE 'utf8_general_ci' NULL;
 
 ALTER TABLE `turnaj`
-ADD `deadline` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' AFTER `datum_do`;
+ADD `deadline` datetime NOT NULL DEFAULT '1970-01-01' AFTER `datum_do`;
