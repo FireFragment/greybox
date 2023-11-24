@@ -80,6 +80,7 @@ class PersonController extends Controller
             if ($request->has('email')) $person->update(['email' => $request->input('email')]);
             if ($request->has('institution')) $person->update(['institution' => $request->input('institution')]);
             if ($request->has('school_year')) $person->update(['school_year' => $request->input('school_year')]);
+            if ($request->has('gender')) $person->update(['gender' => $request->input('gender')]);
             if ($request->has('birthdate')) $person->update(['birthdate' => $request->input('birthdate')]);
             if ($request->has('id_number')) $person->update(['id_number' => $request->input('id_number')]);
             if ($request->has('street')) $person->update(['street' => $request->input('street')]);

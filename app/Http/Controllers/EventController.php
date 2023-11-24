@@ -109,7 +109,7 @@ class EventController extends Controller
             }
 
             $event = Event::create([
-                'pds' => $request->input('pds', 0),
+                'organizer' => $request->input('organizer', 'adk'),
                 'competition' => $request->input('competition'),
                 'finals' => $request->input('finals', 0),
                 'name' => $nameTranslation->id,
@@ -121,6 +121,7 @@ class EventController extends Controller
                 'novices' => $request->input('novices', 0),
                 'membership_required' => $request->input('membership_required', 1),
                 'email_required' => $request->input('email_required', 0),
+                'gender_required' => $request->input('gender_required', 0),
                 'soft_deadline' => $request->input('soft_deadline'),
                 'hard_deadline' => $request->input('hard_deadline'),
                 'invoice_text' => $invoiceTextTranslation->id,
@@ -146,7 +147,7 @@ class EventController extends Controller
             $event = Event::findOrFail($id);
             $this->authorize('update', $event);
 
-            if ($request->has('pds')) $this->updateColumn($event, 'pds', $request->input('pds'));
+            if ($request->has('organizer')) $this->updateColumn($event, 'organizer', $request->input('organizer'));
             if ($request->has('competition')) $this->updateColumn($event, 'competition', $request->input('competition'));
             if ($request->has('finals')) $this->updateColumn($event, 'finals', $request->input('finals'));
             if ($request->has('name_cs')) {
@@ -164,6 +165,7 @@ class EventController extends Controller
             if ($request->has('novices')) $this->updateColumn($event, 'novices', $request->input('novices'));
             if ($request->has('membership_required')) $this->updateColumn($event, 'membership_required', $request->input('membership_required'));
             if ($request->has('email_required')) $this->updateColumn($event, 'email_required', $request->input('email_required'));
+            if ($request->has('gender_required')) $this->updateColumn($event, 'gender_required', $request->input('gender_required'));
             if ($request->has('soft_deadline')) $this->updateColumn($event, 'soft_deadline', $request->input('soft_deadline'));
             if ($request->has('hard_deadline')) $this->updateColumn($event, 'hard_deadline', $request->input('hard_deadline'));
             if ($request->has('invoice_cs')) {

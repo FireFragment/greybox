@@ -58,6 +58,18 @@ return [
             'local_domain' => env('MAIL_EHLO_DOMAIN'),
         ],
 
+        'eurosdc' => [
+            'transport' => env('EUROSDC_MAIL_DRIVER', 'smtp'),
+            'url' => env('MAIL_URL'),
+            'host' => env('EUROSDC_MAIL_HOST', 'smtp.mailgun.org'),
+            'port' => env('EUROSDC_MAIL_PORT', 587),
+            'encryption' => env('EUROSDC_MAIL_ENCRYPTION', 'tls'),
+            'username' => env('EUROSDC_MAIL_USERNAME'),
+            'password' => env('EUROSDC_MAIL_PASSWORD'),
+            'timeout' => null,
+            'local_domain' => env('MAIL_EHLO_DOMAIN'),
+        ],
+
         'ses' => [
             'transport' => 'ses-v2',
         ],
