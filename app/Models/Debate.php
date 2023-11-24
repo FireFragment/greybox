@@ -72,7 +72,7 @@ class Debate extends BaseModel
                 'negativeTeam' => $line->negace,
                 'motion' => $line->tx_short,
                 'result' => $result,
-                'link' => 'https://statistky.debatovani.cz?page=debata&debata_id=' . $line->debata_ID,
+                'link' => 'https://statistiky.debatovani.cz?page=debata&debata_id=' . $line->debata_ID,
                 'role' => $role,
                 'win' => $win,
                 'ballots' => self::addBallots($line->debata_ID),
